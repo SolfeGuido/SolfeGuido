@@ -5,17 +5,17 @@ local Timer = require('lib.timer')
 ---@class Scene
 ---@field public entities table
 ---@field public timer Timer
-local Scene = Class {
-    init = function(self)
+local Scene = Class:extend()
 
-    end,
-    ---@
-    entities = {},
-    timer = Timer.new()
-}
+function Scene:new()
+    print(self)
+    self.entities = {}
+    self.timer = Timer.new()
+
+end
 
 ---@param self Scene
-function Scene:draw(self)
+function Scene:draw()
     for _,v in pairs(self.entities) do
         v:draw()
     end
@@ -23,7 +23,7 @@ end
 
 ---@param self Scene
 ---@param dt number
-function Scene:update(self, dt)
+function Scene:update(dt)
     self.timer:update(dt)
     for _,v in pairs(self.entities) do
         v:update(dt)

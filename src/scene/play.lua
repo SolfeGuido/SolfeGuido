@@ -14,7 +14,8 @@ function PlayScene:new()
     PlayScene.super.new(self)
     self.noteImage = love.graphics.newImage('res/note.png')
     assert(self.noteImage, 'Failed to load image')
-    Scene.addentity(self, Note, 20, 100, self.noteImage)
+    Scene.addentity(self, Note, 2, self.noteImage)
+    self.progress = 0
 end
 
 
@@ -33,14 +34,18 @@ function PlayScene:draw()
         love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
     end
 
+    love.graphics.push()
+    love.graphics.translate(-self.progress, 0)
+    PlayScene.super.draw(self)
     love.graphics.pop()
 
-    PlayScene.super.draw(self)
+    love.graphics.pop()
+
 end
 
 function PlayScene:update(dt)
     Scene.update(self, dt)
-
+    self.progress = self.progress + (dt *  10)
     -- if math.random() == 1 then
     --     self.notes[#self.notes+1] = Note(self, 20, 100)
     -- end

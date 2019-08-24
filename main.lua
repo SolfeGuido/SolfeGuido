@@ -7,6 +7,10 @@ local STATES = {
 
 local currentState = PlayState()
 
+function love.load()
+    math.randomseed(os.time())
+end
+
 function love.draw()
     currentState:draw()
 end

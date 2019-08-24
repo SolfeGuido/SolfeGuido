@@ -1,6 +1,7 @@
 
 local Class = require('lib.class')
 local Timer = require('lib.timer')
+local uuidGenerator = require('src.math')
 
 ---@class Scene
 ---@field public entities table
@@ -12,6 +13,11 @@ function Scene:new()
     self.entities = {}
     self.timer = Timer.new()
 
+end
+
+function Scene:addentity(Type, ...)
+    local objId = uuidGenerator.uuid()
+    self.entities[objId] = Type(self, objId, ...)
 end
 
 ---@param self Scene

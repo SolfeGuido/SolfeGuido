@@ -19,7 +19,6 @@ function PlayScene:draw()
 end
 
 function PlayScene:update(dt)
-    print("self = ", self)
     Scene.update(self, dt)
 end
 

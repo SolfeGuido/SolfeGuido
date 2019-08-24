@@ -5,7 +5,7 @@ local STATES = {
     ['play'] = PlayState('test')
 }
 
-local currentState = PlayState('test')
+local currentState = PlayState()
 
 function love.draw()
     currentState:draw()

@@ -8,7 +8,7 @@ local Timer = require('lib.timer')
 local Scene = Class:extend()
 
 function Scene:new()
-    print(self)
+    Scene.super.new(self)
     self.entities = {}
     self.timer = Timer.new()
 

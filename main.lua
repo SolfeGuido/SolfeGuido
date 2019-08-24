@@ -12,5 +12,6 @@ function love.draw()
 end
 
 function love.update(dt)
+    require('lib.lurker').update()
     currentState:update(dt)
 end

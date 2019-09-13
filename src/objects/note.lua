@@ -14,7 +14,7 @@ local Note = Entity:extend()
 
 function Note:new(area, id, note, x, image)
     local y = noteToPosition(note)
-    Note.super.new(self, area, id, love.graphics.getWidth() + x, y)
+    Note.super.new(self, area, id, x, y)
     self.note = note
     self.image = image
 end

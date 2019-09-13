@@ -10,6 +10,8 @@ local Queue = require('src.utils.queue')
 ---@field private notes Queue
 local PlayScene = Scene:extend()
 
+local NOTE_DISTANCES = 50
+
 function PlayScene:new()
     PlayScene.super.new(self)
     self.noteImage = love.graphics.newImage('res/note.png')
@@ -17,16 +19,10 @@ function PlayScene:new()
     self.fKeyImage = love.graphics.newImage('res/fa.png')
     assert(self.noteImage, 'Failed to load image')
     self.progress = 0
-    self.currentNote = 5
+    self.progressSpeed = 100
     self.notes = Queue()
-    self.notes:push(Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage))
+    self.notes:push(Scene.addentity(self, Note, 0, love.graphics.getWidth(), self.noteImage))
     self.limitLine = 200
-    self.timer:every(1, function()
-        --check if needs to add
-        self.currentNote = (self.currentNote + 1) % 10 + 5
-        local ent = Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage)
-        self.notes:push(ent)
-    end)
 end
 
 
@@ -53,7 +49,7 @@ function PlayScene:draw()
 
 end
 
-function PlayScene:keypressed(key) 
+function PlayScene:keypressed(key)
     Scene.keypressed(self, key)
     self.notes:shift():dispose()
     print(self.notes:size())
@@ -65,19 +61,30 @@ end
 
 function PlayScene:doProgress(dt)
     local first = self.notes:peek().x
-    local normalProg = (dt * 50)
+    local normalProg = (dt * self.progressSpeed)
     local dist = first - self.limitLine
-    self.progress = math.min(normalProg, dist)
+    if dist < 1  then
+        self.progress = dist
+    else
+        self.progressSpeed = math.sqrt(dist) * 5
+        self.progress = normalProg
+    end
 end
 
+function PlayScene:tryPopNote(dt)
+    local last = self.notes:last().x
+    if love.graphics.getWidth() - last >= NOTE_DISTANCES then
+        local note = math.random(1,20)
+        local ent = Scene.addentity(self, Note, note, love.graphics.getWidth(), self.noteImage)
+        self.notes:push(ent)
+    end
+end
 
 function PlayScene:update(dt)
     if self.paused then return end
-    Scene.update(self, dt)f
+    Scene.update(self, dt)
     self:doProgress(dt)
-    -- if math.random() == 1 then
-    --     self.notes[#self.notes+1] = Note(self, 20, 100)
-    -- end
+    self:tryPopNote(dt)
 end
 
 return PlayScene

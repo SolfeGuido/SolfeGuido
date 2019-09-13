@@ -19,6 +19,7 @@ end
 function Scene:addentity(Type, ...)
     local objId = uuidGenerator.uuid()
     self.entities[objId] = Type(self, objId, ...)
+    return self.entities[objId]
 end
 
 ---@param self Scene

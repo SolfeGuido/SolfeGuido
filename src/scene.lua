@@ -12,6 +12,7 @@ function Scene:new()
     Scene.super.new(self)
     self.entities = {}
     self.timer = Timer.new()
+    self.paused = false
 
 end
 
@@ -30,11 +31,17 @@ end
 ---@param self Scene
 ---@param dt number
 function Scene:update(dt)
+    if self.paused then return end
     self.timer:update(dt)
     for _,v in pairs(self.entities) do
         v:update(dt)
     end
 end
 
+function Scene:keypressed(key)
+    if key == "space" then
+        self.paused = not self.paused
+    end
+end
 
 return Scene

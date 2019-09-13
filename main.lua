@@ -19,3 +19,7 @@ function love.update(dt)
     require('lib.lurker').update()
     currentState:update(dt)
 end
+
+function love.keypressed(key)
+    currentState:keypressed(key)
+end

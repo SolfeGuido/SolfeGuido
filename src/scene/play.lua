@@ -16,9 +16,14 @@ function PlayScene:new()
     self.gKeyImage = love.graphics.newImage('res/sol.png')
     self.fKeyImage = love.graphics.newImage('res/fa.png')
     assert(self.noteImage, 'Failed to load image')
-    Scene.addentity(self, Note, 1, self.noteImage)
     self.progress = 0
+    self.currentNote = 5
+    Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage)
     self.limitLine = 200
+    self.timer:every(1, function()
+        self.currentNote = (self.currentNote + 1) % 10
+        Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage)
+    end)
 end
 
 
@@ -39,18 +44,24 @@ function PlayScene:draw()
         love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
     end
 
-    love.graphics.push()
-    love.graphics.translate(-self.progress, 0)
     PlayScene.super.draw(self)
-    love.graphics.pop()
 
     love.graphics.pop()
 
 end
 
+function PlayScene:keypressed(key) 
+    Scene.keypressed(self, key)
+end
+
+function PlayScene:getMove()
+    return self.progress
+end
+
 function PlayScene:update(dt)
+    if self.paused then return end
     Scene.update(self, dt)
-    self.progress = self.progress + (dt *  50)
+    self.progress = (dt *  50)
     -- if math.random() == 1 then
     --     self.notes[#self.notes+1] = Note(self, 20, 100)
     -- end

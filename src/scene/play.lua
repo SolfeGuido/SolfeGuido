@@ -1,15 +1,15 @@
 
 local Scene = require('src.scene')
-local Draft = require('lib.draft')
 local Note = require('src.objects.note')
+local Queue = require('src.utils.queue')
 
 ---@class PlayScene : Scene
 ---@field public entities table
 ---@field public timer Timer
 ---@field public noteImage any
+---@field private notes Queue
 local PlayScene = Scene:extend()
 
----@param self PlayScene
 function PlayScene:new()
     PlayScene.super.new(self)
     self.noteImage = love.graphics.newImage('res/note.png')
@@ -18,11 +18,14 @@ function PlayScene:new()
     assert(self.noteImage, 'Failed to load image')
     self.progress = 0
     self.currentNote = 5
-    Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage)
+    self.notes = Queue()
+    self.notes:push(Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage))
     self.limitLine = 200
     self.timer:every(1, function()
-        self.currentNote = (self.currentNote + 1) % 10
-        Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage)
+        --check if needs to add
+        self.currentNote = (self.currentNote + 1) % 10 + 5
+        local ent = Scene.addentity(self, Note, self.currentNote, self.progress, self.noteImage)
+        self.notes:push(ent)
     end)
 end
 
@@ -52,16 +55,26 @@ end
 
 function PlayScene:keypressed(key) 
     Scene.keypressed(self, key)
+    self.notes:shift():dispose()
+    print(self.notes:size())
 end
 
 function PlayScene:getMove()
     return self.progress
 end
 
+function PlayScene:doProgress(dt)
+    local first = self.notes:peek().x
+    local normalProg = (dt * 50)
+    local dist = first - self.limitLine
+    self.progress = math.min(normalProg, dist)
+end
+
+
 function PlayScene:update(dt)
     if self.paused then return end
-    Scene.update(self, dt)
-    self.progress = (dt *  50)
+    Scene.update(self, dt)f
+    self:doProgress(dt)
     -- if math.random() == 1 then
     --     self.notes[#self.notes+1] = Note(self, 20, 100)
     -- end

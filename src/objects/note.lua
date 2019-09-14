@@ -20,6 +20,21 @@ function Note:new(area, id, note, x, image)
 end
 
 function Note:draw()
+    if self.note <= 4 then
+        love.graphics.push()
+        love.graphics.translate(0, 50)
+        for i = 4, self.note, -2 do
+            love.graphics.line(self.x - 4, noteToPosition(i), self.x + 2 + self.image:getWidth(), noteToPosition((i)))
+        end
+        love.graphics.pop()
+    elseif self.note >= 15 then
+        love.graphics.push()
+        for i = 15, 20, 2 do
+            love.graphics.line(self.x - 4, noteToPosition(i), self.x + 2, noteToPosition((i)))
+        end
+        love.graphics.pop()
+    end
+
     love.graphics.draw(self.image, self.x, self.y)
 end
 

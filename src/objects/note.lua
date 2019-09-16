@@ -12,11 +12,10 @@ end
 local Note = Entity:extend()
 
 
-function Note:new(area, id, note, x, image)
-    local y = noteToPosition(note)
-    Note.super.new(self, area, id, x, y)
-    self.note = note
-    self.image = image
+function Note:new(area, id, options)
+    Note.super.new(self, area, id, options)
+    self.y = noteToPosition(self.note)
+    self.image = assets.images.note
 end
 
 function Note:draw()

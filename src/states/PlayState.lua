@@ -1,5 +1,5 @@
 
-local Scene = require('src.scene')
+local Scene = require('src.states.State')
 local Note = require('src.objects.note')
 local Queue = require('src.utils.queue')
 
@@ -14,14 +14,11 @@ local NOTE_DISTANCES = 50
 
 function PlayScene:new()
     PlayScene.super.new(self)
-    self.noteImage = love.graphics.newImage('res/note.png')
-    self.gKeyImage = love.graphics.newImage('res/sol.png')
-    self.fKeyImage = love.graphics.newImage('res/fa.png')
-    assert(self.noteImage, 'Failed to load image')
+    self.gKeyImage = assets.images.GKey
     self.progress = 0
     self.progressSpeed = 100
     self.notes = Queue()
-    self.notes:push(Scene.addentity(self, Note, 0, love.graphics.getWidth(), self.noteImage))
+    self.notes:push(Scene.addentity(self, Note, {note = 0, x = love.graphics.getWidth() }))
     self.limitLine = 200
 end
 
@@ -75,7 +72,7 @@ function PlayScene:tryPopNote(dt)
     local last = self.notes:last().x
     if love.graphics.getWidth() - last >= NOTE_DISTANCES then
         local note = math.random(1,20)
-        local ent = Scene.addentity(self, Note, note, love.graphics.getWidth(), self.noteImage)
+        local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
         self.notes:push(ent)
     end
 end

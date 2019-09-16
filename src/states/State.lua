@@ -6,24 +6,36 @@ local uuidGenerator = require('src.math')
 ---@class Scene
 ---@field public entities table
 ---@field public timer Timer
-local Scene = Class:extend()
+local State = Class:extend()
 
-function Scene:new()
-    Scene.super.new(self)
+function State:new()
+    State.super.new(self)
     self.entities = {}
     self.timer = Timer.new()
     self.paused = false
+    self.active = true
+end
+
+function State:init(...)
 
 end
 
-function Scene:addentity(Type, ...)
+function State:isActive()
+    return self.active
+end
+
+function State:setActive(acv)
+    self.active = acv
+end
+
+function State:addentity(Type, options)
     local objId = uuidGenerator.uuid()
-    self.entities[objId] = Type(self, objId, ...)
+    self.entities[objId] = Type(self, objId, options)
     return self.entities[objId]
 end
 
 ---@param self Scene
-function Scene:draw()
+function State:draw()
     for _,v in pairs(self.entities) do
         v:draw()
     end
@@ -31,7 +43,7 @@ end
 
 ---@param self Scene
 ---@param dt number
-function Scene:update(dt)
+function State:update(dt)
     if self.paused then return end
     self.timer:update(dt)
     for _,v in pairs(self.entities) do
@@ -39,10 +51,10 @@ function Scene:update(dt)
     end
 end
 
-function Scene:keypressed(key)
+function State:keypressed(key)
     if key == "space" then
         self.paused = not self.paused
     end
 end
 
-return Scene
+return State

@@ -1,29 +1,29 @@
 _G['CONST'] = require('src.constants')
+_G['assets'] = require('lib.cargo').init('res')
 
-
---local PlayState = require('src.scene.play')
-local Resources = require('src.resources')
-
-local STATES = {
-  --  ['play'] = PlayState('test')
-}
-_G['Resources'] = Resources()
-
---local currentState = PlayState()
+local ScreenManager = require('lib.ScreenManager')
 
 function love.load()
     math.randomseed(os.time())
+    local screens = {
+        play = require('src.states.PlayState')
+    }
+    ScreenManager.init(screens, 'play')
 end
 
 function love.draw()
-  --  currentState:draw()
+    ScreenManager.draw()
 end
 
 function love.update(dt)
     require('lib.lurker').update()
-    --currentState:update(dt)
+    ScreenManager.update(dt)
 end
 
 function love.keypressed(key)
-    --currentState:keypressed(key)
+    ScreenManager.keypressed(key)
+end
+
+function love.keyreleased(key)
+    ScreenManager.keyreleased(key)
 end

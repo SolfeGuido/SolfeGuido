@@ -9,12 +9,13 @@ local Class = require('lib.class')
 ---@field public y number
 local Entity = Class:extend()
 
-function Entity:new(area, id, x, y)
+function Entity:new(area, id, options)
     Entity.super.new(self)
     self.id = id
     self.area = area
-    self.x = x
-    self.y = y
+    for k,v in pairs(options) do
+        self[k] = v
+    end
 end
 
 function Entity:dispose()

@@ -5,7 +5,7 @@ local Key = Entity:extend()
 
 
 function Key:new(area, id, config)
-    Entity.new(self, area, id)
+    Entity.new(self, area, id, config)
     self.config = config
     self.image = assets.images[self.config.image]
 end

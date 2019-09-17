@@ -1,5 +1,6 @@
 {
     "Lua.diagnostics.globals": [
         "love"
-    ]
+    ],
+    "Lua.runtime.version": "LuaJIT"
 }

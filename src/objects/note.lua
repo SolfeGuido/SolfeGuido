@@ -22,7 +22,7 @@ end
 ---@return number
 function Note:noteToPosition(note)
     local base = self.area:getBaseLine()
-    return base - (note - 5) * (assets.config.lineHeight / 2)
+    return base - (note - 6) * (assets.config.lineHeight / 2)
 end
 
 function Note:draw()
@@ -32,11 +32,11 @@ function Note:draw()
     local actualWidth = scale * self.image:getWidth()
     local padding = assets.config.note.padding
     if self.note <= 4 then
-        for i = 5, self.note, -2 do
+        for i = 6, self.note, -2 do
             love.graphics.line(self.x, self:noteToPosition(i), self.x + actualWidth + padding * 2, self:noteToPosition((i)))
         end
     elseif self.note >= 15 then
-        for i = 15, self.note, 2 do
+        for i = 16, self.note, 2 do
             love.graphics.line(self.x, self:noteToPosition(i), self.x +  actualWidth + padding * 2, self:noteToPosition((i)))
         end
     end

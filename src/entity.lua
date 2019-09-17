@@ -22,4 +22,8 @@ function Entity:dispose()
     self.area.entities[self.id] = nil
 end
 
+function Entity:update()
+
+end
+
 return Entity

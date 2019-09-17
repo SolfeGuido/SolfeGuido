@@ -2,30 +2,31 @@
 local Scene = require('src.states.State')
 local Note = require('src.objects.note')
 local Queue = require('src.utils.queue')
+local GKey = require('src.objects.gkey')
+local FKey = require('src.objects.fkey')
 
----@class PlayScene : Scene
+---@class PlayState : Scene
 ---@field public entities table
 ---@field public timer Timer
 ---@field public noteImage any
 ---@field private notes Queue
-local PlayScene = Scene:extend()
+local PlayState = Scene:extend()
 
-function PlayScene:new()
-    PlayScene.super.new(self)
-    self.gKeyImage = assets.images.GKey
+function PlayState:new()
+    PlayState.super.new(self)
     self.progress = 0
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
     self.notes:push(Scene.addentity(self, Note, {note = 0, x = love.graphics.getWidth() }))
+    self:addentity(GKey, {})
 end
 
-function PlayScene:getBaseLine()
+function PlayState:getBaseLine()
     return love.graphics.getHeight() / 3 + 5 * assets.config.lineHeight
 end
 
 
----@param self PlayScene
-function PlayScene:draw()
+function PlayState:draw()
     love.graphics.push()
 
     love.graphics.setColor(1,1,1)
@@ -37,7 +38,6 @@ function PlayScene:draw()
     love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
 
     local middle = love.graphics.getHeight() / 3
-    love.graphics.draw(self.gKeyImage, 0, middle - 5, 0, 0.8)
     love.graphics.setColor(0.1,0.1,0.3)
     love.graphics.line(assets.config.limitLine, 0, assets.config.limitLine, love.graphics.getHeight())
     love.graphics.setColor(0,0,0)
@@ -47,22 +47,22 @@ function PlayScene:draw()
         love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
     end
 
-    PlayScene.super.draw(self)
+    PlayState.super.draw(self)
     love.graphics.pop()
 
 end
 
-function PlayScene:keypressed(key)
+function PlayState:keypressed(key)
     Scene.keypressed(self, key)
     self.notes:shift():dispose()
     print(self.notes:size())
 end
 
-function PlayScene:getMove()
+function PlayState:getMove()
     return self.progress
 end
 
-function PlayScene:doProgress(dt)
+function PlayState:doProgress(dt)
     local first = self.notes:peek().x
     local normalProg = (dt * self.progressSpeed)
     local dist = first - assets.config.limitLine
@@ -74,7 +74,7 @@ function PlayScene:doProgress(dt)
     end
 end
 
-function PlayScene:tryPopNote(dt)
+function PlayState:tryPopNote(dt)
     local last = self.notes:last().x
     if love.graphics.getWidth() - last >= assets.config.note.distance then
         local note = math.random(1,20)
@@ -83,11 +83,11 @@ function PlayScene:tryPopNote(dt)
     end
 end
 
-function PlayScene:update(dt)
+function PlayState:update(dt)
     if self.paused then return end
     Scene.update(self, dt)
     self:doProgress(dt)
     self:tryPopNote(dt)
 end
 
-return PlayScene
+return PlayState

@@ -3,9 +3,8 @@ local lineHeight = 20
 
 return {
     lineSpace = 20,
-    imagesPath = 'res/images',
     lineHeight = lineHeight,
-    limitLine = 200,
+    limitLine = 100,
     maxProgressSpeed = 100,
     gKey = {
         height = lineHeight * 7,
@@ -13,15 +12,17 @@ return {
         yOrigin = 132,
         xPosition = 40,
         yPosition = 0,
-        image = 'FKey'
+        image = 'GKey',
+        lowesNote = 4
     },
     fKey = {
         height = lineHeight * 3,
         xOrigin = 21,
-        yOrigin = 21,
+        yOrigin = 23,
         xPosition = 30,
-        yPosition = lineHeight * 4,
-        image = 'GKey'
+        yPosition = lineHeight * 3,
+        image = 'FKey',
+        lowestNote = 5
     },
     note = {
         height = lineHeight * 4,

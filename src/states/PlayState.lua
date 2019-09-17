@@ -18,7 +18,7 @@ function PlayState:new()
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
     self.notes:push(Scene.addentity(self, Note, {note = 0, x = love.graphics.getWidth() }))
-    self:addentity(GKey, {})
+    self.key = self:addentity(FKey, {})
 end
 
 function PlayState:getBaseLine()
@@ -54,8 +54,13 @@ end
 
 function PlayState:keypressed(key)
     Scene.keypressed(self, key)
-    self.notes:shift():dispose()
-    print(self.notes:size())
+    local currentNote = self.notes:peek().note
+    if self.key:isCorrect(currentNote, key) then
+        self.notes:shift():dispose()
+        --gain a point, go to next
+    else
+        --loose time, go next
+    end
 end
 
 function PlayState:getMove()
@@ -69,7 +74,7 @@ function PlayState:doProgress(dt)
     if dist < 1  then
         self.progress = dist
     else
-        self.progressSpeed = math.sqrt(dist) * 5
+        self.progressSpeed = math.sqrt(dist) * 10
         self.progress = normalProg
     end
 end

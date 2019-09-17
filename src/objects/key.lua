@@ -17,4 +17,11 @@ function Key:draw()
     love.graphics.draw(self.image, self.xPosition, base - self.yPosition, 0 , scale , scale, self.xOrigin, self.yOrigin)
 end
 
+---@param note number
+---@param key string
+function Key:isCorrect(note, key)
+    note = ((note + self.config.lowestNote) % 7) + 1
+    return assets.config.letterOrder[note] == key
+end
+
 return Key

@@ -3,7 +3,7 @@
 local Entity = require('src.entity')
 
 ---@class Note : Object
----@field public area PlayScene
+---@field public area PlayState
 local Note = Entity:extend()
 
 

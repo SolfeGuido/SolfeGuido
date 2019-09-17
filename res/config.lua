@@ -6,6 +6,7 @@ return {
     lineHeight = lineHeight,
     limitLine = 100,
     maxProgressSpeed = 100,
+    letterOrder = {'s', 'd', 'f', 'g', 'h', 'j', 'k'},
     gKey = {
         height = lineHeight * 7,
         xOrigin = 32,
@@ -13,7 +14,7 @@ return {
         xPosition = 40,
         yPosition = 0,
         image = 'GKey',
-        lowesNote = 4
+        lowestNote = 3
     },
     fKey = {
         height = lineHeight * 3,

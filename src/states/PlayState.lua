@@ -10,16 +10,17 @@ local Queue = require('src.utils.queue')
 ---@field private notes Queue
 local PlayScene = Scene:extend()
 
-local NOTE_DISTANCES = 50
-
 function PlayScene:new()
     PlayScene.super.new(self)
     self.gKeyImage = assets.images.GKey
     self.progress = 0
-    self.progressSpeed = 100
+    self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
     self.notes:push(Scene.addentity(self, Note, {note = 0, x = love.graphics.getWidth() }))
-    self.limitLine = 200
+end
+
+function PlayScene:getBaseLine()
+    return love.graphics.getHeight() / 3 + 5 * assets.config.lineHeight
 end
 
 
@@ -32,10 +33,10 @@ function PlayScene:draw()
     local middle = love.graphics.getHeight() / 3
     love.graphics.draw(self.gKeyImage, 0, middle - 5, 0, 0.8)
     love.graphics.setColor(0.1,0.1,0.3)
-    love.graphics.line(self.limitLine , 0, self.limitLine, love.graphics.getHeight())
+    love.graphics.line(assets.config.limitLine, 0, assets.config.limitLine, love.graphics.getHeight())
     love.graphics.setColor(0,0,0)
     for i = 1,5 do
-        local ypos = middle + 20 * i
+        local ypos = middle + assets.config.lineHeight * i
         love.graphics.setLineWidth(1)
         love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
     end
@@ -59,7 +60,7 @@ end
 function PlayScene:doProgress(dt)
     local first = self.notes:peek().x
     local normalProg = (dt * self.progressSpeed)
-    local dist = first - self.limitLine
+    local dist = first - assets.config.limitLine
     if dist < 1  then
         self.progress = dist
     else
@@ -70,7 +71,7 @@ end
 
 function PlayScene:tryPopNote(dt)
     local last = self.notes:last().x
-    if love.graphics.getWidth() - last >= NOTE_DISTANCES then
+    if love.graphics.getWidth() - last >= assets.config.noteDistance then
         local note = math.random(1,20)
         local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
         self.notes:push(ent)

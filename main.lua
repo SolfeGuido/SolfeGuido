@@ -1,4 +1,3 @@
-_G['CONST'] = require('src.constants')
 _G['assets'] = require('lib.cargo').init('res')
 
 local ScreenManager = require('lib.ScreenManager')
@@ -22,8 +21,4 @@ end
 
 function love.keypressed(key)
     ScreenManager.keypressed(key)
-end
-
-function love.keyreleased(key)
-    ScreenManager.keyreleased(key)
 end

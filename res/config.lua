@@ -8,6 +8,7 @@ return {
     limitLine = 200,
     maxProgressSpeed = 100,
     noteDistance = 50,
+    notePadding = 10,
     gKey = {
         height = lineHeight * 7,
         xOrigin = 32,

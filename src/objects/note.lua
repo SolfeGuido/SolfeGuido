@@ -21,23 +21,24 @@ function Note:noteToPosition(note)
 end
 
 function Note:draw()
+    local scale = assets.config.note.height / self.image:getHeight()
+    local xOrig = assets.config.note.xOrigin
+    local yOrig = assets.config.note.yOrigin
+    local actualWidth = scale * self.image:getWidth()
+    local padding = assets.config.notePadding
     if self.note <= 4 then
-        love.graphics.push()
-        love.graphics.translate(0, 50)
-        for i = 4, self.note, -2 do
-            love.graphics.line(self.x - 4, self:noteToPosition(i), self.x + 2 + self.image:getWidth(), self:noteToPosition((i)))
+        for i = 5, self.note, -2 do
+            love.graphics.line(self.x, self:noteToPosition(i), self.x + actualWidth + padding * 2, self:noteToPosition((i)))
         end
-        love.graphics.pop()
     elseif self.note >= 15 then
-        love.graphics.push()
-        for i = 15, 20, 2 do
-            love.graphics.line(self.x - 4, self:noteToPosition(i), self.x + 2, self:noteToPosition((i)))
+        for i = 15, self.note, 2 do
+            love.graphics.line(self.x, self:noteToPosition(i), self.x +  actualWidth + padding * 2, self:noteToPosition((i)))
         end
-        love.graphics.pop()
     end
 
-    local scale = assets.config.note.height / self.image:getHeight()
-    love.graphics.draw(self.image, self.x, self.y, 0, scale, scale, 0, assets.config.note.yOrigin)
+    if self.note >= 10 then scale = -scale end
+
+    love.graphics.draw(self.image, self.x +  padding + actualWidth / 2, self.y, 0, scale, scale, xOrig, yOrig)
 end
 
 function Note:update(dt)

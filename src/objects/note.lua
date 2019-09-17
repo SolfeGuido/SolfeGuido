@@ -13,6 +13,11 @@ function Note:new(area, id, options)
     self.image = assets.images.note
 end
 
+function Note:width()
+    local scale = assets.config.note.height / self.image:getHeight()
+    return assets.config.note.padding * 2 + scale * self.image:getWidth()
+end
+
 ---@param note number
 ---@return number
 function Note:noteToPosition(note)
@@ -25,7 +30,7 @@ function Note:draw()
     local xOrig = assets.config.note.xOrigin
     local yOrig = assets.config.note.yOrigin
     local actualWidth = scale * self.image:getWidth()
-    local padding = assets.config.notePadding
+    local padding = assets.config.note.padding
     if self.note <= 4 then
         for i = 5, self.note, -2 do
             love.graphics.line(self.x, self:noteToPosition(i), self.x + actualWidth + padding * 2, self:noteToPosition((i)))

@@ -7,8 +7,6 @@ return {
     lineHeight = lineHeight,
     limitLine = 200,
     maxProgressSpeed = 100,
-    noteDistance = 50,
-    notePadding = 10,
     gKey = {
         height = lineHeight * 7,
         xOrigin = 32,
@@ -29,6 +27,9 @@ return {
         height = lineHeight * 4,
         xOrigin = 28,
         yOrigin = 184,
-        image = 'note'
+        image = 'note';
+        padding = 10,
+        distance = 50,
+        backgroundColor = {0.64, 0.77, 0.91, 0.91}
     }
 }

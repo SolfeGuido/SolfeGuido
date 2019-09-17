@@ -27,8 +27,14 @@ end
 ---@param self PlayScene
 function PlayScene:draw()
     love.graphics.push()
+
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+
+        local width = self.notes:peek():width()
+    local x = self.notes:peek().x
+    love.graphics.setColor(unpack(assets.config.note.backgroundColor))
+    love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
 
     local middle = love.graphics.getHeight() / 3
     love.graphics.draw(self.gKeyImage, 0, middle - 5, 0, 0.8)
@@ -42,7 +48,6 @@ function PlayScene:draw()
     end
 
     PlayScene.super.draw(self)
-
     love.graphics.pop()
 
 end
@@ -71,7 +76,7 @@ end
 
 function PlayScene:tryPopNote(dt)
     local last = self.notes:last().x
-    if love.graphics.getWidth() - last >= assets.config.noteDistance then
+    if love.graphics.getWidth() - last >= assets.config.note.distance then
         local note = math.random(1,20)
         local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
         self.notes:push(ent)

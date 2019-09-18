@@ -18,9 +18,10 @@ function PlayState:new()
     self.progress = 0
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
-    self.notes:push(Scene.addentity(self, Note, {note = 0, x = love.graphics.getWidth() }))
-    self.key = self:addentity(FKey, {})
+    self.notes:push(Scene.addentity(self, Note, {note = math.random(1, 20), x = love.graphics.getWidth() }))
+    self.key = self:addentity(GKey, {})
     self.stopWatch = self:addentity(StopWatch, {x = 15, y = 15, size = 20})
+    self.points = 0
 end
 
 function PlayState:getBaseLine()
@@ -43,6 +44,7 @@ function PlayState:draw()
     love.graphics.setColor(0.1,0.1,0.3)
     love.graphics.line(assets.config.limitLine, 0, assets.config.limitLine, love.graphics.getHeight())
     love.graphics.setColor(0,0,0)
+    love.graphics.print(tostring(self.points) , 50, 10)
     for i = 1,5 do
         local ypos = middle + assets.config.lineHeight * i
         love.graphics.setLineWidth(1)
@@ -60,9 +62,10 @@ function PlayState:keypressed(key)
     local currentNote = self.notes:peek().note
     if self.key:isCorrect(currentNote, key) then
         self.notes:shift():dispose()
+        self.points = self.points + 1
         --gain a point, go to next
     else
-        self.stopWatch:update(3)
+        --self.stopWatch:update(3)
     end
 end
 

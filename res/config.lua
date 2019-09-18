@@ -7,6 +7,11 @@ return {
     limitLine = 100,
     maxProgressSpeed = 100,
     letterOrder = {'s', 'd', 'f', 'g', 'h', 'j', 'k'},
+    trialTime = 60,
+    timer = {
+        startColor = {0, 1, 0},
+        endColor = {1, 0 ,0}
+    },
     gKey = {
         height = lineHeight * 7,
         xOrigin = 32,

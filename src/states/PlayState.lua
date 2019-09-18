@@ -4,6 +4,7 @@ local Note = require('src.objects.note')
 local Queue = require('src.utils.queue')
 local GKey = require('src.objects.gkey')
 local FKey = require('src.objects.fkey')
+local StopWatch = require('src.objects.stopwatch')
 
 ---@class PlayState : Scene
 ---@field public entities table
@@ -19,6 +20,7 @@ function PlayState:new()
     self.notes = Queue()
     self.notes:push(Scene.addentity(self, Note, {note = 0, x = love.graphics.getWidth() }))
     self.key = self:addentity(FKey, {})
+    self.stopWatch = self:addentity(StopWatch, {x = 15, y = 15, size = 20})
 end
 
 function PlayState:getBaseLine()
@@ -52,6 +54,7 @@ function PlayState:draw()
 
 end
 
+
 function PlayState:keypressed(key)
     Scene.keypressed(self, key)
     local currentNote = self.notes:peek().note
@@ -59,7 +62,7 @@ function PlayState:keypressed(key)
         self.notes:shift():dispose()
         --gain a point, go to next
     else
-        --loose time, go next
+        self.stopWatch:update(3)
     end
 end
 

@@ -26,6 +26,7 @@ function Note:noteToPosition(note)
 end
 
 function Note:draw()
+    love.graphics.setColor(0, 0, 0)
     local scale = assets.config.note.height / self.image:getHeight()
     local xOrig = assets.config.note.xOrigin
     local yOrig = assets.config.note.yOrigin

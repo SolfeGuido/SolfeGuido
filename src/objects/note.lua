@@ -13,6 +13,8 @@ function Note:new(area, id, options)
     self.image = assets.images.note
 end
 
+--- The total width of the note
+---@return number
 function Note:width()
     local scale = assets.config.note.height / self.image:getHeight()
     return assets.config.note.padding * 2 + scale * self.image:getWidth()
@@ -47,6 +49,7 @@ function Note:draw()
     love.graphics.draw(self.image, self.x +  padding + actualWidth / 2, self.y, 0, scale, scale, xOrig, yOrig)
 end
 
+---@param dt number
 function Note:update(dt)
     self.x = self.x - self.area:getMove()
     if self.x < 0 then

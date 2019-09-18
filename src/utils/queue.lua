@@ -16,10 +16,12 @@ function Queue:shift()
     return ret
 end
 
+---@return number
 function Queue:size()
     return #self.data
 end
 
+---@return any|nil
 function Queue:last()
     return self.data[#self.data]
 end

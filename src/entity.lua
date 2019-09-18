@@ -18,11 +18,12 @@ function Entity:new(area, id, options)
     end
 end
 
+--- Deletes the entity from the area
 function Entity:dispose()
     self.area.entities[self.id] = nil
 end
 
-function Entity:update()
+function Entity:update(dt)
 
 end
 

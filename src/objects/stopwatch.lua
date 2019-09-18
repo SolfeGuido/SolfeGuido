@@ -5,6 +5,9 @@ local Entity = require('src.entity')
 local Draft = require('lib.draft')
 local draft = Draft()
 
+---@class StopWatch : Object
+---@field private color table
+---@field private time number
 local StopWatch = Entity:extend()
 
 function StopWatch:new(area, id, config)
@@ -14,6 +17,7 @@ function StopWatch:new(area, id, config)
     self.time = assets.config.trialTime
 end
 
+---@param dt number
 function StopWatch:update(dt)
     self.time = math.max(0, self.time - dt)
     if self.time == 0 and self.finishCallback then

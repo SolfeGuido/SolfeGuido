@@ -11,6 +11,8 @@ local StopWatch = require('src.objects.stopwatch')
 ---@field public timer Timer
 ---@field public noteImage any
 ---@field private notes Queue
+---@field private stopWatch StopWatch
+---@field private points number
 local PlayState = Scene:extend()
 
 function PlayState:new()
@@ -24,6 +26,7 @@ function PlayState:new()
     self.points = 0
 end
 
+---@return number
 function PlayState:getBaseLine()
     return love.graphics.getHeight() / 3 + 5 * assets.config.lineHeight
 end
@@ -56,7 +59,7 @@ function PlayState:draw()
 
 end
 
-
+---@param key string
 function PlayState:keypressed(key)
     Scene.keypressed(self, key)
     local currentNote = self.notes:peek().note
@@ -73,6 +76,8 @@ function PlayState:getMove()
     return self.progress
 end
 
+---Calculate the notes progression
+---@param dt number
 function PlayState:doProgress(dt)
     local first = self.notes:peek().x
     local normalProg = (dt * self.progressSpeed)
@@ -85,6 +90,8 @@ function PlayState:doProgress(dt)
     end
 end
 
+--- Pops a note if needed
+---@param dt number
 function PlayState:tryPopNote(dt)
     local last = self.notes:last().x
     if love.graphics.getWidth() - last >= assets.config.note.distance then
@@ -94,6 +101,8 @@ function PlayState:tryPopNote(dt)
     end
 end
 
+--- Updates this state
+---@param dt number
 function PlayState:update(dt)
     if self.paused then return end
     Scene.update(self, dt)

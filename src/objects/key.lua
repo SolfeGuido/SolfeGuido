@@ -1,6 +1,10 @@
 
 local Entity = require('src.entity')
 
+--- Class used to represent the different possible keys in a music sheet (F, G for now)
+---@class Key : Object
+---@field private config table
+---@field private image love.image
 local Key = Entity:extend()
 
 
@@ -19,6 +23,7 @@ end
 
 ---@param note number
 ---@param key string
+---@return boolean
 function Key:isCorrect(note, key)
     note = ((note + self.config.lowestNote) % 7) + 1
     return assets.config.letterOrder[note] == key

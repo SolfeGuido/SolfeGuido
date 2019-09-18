@@ -7,10 +7,12 @@ return {
     limitLine = 150,
     maxProgressSpeed = 100,
     letterOrder = {'s', 'd', 'f', 'g', 'h', 'j', 'k'},
+    itNotes = {'do', 'ré', 'mi', 'fa', 'sol', 'la', 'si'},
+    enNotes = {'c', 'd', 'e', 'f', 'g', 'a', 'b'},
     trialTime = 60,
     timer = {
-        startColor = {0, 1, 0},
-        endColor = {1, 0 ,0}
+        startColor = {0, 0.5, 0},
+        endColor = { 0.5, 0 ,0}
     },
     gKey = {
         height = lineHeight * 7,

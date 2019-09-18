@@ -66,9 +66,9 @@ function PlayState:keypressed(key)
     if self.key:isCorrect(currentNote.note, key) then
         self.notes:shift():correct()
         self.points = self.points + 1
-        --gain a point, go to next
     else
-        --self.stopWatch:update(3)
+        self.notes:shift():wrong()
+        self.stopWatch:update(assets.config.timeLoss)
     end
 end
 

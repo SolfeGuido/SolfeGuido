@@ -29,4 +29,12 @@ function Key:isCorrect(note, key)
     return assets.config.letterOrder[note] == key
 end
 
+---@param note number
+---@return string
+function Key:getNoteName(note)
+    --depending on user config, return 'a' style or 'do' style
+    note = ((note + self.config.lowestNote) % 7) + 1
+    return assets.config.itNotes[note]
+end
+
 return Key

@@ -10,6 +10,7 @@ return {
     itNotes = {'do', 'ré', 'mi', 'fa', 'sol', 'la', 'si'},
     enNotes = {'c', 'd', 'e', 'f', 'g', 'a', 'b'},
     trialTime = 60,
+    timeLoss = 2,
     timer = {
         startColor = {0, 0.5, 0},
         endColor = { 0.5, 0 ,0}

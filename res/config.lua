@@ -4,7 +4,7 @@ local lineHeight = 20
 return {
     lineSpace = 20,
     lineHeight = lineHeight,
-    limitLine = 100,
+    limitLine = 150,
     maxProgressSpeed = 100,
     letterOrder = {'s', 'd', 'f', 'g', 'h', 'j', 'k'},
     trialTime = 60,
@@ -37,6 +37,7 @@ return {
         image = 'note';
         padding = 10,
         distance = 50,
-        backgroundColor = {0.64, 0.77, 0.91, 0.91}
+        backgroundColor = {0.64, 0.77, 0.91, 0.91},
+        fadeAway = 1.5
     }
 }

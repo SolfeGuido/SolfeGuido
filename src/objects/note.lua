@@ -11,9 +11,8 @@ function Note:new(area, id, options)
     Note.super.new(self, area, id, options)
     self.y = self:noteToPosition(self.note)
     self.image = assets.images.note
-    self.show = true
-    self.color = {0, 0, 0}
-    self.showing = 5
+    self.color = {0, 0, 0, 1}
+    self.alpha = 1
 end
 
 --- The total width of the note
@@ -31,19 +30,14 @@ function Note:noteToPosition(note)
 end
 
 function Note:correct()
-    self.color = {0, 0.5, 0}
-    self.area.timer:every(0.3, function(arg, b)
-        self.show = not self.show
-        self.showing = self.showing - 1
-        if self.showing == 0 then
-            self:dispose()
-        end
-        return self.showing > 0
-    end, self.showing)
+    self.color = {0, 0.5, 0, 1}
+    local totalTime = assets.config.note.fadeAway
+    self.area.timer:tween(totalTime, self, {alpha = 0, color = {0, 0.5, 0, 0}})
+    self.area.timer:after(totalTime, function() self:dispose() end)
 end
 
 function Note:draw()
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(0, 0, 0, self.alpha)
     local scale = assets.config.note.height / self.image:getHeight()
     local xOrig = assets.config.note.xOrigin
     local yOrig = assets.config.note.yOrigin
@@ -58,8 +52,6 @@ function Note:draw()
             love.graphics.line(self.x, self:noteToPosition(i), self.x +  actualWidth + padding * 2, self:noteToPosition((i)))
         end
     end
-
-    if not self.show then return end
 
     if self.note >= 10 then scale = -scale end
     love.graphics.setColor(unpack(self.color))

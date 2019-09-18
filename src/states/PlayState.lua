@@ -62,9 +62,9 @@ end
 ---@param key string
 function PlayState:keypressed(key)
     Scene.keypressed(self, key)
-    local currentNote = self.notes:peek().note
-    if self.key:isCorrect(currentNote, key) then
-        self.notes:shift():dispose()
+    local currentNote = self.notes:peek()
+    if self.key:isCorrect(currentNote.note, key) then
+        self.notes:shift():correct()
         self.points = self.points + 1
         --gain a point, go to next
     else

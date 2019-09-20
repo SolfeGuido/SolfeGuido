@@ -22,6 +22,7 @@ function StopWatch:update(dt)
     self.time = math.max(0, self.time - dt)
     if self.time == 0 and self.finishCallback then
         self.finishCallback()
+        self.finishCallback = nil
     end
 end
 

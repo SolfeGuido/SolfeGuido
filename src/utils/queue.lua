@@ -16,6 +16,10 @@ function Queue:shift()
     return ret
 end
 
+function Queue:isEmpty()
+  return #self.data == 0
+end
+
 ---@return number
 function Queue:size()
     return #self.data

@@ -22,7 +22,9 @@ function PlayState:new()
     self.notes = Queue()
     self.notes:push(Scene.addentity(self, Note, {note = math.random(1, 20), x = love.graphics.getWidth() }))
     self.key = self:addentity(GKey, {})
-    self.stopWatch = self:addentity(StopWatch, {x = 15, y = 15, size = 20})
+    self.stopWatch = self:addentity(StopWatch, {x = 15, y = 15, size = 20, finishCallback = function()
+        self:finish()
+    end})
     self.points = 0
 end
 
@@ -31,6 +33,11 @@ function PlayState:getBaseLine()
     return love.graphics.getHeight() / 3 + 5 * assets.config.lineHeight
 end
 
+function PlayState:finish()
+    while not self.notes:isEmpty() do
+        self.notes:shift():dispose()
+    end 
+end
 
 function PlayState:draw()
     love.graphics.push()
@@ -38,10 +45,12 @@ function PlayState:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
-        local width = self.notes:peek():width()
-    local x = self.notes:peek().x
-    love.graphics.setColor(unpack(assets.config.note.backgroundColor))
-    love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
+    local width = Note.width()
+    if not self.notes:isEmpty() then
+        local x = self.notes:peek().x
+        love.graphics.setColor(unpack(assets.config.note.backgroundColor))
+        love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
+    end
 
     local middle = love.graphics.getHeight() / 3
     love.graphics.setColor(0.1,0.1,0.3)
@@ -62,6 +71,7 @@ end
 ---@param key string
 function PlayState:keypressed(key)
     Scene.keypressed(self, key)
+    if self.notes:isEmpty() then return end
     local currentNote = self.notes:peek()
     if self.key:isCorrect(currentNote.note, key) then
         self.notes:shift():correct()
@@ -106,6 +116,7 @@ end
 function PlayState:update(dt)
     if self.paused then return end
     Scene.update(self, dt)
+    if self.notes:isEmpty() then return end
     self:doProgress(dt)
     self:tryPopNote(dt)
 end

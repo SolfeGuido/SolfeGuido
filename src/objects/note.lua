@@ -15,11 +15,12 @@ function Note:new(area, id, options)
     self.name = nil
 end
 
---- The total width of the note
+
+--- The total width of a note
 ---@return number
-function Note:width()
-    local scale = assets.config.note.height / self.image:getHeight()
-    return assets.config.note.padding * 2 + scale * self.image:getWidth()
+function Note.width()
+    local scale = assets.config.note.height / assets.images.note:getHeight()
+    return assets.config.note.padding * 2 + scale * assets.images.note:getWidth()
 end
 
 ---@param note number

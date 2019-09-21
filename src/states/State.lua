@@ -3,7 +3,7 @@ local Class = require('lib.class')
 local Timer = require('lib.timer')
 local uuidGenerator = require('src.math')
 
----@class Scene
+---@class State
 ---@field public entities table
 ---@field public timer Timer
 local State = Class:extend()
@@ -34,14 +34,12 @@ function State:addentity(Type, options)
     return self.entities[objId]
 end
 
----@param self Scene
 function State:draw()
     for _,v in pairs(self.entities) do
         v:draw()
     end
 end
 
----@param self Scene
 ---@param dt number
 function State:update(dt)
     if self.paused then return end

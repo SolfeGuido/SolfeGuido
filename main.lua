@@ -8,9 +8,10 @@ local ScreenManager = require('lib.ScreenManager')
 function love.load()
     math.randomseed(os.time())
     local screens = {
-        play = require('src.states.PlayState')
+        play = require('src.states.PlayState'),
+        menu = require('src.states.MenuState')
     }
-    ScreenManager.init(screens, 'play')
+    ScreenManager.init(screens, 'menu')
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200)
     memoryGraph = debugGraph:new('mem', love.graphics.getWidth() - 200, 50, 200)
 end
@@ -22,7 +23,7 @@ function love.draw()
 end
 
 function love.update(dt)
-    require('lib.lurker').update()
+    --require('lib.lurker').update()
     fpsGraph:update(dt)
     memoryGraph:update(dt)
     ScreenManager.update(dt)

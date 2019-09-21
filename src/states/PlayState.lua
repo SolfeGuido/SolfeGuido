@@ -36,14 +36,15 @@ end
 function PlayState:finish()
     while not self.notes:isEmpty() do
         self.notes:shift():dispose()
-    end 
+    end
+    love.window.showMessageBox("Finished", "Your score : " .. tostring(self.points))
+    -- go to menu
 end
 
 function PlayState:draw()
     love.graphics.push()
 
-    love.graphics.setColor(1,1,1)
-    love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.setBackgroundColor(1,1,1)
 
     local width = Note.width()
     if not self.notes:isEmpty() then

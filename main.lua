@@ -32,3 +32,7 @@ end
 function love.keypressed(key)
     ScreenManager.keypressed(key)
 end
+
+function love.mousemoved(x,y)
+    ScreenManager.mousemoved(x, y)
+end

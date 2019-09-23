@@ -22,8 +22,21 @@ end
 
 function MenuState:gotoState(statename)
     print("changing state")
-    --self.timer:tween
-    ScreenManager.switch('PlayState')
+    local ents = {}
+    for _,v in pairs(self.entities) do
+        ents[#ents+1] = v
+    end
+    table.sort(ents, function(a,b)
+        return a.y > b.y
+    end)
+
+    local elements = {}
+    for _,v in pairs(ents) do
+        elements[#elements+1] = {element = v, xTarget = v.text and -v.text:getWidth() or -20 }
+    end
+    self:slideOut(elements, function()
+        ScreenManager.switch('PlayState')
+    end)
 end
 
 function MenuState:init(...)

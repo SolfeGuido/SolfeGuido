@@ -1,0 +1,25 @@
+{
+	"LoveState": {
+		"prefix": "LoveEntity",
+		"body": [
+			"local Entity = require('src.entity')",
+			"",
+			"---@class $0 : Entity",
+			"local $0 = Entity:extend()",
+			"",
+			"function $0:new(area,id, options)",
+			"\tEntity.new(self, area, id, options)",
+			"end",
+			"",
+			"function $0:draw()",
+			"end",
+			"",
+			"function $0:update(dt)",
+			"end",
+			"",
+			"return $0"
+		],
+		"description": "Creating an entity in for Solfaread",
+		"scope": "lua"
+	}
+}

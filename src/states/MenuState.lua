@@ -1,24 +1,29 @@
 
 local State = require('src.states.State')
 local Button = require('src.objects.button')
+local Title = require('src.objects.Title')
 local Selector = require('src.objects.selector')
+local ScreenManager = require('lib.ScreenManager')
 
 ---@class MenuState : State
 local MenuState = State:extend()
 
 function MenuState:new()
     MenuState.super.new(self)
-    self.title = love.graphics.newText(assets.MarckScript(40), "Menu")
-    self.xTitle = -self.title:getWidth()
-    self.titleColor = {0,0,0,0}
     self.buttons = {}
     self.selectedButton = nil
-    self.selector = self:addentity(Selector, {x = 15, y = 0, visible = false})
+    self.selector = self:addentity(Selector, {x = 15, y = 0})
 end
 
 function MenuState:setSelectedButton(btn)
     self.selectedButton = btn
     self.selector.y = btn.y
+end
+
+function MenuState:gotoState(statename)
+    print("changing state")
+    --self.timer:tween
+    ScreenManager.switch('PlayState')
 end
 
 function MenuState:init(...)
@@ -30,29 +35,64 @@ function MenuState:init(...)
         {'Quit', function() love.event.quit() end}
     }
 
+    local titleText = love.graphics.newText(assets.MarckScript(40), "Menu")
+
+    local elements = {
+        {
+            element = self:addentity(Title, {
+                text = titleText,
+                color = {0, 0, 0, 0},
+                y = 0,
+                x = -titleText:getWidth()
+            }),
+            xTarget = 30
+        }
+    }
+
     local btnFont = assets.MarckScript(assets.config.lineHeight)
     local middle = love.graphics.getHeight() / 3
+    local btn = nil
+    for _,v in pairs(buttons) do
+        btn, middle = self:createButton(middle, btnFont, unpack(v))
+        elements[#elements+1] = {element = btn, xTarget = 30}
+    end
 
-    self.timer:after(1, function()
-        self.timer:tween(1, self, {xTitle = 30, titleColor = {0,0,0, 1}}, 'out-expo')
-        local size = #buttons
-        self.timer:every(0.1, function()
-            local data = buttons[1]
-            table.remove(buttons, 1)
-            local text = love.graphics.newText(btnFont, data[1])
-            local btn = self:addentity(Button, {x = -text:getWidth(), y = middle, text = text})
-            self.buttons[#self.buttons+1] = btn
-            if not self.selectedButton then self:setSelectedButton(btn) end
-
-            middle = middle + assets.config.lineHeight
-            self.timer:tween(1, btn, {x = 30, color = {0, 0, 0, 1}}, 'out-expo', function() self.selector.visible = true end)
-        end, size)
+    self:slideIn(elements, function()
+        self.selector:resetAlpha()
     end)
+end
+
+function MenuState:createButton(middle, btnFont, butonText, callback)
+    local cb = callback
+    if type(cb) == 'string' then
+        cb = function() self:gotoState(callback) end
+    end
+    assert(type(cb) == 'function', 'Call back must be function or string')
+
+
+    local text = love.graphics.newText(btnFont, butonText)
+    local btn = self:addentity(Button, {x = -text:getWidth(), y = middle, text = text, callback = cb})
+    self.buttons[#self.buttons+1] = btn
+    if not self.selectedButton then self:setSelectedButton(btn) end
+
+    return btn, assets.config.lineHeight + middle
 end
 
 function MenuState:mousemoved(x,y)
     for k,v in pairs(self.buttons) do
         v:mousemoved(x,y)
+    end
+end
+
+function MenuState:mousepressed(x, y, button)
+    for k,v in pairs(self.buttons) do
+        v:mousepressed(x, y, button)
+    end
+end
+
+function MenuState:mousereleased(x, y, button)
+    for k,v in pairs(self.buttons) do
+        v:mousereleased(x, y, button)
     end
 end
 
@@ -68,9 +108,6 @@ function MenuState:draw()
         local ypos = middle + assets.config.lineHeight * i
         love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
     end
-
-    love.graphics.setColor(unpack(self.titleColor))
-    love.graphics.draw(self.title, self.xTitle, 0)
 end
 
 function MenuState:update(dt)

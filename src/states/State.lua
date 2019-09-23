@@ -55,4 +55,39 @@ function State:keypressed(key)
     end
 end
 
+---@param elements table
+---@param callback function
+function State:slideIn(elements, callback)
+    local size = #elements
+    self.timer:every(0.1, function()
+        local data = elements[1]
+        table.remove(elements, 1)
+        self:addElement(data)
+        if #elements == 0 and callback then
+            callback()
+        end
+    end, size)
+end
+
+function State:addElement(data)
+    self.timer:tween(1, data.element, {x = data.xTarget, color = {0, 0, 0, 1}}, 'out-expo')
+
+end
+
+function State:mousemoved(x, y)
+
+end
+
+function State:mousepressed(x, y, button)
+
+end
+
+function State:mousereleased(x, y, button)
+
+end
+
+function State:close()
+
+end
+
 return State

@@ -8,10 +8,10 @@ local ScreenManager = require('lib.ScreenManager')
 function love.load()
     math.randomseed(os.time())
     local screens = {
-        play = require('src.states.PlayState'),
-        menu = require('src.states.MenuState')
+        PlayState = require('src.states.PlayState'),
+        MenuState = require('src.states.MenuState')
     }
-    ScreenManager.init(screens, 'menu')
+    ScreenManager.init(screens, 'MenuState')
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200)
     memoryGraph = debugGraph:new('mem', love.graphics.getWidth() - 200, 50, 200)
 end
@@ -35,4 +35,12 @@ end
 
 function love.mousemoved(x,y)
     ScreenManager.mousemoved(x, y)
+end
+
+function love.mousepressed(x, y, button)
+    ScreenManager.mousepressed(x, y, button)
+end
+
+function love.mousereleased(x, y, button)
+    ScreenManager.mousereleased(x, y, button)
 end

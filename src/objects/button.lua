@@ -42,7 +42,7 @@ function Button:mousereleased(x, y, button)
 end
 
 function Button:draw()
-    love.graphics.setColor(unpack(self.color))
+    love.graphics.setColor(self.color)
     love.graphics.draw(self.text, self.x + 5, self.y)
 end
 

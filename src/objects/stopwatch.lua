@@ -28,7 +28,7 @@ end
 
 function StopWatch:draw()
     love.graphics.push()
-    love.graphics.setColor(unpack(self.color))
+    love.graphics.setColor(self.color)
     love.graphics.setLineWidth(2)
     draft:ellipticArc(self.x, self.y,  self.size, self.size, math.rad(360 * (self.time / assets.config.trialTime)), -math.pi / 2 )
     love.graphics.pop()

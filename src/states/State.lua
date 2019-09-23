@@ -55,31 +55,21 @@ function State:keypressed(key)
     end
 end
 
----@param elements table
----@param callback function
-function State:slideIn(elements, callback)
-    self:doSlide(elements, {0, 0, 0, 1}, callback)
-end
-
-function State:slideOut(elements, callback)
-    self:doSlide(elements, {0, 0, 0, 0}, callback)
-end
-
-function State:doSlide(elements, colorTarget, callback)
+function State:transition(elements, callback)
     local size = #elements
     self.timer:every(0.1, function()
         local data = elements[1]
         table.remove(elements, 1)
         if #elements == 0 and callback then
-            self:addElement(data, colorTarget, callback)
+            self:addElement(data, callback)
         else
-            self:addElement(data, colorTarget)
+            self:addElement(data)
         end
     end, size)
 end
 
-function State:addElement(data, colorTarget, callback)
-    self.timer:tween(1, data.element, {x = data.xTarget, color = colorTarget}, 'out-expo', callback)
+function State:addElement(data, callback)
+    self.timer:tween(1, data.element, data.target, 'out-expo', callback)
 
 end
 

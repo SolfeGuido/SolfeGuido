@@ -32,9 +32,9 @@ function MenuState:gotoState(statename)
 
     local elements = {}
     for _,v in pairs(ents) do
-        elements[#elements+1] = {element = v, xTarget = v.text and -v.text:getWidth() or -20 }
+        elements[#elements+1] = {element = v, target = {x = v.text and -v.text:getWidth() or -20, color = {0, 0, 0, 0}}}
     end
-    self:slideOut(elements, function()
+    self:transition(elements, function()
         ScreenManager.switch('PlayState')
     end)
 end
@@ -58,7 +58,7 @@ function MenuState:init(...)
                 y = 0,
                 x = -titleText:getWidth()
             }),
-            xTarget = 30
+            target = {x = 30, color = {0,0,0,1}}
         }
     }
 
@@ -67,10 +67,10 @@ function MenuState:init(...)
     local btn = nil
     for _,v in pairs(buttons) do
         btn, middle = self:createButton(middle, btnFont, unpack(v))
-        elements[#elements+1] = {element = btn, xTarget = 30}
+        elements[#elements+1] = {element = btn, target = {x = 30, color = {0,0,0,1}}}
     end
 
-    self:slideIn(elements, function()
+    self:transition(elements, function()
         self.selector:resetAlpha()
     end)
 end

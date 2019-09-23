@@ -9,7 +9,7 @@ function Title:new(area, id, options)
 end
 
 function Title:draw()
-    love.graphics.setColor(unpack(self.color))
+    love.graphics.setColor(self.color)
     love.graphics.draw(self.text, self.x, self.y)
 end
 

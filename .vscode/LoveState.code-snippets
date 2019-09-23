@@ -13,9 +13,11 @@
 			"end",
 			"",
 			"function $0:draw()",
+			"\tState.draw(self)",
 			"end",
 			"",
 			"function $0:update(dt)",
+			"\tState.update(self, dt)",
 			"end",
 			"",
 			"return $0"

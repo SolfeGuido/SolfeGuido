@@ -2,6 +2,10 @@
 local lineHeight = 20
 
 return {
+    color = {
+        black = {0, 0, 0, 1},
+        transparent = {0, 0, 0, 0}
+    },
     lineSpace = 20,
     lineHeight = lineHeight,
     limitLine = 150,
@@ -11,16 +15,28 @@ return {
     enNotes = {'c', 'd', 'e', 'f', 'g', 'a', 'b'},
     trialTime = 60,
     timeLoss = 2,
-    timer = {
+    stopWatch = {
+        x = 15,
+        y = 15,
+        size = 20,
         startColor = {0, 0.5, 0},
         endColor = { 0.5, 0 ,0}
+    },
+    score = {
+        x = 50,
+        y = 5,
+        fontSize = 25
+    },
+    transition = {
+        tween = 0.8,
+        spacing = 0.08
     },
     gKey = {
         height = lineHeight * 7,
         xOrigin = 32,
         yOrigin = 132,
-        xPosition = 40,
-        yPosition = 0,
+        x = 40,
+        y = 0,
         image = 'GKey',
         lowestNote = 3
     },
@@ -28,8 +44,8 @@ return {
         height = lineHeight * 3,
         xOrigin = 21,
         yOrigin = 23,
-        xPosition = 30,
-        yPosition = lineHeight * 3,
+        x = 30,
+        y = lineHeight * 3,
         image = 'FKey',
         lowestNote = 5
     },

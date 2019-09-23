@@ -12,7 +12,6 @@ function State:new()
     State.super.new(self)
     self.entities = {}
     self.timer = Timer.new()
-    self.paused = false
     self.active = true
 end
 
@@ -42,7 +41,7 @@ end
 
 ---@param dt number
 function State:update(dt)
-    if self.paused then return end
+    if not self.active then return end
     self.timer:update(dt)
     for _,v in pairs(self.entities) do
         v:update(dt)
@@ -50,14 +49,11 @@ function State:update(dt)
 end
 
 function State:keypressed(key)
-    if key == "space" then
-        self.paused = not self.paused
-    end
 end
 
 function State:transition(elements, callback)
     local size = #elements
-    self.timer:every(0.1, function()
+    self.timer:every(assets.config.transition.spacing, function()
         local data = elements[1]
         table.remove(elements, 1)
         if #elements == 0 and callback then
@@ -69,7 +65,7 @@ function State:transition(elements, callback)
 end
 
 function State:addElement(data, callback)
-    self.timer:tween(1, data.element, data.target, 'out-expo', callback)
+    self.timer:tween(assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
 
 end
 
@@ -86,7 +82,7 @@ function State:mousereleased(x, y, button)
 end
 
 function State:close()
-
+    self.entities = {}
 end
 
 return State

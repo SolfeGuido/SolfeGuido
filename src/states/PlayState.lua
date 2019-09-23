@@ -1,12 +1,21 @@
 
+-- LIBS
+local ScreenManager = require('lib.ScreenManager')
+
+-- Parent
 local Scene = require('src.states.State')
+
+-- Entities
 local Note = require('src.objects.note')
 local Queue = require('src.utils.queue')
 local GKey = require('src.objects.gkey')
 local FKey = require('src.objects.fkey')
 local StopWatch = require('src.objects.stopwatch')
+local Line = require('src.objects.Line')
+local Score = require('src.objects.Score')
 
----@class PlayState : Scene
+
+---@class PlayState : State
 ---@field public entities table
 ---@field public timer Timer
 ---@field public noteImage any
@@ -20,16 +29,49 @@ function PlayState:new()
     self.progress = 0
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
-    self.notes:push(Scene.addentity(self, Note, {note = math.random(1, 20), x = love.graphics.getWidth() }))
     self.key = self:addentity(GKey, {})
-    self.stopWatch = self:addentity(StopWatch, {x = 15, y = 15, size = 20, finishCallback = function()
-        self:finish()
-    end})
-    self.points = 0
+    self.stopWatch = self:addentity(StopWatch, {
+        x = -assets.config.stopWatch.size,
+        y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,
+        started = false,
+        finishCallback = function()
+            self:finish()
+        end})
+
+    local scoreText = love.graphics.newText(assets.MarckScript(assets.config.score.fontSize),"0")
+    self.score = self:addentity(Score, {
+        x = -scoreText:getWidth(),
+        y = assets.config.score.y,
+        points = 0,
+        text =  scoreText,
+        color = assets.config.color.transparent
+    })
 end
 
 function PlayState:init(...)
-    
+    local line = self:addentity(Line, {
+            x = -1,
+            y = 0,
+            height = love.graphics.getHeight(),
+            color = assets.config.color.transparent,
+            lineWidth = 0
+    })
+    local elements = {
+        {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}},
+        {element = self.key, target = {x = self.key.keyData.x, color = assets.config.color.black}},
+        {element = line, target = {x = assets.config.limitLine, color = assets.config.color.black, lineWidth = 1}},
+        {element = self.score, target = {x = assets.config.score.x, color = assets.config.color.black}}
+    }
+
+    self:transition(elements, function()
+        self.notes:push(Scene.addentity(self, Note, {note = math.random(1, 20), x = love.graphics.getWidth() }))
+        self.stopWatch:start()
+    end)
+end
+
+function PlayState:close()
+    Scene.close(self)
+    self.notes = nil
 end
 
 ---@return number
@@ -41,7 +83,8 @@ function PlayState:finish()
     while not self.notes:isEmpty() do
         self.notes:shift():dispose()
     end
-    love.window.showMessageBox("Finished", "Your score : " .. tostring(self.points))
+    -- Push EndState
+    --love.window.showMessageBox("Finished", "Your score : " .. tostring(self.points))
     -- go to menu
 end
 
@@ -58,10 +101,7 @@ function PlayState:draw()
     end
 
     local middle = love.graphics.getHeight() / 3
-    love.graphics.setColor(0.1,0.1,0.3)
-    love.graphics.line(assets.config.limitLine, 0, assets.config.limitLine, love.graphics.getHeight())
-    love.graphics.setColor(0,0,0)
-    love.graphics.print(tostring(self.points) , 50, 10)
+    love.graphics.setColor(assets.config.color.black)
     for i = 1,5 do
         local ypos = middle + assets.config.lineHeight * i
         love.graphics.setLineWidth(1)
@@ -76,11 +116,16 @@ end
 ---@param key string
 function PlayState:keypressed(key)
     Scene.keypressed(self, key)
+    if key == "escape" then
+        ScreenManager.push('PauseState')
+        return
+    end
+
     if self.notes:isEmpty() then return end
     local currentNote = self.notes:peek()
     if self.key:isCorrect(currentNote.note, key) then
         self.notes:shift():correct()
-        self.points = self.points + 1
+        self.score:gainPoint()
     else
         self.notes:shift():wrong()
         self.stopWatch:update(assets.config.timeLoss)
@@ -119,7 +164,7 @@ end
 --- Updates this state
 ---@param dt number
 function PlayState:update(dt)
-    if self.paused then return end
+    if not self.active then return end
     Scene.update(self, dt)
     if self.notes:isEmpty() then return end
     self:doProgress(dt)

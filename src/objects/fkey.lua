@@ -5,8 +5,8 @@ local Key = require('src.objects.key')
 --- F key specifications
 local FKey =  Key:extend()
 
-function FKey:new(area, id)
-    Key.new(self, area, id, assets.config.fKey)
+function FKey:new(area, id, config)
+    Key.new(self, area, id, config, assets.config.fKey)
 end
 
 

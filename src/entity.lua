@@ -2,8 +2,8 @@
 
 local Class = require('lib.class')
 
----@class Object
----@field public area Scene
+---@class Entity
+---@field public area State
 ---@field public id string
 ---@field public x number
 ---@field public y number

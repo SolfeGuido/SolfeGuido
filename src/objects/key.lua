@@ -8,24 +8,28 @@ local Entity = require('src.entity')
 local Key = Entity:extend()
 
 
-function Key:new(area, id, config)
+function Key:new(area, id, config, keyData)
     Entity.new(self, area, id, config)
-    self.config = config
-    self.image = assets.images[self.config.image]
+    self.keyData = keyData
+    self.image = assets.images[self.keyData.image]
+    self.color = {0, 0, 0, 0}
+    self.x = -self.image:getWidth()
+    self.y = self.keyData.y
 end
 
 function Key:draw()
     local imgHeigh = self.image:getHeight()
-    local scale = self.config.height / imgHeigh
+    local scale = self.keyData.height / imgHeigh
     local base = self.area:getBaseLine()
-    love.graphics.draw(self.image, self.xPosition, base - self.yPosition, 0 , scale , scale, self.xOrigin, self.yOrigin)
+    love.graphics.setColor(self.color)
+    love.graphics.draw(self.image, self.x, base - self.y, 0 , scale , scale, self.keyData.xOrigin, self.keyData.yOrigin)
 end
 
 ---@param note number
 ---@param key string
 ---@return boolean
 function Key:isCorrect(note, key)
-    note = ((note + self.config.lowestNote) % 7) + 1
+    note = ((note + self.keyData.lowestNote) % 7) + 1
     return assets.config.letterOrder[note] == key
 end
 
@@ -33,7 +37,7 @@ end
 ---@return string
 function Key:getNoteName(note)
     --depending on user config, return 'a' style or 'do' style
-    note = ((note + self.config.lowestNote) % 7) + 1
+    note = ((note + self.keyData.lowestNote) % 7) + 1
     return assets.config.itNotes[note]
 end
 

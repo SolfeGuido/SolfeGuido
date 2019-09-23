@@ -12,13 +12,18 @@ local StopWatch = Entity:extend()
 
 function StopWatch:new(area, id, config)
     Entity.new(self, area, id, config)
-    self.color = assets.config.timer.startColor
-    self.area.timer:tween(assets.config.trialTime, self, {color = assets.config.timer.endColor})
+    self.color = assets.config.stopWatch.startColor
     self.time = assets.config.trialTime
+end
+
+function StopWatch:start()
+    self.started = true
+    self.area.timer:tween(assets.config.trialTime, self, {color = assets.config.stopWatch.endColor})
 end
 
 ---@param dt number
 function StopWatch:update(dt)
+    if not self.started then return end
     self.time = math.max(0, self.time - dt)
     if self.time == 0 and self.finishCallback then
         self.finishCallback()

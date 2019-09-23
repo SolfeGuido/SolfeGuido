@@ -9,7 +9,8 @@ function love.load()
     math.randomseed(os.time())
     local screens = {
         PlayState = require('src.states.PlayState'),
-        MenuState = require('src.states.MenuState')
+        MenuState = require('src.states.MenuState'),
+        PauseState = require('src.states.PauseState')
     }
     ScreenManager.init(screens, 'MenuState')
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200)

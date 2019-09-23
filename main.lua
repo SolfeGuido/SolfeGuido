@@ -10,7 +10,11 @@ function love.load()
     local screens = {
         PlayState = require('src.states.PlayState'),
         MenuState = require('src.states.MenuState'),
-        PauseState = require('src.states.PauseState')
+        PauseState = require('src.states.PauseState'),
+        OptionsState  = require('src.states.OptionsState'),
+        ScoreState = require('src.states.ScoreState'),
+        CreditsState = require('src.states.CreditsState'),
+        EndGameState = require('src.states.EndGameState')
     }
     ScreenManager.init(screens, 'MenuState')
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200)
@@ -19,6 +23,7 @@ end
 
 function love.draw()
     ScreenManager.draw()
+    love.graphics.setColor(assets.config.color.black)
     fpsGraph:draw()
     memoryGraph:draw()
 end

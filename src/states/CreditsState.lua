@@ -1,4 +1,5 @@
 local State = require('src.states.State')
+local Graphics = require('src.Graphics')
 
 ---@class CreditsState : State
 local CreditsState = State:extend()
@@ -10,6 +11,7 @@ end
 
 function CreditsState:draw()
     State.draw(self)
+    Graphics.drawMusicBars()
 end
 
 function CreditsState:update(dt)

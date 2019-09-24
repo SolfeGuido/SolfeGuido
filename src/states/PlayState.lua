@@ -1,6 +1,7 @@
 
 -- LIBS
 local ScreenManager = require('lib.ScreenManager')
+local Graphics = require('src.Graphics')
 
 -- Parent
 local Scene = require('src.states.State')
@@ -100,13 +101,7 @@ function PlayState:draw()
         love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
     end
 
-    local middle = love.graphics.getHeight() / 3
-    love.graphics.setColor(assets.config.color.black)
-    for i = 1,5 do
-        local ypos = middle + assets.config.lineHeight * i
-        love.graphics.setLineWidth(1)
-        love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
-    end
+    Graphics.drawMusicBars()
 
     PlayState.super.draw(self)
     love.graphics.pop()

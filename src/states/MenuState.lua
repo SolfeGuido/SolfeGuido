@@ -4,6 +4,7 @@ local Button = require('src.objects.button')
 local Title = require('src.objects.Title')
 local Selector = require('src.objects.selector')
 local ScreenManager = require('lib.ScreenManager')
+local Graphics = require('src.Graphics')
 
 ---@class MenuState : State
 local MenuState = State:extend()
@@ -21,7 +22,6 @@ function MenuState:setSelectedButton(btn)
 end
 
 function MenuState:gotoState(statename)
-    print("changing state")
     local ents = {}
     for _,v in pairs(self.entities) do
         ents[#ents+1] = v
@@ -35,7 +35,7 @@ function MenuState:gotoState(statename)
         elements[#elements+1] = {element = v, target = {x = v.text and -v.text:getWidth() or -20, color = {0, 0, 0, 0}}}
     end
     self:transition(elements, function()
-        ScreenManager.switch('PlayState')
+        ScreenManager.switch(statename)
     end)
 end
 
@@ -112,15 +112,7 @@ end
 function MenuState:draw()
     MenuState.super.draw(self)
     love.graphics.setBackgroundColor(1,1,1)
-
-    local middle = love.graphics.getHeight() / 3
-
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(0, 0, 0, 1)
-    for i = 1,5 do
-        local ypos = middle + assets.config.lineHeight * i
-        love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
-    end
+    Graphics.drawMusicBars()
 end
 
 function MenuState:update(dt)

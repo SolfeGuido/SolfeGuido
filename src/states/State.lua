@@ -1,7 +1,7 @@
 
 local Class = require('lib.class')
 local Timer = require('lib.timer')
-local uuidGenerator = require('src.math')
+local ScreenManager = require('lib.ScreenManager')
 
 ---@class State
 ---@field public entities table
@@ -88,6 +88,28 @@ end
 
 function State:close()
     self.entities = {}
+end
+
+function State:switchState(statename)
+    self:slideEntitiesOut(function()
+        ScreenManager.switch(statename)
+    end)
+end
+
+function State:slideEntitiesOut(callback)
+    local ents = {}
+    for _,v in pairs(self.entities) do
+        ents[#ents+1] = v
+    end
+    table.sort(ents, function(a,b)
+        return a.y > b.y
+    end)
+
+    local elements = {}
+    for _,v in pairs(ents) do
+        elements[#elements+1] = {element = v, target = {x = v.text and -v.text:getWidth() or -20, color = {0, 0, 0, 0}}}
+    end
+    self:transition(elements, callback)
 end
 
 return State

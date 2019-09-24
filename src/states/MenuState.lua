@@ -20,24 +20,6 @@ function MenuState:setSelectedButton(btn)
     self.selector.y = btn.y
 end
 
-function MenuState:gotoState(statename)
-    local ents = {}
-    for _,v in pairs(self.entities) do
-        ents[#ents+1] = v
-    end
-    table.sort(ents, function(a,b)
-        return a.y > b.y
-    end)
-
-    local elements = {}
-    for _,v in pairs(ents) do
-        elements[#elements+1] = {element = v, target = {x = v.text and -v.text:getWidth() or -20, color = {0, 0, 0, 0}}}
-    end
-    self:transition(elements, function()
-        ScreenManager.switch(statename)
-    end)
-end
-
 function MenuState:init(...)
     local buttons = {
         {'Play', 'PlayState'},
@@ -53,11 +35,11 @@ function MenuState:init(...)
         {
             element = self:addentity(Title, {
                 text = titleText,
-                color = {0, 0, 0, 0},
+                color = assets.config.color.transparent,
                 y = 0,
                 x = -titleText:getWidth()
             }),
-            target = {x = 30, color = {0,0,0,1}}
+            target = {x = 30, color = assets.config.color.black}
         }
     }
 
@@ -66,7 +48,7 @@ function MenuState:init(...)
     local btn = nil
     for _,v in pairs(buttons) do
         btn, middle = self:createButton(middle, btnFont, unpack(v))
-        elements[#elements+1] = {element = btn, target = {x = 30, color = {0,0,0,1}}}
+        elements[#elements+1] = {element = btn, target = {x = 30, color = assets.config.color.black}}
     end
 
     self:transition(elements, function()
@@ -77,7 +59,7 @@ end
 function MenuState:createButton(middle, btnFont, butonText, callback)
     local cb = callback
     if type(cb) == 'string' then
-        cb = function() self:gotoState(callback) end
+        cb = function() self:switchState(callback) end
     end
     assert(type(cb) == 'function', 'Call back must be function or string')
 

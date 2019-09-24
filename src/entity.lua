@@ -25,7 +25,7 @@ function Entity:dispose()
 end
 
 function Entity:update(dt)
-
 end
+
 
 return Entity

@@ -11,7 +11,6 @@ local MenuState = State:extend()
 
 function MenuState:new()
     MenuState.super.new(self)
-    self.buttons = {}
     self.selectedButton = nil
     self.selector = self:addentity(Selector, {x = 15, y = 0})
 end
@@ -85,29 +84,11 @@ function MenuState:createButton(middle, btnFont, butonText, callback)
 
     local text = love.graphics.newText(btnFont, butonText)
     local btn = self:addentity(Button, {x = -text:getWidth(), y = middle, text = text, callback = cb})
-    self.buttons[#self.buttons+1] = btn
     if not self.selectedButton then self:setSelectedButton(btn) end
 
     return btn, assets.config.lineHeight + middle
 end
 
-function MenuState:mousemoved(x,y)
-    for k,v in pairs(self.buttons) do
-        v:mousemoved(x,y)
-    end
-end
-
-function MenuState:mousepressed(x, y, button)
-    for k,v in pairs(self.buttons) do
-        v:mousepressed(x, y, button)
-    end
-end
-
-function MenuState:mousereleased(x, y, button)
-    for k,v in pairs(self.buttons) do
-        v:mousereleased(x, y, button)
-    end
-end
 
 function MenuState:draw()
     MenuState.super.draw(self)

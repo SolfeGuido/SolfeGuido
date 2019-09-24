@@ -66,19 +66,24 @@ end
 
 function State:addElement(data, callback)
     self.timer:tween(assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
-
 end
 
 function State:mousemoved(x, y)
-
+    self:callOnEntities('mousemoved', x, y)
 end
 
 function State:mousepressed(x, y, button)
-
+    self:callOnEntities('mousepressed', x, y, button)
 end
 
 function State:mousereleased(x, y, button)
+    self:callOnEntities('mousereleased', x, y, button)
+end
 
+function State:callOnEntities(method, ...)
+    for _,v in pairs(self.entities) do
+        if v[method] then v[method](v, ...) end
+    end
 end
 
 function State:close()

@@ -2,11 +2,11 @@
 local Entity = require('src.entity')
 local Rectangle = require('src.utils.Rectangle')
 
----@class Button
+---@class Button : Entity
 local Button = Entity:extend()
 
-function Button:new(area, id, config)
-    Entity.new(self, area, id, config)
+function Button:new(area, config)
+    Entity.new(self, area, config)
     self.color = {0,0,0,0}
     self.selected = false
     self.pressed = false

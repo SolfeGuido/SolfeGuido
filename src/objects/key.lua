@@ -2,14 +2,14 @@
 local Entity = require('src.entity')
 
 --- Class used to represent the different possible keys in a music sheet (F, G for now)
----@class Key : Object
+---@class Key : Entity
 ---@field private config table
----@field private image love.image
+---@field private image any
 local Key = Entity:extend()
 
 
-function Key:new(area, id, config, keyData)
-    Entity.new(self, area, id, config)
+function Key:new(area, config, keyData)
+    Entity.new(self, area, config)
     self.keyData = keyData
     self.image = assets.images[self.keyData.image]
     self.color = {0, 0, 0, 0}

@@ -3,8 +3,8 @@ local Entity = require('src.entity')
 ---@class Line : Entity
 local Line = Entity:extend()
 
-function Line:new(area,id, options)
-    Entity.new(self, area, id, options)
+function Line:new(area, options)
+    Entity.new(self, area, options)
 end
 
 function Line:draw()

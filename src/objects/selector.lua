@@ -4,8 +4,8 @@ local Entity = require('src.entity')
 
 local Selector = Entity:extend()
 
-function Selector:new(area, id, options)
-    Entity.new(self, area, id, options)
+function Selector:new(area, options)
+    Entity.new(self, area, options)
     self.image = assets.images.whole
     self.color = {0, 0, 0, 0}
     self.scale = (assets.config.lineHeight / 2) / self.image:getHeight()

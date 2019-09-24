@@ -4,8 +4,8 @@ local Entity = require('src.entity')
 local Title = Entity:extend()
 
 
-function Title:new(area, id, options)
-    Entity.new(self, area, id, options)
+function Title:new(area, options)
+    Entity.new(self, area, options)
 end
 
 function Title:draw()

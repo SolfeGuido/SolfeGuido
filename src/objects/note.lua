@@ -2,13 +2,13 @@
 
 local Entity = require('src.entity')
 
----@class Note : Object
+---@class Note : Entity
 ---@field public area PlayState
 local Note = Entity:extend()
 
 
-function Note:new(area, id, options)
-    Note.super.new(self, area, id, options)
+function Note:new(area, options)
+    Note.super.new(self, area, options)
     self.y = self:noteToPosition(self.note)
     self.image = assets.images.note
     self.color = {0, 0, 0, 1}

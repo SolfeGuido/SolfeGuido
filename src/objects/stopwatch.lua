@@ -5,13 +5,13 @@ local Entity = require('src.entity')
 local Draft = require('lib.draft')
 local draft = Draft()
 
----@class StopWatch : Object
+---@class StopWatch : Entity
 ---@field private color table
 ---@field private time number
 local StopWatch = Entity:extend()
 
-function StopWatch:new(area, id, config)
-    Entity.new(self, area, id, config)
+function StopWatch:new(area, config)
+    Entity.new(self, area, config)
     self.color = assets.config.stopWatch.startColor
     self.time = assets.config.trialTime
 end

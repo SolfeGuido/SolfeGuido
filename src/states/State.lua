@@ -11,7 +11,7 @@ local State = Class:extend()
 function State:new()
     State.super.new(self)
     self.entities = {}
-    self.timer = Timer.new()
+    self.timer = Timer()
     self.active = true
 end
 
@@ -28,9 +28,9 @@ function State:setActive(acv)
 end
 
 function State:addentity(Type, options)
-    local objId = uuidGenerator.uuid()
-    self.entities[objId] = Type(self, objId, options)
-    return self.entities[objId]
+    local ent = Type(self, options)
+    self.entities[ent.id] = ent
+    return ent
 end
 
 function State:draw()

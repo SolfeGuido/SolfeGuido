@@ -12,7 +12,7 @@ end
 
 function PauseState:draw()
     State.draw(self)
-    love.graphics.setColor(1, 1, 1, 0.8)
+    love.graphics.setColor(0, 0, 0, 0.8)
     love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
     -- transition the 'resume', and 'exit buttons'

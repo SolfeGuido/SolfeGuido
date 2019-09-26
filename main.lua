@@ -15,7 +15,8 @@ function love.load()
         OptionsState  = require('src.states.OptionsState'),
         ScoreState = require('src.states.ScoreState'),
         CreditsState = require('src.states.CreditsState'),
-        EndGameState = require('src.states.EndGameState')
+        EndGameState = require('src.states.EndGameState'),
+        HelpState = require('src.states.HelpState')
     }
     ScreenManager.init(screens, 'MenuState')
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200);

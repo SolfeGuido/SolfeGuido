@@ -16,8 +16,9 @@ function MenuState:init(...)
     local buttons = {
         {'Play', 'PlayState'},
         {'Score', 'ScoreState'},
-        {'Credits', 'CreditsState'},
         {'Options','OptionsState'},
+        {'Help', 'HelpState'},
+        {'Credits', 'CreditsState'},
         {'Quit', function() love.event.quit() end}
     }
 

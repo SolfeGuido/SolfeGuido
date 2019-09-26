@@ -6,6 +6,14 @@ return {
         black = {0, 0, 0, 1},
         transparent = {0, 0, 0, 0}
     },
+    defaultConfig = {
+        soundActive = true,
+        lang = 'en',
+        keyStyle = 'it',
+        keySelect = 'g'
+    },
+    configSave = 'config.lua',
+    scoreSave = 'scores.bin',
     lineSpace = 20,
     lineHeight = lineHeight,
     limitLine = 150,

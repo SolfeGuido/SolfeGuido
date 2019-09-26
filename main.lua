@@ -4,6 +4,7 @@ local debugGraph = require('lib.debugGraph')
 local fpsGraph = nil
 local memoryGraph = nil
 local ScreenManager = require('lib.ScreenManager')
+local Config = require('src.Config')
 
 function love.load()
     math.randomseed(os.time())
@@ -17,8 +18,9 @@ function love.load()
         EndGameState = require('src.states.EndGameState')
     }
     ScreenManager.init(screens, 'MenuState')
-    fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200)
+    fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200);
     memoryGraph = debugGraph:new('mem', love.graphics.getWidth() - 200, 50, 200)
+    Config.parse()
 end
 
 function love.draw()

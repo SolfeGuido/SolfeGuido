@@ -2,7 +2,6 @@
 local State = require('src.states.State')
 local Button = require('src.objects.button')
 local Title = require('src.objects.Title')
-local Selector = require('src.objects.selector')
 local ScreenManager = require('lib.ScreenManager')
 local Graphics = require('src.Graphics')
 
@@ -11,13 +10,6 @@ local MenuState = State:extend()
 
 function MenuState:new()
     MenuState.super.new(self)
-    self.selectedButton = nil
-    self.selector = self:addentity(Selector, {x = 15, y = 0})
-end
-
-function MenuState:setSelectedButton(btn)
-    self.selectedButton = btn
-    self.selector.y = btn.y
 end
 
 function MenuState:init(...)
@@ -51,9 +43,7 @@ function MenuState:init(...)
         elements[#elements+1] = {element = btn, target = {x = 30, color = assets.config.color.black}}
     end
 
-    self:transition(elements, function()
-        self.selector:resetAlpha()
-    end)
+    self:transition(elements)
 end
 
 function MenuState:createButton(middle, btnFont, butonText, callback)
@@ -66,15 +56,13 @@ function MenuState:createButton(middle, btnFont, butonText, callback)
 
     local text = love.graphics.newText(btnFont, butonText)
     local btn = self:addentity(Button, {x = -text:getWidth(), y = middle, text = text, callback = cb})
-    if not self.selectedButton then self:setSelectedButton(btn) end
-
     return btn, assets.config.lineHeight + middle
 end
 
 
 function MenuState:draw()
-    MenuState.super.draw(self)
     love.graphics.setBackgroundColor(1,1,1)
+    MenuState.super.draw(self)
     Graphics.drawMusicBars()
 end
 

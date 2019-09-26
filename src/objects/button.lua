@@ -1,29 +1,45 @@
 
 local Entity = require('src.entity')
 local Rectangle = require('src.utils.Rectangle')
+local Selector = require('src.objects.selector')
 
 ---@class Button : Entity
 local Button = Entity:extend()
 
 function Button:new(area, config)
     Entity.new(self, area, config)
+    self.selector = self.area:addentity(Selector, {
+        x = self.x - 10,
+        y = self.y + 5,
+        visible = false
+    })
+    self.selector:createAlpha()
     self.color = {0,0,0,0}
     self.selected = false
     self.pressed = false
 end
 
 function Button:boundingBox()
-    return Rectangle(self.x, self.y, love.graphics.getWidth(), self.text:getHeight() - 5)
+    return Rectangle(self.x, self.y, love.graphics.getWidth(), self.text:getHeight() - 7)
+end
+
+function Button:select()
+    self.selected = true
+    self.selector.visible = true
+end
+
+function Button:deselect()
+    self.selected = false
+    self.selector.visible = false
 end
 
 function Button:mousemoved(x,y)
     if self:boundingBox():contains(x, y) then
         if not self.selected then
-            self.area:setSelectedButton(self)
-            self.selected = true
+            self:select()
         end
     else
-        self.selected = false
+        self:deselect()
     end
 end
 
@@ -47,7 +63,8 @@ function Button:draw()
 end
 
 function Button:update(dt)
-
+    self.selector.x = self.x - 15
+    self.selector.y = self.y
 end
 
 

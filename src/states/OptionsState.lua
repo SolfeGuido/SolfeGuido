@@ -37,10 +37,10 @@ function OptionsState:init(...)
             element = self:addentity(Title, {
                 x = -titleText:getWidth(),
                 y = 0,
-                color = assets.config.color.transparent,
+                color = assets.config.color.transparent(),
                 text = titleText
             }),
-            target = { x = 30, color = assets.config.color.black}
+            target = { x = 30, color = assets.config.color.black()}
         }
     }
 
@@ -57,11 +57,11 @@ function OptionsState:init(...)
                 y = middle,
                 selected = Config[confName],
                 choices = assets.config.userPreferences[confName],
-                color = assets.config.color.transparent,
+                color = assets.config.color.transparent(),
                 callback = function(value) Config[confName] = value end
             }),
             target = {
-                color = assets.config.color.black,
+                color = assets.config.color.black(),
                 x = 30
             }
         }
@@ -74,11 +74,11 @@ function OptionsState:init(...)
             text = btnText,
             x = -btnText:getWidth(),
             y = middle,
-            color = assets.config.color.transparent,
+            color = assets.config.color.transparent(),
             callback = function() self:back() end
         }),
         target = {
-            color = assets.config.color.black,
+            color = assets.config.color.black(),
             x = 30
         }
     }

@@ -3,8 +3,8 @@ local lineHeight = 20
 
 return {
     color = {
-        black = {0, 0, 0, 1},
-        transparent = {0, 0, 0, 0}
+        black = function() return {0, 0, 0, 1} end,
+        transparent = function() return {0, 0, 0, 0} end
     },
     userPreferences = {
         sound = {'on', 'off'},

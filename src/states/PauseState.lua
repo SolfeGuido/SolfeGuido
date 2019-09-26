@@ -42,11 +42,11 @@ function PauseState:addButtons()
                 y = middle,
                 text = text,
                 callback = v[2],
-                color = assets.config.color.transparent
+                color = assets.config.color.transparent()
             }),
             target = {
                 x = assets.config.limitLine - text:getWidth() - 10,
-                color = assets.config.color.black
+                color = assets.config.color.black()
             }
         }
         middle = middle + assets.config.lineHeight

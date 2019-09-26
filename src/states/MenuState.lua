@@ -28,11 +28,11 @@ function MenuState:init(...)
         {
             element = self:addentity(Title, {
                 text = titleText,
-                color = assets.config.color.transparent,
+                color = assets.config.color.transparent(),
                 y = 0,
                 x = -titleText:getWidth()
             }),
-            target = {x = 30, color = assets.config.color.black}
+            target = {x = 30, color = assets.config.color.black()}
         }
     }
 
@@ -41,7 +41,7 @@ function MenuState:init(...)
     local btn = nil
     for _,v in pairs(buttons) do
         btn, middle = self:createButton(middle, btnFont, unpack(v))
-        elements[#elements+1] = {element = btn, target = {x = 30, color = assets.config.color.black}}
+        elements[#elements+1] = {element = btn, target = {x = 30, color = assets.config.color.black()}}
     end
 
     self:transition(elements)

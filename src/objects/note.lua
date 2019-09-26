@@ -11,7 +11,7 @@ function Note:new(area, options)
     Note.super.new(self, area, options)
     self.y = self:noteToPosition(self.note)
     self.image = assets.images.note
-    self.color = {0, 0, 0, 1}
+    self.color = assets.config.color.black()
     self.name = nil
 end
 
@@ -32,20 +32,25 @@ end
 
 function Note:correct()
     self.color = {0, 0.5, 0, 1}
-    local totalTime = assets.config.note.fadeAway
-    self.area.timer:tween(totalTime, self, {color = {0, 0.5, 0, 0}})
-    self.area.timer:after(totalTime, function() self:dispose() end)
+    self:fadeTo({0, 0.5, 0, 0})
 end
 
 function Note:wrong()
     self.color = {0.5, 0, 0, 1}
-    local totalTime = assets.config.note.fadeAway
-    self.area.timer:tween(totalTime, self, {color = {0.5, 0, 0, 0}})
-    self.area.timer:after(totalTime, function() self:dispose() end)
+    self:fadeTo(assets.config.color.transparent())-- {0.5, 0, 0, 0})
     self.name = self.area.key:getNoteName(self.note)
 end
 
+function Note:fadeAway()
+    self:fadeTo(assets.config.color.transparent())
+end
+
+function Note:fadeTo(color)
+    self.area.timer:tween(assets.config.note.fadeAway, self, {color = color}, 'linear', function() self:dispose() end)
+end
+
 function Note:draw()
+    --Color for the (optional) bars
     love.graphics.setColor(0, 0, 0, self.color[4])
     local scale = assets.config.note.height / self.image:getHeight()
     local xOrig = assets.config.note.xOrigin
@@ -63,7 +68,7 @@ function Note:draw()
     end
 
     if self.note >= 10 then scale = -scale end
-    love.graphics.setColor(unpack(self.color))
+    love.graphics.setColor(self.color)
     love.graphics.draw(self.image, self.x +  padding + actualWidth / 2, self.y, 0, scale, scale, xOrig, yOrig)
 
     if self.name then

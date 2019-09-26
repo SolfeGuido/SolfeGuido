@@ -26,7 +26,7 @@ end
 
 function love.draw()
     ScreenManager.draw()
-    love.graphics.setColor(assets.config.color.black)
+    love.graphics.setColor(assets.config.color.black())
     fpsGraph:draw()
     memoryGraph:draw()
 end

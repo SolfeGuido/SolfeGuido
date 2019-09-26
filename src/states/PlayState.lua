@@ -46,7 +46,7 @@ function PlayState:new()
         y = assets.config.score.y,
         points = 0,
         text =  scoreText,
-        color = assets.config.color.transparent
+        color = assets.config.color.transparent()
     })
 end
 
@@ -55,16 +55,17 @@ function PlayState:init(...)
             x = -1,
             y = 0,
             height = love.graphics.getHeight(),
-            color = assets.config.color.transparent,
+            color = assets.config.color.transparent(),
             lineWidth = 0
     })
     local elements = {
         {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}},
-        {element = self.key, target = {x = self.key.keyData.x, color = assets.config.color.black}},
-        {element = line, target = {x = assets.config.limitLine, color = assets.config.color.black, lineWidth = 1}},
-        {element = self.score, target = {x = assets.config.score.x, color = assets.config.color.black}}
+        {element = self.key, target = {x = self.key.keyData.x, color = assets.config.color.black()}},
+        {element = line, target = {x = assets.config.limitLine, color = assets.config.color.black(), lineWidth = 1}},
+        {element = self.score, target = {x = assets.config.score.x, color = assets.config.color.black()}}
     }
 
+    self.finished = false
     self:transition(elements, function()
         self.notes:push(Scene.addentity(self, Note, {note = math.random(1, 20), x = love.graphics.getWidth() }))
         self.stopWatch:start()
@@ -82,12 +83,13 @@ function PlayState:getBaseLine()
 end
 
 function PlayState:finish()
+    self.finished = true
     while not self.notes:isEmpty() do
-        self.notes:shift():dispose()
+        self.notes:shift():fadeAway()
     end
-    -- Push EndState
-    --love.window.showMessageBox("Finished", "Your score : " .. tostring(self.points))
-    -- go to menu
+    self.timer:after(assets.config.note.fadeAway, function()
+        ScreenManager.push('EndGameState', self.score.points)
+    end)
 end
 
 function PlayState:draw()
@@ -149,11 +151,18 @@ end
 --- Pops a note if needed
 ---@param dt number
 function PlayState:tryPopNote(dt)
-    local last = self.notes:last().x
-    if love.graphics.getWidth() - last >= assets.config.note.distance then
+    if self.finished then return end
+    if self.notes:isEmpty() then
         local note = math.random(1,20)
         local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
         self.notes:push(ent)
+    else
+        local last = self.notes:last().x
+        if love.graphics.getWidth() - last >= assets.config.note.distance then
+            local note = math.random(1,20)
+            local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
+            self.notes:push(ent)
+        end
     end
 end
 
@@ -162,9 +171,9 @@ end
 function PlayState:update(dt)
     if not self.active then return end
     Scene.update(self, dt)
+    self:tryPopNote(dt)
     if self.notes:isEmpty() then return end
     self:doProgress(dt)
-    self:tryPopNote(dt)
 end
 
 return PlayState

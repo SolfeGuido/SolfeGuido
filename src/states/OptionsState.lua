@@ -24,10 +24,10 @@ end
 
 function OptionsState:init(...)
     local selectors = {
-        Key = 'keySelect',
-        Notes = 'noteStyle',
-        Sound = 'sound',
-        Language = 'lang'
+        {'Key', 'keySelect'},
+        {'Notes', 'noteStyle'},
+        {'Sound', 'sound'},
+        {'Language', 'lang'}
     }
 
     local titleText = love.graphics.newText(assets.MarckScript(40), "Options")
@@ -47,17 +47,18 @@ function OptionsState:init(...)
     local font = assets.MarckScript(assets.config.lineHeight)
     local middle = love.graphics.getHeight() / 3
 
-    for k,v in pairs(selectors) do
-        local text = love.graphics.newText(font, k)
+    for _,v in pairs(selectors) do
+        local text = love.graphics.newText(font, v[1])
+        local confName = v[2]
         elements[#elements+1] = {
             element = self:addentity(MultiSelector, {
                 text = text,
                 x = -text:getWidth() * 3,
                 y = middle,
-                selected = Config[v],
-                choices = assets.config.userPreferences[v],
+                selected = Config[confName],
+                choices = assets.config.userPreferences[confName],
                 color = assets.config.color.transparent,
-                callback = function(value) Config[v] = value end
+                callback = function(value) Config[confName] = value end
             }),
             target = {
                 color = assets.config.color.black,

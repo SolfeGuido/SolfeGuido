@@ -4,11 +4,18 @@ local Rectangle = require('src.utils.Rectangle')
 ---@class MultiSelector : Entity
 local MultiSelector = Entity:extend()
 
+local function indexOf(table, element)
+    for i,v in ipairs(table) do
+        if v == element then return i end
+    end
+    return nil
+end
+
 function MultiSelector:new(area, options)
     Entity.new(self, area, options)
     self.pressed = false
-    self.currentChoice = 1
-    self.selected:set(self.choices[self.currentChoice])
+    self.currentChoice = indexOf(self.choices, self.selected) or 1
+    self.selectedText = love.graphics.newText(self.text:getFont(), self.selected)
 end
 
 function MultiSelector:boundingBox()
@@ -20,7 +27,7 @@ function MultiSelector:draw()
     love.graphics.draw(self.text, self.x, self.y)
 
     local nwx = self.text:getWidth() + 10 + self.x
-    love.graphics.draw(self.selected, nwx, self.y)
+    love.graphics.draw(self.selectedText, nwx, self.y)
 end
 
 function MultiSelector:mousepressed(x, y, button)
@@ -30,8 +37,8 @@ end
 function MultiSelector:mousereleased(x, y, button)
     if button == 1 and self.pressed and self:boundingBox():contains(x, y) then
         self.currentChoice = (self.currentChoice  % #self.choices) + 1
-        self.selected:set(self.choices[self.currentChoice])
-        --do an animation
+        self.selectedText:set(self.choices[self.currentChoice])
+        if self.callback then self.callback(self.choices[self.currentChoice]) end
     end
     self.pressed = false
 end

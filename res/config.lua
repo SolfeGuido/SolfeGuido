@@ -6,11 +6,11 @@ return {
         black = {0, 0, 0, 1},
         transparent = {0, 0, 0, 0}
     },
-    defaultConfig = {
-        soundActive = true,
-        lang = 'en',
-        keyStyle = 'it',
-        keySelect = 'g'
+    userPreferences = {
+        sound = {'on', 'off'},
+        lang = {'en', 'fr'},
+        noteStyle = {'en', 'it'},
+        keySelect = {'gKey', 'fKey'}
     },
     configSave = 'config.lua',
     scoreSave = 'scores.bin',

@@ -2,6 +2,7 @@
 -- LIBS
 local ScreenManager = require('lib.ScreenManager')
 local Graphics = require('src.Graphics')
+local Config = require('src.Config')
 
 -- Parent
 local Scene = require('src.states.State')
@@ -30,7 +31,7 @@ function PlayState:new()
     self.progress = 0
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
-    self.key = self:addentity(GKey, {})
+    self.key = self:addentity(Config.keySelect == 'gKey' and GKey or FKey, {})
     self.stopWatch = self:addentity(StopWatch, {
         x = -assets.config.stopWatch.size,
         y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,

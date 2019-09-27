@@ -2,7 +2,6 @@
 local State = require('src.states.State')
 local Button = require('src.objects.button')
 local Title = require('src.objects.Title')
-local ScreenManager = require('lib.ScreenManager')
 local Graphics = require('src.Graphics')
 
 ---@class MenuState : State

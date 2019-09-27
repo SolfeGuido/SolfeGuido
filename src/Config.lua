@@ -4,7 +4,14 @@ local lume = require('lib.lume')
 local Config = {}
 
 
+local function getSimpleLocale()
+    local l = os.setlocale()
+    return l:sub(1, 2):lower()
+end
+
+
 function Config.parse()
+    getSimpleLocale()
     local conf = {}
     if love.filesystem.getInfo(assets.config.configSave) then
         conf = love.filesystem.load(assets.config.configSave)()
@@ -17,13 +24,13 @@ function Config.parse()
             Config[k] = v[1]
         end
         -- trying to get the computer locale
-        local l = os.setlocale()
+        local l = getSimpleLocale()
         if lume.find(assets.config.userPreferences.lang, l) then
             Config.lang = l
         end
     end
-
 end
+
 
 function Config.save()
     local elems = {"return {"}

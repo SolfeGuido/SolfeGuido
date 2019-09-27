@@ -1,6 +1,8 @@
 
 local Entity = require('src.entity')
 
+local Config = require('src.Config')
+
 --- Class used to represent the different possible keys in a music sheet (F, G for now)
 ---@class Key : Entity
 ---@field private config table
@@ -38,7 +40,7 @@ end
 function Key:getNoteName(note)
     --depending on user config, return 'a' style or 'do' style
     note = ((note + self.keyData.lowestNote) % 7) + 1
-    return assets.config.itNotes[note]
+    return assets.config[Config.noteStyle == 'it' and 'itNotes' or 'enNotes'][note]
 end
 
 return Key

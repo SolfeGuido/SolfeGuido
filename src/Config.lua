@@ -1,4 +1,6 @@
 
+local lume = require('lib.lume')
+
 local Config = {}
 
 
@@ -13,6 +15,11 @@ function Config.parse()
         conf = assets.config.userPreferences
         for k,v in pairs(conf) do
             Config[k] = v[1]
+        end
+        -- trying to get the computer locale
+        local l = os.setlocale()
+        if lume.find(assets.config.userPreferences.lang, l) then
+            Config.lang = l
         end
     end
 

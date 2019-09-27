@@ -19,6 +19,10 @@ function Button:new(area, config)
     self.pressed = false
 end
 
+function Button:width()
+    return self.text:getWidth()
+end
+
 function Button:boundingBox()
     return Rectangle(self.x, self.y, love.graphics.getWidth(), self.text:getHeight() - 7)
 end

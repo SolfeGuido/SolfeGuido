@@ -13,4 +13,8 @@ function Title:draw()
     love.graphics.draw(self.text, self.x, self.y)
 end
 
+function Title:width()
+    return self.text:getWidth()
+end
+
 return Title

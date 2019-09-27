@@ -37,7 +37,7 @@ return {
     },
     transition = {
         tween = 0.8,
-        spacing = 0.08
+        spacing = 0.01
     },
     gKey = {
         height = lineHeight * 7,

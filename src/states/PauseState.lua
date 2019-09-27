@@ -3,6 +3,7 @@ local State = require('src.states.State')
 local ScreenManager = require('lib.ScreenManager')
 
 -- Entities
+local Title = require('src.objects.Title')
 local Button = require('src.objects.button')
 
 ---@class PauseState : State
@@ -29,7 +30,19 @@ function PauseState:addButtons()
         end}
     }
 
-    local elements = {}
+    local titleText = love.graphics.newText(assets.MarckScript(40), "Pause")
+
+    local elements = {
+        {
+            element = self:addentity(Title, {
+                text = titleText,
+                color = assets.config.color.transparent(),
+                y = 0,
+                x = -titleText:getWidth()
+            }),
+            target = {x = 30, color = assets.config.color.black()}
+        }
+    }
 
     local middle = love.graphics.getHeight() / 3
     local font = assets.MarckScript(assets.config.lineHeight)

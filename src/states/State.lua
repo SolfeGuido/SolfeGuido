@@ -107,7 +107,7 @@ function State:slideEntitiesOut(callback)
 
     local elements = {}
     for _,v in pairs(ents) do
-        elements[#elements+1] = {element = v, target = {x = v.text and -v.text:getWidth() or -20, color = {0, 0, 0, 0}}}
+        elements[#elements+1] = {element = v, target = {x = v.width and -v:width() or -20, color = assets.config.color.transparent()}}
     end
     self:transition(elements, callback)
 end

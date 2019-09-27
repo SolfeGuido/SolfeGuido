@@ -22,6 +22,10 @@ function MultiSelector:boundingBox()
     return Rectangle(self.x, self.y, love.graphics.getWidth(), self.text:getHeight() - 5)
 end
 
+function MultiSelector:width()
+    return self.text:getWidth() + self.selectedText:getWidth()
+end
+
 function MultiSelector:draw()
     love.graphics.setColor(self.color)
     love.graphics.draw(self.text, self.x, self.y)

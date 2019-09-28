@@ -29,6 +29,15 @@ function Config.parse()
             Config.lang = l
         end
     end
+    Config.updateSound()
+end
+
+function Config.updateSound()
+    if Config.sound == 'off' then
+        love.audio.setVolume(0)
+    else
+        love.audio.setVolume(1)
+    end
 end
 
 

@@ -58,7 +58,10 @@ function OptionsState:init(...)
                 selected = Config[confName],
                 choices = assets.config.userPreferences[confName],
                 color = assets.config.color.transparent(),
-                callback = function(value) Config[confName] = value end
+                callback = function(value)
+                    Config[confName] = value
+                    if confName == 'sound' then Config.updateSound() end
+                end
             }),
             target = {
                 color = assets.config.color.black(),

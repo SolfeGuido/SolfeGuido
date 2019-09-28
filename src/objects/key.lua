@@ -38,7 +38,6 @@ end
 ---@param note number
 ---@return string
 function Key:getNoteName(note)
-    --depending on user config, return 'a' style or 'do' style
     note = ((note + self.keyData.lowestNote) % 7) + 1
     return assets.config[Config.noteStyle == 'it' and 'itNotes' or 'enNotes'][note]
 end

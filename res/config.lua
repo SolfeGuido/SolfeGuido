@@ -10,7 +10,8 @@ return {
         sound = {'on', 'off'},
         lang = {'en', 'fr'},
         noteStyle = {'en', 'it'},
-        keySelect = {'gKey', 'fKey'}
+        keySelect = {'gKey', 'fKey'},
+        difficulty = {'1', '2', '3', '4', 'all'}
     },
     configSave = 'config.lua',
     scoreSave = 'scores.bin',
@@ -46,7 +47,14 @@ return {
         x = 40,
         y = 0,
         image = 'GKey',
-        lowestNote = 3
+        lowestNote = 3,
+        difficulties = {
+            ['1'] = {},
+            ['2'] = {},
+            ['3'] = {},
+            ['4'] = {},
+            ['all'] = {}
+        }
     },
     fKey = {
         height = lineHeight * 3,
@@ -55,7 +63,14 @@ return {
         x = 30,
         y = lineHeight * 3,
         image = 'FKey',
-        lowestNote = 5
+        lowestNote = 5,
+        difficulties = {
+            ['1'] = {},
+            ['2'] = {},
+            ['3'] = {},
+            ['4'] = {},
+            ['all'] = {}
+        }
     },
     note = {
         height = lineHeight * 4,

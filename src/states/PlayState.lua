@@ -67,7 +67,6 @@ function PlayState:init(...)
 
     self.finished = false
     self:transition(elements, function()
-        self.notes:push(Scene.addentity(self, Note, {note = math.random(1, 20), x = love.graphics.getWidth() }))
         self.stopWatch:start()
     end)
 end
@@ -148,20 +147,22 @@ function PlayState:doProgress(dt)
     end
 end
 
+function PlayState:addNote()
+    local note = self.key:getRandomNote()
+    local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
+    self.notes:push(ent)
+end
+
 --- Pops a note if needed
 ---@param dt number
 function PlayState:tryPopNote(dt)
     if self.finished then return end
     if self.notes:isEmpty() then
-        local note = math.random(1,20)
-        local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
-        self.notes:push(ent)
+        self:addNote()
     else
         local last = self.notes:last().x
         if love.graphics.getWidth() - last >= assets.config.note.distance then
-            local note = math.random(1,20)
-            local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
-            self.notes:push(ent)
+            self:addNote()
         end
     end
 end

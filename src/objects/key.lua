@@ -42,4 +42,9 @@ function Key:getNoteName(note)
     return assets.config[Config.noteStyle == 'it' and 'itNotes' or 'enNotes'][note]
 end
 
+function Key:getRandomNote()
+    return math.random(unpack(self.keyData.difficulties[Config.difficulty]))
+
+end
+
 return Key

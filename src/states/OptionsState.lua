@@ -27,7 +27,8 @@ function OptionsState:init(...)
         {'Key', 'keySelect'},
         {'Notes', 'noteStyle'},
         {'Sound', 'sound'},
-        {'Language', 'lang'}
+        {'Language', 'lang'},
+        {'Difficulty', 'difficulty'}
     }
 
     local titleText = love.graphics.newText(assets.MarckScript(40), "Options")

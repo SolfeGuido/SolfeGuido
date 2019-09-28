@@ -1,5 +1,6 @@
 _G['assets'] = require('lib.cargo').init('res')
 
+require "lib.tesound"
 local debugGraph = require('lib.debugGraph')
 local fpsGraph = nil
 local memoryGraph = nil
@@ -33,6 +34,7 @@ end
 
 function love.update(dt)
     --require('lib.lurker').update()
+    TEsound.cleanup()
     fpsGraph:update(dt)
     memoryGraph:update(dt)
     ScreenManager.update(dt)

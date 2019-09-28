@@ -120,6 +120,7 @@ function PlayState:keypressed(key)
 
     if self.notes:isEmpty() then return end
     local currentNote = self.notes:peek()
+    TEsound.play(self.key:getSoundFor(currentNote.note))
     if self.key:isCorrect(currentNote.note, key) then
         self.notes:shift():correct()
         self.score:gainPoint()

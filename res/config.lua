@@ -1,7 +1,21 @@
 
 local lineHeight = 20
 
-return {
+local order = {'C', 'D','E','F','G','A','B'}
+
+local notes = {'A1','B1'}
+
+for i = 2,5 do
+    for j = 1, #order do
+        notes[#notes+1] = order[j] .. tostring(i)
+    end
+end
+
+notes[#notes+1] = 'D6'
+notes[#notes+1] = 'E6'
+
+
+local config = {
     color = {
         black = function() return {0, 0, 0, 1} end,
         transparent = function() return {0, 0, 0, 0} end
@@ -48,6 +62,7 @@ return {
         y = 0,
         image = 'GKey',
         lowestNote = 3,
+        firstNote = 12,
         difficulties = {
             ['1'] = {4, 10},
             ['2'] = {11, 17},
@@ -83,3 +98,7 @@ return {
         fadeAway = 1.5
     }
 }
+
+config['notes'] = notes
+
+return config

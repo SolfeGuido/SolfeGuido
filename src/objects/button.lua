@@ -24,7 +24,7 @@ function Button:width()
 end
 
 function Button:boundingBox()
-    return Rectangle(self.x, self.y, love.graphics.getWidth(), self.text:getHeight() - 7)
+    return Rectangle(self.x, self.y, assets.config.limitLine - 10, self.text:getHeight() - 7)
 end
 
 function Button:select()

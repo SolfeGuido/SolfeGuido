@@ -12,11 +12,16 @@ function Selector:new(area, options)
 end
 
 function Selector:createAlpha()
-    self.area.timer:tween(0.5, self, {color = {0, 0, 0, 0.1}}, 'linear', function() self:resetAlpha() end)
+    -- avoid memory leak with the timer
+    if not self.isDisposed then
+        self.area.timer:tween(0.5, self, {color = {0, 0, 0, 0.1}}, 'linear', function() self:resetAlpha() end)
+    end
 end
 
 function Selector:resetAlpha()
-    self.area.timer:tween(0.5, self, {color = {0, 0, 0, 1}}, 'linear', function() self:createAlpha() end)
+    if not self.isDisposed then
+        self.area.timer:tween(0.5, self, {color = {0, 0, 0, 1}}, 'linear', function() self:createAlpha() end)
+    end
 end
 
 function Selector:draw()

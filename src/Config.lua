@@ -40,6 +40,10 @@ function Config.updateSound()
     end
 end
 
+function Config.update(key, value)
+    Config[key] = value
+    if key == "sound" then Config.updateSound() end
+end
 
 function Config.save()
     local elems = {"return {"}

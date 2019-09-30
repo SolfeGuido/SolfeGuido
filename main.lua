@@ -9,6 +9,8 @@ local Config = require('src.Config')
 
 function love.load()
     math.randomseed(os.time())
+    Config.parse()
+
     local screens = {
         PlayState = require('src.states.PlayState'),
         MenuState = require('src.states.MenuState'),
@@ -22,7 +24,6 @@ function love.load()
     ScreenManager.init(screens, 'MenuState')
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200);
     memoryGraph = debugGraph:new('mem', love.graphics.getWidth() - 200, 50, 200)
-    Config.parse()
 end
 
 function love.draw()

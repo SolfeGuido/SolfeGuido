@@ -18,7 +18,8 @@ notes[#notes+1] = 'E6'
 local config = {
     color = {
         black = function() return {0, 0, 0, 1} end,
-        transparent = function() return {0, 0, 0, 0} end
+        transparent = function() return {0, 0, 0, 0} end,
+        gray = function() return {0.3, 0.3, 0.3, 0.3} end
     },
     userPreferences = {
         sound = {'on', 'off'},

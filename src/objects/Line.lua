@@ -13,4 +13,4 @@ function Line:draw()
     love.graphics.line(self.x, self.y, self.x + (self.width or 0), self.y + (self.height or 0))
 end
 
-return Line 
+return Line

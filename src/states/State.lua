@@ -1,7 +1,15 @@
 
+--- LIBS
 local Class = require('lib.class')
 local Timer = require('lib.timer')
 local ScreenManager = require('lib.ScreenManager')
+local Config = require('src.Config')
+local lume = require('lib.lume')
+
+-- ENTITES
+local Button = require('src.objects.button')
+local Title = require('src.objects.Title')
+local MultiSelector = require('src.objects.MultiSelector')
 
 ---@class State
 ---@field public entities table
@@ -17,6 +25,42 @@ end
 
 function State:init(...)
 
+end
+
+function State:addButton(config)
+    local btnText = love.graphics.newText(config.font, config.text)
+    return self:addentity(Button, {
+        text = btnText,
+        x = -btnText:getWidth(),
+        y = config.y,
+        color = assets.config.color.transparent(),
+        callback = config.callback
+    })
+end
+
+function State:addMultiSelector(config)
+    local msText = love.graphics.newText(config.font, config.text)
+    assert(config.config, "Can't create multiselect from something else than configuration")
+    local confName = config.config
+    return self:addentity(MultiSelector, {
+        text = msText,
+        x = -msText:getWidth() * 3,
+        y = config.y,
+        selected = Config[confName],
+        choices = assets.config.userPreferences[confName],
+        color = assets.config.color.transparent(),
+        callback = function(value) Config.update(confName, value) end
+    })
+end
+
+function State:addTitle(config)
+    local titleText = love.graphics.newText(assets.MarckScript(config.fontSize), config.text)
+    return self:addentity(Title, {
+        x = -titleText:getWidth(),
+        y = config.y,
+        color = assets.config.color.transparent(),
+        text = titleText
+    })
 end
 
 function State:isActive()
@@ -49,6 +93,28 @@ function State:update(dt)
 end
 
 function State:keypressed(key)
+end
+
+function State:createUI(uiConfig)
+    local yPos = love.graphics.getHeight() / 3
+    local defaultFont = assets.MarckScript(assets.config.lineHeight)
+    local conf = {x = 30, font = defaultFont}
+    local elements = {}
+    for _, column in ipairs(uiConfig) do
+        for _, elemConfig in ipairs(column) do
+            elemConfig = lume.merge(conf, elemConfig)
+            if not elemConfig.y then
+                elemConfig.y = yPos
+                yPos = yPos + assets.config.lineHeight
+            end
+            elements[#elements+1] = {
+                element = self['add' .. elemConfig.type](self, elemConfig),
+                target = {x = elemConfig.x, color = assets.config.color.black()}
+            }
+        end
+        conf.x = conf.x + assets.config.limitLine
+    end
+    self:transition(elements)
 end
 
 function State:transition(elements, callback)

@@ -23,71 +23,40 @@ function OptionsState:draw()
 end
 
 function OptionsState:init(...)
-    local selectors = {
-        {'Key', 'keySelect'},
-        {'Notes', 'noteStyle'},
-        {'Sound', 'sound'},
-        {'Language', 'lang'},
-        {'Difficulty', 'difficulty'}
-    }
-
-    local titleText = love.graphics.newText(assets.MarckScript(40), "Options")
-
-    local elements = {
+    self:createUI({
         {
-            element = self:addentity(Title, {
-                x = -titleText:getWidth(),
-                y = 0,
-                color = assets.config.color.transparent(),
-                text = titleText
-            }),
-            target = { x = 30, color = assets.config.color.black()}
-        }
-    }
-
-    local font = assets.MarckScript(assets.config.lineHeight)
-    local middle = love.graphics.getHeight() / 3
-
-    for _,v in pairs(selectors) do
-        local text = love.graphics.newText(font, v[1])
-        local confName = v[2]
-        elements[#elements+1] = {
-            element = self:addentity(MultiSelector, {
-                text = text,
-                x = -text:getWidth() * 3,
-                y = middle,
-                selected = Config[confName],
-                choices = assets.config.userPreferences[confName],
-                color = assets.config.color.transparent(),
-                callback = function(value)
-                    Config[confName] = value
-                    if confName == 'sound' then Config.updateSound() end
-                end
-            }),
-            target = {
-                color = assets.config.color.black(),
-                x = 30
+            {
+                text = 'Options',
+                type = 'Title',
+                fontSize = 40,
+                y = 0
+            },{
+                text = 'Key',
+                type = 'MultiSelector',
+                config = 'keySelect'
+            },{
+                text = 'Notes',
+                type = 'MultiSelector',
+                config = 'noteStyle'
+            }, {
+                text = 'Sound',
+                type = 'MultiSelector',
+                config = 'sound'
+            }, {
+                text = 'Language',
+                type = 'MultiSelector',
+                config = 'lang'
+            },  {
+                text = 'Difficulty',
+                type = 'MultiSelector',
+                config = 'difficulty'
+            }, {
+                text = 'Back',
+                type = 'Button',
+                callback = function() self:back() end
             }
         }
-        middle = middle + assets.config.lineHeight
-    end
-
-    local btnText = love.graphics.newText(font, "Back")
-    elements[#elements+1] = {
-        element = self:addentity(Button, {
-            text = btnText,
-            x = -btnText:getWidth(),
-            y = middle,
-            color = assets.config.color.transparent(),
-            callback = function() self:back() end
-        }),
-        target = {
-            color = assets.config.color.black(),
-            x = 30
-        }
-    }
-
-    self:transition(elements)
+    })
 end
 
 function OptionsState:update(dt)

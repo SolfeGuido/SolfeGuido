@@ -13,7 +13,6 @@ local Queue = require('src.utils.queue')
 local GKey = require('src.objects.gkey')
 local FKey = require('src.objects.fkey')
 local StopWatch = require('src.objects.stopwatch')
-local Line = require('src.objects.Line')
 local Score = require('src.objects.Score')
 
 
@@ -51,17 +50,9 @@ function PlayState:new()
 end
 
 function PlayState:init(...)
-    local line = self:addentity(Line, {
-            x = -1,
-            y = 0,
-            height = love.graphics.getHeight(),
-            color = assets.config.color.transparent(),
-            lineWidth = 0
-    })
     local elements = {
         {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}},
         {element = self.key, target = {x = self.key.keyData.x, color = assets.config.color.black()}},
-        {element = line, target = {x = assets.config.limitLine, color = assets.config.color.black(), lineWidth = 1}},
         {element = self.score, target = {x = assets.config.score.x, color = assets.config.color.black()}}
     }
 

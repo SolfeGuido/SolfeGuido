@@ -27,7 +27,6 @@ function OptionsState:init(...)
         {
             {
                 text = 'Options',
-                type = 'Title',
                 fontSize = 40,
                 y = 0
             },{

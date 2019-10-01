@@ -29,6 +29,11 @@ end
 
 function State:addButton(config)
     local btnText = love.graphics.newText(config.font, config.text)
+
+    if config.state and not config.callback then
+        config.callback = function() self:switchState(config.state) end
+    end
+
     return self:addentity(Button, {
         text = btnText,
         x = -btnText:getWidth(),
@@ -98,7 +103,7 @@ end
 function State:createUI(uiConfig)
     local yPos = love.graphics.getHeight() / 3
     local defaultFont = assets.MarckScript(assets.config.lineHeight)
-    local conf = {x = 30, font = defaultFont}
+    local conf = {x = 30, font = defaultFont, type = 'Title'}
     local elements = {}
     for _, column in ipairs(uiConfig) do
         for _, elemConfig in ipairs(column) do
@@ -112,6 +117,7 @@ function State:createUI(uiConfig)
                 target = {x = elemConfig.x, color = assets.config.color.black()}
             }
         end
+        yPos = love.graphics.getHeight() / 3
         conf.x = conf.x + assets.config.limitLine
     end
     self:transition(elements)

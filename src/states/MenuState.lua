@@ -17,69 +17,51 @@ function MenuState:new()
 end
 
 function MenuState:init(...)
-    local buttons = {
-        {'Play', 'PlayState'},
-        {'Score', 'ScoreState'},
-        {'Options','OptionsState'},
-        {'Help', 'HelpState'},
-        {'Credits', 'CreditsState'},
-        {'Quit', function() love.event.quit() end}
-    }
-
-    local titleText = love.graphics.newText(assets.MarckScript(40), "Menu")
-
-    local elements = {
+    self:createUI({
         {
-            element = self:addentity(Title, {
-                text = titleText,
-                color = assets.config.color.transparent(),
-                y = 0,
-                x = -titleText:getWidth()
-            }),
-            target = {x = 30, color = assets.config.color.black()}
-        }
-    }
-
-    local btnFont = assets.MarckScript(assets.config.lineHeight)
-    local middle = love.graphics.getHeight() / 3
-    local btn = nil
-    for _,v in pairs(buttons) do
-        btn, middle = self:createButton(middle, btnFont, unpack(v))
-        elements[#elements+1] = {element = btn, target = {x = 30, color = assets.config.color.black()}}
-    end
-
-    local selectors = {
-        {'Key', 'keySelect'},
-        {'Difficulty', 'difficulty'}
-    }
-
-    local font = assets.MarckScript(assets.config.lineHeight)
-    middle = love.graphics.getHeight() / 3
-
-    for _,v in pairs(selectors) do
-        local text = love.graphics.newText(font, v[1])
-        local confName = v[2]
-        local ent = self:addentity(MultiSelector, {
-            text = text,
-            x = love.graphics.getWidth(),
-            y = middle,
-            selected = Config[confName],
-            choices = assets.config.userPreferences[confName],
-            color = assets.config.color.transparent(),
-            callback = function(value) Config.update(confName, value) end
-        })
-        elements[#elements+1] = {
-            element = ent,
-            target = {
-                color = assets.config.color.black(),
-                x = assets.config.limitLine + 20
+            {
+                type = 'Title',
+                text = 'Menu',
+                fontSize = 40,
+                y = 0
+            },
+            {
+                type = 'Button',
+                text = 'Play',
+                state = 'PlayState'
+            },{
+                type = 'Button',
+                text = 'Score',
+                state = 'ScoreState'
+            }, {
+                type = 'Button',
+                text = 'Options',
+                state = 'OptionsState'
+            }, {
+                type = 'Button',
+                text = 'Help',
+                state = 'HelpState'
+            }, {
+                type = 'Button',
+                text = 'Credits',
+                state = 'CreditsState'
+            }, {
+                type = 'Button',
+                text = 'Quit',
+                callback = function() love.event.quit() end
+            }
+        }, {
+            {
+                type = 'MultiSelector',
+                text = 'Key',
+                config = 'keySelect'
+            }, {
+                type = 'MultiSelector',
+                text = 'Difficulty',
+                config = 'difficulty'
             }
         }
-        middle = middle + assets.config.lineHeight
-    end
-
-
-    self:transition(elements)
+    })
 end
 
 function MenuState:createButton(middle, btnFont, butonText, callback)

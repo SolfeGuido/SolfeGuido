@@ -29,7 +29,6 @@ local config = {
         difficulty = {'1', '2', '3', '4', 'all'}
     },
     configSave = 'config.lua',
-    scoreSave = 'scores.bin',
     lineSpace = 20,
     lineHeight = lineHeight,
     limitLine = 150,
@@ -47,6 +46,9 @@ local config = {
         endColor = { 0.5, 0 ,0}
     },
     score = {
+        dataFormat = 'zlib',
+        containerType = 'data',
+        fileName = 'scores.bin',
         x = 50,
         y = 5,
         fontSize = 25

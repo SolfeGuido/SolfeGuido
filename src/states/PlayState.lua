@@ -3,6 +3,7 @@
 local ScreenManager = require('lib.ScreenManager')
 local Graphics = require('src.Graphics')
 local Config = require('src.Config')
+local ScoreManager = require('src.ScoreManager')
 
 -- Parent
 local Scene = require('src.states.State')
@@ -78,6 +79,7 @@ function PlayState:finish()
         self.notes:shift():fadeAway()
     end
     self.timer:after(assets.config.note.fadeAway, function()
+        ScoreManager.update(Config.keySelect, Config.difficulty, self.score.points)
         ScreenManager.push('EndGameState', self.score.points)
     end)
 end

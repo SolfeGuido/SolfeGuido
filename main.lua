@@ -6,10 +6,13 @@ local fpsGraph = nil
 local memoryGraph = nil
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.Config')
+local ScoreManager = require('src.ScoreManager')
 
 function love.load()
     math.randomseed(os.time())
     Config.parse()
+    ScoreManager.init()
+    ScoreManager.save()
 
     local screens = {
         PlayState = require('src.states.PlayState'),

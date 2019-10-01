@@ -43,6 +43,7 @@ end
 function Config.update(key, value)
     Config[key] = value
     if key == "sound" then Config.updateSound() end
+    Config.save()
 end
 
 function Config.save()

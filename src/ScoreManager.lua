@@ -20,6 +20,8 @@ function ScoreManager.init()
     end
 end
 
+---@param key string
+---@param difficulty string
 function ScoreManager.get(key, difficulty)
     return scores[key][difficulty] or 0
 end

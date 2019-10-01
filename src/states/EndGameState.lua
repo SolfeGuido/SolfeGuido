@@ -21,68 +21,29 @@ function EndGameState:init(score)
 end
 
 function EndGameState:addButtons(score)
-    local buttons = {
-        {'Restart', function()
-            ScreenManager.switch('PlayState')
-        end},
-        {'Menu', function()
-            --smooth transition to menu ???
-            ScreenManager.switch('MenuState')
-        end}
-    }
-
-    local titleText = love.graphics.newText(assets.MarckScript(40), "Finished")
-    local scoreText = love.graphics.newText(assets.MarckScript(assets.config.lineHeight), "Score : " .. tostring(score))
-
-    local middle = love.graphics.getHeight() / 3
-
-
-    local elements = {
+    self:createUI({
         {
-            element = self:addentity(Title, {
-                text = titleText,
-                color = assets.config.color.transparent(),
-                y = 0,
-                x = -titleText:getWidth()
-            }),
-            target = {x = 5, color = assets.config.color.black()}
-        },
-        {
-            element = self:addentity(Title, {
-                text = scoreText,
-                y = middle,
-                x = -scoreText:getWidth(),
-                color = assets.config.color.transparent()
-            }),
-            target = {
-                x = assets.config.limitLine - scoreText:getWidth() - 10,
-                color = assets.config.color.black()
+            {
+                text = 'Finished',
+                fontSize = 40,
+                y = 0
+            }, {
+                text = 'Score : ' .. tostring(score)
+            }, {
+                type = 'Button',
+                text = 'Restart',
+                state = 'PlayState'
+            }, {
+                type = 'Button',
+                text = 'Score',
+                state = 'ScoreState'
+            }, {
+                type = 'Button',
+                text = 'Menu',
+                state = 'MenuState'
             }
         }
-    }
-
-    middle = middle + assets.config.lineHeight
-    local font = assets.MarckScript(assets.config.lineHeight)
-
-    for _,v in pairs(buttons) do
-        local text = love.graphics.newText(font, v[1])
-        elements[#elements+1] = {
-            element = self:addentity(Button, {
-                x = -text:getWidth(),
-                y = middle,
-                text = text,
-                callback = v[2],
-                color = assets.config.color.transparent()
-            }),
-            target = {
-                x = assets.config.limitLine - text:getWidth() - 10,
-                color = assets.config.color.black()
-            }
-        }
-        middle = middle + assets.config.lineHeight
-    end
-
-    self:transition(elements)
+    })
 end
 
 function EndGameState:draw()

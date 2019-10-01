@@ -22,50 +22,23 @@ function PauseState:init(...)
 end
 
 function PauseState:addButtons()
-    local buttons = {
-        {'Resume', function() self:popBack() end},
-        {'Exit', function()
-            --smooth transition to menu ???
-            ScreenManager.switch('MenuState')
-        end}
-    }
-
-    local titleText = love.graphics.newText(assets.MarckScript(40), "Pause")
-
-    local elements = {
+    self:createUI({
         {
-            element = self:addentity(Title, {
-                text = titleText,
-                color = assets.config.color.transparent(),
-                y = 0,
-                x = -titleText:getWidth()
-            }),
-            target = {x = 30, color = assets.config.color.black()}
-        }
-    }
-
-    local middle = love.graphics.getHeight() / 3
-    local font = assets.MarckScript(assets.config.lineHeight)
-
-    for _,v in pairs(buttons) do
-        local text = love.graphics.newText(font, v[1])
-        elements[#elements+1] = {
-            element = self:addentity(Button, {
-                x = -text:getWidth(),
-                y = middle,
-                text = text,
-                callback = v[2],
-                color = assets.config.color.transparent()
-            }),
-            target = {
-                x = assets.config.limitLine - text:getWidth() - 10,
-                color = assets.config.color.black()
+            {
+                text = 'Pause',
+                fontSize = 40,
+                y = 0
+            },{
+                type = 'Button',
+                text = 'Resume',
+                callback = function() self:popBack() end
+            }, {
+                type = 'Button',
+                text = 'Exit',
+                state = 'MenuState'
             }
         }
-        middle = middle + assets.config.lineHeight
-    end
-
-    self:transition(elements)
+    })
 end
 
 function PauseState:draw()

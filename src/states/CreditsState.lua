@@ -9,6 +9,26 @@ function CreditsState:new()
     State.new(self)
 end
 
+function CreditsState:init()
+    self:createUI({
+        {
+            {
+                text = 'Credits',
+                fontSize = 40,
+                y = 0
+            }, {
+                type = 'Button',
+                text = 'Back',
+                state = 'MenuState'
+            }
+        }, {
+            {text = 'Created by Azarias'},
+            {text = 'With Löve2D'},
+            {text = 'And many libs'}
+        }
+    })
+end
+
 function CreditsState:draw()
     State.draw(self)
     Graphics.drawMusicBars()

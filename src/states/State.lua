@@ -59,7 +59,7 @@ function State:addMultiSelector(config)
 end
 
 function State:addTitle(config)
-    local titleText = love.graphics.newText(assets.MarckScript(config.fontSize), config.text)
+    local titleText = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, config.text)
     return self:addentity(Title, {
         x = -titleText:getWidth(),
         y = config.y,

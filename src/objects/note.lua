@@ -27,7 +27,7 @@ end
 ---@return number
 function Note:noteToPosition(note)
     local base = self.area:getBaseLine()
-    return base - (note - 6) * (assets.config.lineHeight / 2)
+    return math.floor(base - (note - 6) * (assets.config.lineHeight / 2))
 end
 
 function Note:correct()
@@ -52,6 +52,7 @@ end
 function Note:draw()
     --Color for the (optional) bars
     love.graphics.setColor(0, 0, 0, self.color[4])
+    love.graphics.setLineWidth(1)
     local scale = assets.config.note.height / self.image:getHeight()
     local xOrig = assets.config.note.xOrigin
     local yOrig = assets.config.note.yOrigin

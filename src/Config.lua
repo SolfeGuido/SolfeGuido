@@ -1,5 +1,6 @@
 
 local lume = require('lib.lume')
+local i18n = require('lib.i18n')
 
 local Config = {}
 
@@ -43,6 +44,7 @@ end
 function Config.update(key, value)
     Config[key] = value
     if key == "sound" then Config.updateSound() end
+    if key == "lang" then i18n.setLocale(value) end
     Config.save()
 end
 

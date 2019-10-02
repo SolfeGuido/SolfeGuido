@@ -11,7 +11,7 @@ function MultiSelector:new(area, options)
     Entity.new(self, area, options)
     self.pressed = false
     self.currentChoice = lume.find(self.choices, self.selected) or 1
-    self.selectedText = love.graphics.newText(self.text:getFont(), self.selected)
+    self.selectedText = love.graphics.newText(self.text:getFont(), tr(self.selected))
     self.selector = self.area:addentity(CarouselButton, {
         target = self,
         color = assets.config.color.transparent(),
@@ -45,7 +45,7 @@ end
 function MultiSelector:mousereleased(x, y, button)
     if button == 1 and self.pressed and self:boundingBox():contains(x, y) then
         self.currentChoice = (self.currentChoice  % #self.choices) + 1
-        self.selectedText:set(self.choices[self.currentChoice])
+        self.selectedText:set( tr(self.choices[self.currentChoice]))
         if self.callback then self.callback(self.choices[self.currentChoice]) end
     end
     self.pressed = false

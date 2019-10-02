@@ -28,7 +28,7 @@ function State:init(...)
 end
 
 function State:addButton(config)
-    local btnText = love.graphics.newText(config.font, config.text)
+    local btnText = love.graphics.newText(config.font, tr(config.text) )
 
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
@@ -44,7 +44,7 @@ function State:addButton(config)
 end
 
 function State:addMultiSelector(config)
-    local msText = love.graphics.newText(config.font, config.text)
+    local msText = love.graphics.newText(config.font, tr(config.text) )
     assert(config.config, "Can't create multiselect from something else than configuration")
     local confName = config.config
     return self:addentity(MultiSelector, {

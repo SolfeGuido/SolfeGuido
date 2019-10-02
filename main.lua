@@ -1,6 +1,7 @@
 _G['assets'] = require('lib.cargo').init('res')
 
 require "lib.tesound"
+local i18n = require('lib.i18n')
 local debugGraph = require('lib.debugGraph')
 local fpsGraph = nil
 local memoryGraph = nil
@@ -13,6 +14,17 @@ function love.load()
     Config.parse()
     ScoreManager.init()
     ScoreManager.save()
+    i18n.load({
+        en = assets.lang.en,
+        fr = assets.lang.fr
+    })
+    i18n.setLocale(Config.lang or 'en')
+
+    _G['tr'] = function(data)
+        return i18n.translate(data, {default = data})
+    end
+    print(tr('fKey'))
+    print(assets.lang.en.fKey)
 
     local screens = {
         PlayState = require('src.states.PlayState'),

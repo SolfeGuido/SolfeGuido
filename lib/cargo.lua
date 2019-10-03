@@ -43,8 +43,27 @@ cargo.loaders = {
   fnt = lg and lg.newFont
 }
 
-cargo.processors = {}
+function cargo.init(path)
+  local loaders = cargo.loaders
 
+  local total = {}
+
+  local start = lf.getDirectoryItems(path, 'directory')
+  if not start or #start == 0 then return total end
+  for _,v in ipairs(start) do
+    local vPath = path .. '/' .. v
+    local fInfo = lf.getInfo(vPath)
+    if fInfo.type == 'file' then
+      local fName, _, extension = string.match(v, '(.+)(%.)([^.]+)$')
+      total[fName] = loaders[extension](vPath)
+    elseif fInfo.type == 'directory' then
+      total[v] = cargo.init(vPath)
+    end
+  end
+
+  return total
+end
+--[[
 function cargo.init(config)
   if type(config) == 'string' then
     config = { dir = config }
@@ -56,6 +75,7 @@ function cargo.init(config)
   local init
 
   local function halp(t, k)
+    print(t, k)
     local path = (t._path .. '/' .. k):gsub('^/+', '')
     local fileInfo = lf.getInfo(path, 'directory')
     if fileInfo then
@@ -100,5 +120,6 @@ function cargo.init(config)
 
   return init(config.dir)
 end
+]]--
 
 return cargo

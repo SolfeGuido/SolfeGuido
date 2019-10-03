@@ -18,7 +18,7 @@ function love.load()
     i18n.setLocale(Config.lang or 'en')
 
     _G['tr'] = function(data)
-        return i18n.translate(data, {default = data})
+        return i18n.translate(string.lower(data), {default = data})
     end
 
     local screens = {

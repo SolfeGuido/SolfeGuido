@@ -1,6 +1,7 @@
 -- cargo v0.1.1
 -- https://github.com/bjornbytes/cargo
 -- MIT License
+-- Modified and udpated By Azarias
 
 local cargo = {}
 
@@ -54,7 +55,7 @@ function cargo.init(path)
     local vPath = path .. '/' .. v
     local fInfo = lf.getInfo(vPath)
     if fInfo.type == 'file' then
-      local fName, _, extension = string.match(v, '(.+)(%.)([^.]+)$')
+      local fName, extension = string.match(v, '(.+)%.([^.]+)$')
       total[fName] = loaders[extension](vPath)
     elseif fInfo.type == 'directory' then
       total[v] = cargo.init(vPath)

@@ -22,9 +22,9 @@ function CreditsState:init()
                 state = 'MenuState'
             }
         }, {
-            {text = 'Created by Azarias'},
-            {text = 'With Löve2D'},
-            {text = 'And many libs'}
+            {text = 'created_by_azarias'},
+            {text = 'with_love2d'},
+            {text = 'and_many_libs'}
         }
     })
 end

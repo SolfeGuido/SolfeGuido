@@ -27,13 +27,13 @@ function HelpState:init()
             }
         },{
             {
-                text = 'Press the key corresponding to the hilighted note'
+                text = 'help_1'
             }, {
-                text = 'Each correct guess gives you a point'
+                text = 'help_2'
             }, {
-                text = 'Each wrong guess makes you loose' .. tostring(assets.config.timeLoss) .. ' seconds'
+                text = 'help_3'
             }, {
-                text = 'You can change the key to train on and the difficulty'
+                text = 'help_4'
             }
         }
     })

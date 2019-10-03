@@ -1,6 +1,6 @@
 return {
-    gKey = "Clé de Sol",
-    fKey = "Clé de Fa",
+    gkey = "Clé de Sol",
+    fkey = "Clé de Fa",
     play = 'Jouer',
     score = 'Score',
     options = 'Options',

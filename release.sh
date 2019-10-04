@@ -12,7 +12,7 @@ rm lib/lurker.lua
 
 rm release.sh
 # Make the releases
-love-release -W32 -D -M ../../solfege-release .
+love-release -W32 -W64 -D -M ../../solfege-release .
 
 # Cleanup self
 cd ..

@@ -44,9 +44,11 @@ end
 
 function love.draw()
     ScreenManager.draw()
+--- BEGIN DEBUG
     love.graphics.setColor(assets.config.color.black())
     fpsGraph:draw()
     memoryGraph:draw()
+--- END DEBUG
 end
 
 function love.update(dt)

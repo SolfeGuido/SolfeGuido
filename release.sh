@@ -6,8 +6,7 @@ cd ./game
 rm -rf game
 rm -rf .git
 rm -rf .vscode
-rm .gitignore
-sed -e -i '/--- BEGIN DEBUG/,/--- END DEBUG/d' main.lua
+sed -i -e '/--- BEGIN DEBUG/,/--- END DEBUG/d' main.lua
 rm lib/debugGraph.lua
 rm lib/lurker.lua
 

@@ -26,15 +26,10 @@ function HelpState:init()
                 state = 'MenuState'
             }
         },{
-            {
-                text = 'help_1'
-            }, {
-                text = 'help_2'
-            }, {
-                text = 'help_3'
-            }, {
-                text = 'help_4'
-            }
+            { text = 'help_1' },
+            { text = 'help_2' },
+            { text = 'help_3' },
+            { text = 'help_4' }
         }
     })
 end

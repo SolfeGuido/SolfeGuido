@@ -46,4 +46,18 @@ function love.conf(t)
     t.modules.touch = true              -- Enable the touch module (boolean)
     t.modules.video = true              -- Enable the video module (boolean)
     t.modules.window = true             -- Enable the window module (boolean)
+
+    t.releases = {
+        title = 'Solfege',              -- The project title (string)
+        package = 'solfege',            -- The project command and package name (string)
+        loveVersion = nil,        -- The project LÖVE version
+        version = '0.1v',            -- The project version
+        author = 'Azarias',             -- Your name (string)
+        email = 'azarias.boutin@mines-ales.org',              -- Your email (string)
+        description = 'Learn to read music sheet the fun way',        -- The project description (string)
+        homepage = 'https://github.com/AzariasB/Solfege',           -- The project homepage (string)
+        identifier = 'io.github.azariasb',         -- The project Uniform Type Identifier (string)
+        excludeFileList = { '.git', '.vscode', '.gitignore'},     -- File patterns to exclude. (string list)
+        releaseDirectory = nil,   -- Where to store the project releases (string)
+      }
 end

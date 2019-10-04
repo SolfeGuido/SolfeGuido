@@ -2,12 +2,15 @@ _G['assets'] = require('lib.cargo').init('res')
 
 require "lib.tesound"
 local i18n = require('lib.i18n')
-local debugGraph = require('lib.debugGraph')
-local fpsGraph = nil
-local memoryGraph = nil
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.Config')
 local ScoreManager = require('src.ScoreManager')
+
+--- BEGIN DEBUG
+local debugGraph = require('lib.debugGraph')
+local fpsGraph = nil
+local memoryGraph = nil
+--- END DEBUG
 
 function love.load()
     math.randomseed(os.time())
@@ -32,8 +35,11 @@ function love.load()
         HelpState = require('src.states.HelpState')
     }
     ScreenManager.init(screens, 'MenuState')
+
+--- BEGIN DEBUG
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200);
     memoryGraph = debugGraph:new('mem', love.graphics.getWidth() - 200, 50, 200)
+--- END DEBUG
 end
 
 function love.draw()
@@ -44,11 +50,13 @@ function love.draw()
 end
 
 function love.update(dt)
-    --require('lib.lurker').update()
     TEsound.cleanup()
+    ScreenManager.update(dt)
+--- BEGIN DEBUG
+    require('lib.lurker').update()
     fpsGraph:update(dt)
     memoryGraph:update(dt)
-    ScreenManager.update(dt)
+--- END DEBUG
 end
 
 function love.keypressed(key)

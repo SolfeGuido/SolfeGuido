@@ -16,7 +16,7 @@ return {
     created_by_azarias = 'Created by Azarias',
     with_love2d = 'With Love2d',
     and_many_libs = 'And many libs',
-    help_1 = 'Press the key corresponding to the hlighted note',
+    help_1 = 'Press the key corresponding to the hilighted note',
     help_2 = 'Each correct guess gives you a point',
     help_3 = 'Each wrong guess makes you loose 2 seconds',
     help_4 = 'You can chagne the key to train on and the difficulty',

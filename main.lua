@@ -55,7 +55,7 @@ function love.update(dt)
     TEsound.cleanup()
     ScreenManager.update(dt)
 --- BEGIN DEBUG
-    require('lib.lurker').update()
+    --require('lib.lurker').update()
     fpsGraph:update(dt)
     memoryGraph:update(dt)
 --- END DEBUG

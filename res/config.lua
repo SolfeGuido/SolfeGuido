@@ -26,7 +26,8 @@ local config = {
         lang = {'en', 'fr'},
         noteStyle = {'en', 'it'},
         keySelect = {'gKey', 'fKey'},
-        difficulty = {'1', '2', '3', '4', 'all'}
+        difficulty = {'1', '2', '3', '4', 'all'},
+        answerType = {'default', 'letters', 'buttons'}
     },
     configSave = 'config.lua',
     lineSpace = 20,

@@ -51,7 +51,7 @@ function State:addMultiSelector(config)
         text = msText,
         x = -msText:getWidth() * 3,
         y = config.y,
-        selected = Config[confName],
+        selected = Config[confName] or assets.config.userPreferences[confName][1],
         choices = assets.config.userPreferences[confName],
         color = assets.config.color.transparent(),
         callback = function(value) Config.update(confName, value) end
@@ -115,10 +115,12 @@ function State:createUI(uiConfig)
                 elemConfig.y = yPos
                 yPos = yPos + assets.config.lineHeight
             end
-            elements[#elements+1] = {
-                element = self['add' .. elemConfig.type](self, elemConfig),
-                target = {x = elemConfig.x, color = assets.config.color.black()}
-            }
+            if elemConfig.type ~= 'Space' then
+                elements[#elements+1] = {
+                    element = self['add' .. elemConfig.type](self, elemConfig),
+                    target = {x = elemConfig.x, color = assets.config.color.black()}
+                }
+            end
         end
         yPos = love.graphics.getHeight() / 3
         conf.x = conf.x + assets.config.limitLine

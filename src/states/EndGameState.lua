@@ -1,11 +1,7 @@
 
 -- LIBS
 local State = require('src.states.State')
-local ScreenManager = require('lib.ScreenManager')
 
---- Entities
-local Title = require('src.objects.Title')
-local Button = require('src.objects.button')
 
 ---@class EndGameState : State
 local EndGameState = State:extend()

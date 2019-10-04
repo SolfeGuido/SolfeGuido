@@ -47,21 +47,12 @@ function PauseState:draw()
     State.draw(self)
 end
 
-function PauseState:update(dt)
-    State.update(self, dt)
-end
 
-function PauseState:popBack()
+function PauseState:back()
     self:slideEntitiesOut()
     self.timer:tween(assets.config.transition.tween, self, {color = {1, 1, 1, 0}}, 'linear', function()
         ScreenManager.pop()
     end)
-end
-
-function PauseState:keypressed(key)
-    if key == "escape" then
-        self:popBack()
-    end
 end
 
 

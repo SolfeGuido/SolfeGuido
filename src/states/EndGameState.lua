@@ -53,16 +53,4 @@ function EndGameState:draw()
     State.draw(self)
 end
 
-function EndGameState:update(dt)
-    State.update(self, dt)
-end
-
-function EndGameState:popBack()
-    --Smooth transition to menu ?
-end
-
-function EndGameState:restart()
-
-end
-
 return EndGameState

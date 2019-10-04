@@ -120,8 +120,8 @@ function ScoreState:draw()
     Graphis.drawMusicBars()
 end
 
-function ScoreState:update(dt)
-    State.update(self, dt)
+function ScoreState:back()
+    self:switchState('MenuState')
 end
 
 return ScoreState

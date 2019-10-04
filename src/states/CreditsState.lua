@@ -34,8 +34,8 @@ function CreditsState:draw()
     Graphics.drawMusicBars()
 end
 
-function CreditsState:update(dt)
-    State.update(self, dt)
+function CreditsState:back()
+    self:switchState('MenuState')
 end
 
 return CreditsState

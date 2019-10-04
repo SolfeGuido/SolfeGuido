@@ -39,8 +39,8 @@ function HelpState:draw()
     Graphics.drawMusicBars()
 end
 
-function HelpState:update(dt)
-    State.update(self, dt)
+function HelpState:back()
+    self:switchState('MenuState')
 end
 
 return HelpState

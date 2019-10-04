@@ -58,17 +58,6 @@ function OptionsState:init(...)
     })
 end
 
-function OptionsState:update(dt)
-    State.update(self, dt)
-end
-
-function OptionsState:keypressed(key)
-    if key == 'escape' then
-        self:back()
-        return
-    end
-end
-
 function OptionsState:back()
     Config.save()
     self:switchState('MenuState')

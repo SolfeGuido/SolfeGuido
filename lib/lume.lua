@@ -161,7 +161,6 @@ function lume.isarray(x)
   return type(x) == "table" and x[1] ~= nil
 end
 
-
 function lume.push(t, ...)
   local n = select("#", ...)
   for i = 1, n do

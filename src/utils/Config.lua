@@ -15,7 +15,7 @@ function Config.parse()
     getSimpleLocale()
     local conf = {}
     if love.filesystem.getInfo(assets.config.configSave) then
-        conf = love.filesystem.load(assets.config.configSave)()
+        conf = lume.deserialize(love.filesystem.read(assets.config.configSave))
         for k,v in pairs(conf) do
             Config[k] = v
         end
@@ -48,18 +48,12 @@ function Config.update(key, value)
     Config.save()
 end
 
-function Config.save()
-    local elems = {"return {"}
-    for k,v in pairs(Config) do
-        if type(v) ~= "function" then
-            v = type(v) == 'string' and "'" .. v .. "'" or tostring(v)
-            elems[#elems+1] = k .. ' = ' .. v .. ','
-        end
-    end
-    elems[#elems+1] = '}'
+local function isFunction(x)
+    return type(x) == "function"
+end
 
-    local total = table.concat(elems, '\n')
-    love.filesystem.write(assets.config.configSave , total)
+function Config.save()
+    love.filesystem.write(assets.config.configSave , lume.serialize(lume.reject(Config, isFunction, true)))
 end
 
 

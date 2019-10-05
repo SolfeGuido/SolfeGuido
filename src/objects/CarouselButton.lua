@@ -10,7 +10,7 @@ end
 
 function CarouselButton:tweenIn()
     if not self.isDisposed then
-        self.area.timer:tween(assets.config.transition.tween, self, {color = assets.config.color.black()}, 'out-quad', function()
+        self.timer:tween(assets.config.transition.tween, self, {color = assets.config.color.black()}, 'out-quad', function()
             self:tweenOut()
         end)
     end
@@ -18,7 +18,7 @@ end
 
 function CarouselButton:tweenOut()
     if not self.isDisposed then
-        self.area.timer:tween(assets.config.transition.tween, self, {color = assets.config.color.transparent()}, 'out-quad', function()
+        self.timer:tween(assets.config.transition.tween, self, {color = assets.config.color.transparent()}, 'out-quad', function()
             self:tweenIn()
         end)
     end

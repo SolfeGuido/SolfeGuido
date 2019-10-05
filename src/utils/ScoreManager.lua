@@ -1,5 +1,5 @@
 
-local json = require('lib.json')
+local lume = require('lib.lume')
 local ScoreManager = {}
 
 local scores = {}
@@ -9,7 +9,7 @@ function ScoreManager.init()
     if love.filesystem.getInfo(assets.config.score.fileName) then
         local data = love.filesystem.read(assets.config.score.fileName)
         local str = love.data.decompress('string', assets.config.score.dataFormat, data)
-        existing = json.decode(str)
+        existing = lume.deserialize(str)
     end
 
     for _, key in ipairs(assets.config.userPreferences.keySelect) do
@@ -34,7 +34,7 @@ function ScoreManager.update(key, difficulty, score)
 end
 
 function ScoreManager.save()
-    local str = json.encode(scores)
+    local str = lume.serialize(scores)
     local data = love.data.compress('data',assets.config.score.dataFormat, str)
     love.filesystem.write(assets.config.score.fileName, data)
 end

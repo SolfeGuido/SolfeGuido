@@ -14,13 +14,13 @@ end
 function Selector:createAlpha()
     -- avoid memory leak with the timer
     if not self.isDisposed then
-        self.area.timer:tween(0.5, self, {color = {0, 0, 0, 0.1}}, 'linear', function() self:resetAlpha() end)
+        self.timer:tween(0.5, self, {color = {0, 0, 0, 0.1}}, 'linear', function() self:resetAlpha() end)
     end
 end
 
 function Selector:resetAlpha()
     if not self.isDisposed then
-        self.area.timer:tween(0.5, self, {color = {0, 0, 0, 1}}, 'linear', function() self:createAlpha() end)
+        self.timer:tween(0.5, self, {color = {0, 0, 0, 1}}, 'linear', function() self:createAlpha() end)
     end
 end
 

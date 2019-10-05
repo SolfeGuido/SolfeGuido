@@ -46,7 +46,7 @@ function Note:fadeAway()
 end
 
 function Note:fadeTo(color)
-    self.area.timer:tween(assets.config.note.fadeAway, self, {color = color}, 'linear', function() self.isDead = true end)
+    self.timer:tween(assets.config.note.fadeAway, self, {color = color}, 'linear', function() self.isDead = true end)
 end
 
 function Note:draw()
@@ -79,9 +79,10 @@ end
 
 ---@param dt number
 function Note:update(dt)
+    Note.super.update(self, dt)
     self.x = self.x - self.area:getMove()
     if self.x < 0 then
-        self.dispose(self)
+        self.isDead = true
     end
 end
 

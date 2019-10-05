@@ -138,11 +138,7 @@ function State:transition(elements, callback)
     self.timer:every(assets.config.transition.spacing, function()
         local data = elements[1]
         table.remove(elements, 1)
-        if #elements == 0 and callback then
-            self:addElement(data, callback)
-        else
-            self:addElement(data)
-        end
+        self:addElement(data, #elements == 0 and callback or nil)
     end, size)
 end
 
@@ -178,27 +174,19 @@ function State:close()
 end
 
 function State:switchState(statename)
-    self:slideEntitiesOut(function()
-        ScreenManager.switch(statename)
-    end)
+    self:slideEntitiesOut(function() ScreenManager.switch(statename) end)
+end
+
+local function yCompare(a,b)
+    return a.y > b.y
+end
+
+local function elemSlide(v)
+    return {element = v, target = {x = v.width and -v:width() or -20, color = assets.config.color.transparent()}}
 end
 
 function State:slideEntitiesOut(callback)
-    local ents = {}
-
-    -- table copy
-    for _,v in ipairs(self.entities) do
-        ents[#ents+1] = v
-    end
-    table.sort(ents, function(a,b)
-        return a.y > b.y
-    end)
-
-    local elements = {}
-    for _,v in pairs(ents) do
-        elements[#elements+1] = {element = v, target = {x = v.width and -v:width() or -20, color = assets.config.color.transparent()}}
-    end
-    self:transition(elements, callback)
+    self:transition( lume.map(lume.sort(self.entities, yCompare), elemSlide), callback)
 end
 
 return State

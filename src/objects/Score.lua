@@ -7,6 +7,11 @@ function Score:new(area, options)
     Entity.new(self, area, options)
 end
 
+function Score:dispose()
+    self.text:release()
+    Score.super.dispose(self)
+end
+
 function Score:draw()
     love.graphics.setColor(self.color)
     love.graphics.draw(self.text, self.x, self.y)

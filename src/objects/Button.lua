@@ -19,6 +19,12 @@ function Button:new(area, config)
     self.pressed = false
 end
 
+function Button:dispose()
+    self.selector.isDead = true
+    self.text:release()
+    Button.super.dispose(self)
+end
+
 function Button:width()
     return self.text:getWidth()
 end

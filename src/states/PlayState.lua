@@ -63,8 +63,10 @@ function PlayState:init(...)
 end
 
 function PlayState:close()
-    Scene.close(self)
     self.notes = nil
+    self.key = nil
+    self.stopWatch = nil
+    Scene.close(self)
 end
 
 ---@return number

@@ -8,6 +8,11 @@ function Title:new(area, options)
     Entity.new(self, area, options)
 end
 
+function Title:dispose()
+    self.text:release()
+    Title.super.dispose(self)
+end
+
 function Title:draw()
     love.graphics.setColor(self.color)
     love.graphics.draw(self.text, self.x, self.y)

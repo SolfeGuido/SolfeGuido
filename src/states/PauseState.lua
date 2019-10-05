@@ -28,7 +28,7 @@ function PauseState:addButtons()
             },{
                 type = 'Button',
                 text = 'Resume',
-                callback = function() self:popBack() end
+                callback = function() self:back() end
             }, {
                 type = 'Button',
                 text = 'Exit',

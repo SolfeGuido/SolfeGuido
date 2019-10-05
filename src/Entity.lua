@@ -13,7 +13,7 @@ function Entity:new(area, options)
     Entity.super.new(self)
     self.area = area
     self.timer = self.area.timer
-    self.isDisposed = false
+    self.isDead = false
     for k,v in pairs(options) do
         self[k] = v
     end

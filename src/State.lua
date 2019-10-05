@@ -92,8 +92,13 @@ end
 function State:update(dt)
     if not self.active then return end
     self.timer:update(dt)
-    for _,v in pairs(self.entities) do
-        v:update(dt)
+    for v = #self.entities, 1, -1 do
+        local entity = self.entities[v]
+        entity:update(dt)
+        if entity.isDead then
+            table.remove(self.entities, v)
+            entity:dispose()
+        end
     end
 end
 
@@ -164,7 +169,12 @@ function State:callOnEntities(method, ...)
 end
 
 function State:close()
-    self.entities = {}
+    for i = #self.entities, 1, -1 do
+        self.entities[i]:dispose()
+        table.remove(self.entities, i)
+    end
+    self.timer = nil
+    self.entities = nil
 end
 
 function State:switchState(statename)

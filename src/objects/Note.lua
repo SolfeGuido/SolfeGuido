@@ -46,7 +46,7 @@ function Note:fadeAway()
 end
 
 function Note:fadeTo(color)
-    self.area.timer:tween(assets.config.note.fadeAway, self, {color = color}, 'linear', function() self:dispose() end)
+    self.area.timer:tween(assets.config.note.fadeAway, self, {color = color}, 'linear', function() self.isDead = true end)
 end
 
 function Note:draw()

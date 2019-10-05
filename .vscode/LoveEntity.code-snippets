@@ -2,7 +2,7 @@
 	"LoveState": {
 		"prefix": "LoveEntity",
 		"body": [
-			"local Entity = require('src.entity')",
+			"local Entity = require('src.Entity')",
 			"",
 			"---@class $0 : Entity",
 			"local $0 = Entity:extend()",

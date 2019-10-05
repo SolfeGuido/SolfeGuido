@@ -1,13 +1,13 @@
 
 -- LIBS
-local State = require('src.states.State')
-local Graphis = require('src.Graphics')
-local ScoreManager = require('src.ScoreManager')
+local State = require('src.State')
+local Graphis = require('src.utils.Graphics')
+local ScoreManager = require('src.utils.ScoreManager')
 
 -- Entities
 local Title = require('src.objects.Title')
 local Line = require('src.objects.Line')
-local Button = require('src.objects.button')
+local Button = require('src.objects.Button')
 
 ---@class ScoreState : State
 local ScoreState = State:extend()
@@ -95,7 +95,7 @@ function ScoreState:init()
                     height = love.graphics.getHeight(),
                 }),
                 target = {x = middle, color = assets.config.color.gray()}
-            } 
+            }
         end
     end
 

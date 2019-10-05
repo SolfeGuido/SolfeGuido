@@ -1,4 +1,4 @@
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 
 ---@class Line : Entity
 local Line = Entity:extend()

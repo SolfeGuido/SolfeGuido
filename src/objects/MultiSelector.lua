@@ -1,4 +1,4 @@
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 local Rectangle = require('src.utils.Rectangle')
 local lume = require('lib.lume')
 

@@ -1,8 +1,8 @@
 
 --- LIBS
-local State = require('src.states.State')
-local Graphics = require('src.Graphics')
-local Config = require('src.Config')
+local State = require('src.State')
+local Graphics = require('src.utils.Graphics')
+local Config = require('src.utils.Config')
 
 ---@class OptionsState : State
 local OptionsState = State:extend()

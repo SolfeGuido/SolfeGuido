@@ -1,5 +1,5 @@
 
-local State = require('src.states.State')
+local State = require('src.State')
 local ScreenManager = require('lib.ScreenManager')
 
 

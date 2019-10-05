@@ -3,8 +3,8 @@ _G['assets'] = require('lib.cargo').init('res')
 require "lib.tesound"
 local i18n = require('lib.i18n')
 local ScreenManager = require('lib.ScreenManager')
-local Config = require('src.Config')
-local ScoreManager = require('src.ScoreManager')
+local Config = require('src.utils.Config')
+local ScoreManager = require('src.utils.ScoreManager')
 
 --- BEGIN DEBUG
 local debugGraph = require('lib.debugGraph')

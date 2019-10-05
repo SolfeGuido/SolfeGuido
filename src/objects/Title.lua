@@ -1,5 +1,5 @@
 
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 
 local Title = Entity:extend()
 

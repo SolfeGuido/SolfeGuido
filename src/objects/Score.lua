@@ -1,4 +1,4 @@
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 
 ---@class Score : Entity
 local Score = Entity:extend()

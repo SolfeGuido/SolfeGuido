@@ -1,6 +1,6 @@
 
 -- LIBS
-local State = require('src.states.State')
+local State = require('src.State')
 
 
 ---@class EndGameState : State

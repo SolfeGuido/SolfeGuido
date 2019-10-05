@@ -1,19 +1,18 @@
 
 -- LIBS
 local ScreenManager = require('lib.ScreenManager')
-local Graphics = require('src.Graphics')
-local Config = require('src.Config')
-local ScoreManager = require('src.ScoreManager')
+local Graphics = require('src.utils.Graphics')
+local Config = require('src.utils.Config')
+local ScoreManager = require('src.utils.ScoreManager')
 
 -- Parent
-local Scene = require('src.states.State')
+local Scene = require('src.State')
 
 -- Entities
-local Note = require('src.objects.note')
-local Queue = require('src.utils.queue')
-local GKey = require('src.objects.gkey')
-local FKey = require('src.objects.fkey')
-local StopWatch = require('src.objects.stopwatch')
+local Key = require('src.objects.Key')
+local Note = require('src.objects.Note')
+local Queue = require('src.utils.Queue')
+local StopWatch = require('src.objects.Stopwatch')
 local Score = require('src.objects.Score')
 
 
@@ -31,7 +30,7 @@ function PlayState:new()
     self.progress = 0
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
-    self.key = self:addentity(Config.keySelect == 'gKey' and GKey or FKey, {})
+    self.key = self:addentity(Key, {}, Config.keySelect == 'gKey' and assets.config.gKey or assets.config.fKey)
     self.stopWatch = self:addentity(StopWatch, {
         x = -assets.config.stopWatch.size,
         y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,

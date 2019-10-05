@@ -1,7 +1,7 @@
 
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 
-local Config = require('src.Config')
+local Config = require('src.utils.Config')
 
 --- Class used to represent the different possible keys in a music sheet (F, G for now)
 ---@class Key : Entity

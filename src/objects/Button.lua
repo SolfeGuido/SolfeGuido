@@ -1,7 +1,7 @@
 
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 local Rectangle = require('src.utils.Rectangle')
-local Selector = require('src.objects.selector')
+local Selector = require('src.objects.Selector')
 
 ---@class Button : Entity
 local Button = Entity:extend()

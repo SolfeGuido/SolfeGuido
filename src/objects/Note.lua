@@ -1,6 +1,6 @@
 
 
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 
 ---@class Note : Entity
 ---@field public area PlayState

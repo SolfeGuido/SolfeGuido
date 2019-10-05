@@ -1,4 +1,4 @@
-local Entity = require('src.entity')
+local Entity = require('src.Entity')
 
 ---@class CarouselButton : Entity
 local CarouselButton = Entity:extend()

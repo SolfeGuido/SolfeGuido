@@ -3,11 +3,11 @@
 local Class = require('lib.class')
 local Timer = require('lib.timer')
 local ScreenManager = require('lib.ScreenManager')
-local Config = require('src.Config')
+local Config = require('src.utils.Config')
 local lume = require('lib.lume')
 
 -- ENTITES
-local Button = require('src.objects.button')
+local Button = require('src.objects.Button')
 local Title = require('src.objects.Title')
 local MultiSelector = require('src.objects.MultiSelector')
 
@@ -76,14 +76,14 @@ function State:setActive(acv)
     self.active = acv
 end
 
-function State:addentity(Type, options)
-    local ent = Type(self, options)
-    self.entities[ent.id] = ent
+function State:addentity(Type, options, ...)
+    local ent = Type(self, options, ...)
+    self.entities[#self.entities+1] = ent
     return ent
 end
 
 function State:draw()
-    for _,v in pairs(self.entities) do
+    for _,v in ipairs(self.entities) do
         v:draw()
     end
 end
@@ -158,7 +158,7 @@ function State:mousereleased(x, y, button)
 end
 
 function State:callOnEntities(method, ...)
-    for _,v in pairs(self.entities) do
+    for _,v in ipairs(self.entities) do
         if v[method] then v[method](v, ...) end
     end
 end
@@ -175,7 +175,9 @@ end
 
 function State:slideEntitiesOut(callback)
     local ents = {}
-    for _,v in pairs(self.entities) do
+
+    -- table copy
+    for _,v in ipairs(self.entities) do
         ents[#ents+1] = v
     end
     table.sort(ents, function(a,b)

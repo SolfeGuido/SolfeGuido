@@ -1,7 +1,7 @@
 
 -- LIBS
-local State = require('src.states.State')
-local Graphics = require('src.Graphics')
+local State = require('src.State')
+local Graphics = require('src.utils.Graphics')
 
 
 ---@class HelpState : State

@@ -186,7 +186,10 @@ local function elemSlide(v)
 end
 
 function State:slideEntitiesOut(callback)
-    self:transition( lume.map(lume.sort(self.entities, yCompare), elemSlide), callback)
+    lume(self.entities)
+        :sort(yCompare)
+        :map(elemSlide)
+        :apply(function(x) self:transition(x, callback) end)
 end
 
 return State

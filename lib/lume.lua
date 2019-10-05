@@ -532,6 +532,15 @@ function lume.call(fn, ...)
   end
 end
 
+function lume.apply(...)
+  local args = {...}
+  local func = lume.last(args)
+  if iscallable(func) then
+    table.remove(args, #args)
+    func(unpack(args))
+  end
+end
+
 
 function lume.time(fn, ...)
   local start = os.clock()

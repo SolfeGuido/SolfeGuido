@@ -532,13 +532,16 @@ function lume.call(fn, ...)
   end
 end
 
-function lume.apply(...)
-  local args = {...}
-  local func = lume.last(args)
-  if iscallable(func) then
-    table.remove(args, #args)
-    func(unpack(args))
+function lume.reverse(arr)
+  local res = {}
+  for i = #arr, 1, -1 do
+    res[#res+1] = arr[i]
   end
+  return res
+end
+
+function lume.apply(...)
+  return lume.call(unpack(lume.reverse({...})))
 end
 
 

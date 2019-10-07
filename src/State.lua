@@ -177,9 +177,7 @@ function State:switchState(statename)
     self:slideEntitiesOut(function() ScreenManager.switch(statename) end)
 end
 
-local function yCompare(a,b)
-    return a.y > b.y
-end
+local yCompare = lume.lambda "a,b -> a.y > b.y"
 
 local function elemSlide(v)
     return {element = v, target = {x = v.width and -v:width() or -20, color = assets.config.color.transparent()}}

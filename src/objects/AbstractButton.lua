@@ -9,6 +9,15 @@ function AbstractButton:new(area, options)
     Entity.new(self, area, options)
     self.state = "neutral"
     self.consumed = false
+    self.animation = nil
+end
+
+function AbstractButton:animate(...)
+    if self.animation then
+        self.timer:cancel(self.animation)
+        self.animation = nil
+    end
+    self.animation = self.timer:tween(...)
 end
 
 function AbstractButton:dispose()
@@ -26,6 +35,7 @@ function AbstractButton:contains(x, y)
 end
 
 function AbstractButton:mousemoved(x, y)
+    if love.mouse.isDown(1) then return end
     if self:contains(x, y) and self.state == "neutral" then
         self.state = "hovered"
         if self.hovered then self:hovered() end
@@ -46,12 +56,16 @@ end
 
 function AbstractButton:mousereleased(x, y, button)
     if button == 1 and self.state == "pressed" then
+        if self.released then self:released() end
         if self:contains(x, y) then
-            self.state = "neutral"
+            self.state = "hovered"
             if not self.consumed then
                 self.consumed = true
                 if self.onclick then self:onclick() end
             end
+        else
+            self.state = "neutral"
+            if self.leave then self:leave() end
         end
     end
 end

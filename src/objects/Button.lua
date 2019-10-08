@@ -30,6 +30,14 @@ function Button:hovered()
     self.selector.visible = true
 end
 
+function Button:pressed()
+    self:animate(assets.config.transition.tween, self, {color = {0.7, 0.7, 0.7, 1}}, 'out-expo')
+end
+
+function Button:released()
+    self:animate(assets.config.transition.tween, self, {color = assets.config.color.black()}, 'out-expo')
+end
+
 function Button:leave()
     self.selector.visible = false
 end

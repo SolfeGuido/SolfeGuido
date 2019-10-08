@@ -51,6 +51,14 @@ function MultiSelector:hovered()
     self.selector.visible = true
 end
 
+function MultiSelector:pressed()
+    self:animate(assets.config.transition.tween, self, {color = {0.7, 0.7, 0.7, 1}}, 'out-expo')
+end
+
+function MultiSelector:released()
+    self:animate(assets.config.transition.tween, self, {color = assets.config.color.black()}, 'out-expo')
+end
+
 function MultiSelector:leave()
     self.selector.visible = false
 end

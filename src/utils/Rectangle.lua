@@ -17,9 +17,11 @@ function Rectangle:contains(x, y)
 end
 
 
+--- BEGIN DEBUG
 function Rectangle:debugDraw()
     love.graphics.setColor(0.8, 0, 0, 0.3)
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
 end
+--- END DEBUG
 
 return Rectangle

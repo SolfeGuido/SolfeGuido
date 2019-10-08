@@ -48,8 +48,10 @@ function AbstractButton:mousereleased(x, y, button)
     if button == 1 and self.state == "pressed" then
         if self:contains(x, y) then
             self.state = "neutral"
-            self.consumed = true
-            if self.onclick then self:onclick() end
+            if not self.consumed then
+                self.consumed = true
+                if self.onclick then self:onclick() end
+            end
         end
     end
 end

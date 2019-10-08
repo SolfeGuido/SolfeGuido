@@ -44,6 +44,7 @@ function MultiSelector:onclick()
     self.currentChoice = (self.currentChoice  % #self.choices) + 1
     self.selectedText:set( tr(self.choices[self.currentChoice]))
     if self.callback then self.callback(self.choices[self.currentChoice]) end
+    self.consumed = false
 end
 
 function MultiSelector:hovered()

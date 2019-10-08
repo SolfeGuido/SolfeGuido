@@ -14,7 +14,7 @@ function Button:new(area, config)
         visible = false
     })
     self.selector:createAlpha()
-    self.color = {0,0,0,0}
+    self.color = config.color or assets.config.color.black()
 end
 
 function Button:dispose()

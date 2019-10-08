@@ -11,6 +11,12 @@ function AbstractButton:new(area, options)
     self.consumed = false
 end
 
+function AbstractButton:dispose()
+    self.text:release()
+    self.text = nil
+    AbstractButton.super.dispose(self)
+end
+
 function AbstractButton:boundingBox()
     return Rectangle(self.x, self.y, self.text:getWidth(), self.text:getHeight())
 end

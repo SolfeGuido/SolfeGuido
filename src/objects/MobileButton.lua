@@ -1,24 +1,12 @@
 
 
-local Entity = require('src.Entity')
-local Rectangle = require('src.utils.Rectangle')
+local AbstractButton = require('src.objects.AbstractButton')
 
----@class MobileButton : Entity
-local MobileButton = Entity:extend()
+---@class MobileButton : AbstractButton
+local MobileButton = AbstractButton:extend()
 
 function MobileButton:new(area, options)
-    Entity.new(self, area, options)
-end
-
-function MobileButton:dispose()
-    self.text:release()
-    self.text = nil
-    Entity.dispose(self)
-    self.pressed = false
-end
-
-function MobileButton:boundingBox()
-    return Rectangle(self.x, self.y, self.text:getWidth(), self.text:getHeight())
+    AbstractButton.new(self, area, options)
 end
 
 function MobileButton:draw()

@@ -3,7 +3,7 @@ local AbstractButton = require('src.objects.AbstractButton')
 local Rectangle = require('src.utils.Rectangle')
 local Selector = require('src.objects.Selector')
 
----@class Button : Entity
+---@class Button : AbstractButton
 local Button = AbstractButton:extend()
 
 function Button:new(area, config)
@@ -19,7 +19,6 @@ end
 
 function Button:dispose()
     self.selector.isDead = true
-    self.text:release()
     Button.super.dispose(self)
 end
 

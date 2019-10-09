@@ -105,6 +105,8 @@ end
 function State:keypressed(key)
     if key == "escape" and self.back then
         self:back()
+    else
+        self:callOnEntities('keypressed', key)
     end
 end
 

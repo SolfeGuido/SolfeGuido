@@ -14,6 +14,7 @@ local Note = require('src.objects.Note')
 local Queue = require('src.utils.Queue')
 local StopWatch = require('src.objects.Stopwatch')
 local Score = require('src.objects.Score')
+local AnswerGiver = require('src.objects.AnswerGiver')
 
 
 ---@class PlayState : State
@@ -55,6 +56,10 @@ function PlayState:init(...)
         {element = self.key, target = {x = self.key.keyData.x, color = assets.config.color.black()}},
         {element = self.score, target = {x = assets.config.score.x, color = assets.config.color.black()}}
     }
+
+    self:addentity(AnswerGiver, {
+        callback = function(x) self:answerGiven(x) end
+    })
 
     self.finished = false
     self:transition(elements, function()
@@ -111,11 +116,13 @@ function PlayState:keypressed(key)
         ScreenManager.push('PauseState')
         return
     end
+end
 
+function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
     local currentNote = self.notes:peek()
     TEsound.play(self.key:getSoundFor(currentNote.note))
-    if self.key:isCorrect(currentNote.note, key) then
+    if self.key:isCorrect(currentNote.note, idx) then
         self.notes:shift():correct()
         self.score:gainPoint()
     else

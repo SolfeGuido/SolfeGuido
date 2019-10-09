@@ -27,12 +27,12 @@ function Key:draw()
     love.graphics.draw(self.image, self.x, base - self.y, 0 , scale , scale, self.keyData.xOrigin, self.keyData.yOrigin)
 end
 
----@param note number
----@param key string
+---@param expected number
+---@param actual string
 ---@return boolean
-function Key:isCorrect(note, key)
-    note = ((note + self.keyData.lowestNote) % 7) + 1
-    return assets.config.letterOrder[note] == key
+function Key:isCorrect(expected, actual)
+    local note = ((expected + self.keyData.lowestNote) % 7) + 1
+    return note == actual
 end
 
 ---@param note number

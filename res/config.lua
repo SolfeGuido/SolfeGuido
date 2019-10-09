@@ -19,7 +19,10 @@ local config = {
     color = {
         black = function() return {0, 0, 0, 1} end,
         transparent = function() return {0, 0, 0, 0} end,
-        gray = function() return {0.3, 0.3, 0.3, 0.3} end
+        gray = function() return {0.3, 0.3, 0.3, 0.3} end,
+        darkgray = function() return {0.3, 0.3, 0.3, 1} end,
+        lightgray = function() return {0.7, 0.7, 0.7, 1} end,
+        white = function() return {1, 1, 1, 1} end
     },
     userPreferences = {
         sound = {'on', 'off'},
@@ -45,6 +48,10 @@ local config = {
         size = 20,
         startColor = {0, 0.5, 0},
         endColor = { 0.5, 0 ,0}
+    },
+    mobileButton = {
+        fontSize = 30,
+        padding = 10
     },
     score = {
         dataFormat = 'zlib',

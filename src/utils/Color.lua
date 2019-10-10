@@ -35,11 +35,9 @@ end
 
 
 Color = setmetatable(Color, {
-    __call = function(...)
-        local args = {...}
-        local color = setmetatable({}, args[1])
-        table.remove(args, 1)
-        color:new(unpack(args))
+    __call = function(table, ...)
+        local color = setmetatable({}, table)
+        color:new(...)
         return color
     end
 })

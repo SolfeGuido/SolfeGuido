@@ -1,5 +1,7 @@
 
 
+---@class Color
+---@field public clone function
 local Color = {}
 
 local order = {
@@ -43,11 +45,17 @@ Color = setmetatable(Color, {
 })
 
 
+---@type Color
 Color.black = Color(0, 0, 0, 1)
+---@type Color
 Color.white = Color()
+---@type Color
 Color.transparent = Color(0, 0, 0, 0)
+---@type Color
 Color.stripe = Color(0.64, 0.77, 0.91, 0.91)
+---@type Color
 Color.watchStart = Color(0, 0.5, 0)
+---@type Color
 Color.watchEnd = Color(0.5, 0 ,0)
 
 Color.gray = function(gray)

@@ -15,10 +15,6 @@ local memoryGraph = nil
 
 
 function love.load()
-    local test = Color(1, 1, 1, 1)
-    test.r = 0.2
-    --print(test.r)
-    --print(unpack(test))
     math.randomseed(os.time())
     Config.parse()
     ScoreManager.init()
@@ -67,18 +63,24 @@ function love.update(dt)
 --- END DEBUG
 end
 
-function love.keypressed(key)
-    ScreenManager.keypressed(key)
+function love.mousemoved(x,y, _, _, istouch)
+    if not istouch then
+        ScreenManager.mousemoved(x, y)
+    end
 end
 
-function love.mousemoved(x,y)
-    ScreenManager.mousemoved(x, y)
+function love.mousepressed(x, y, button, istouch)
+    if not istouch then
+        ScreenManager.mousepressed(x, y, button)
+    end
 end
 
-function love.mousepressed(x, y, button)
-    ScreenManager.mousepressed(x, y, button)
+function love.mousereleased(x, y, button, istouch)
+    if not istouch then
+        ScreenManager.mousereleased(x, y, button)
+    end
 end
-
-function love.mousereleased(x, y, button)
-    ScreenManager.mousereleased(x, y, button)
-end
+love.keypressed = ScreenManager.keypressed
+love.touchpressed = ScreenManager.touchpressed
+love.touchmoved = ScreenManager.touchmoved
+love.touchreleased = ScreenManager.touchreleased

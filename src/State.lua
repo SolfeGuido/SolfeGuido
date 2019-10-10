@@ -17,6 +17,11 @@ local MultiSelector = require('src.objects.MultiSelector')
 ---@field public timer Timer
 local State = Class:extend()
 
+local function stateCall(methodName)
+    return function(tbl, ...) return tbl:callOnEntities(methodName, ...) end
+end
+local redirectedevents = {'mousemoved', 'mousepressed', 'mousereleased', 'touchpressed', 'touchmoved', 'touchreleased'}
+
 function State:new()
     State.super.new(self)
     self.entities = {}
@@ -149,18 +154,6 @@ function State:addElement(data, callback)
     self.timer:tween(assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
 end
 
-function State:mousemoved(x, y)
-    self:callOnEntities('mousemoved', x, y)
-end
-
-function State:mousepressed(x, y, button)
-    self:callOnEntities('mousepressed', x, y, button)
-end
-
-function State:mousereleased(x, y, button)
-    self:callOnEntities('mousereleased', x, y, button)
-end
-
 function State:callOnEntities(method, ...)
     for _,v in ipairs(self.entities) do
         if v[method] then v[method](v, ...) end
@@ -191,6 +184,10 @@ function State:slideEntitiesOut(callback)
         :sort(yCompare)
         :map(elemSlide)
         :apply(function(x) self:transition(x, callback) end)
+end
+
+for _, v in ipairs(redirectedevents) do
+    State[v] = stateCall(v)
 end
 
 return State

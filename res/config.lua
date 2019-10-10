@@ -16,14 +16,6 @@ notes[#notes+1] = 'E6'
 
 
 local config = {
-    color = {
-        black = function() return {0, 0, 0, 1} end,
-        transparent = function() return {0, 0, 0, 0} end,
-        gray = function() return {0.3, 0.3, 0.3, 0.3} end,
-        darkgray = function() return {0.3, 0.3, 0.3, 1} end,
-        lightgray = function() return {0.7, 0.7, 0.7, 1} end,
-        white = function() return {1, 1, 1, 1} end
-    },
     userPreferences = {
         sound = {'on', 'off'},
         lang = {'en', 'fr'},
@@ -46,8 +38,6 @@ local config = {
         x = 15,
         y = 15,
         size = 20,
-        startColor = {0, 0.5, 0},
-        endColor = { 0.5, 0 ,0}
     },
     mobileButton = {
         fontSize = 30,
@@ -105,7 +95,6 @@ local config = {
         image = 'note';
         padding = 10,
         distance = 50,
-        backgroundColor = {0.64, 0.77, 0.91, 0.91},
         fadeAway = 1.5
     }
 }

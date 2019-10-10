@@ -1,6 +1,7 @@
 
 
 local Entity = require('src.Entity')
+local Color = require('src.utils.Color')
 
 ---@class Note : Entity
 ---@field public area PlayState
@@ -11,7 +12,7 @@ function Note:new(area, options)
     Note.super.new(self, area, options)
     self.y = self:noteToPosition(self.note)
     self.image = assets.images.note
-    self.color = assets.config.color.black()
+    self.color = Color.black:clone()
     self.name = nil
 end
 
@@ -37,12 +38,12 @@ end
 
 function Note:wrong()
     self.color = {0.5, 0, 0, 1}
-    self:fadeTo(assets.config.color.transparent())-- {0.5, 0, 0, 0})
+    self:fadeTo(Color.transparent)
     self.name = self.area.key:getNoteName(self.note)
 end
 
 function Note:fadeAway()
-    self:fadeTo(assets.config.color.transparent())
+    self:fadeTo( Color.transparent)
 end
 
 function Note:fadeTo(color)
@@ -51,7 +52,7 @@ end
 
 function Note:draw()
     --Color for the (optional) bars
-    love.graphics.setColor(0, 0, 0, self.color[4])
+    love.graphics.setColor(0, 0, 0, self.color.a)
     love.graphics.setLineWidth(1)
     local scale = assets.config.note.height / self.image:getHeight()
     local xOrig = assets.config.note.xOrigin

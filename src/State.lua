@@ -5,6 +5,7 @@ local Timer = require('lib.timer')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 local lume = require('lib.lume')
+local Color = require('src.utils.Color')
 
 -- ENTITES
 local Button = require('src.objects.Button')
@@ -38,7 +39,7 @@ function State:addButton(config)
         text = btnText,
         x = -btnText:getWidth(),
         y = config.y,
-        color = assets.config.color.transparent(),
+        color = Color.transparent:clone(),
         callback = config.callback
     })
 end
@@ -53,7 +54,7 @@ function State:addMultiSelector(config)
         y = config.y,
         selected = Config[confName] or assets.config.userPreferences[confName][1],
         choices = assets.config.userPreferences[confName],
-        color = assets.config.color.transparent(),
+        color = Color.transparent:clone(),
         callback = function(value) Config.update(confName, value) end
     })
 end
@@ -63,7 +64,7 @@ function State:addTitle(config)
     return self:addentity(Title, {
         x = -titleText:getWidth(),
         y = config.y,
-        color = assets.config.color.transparent(),
+        color = Color.transparent:clone(),
         text = titleText
     })
 end
@@ -125,7 +126,7 @@ function State:createUI(uiConfig)
             if elemConfig.type ~= 'Space' then
                 elements[#elements+1] = {
                     element = self['add' .. elemConfig.type](self, elemConfig),
-                    target = {x = elemConfig.x, color = assets.config.color.black()}
+                    target = {x = elemConfig.x, color = Color.black}
                 }
             end
         end
@@ -182,7 +183,7 @@ end
 local yCompare = lume.lambda "a,b -> a.y > b.y"
 
 local function elemSlide(v)
-    return {element = v, target = {x = v.width and -v:width() or -20, color = assets.config.color.transparent()}}
+    return {element = v, target = {x = v.width and -v:width() or -20, color = Color.transparent}}
 end
 
 function State:slideEntitiesOut(callback)

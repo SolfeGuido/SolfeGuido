@@ -1,7 +1,12 @@
-local AbstractButton = require('src.objects.AbstractButton')
+
+
+--- LIBS
 local Rectangle = require('src.utils.Rectangle')
 local lume = require('lib.lume')
+local Color = require('src.utils.Color')
 
+--- Entities
+local AbstractButton = require('src.objects.AbstractButton')
 local CarouselButton = require('src.objects.CarouselButton')
 
 ---@class MultiSelector : AbstractButton
@@ -13,7 +18,7 @@ function MultiSelector:new(area, options)
     self.selectedText = love.graphics.newText(self.text:getFont(), tr(self.selected))
     self.selector = self.area:addentity(CarouselButton, {
         target = self,
-        color = assets.config.color.transparent(),
+        color = Color.transparent:clone(),
         visible = false
     })
 end
@@ -56,7 +61,7 @@ function MultiSelector:pressed()
 end
 
 function MultiSelector:released()
-    self:animate(assets.config.transition.tween, self, {color = assets.config.color.black()}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
 end
 
 function MultiSelector:leave()

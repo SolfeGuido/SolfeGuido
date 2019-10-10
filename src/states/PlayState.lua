@@ -4,6 +4,7 @@ local ScreenManager = require('lib.ScreenManager')
 local Graphics = require('src.utils.Graphics')
 local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
+local Color = require('src.utils.Color')
 
 -- Parent
 local Scene = require('src.State')
@@ -46,15 +47,15 @@ function PlayState:new()
         y = assets.config.score.y,
         points = 0,
         text =  scoreText,
-        color = assets.config.color.transparent()
+        color = Color.transparent:clone()
     })
 end
 
 function PlayState:init(...)
     local elements = {
         {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}},
-        {element = self.key, target = {x = self.key.keyData.x, color = assets.config.color.black()}},
-        {element = self.score, target = {x = assets.config.score.x, color = assets.config.color.black()}}
+        {element = self.key, target = {x = self.key.keyData.x, color = Color.black}},
+        {element = self.score, target = {x = assets.config.score.x, color = Color.black}}
     }
 
     self:addentity(AnswerGiver, {
@@ -98,7 +99,7 @@ function PlayState:draw()
     local width = Note.width()
     if not self.notes:isEmpty() then
         local x = self.notes:peek().x
-        love.graphics.setColor(unpack(assets.config.note.backgroundColor))
+        love.graphics.setColor(Color.stripe)
         love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
     end
 

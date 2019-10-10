@@ -3,6 +3,7 @@
 local State = require('src.State')
 local Graphis = require('src.utils.Graphics')
 local ScoreManager = require('src.utils.ScoreManager')
+local Color = require('src.utils.Color')
 
 -- Entities
 local Title = require('src.objects.Title')
@@ -25,11 +26,11 @@ function ScoreState:init()
         {
             element = self:addentity(Title, {
                 text = titleText,
-                color = assets.config.color.transparent(),
+                color = Color.transparent:clone(),
                 y = 0,
                 x = -titleText:getWidth()
             }),
-            target = {x = 30, color = assets.config.color.black()}
+            target = {x = 30, color = Color.black}
         }
     }
 
@@ -40,11 +41,11 @@ function ScoreState:init()
         elements[#elements+1] = {
             element = self:addentity(Title, {
                 text = text,
-                color = assets.config.color.transparent(),
+                color = Color.transparent:clone(),
                 y = middle,
                 x = - text:getWidth()
             }),
-            target = {x = 30, color = assets.config.color.black()}
+            target = {x = 30, color =  Color.black}
         }
         middle = middle + assets.config.lineHeight
     end
@@ -60,11 +61,11 @@ function ScoreState:init()
         elements[#elements+1] = {
             element = self:addentity(Title, {
                 text = text,
-                color = assets.config.color.transparent(),
+                color = Color.transparent:clone(),
                 y = love.graphics.getHeight() / 3,
                 x = -text:getWidth()
             }),
-            target = {x = middle + padding, color = assets.config.color.black() }
+            target = {x = middle + padding, color = Color.black}
         }
         local yPos = love.graphics.getHeight() / 3 + assets.config.lineHeight
         for _, key in ipairs(entries) do
@@ -74,11 +75,11 @@ function ScoreState:init()
             elements[#elements+1] = {
                 element = self:addentity(Title, {
                     text = text,
-                    color = assets.config.color.transparent(),
+                    color = Color.transparent:clone(),
                     y = yPos,
                     x = -text:getWidth()
                 }),
-                target = {x = middle + padding, color = assets.config.color.black()}
+                target = {x = middle + padding, color = Color.black}
             }
             yPos = yPos + assets.config.lineHeight
         end
@@ -89,12 +90,12 @@ function ScoreState:init()
         if i ~= #levels then
             elements[#elements+1] = {
                 element = self:addentity(Line, {
-                    color = assets.config.color.transparent(),
+                    color = Color.transparent:clone(),
                     x = -1,
                     y = 0,
                     height = love.graphics.getHeight(),
                 }),
-                target = {x = middle, color = assets.config.color.gray()}
+                target = {x = middle, color = Color.gray(0.5)}
             }
         end
     end
@@ -106,9 +107,9 @@ function ScoreState:init()
             text = text,
             x = -text:getWidth(),
             y = love.graphics.getHeight() / 3 + (assets.config.lineHeight * 5),
-            color = assets.config.color.transparent()
+            color = Color.transparent:clone()
         }),
-        target = {x = 30, color = assets.config.color.black()}
+        target = {x = 30, color = Color.black}
     }
 
     self:transition(elements)

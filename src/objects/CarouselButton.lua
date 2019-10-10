@@ -1,4 +1,6 @@
+
 local Entity = require('src.Entity')
+local Color = require('src.utils.Color')
 
 ---@class CarouselButton : Entity
 local CarouselButton = Entity:extend()
@@ -10,7 +12,7 @@ end
 
 function CarouselButton:tweenIn()
     if not self.isDisposed then
-        self.timer:tween(assets.config.transition.tween, self, {color = assets.config.color.black()}, 'out-quad', function()
+        self.timer:tween(assets.config.transition.tween, self, {color = Color.black}, 'out-quad', function()
             self:tweenOut()
         end)
     end
@@ -18,7 +20,7 @@ end
 
 function CarouselButton:tweenOut()
     if not self.isDisposed then
-        self.timer:tween(assets.config.transition.tween, self, {color = assets.config.color.transparent()}, 'out-quad', function()
+        self.timer:tween(assets.config.transition.tween, self, {color = Color.transparent}, 'out-quad', function()
             self:tweenIn()
         end)
     end

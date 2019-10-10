@@ -5,6 +5,7 @@ local i18n = require('lib.i18n')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
+local Color = require('src.utils.Color')
 
 --- BEGIN DEBUG
 local debugGraph = require('lib.debugGraph')
@@ -12,7 +13,12 @@ local fpsGraph = nil
 local memoryGraph = nil
 --- END DEBUG
 
+
 function love.load()
+    local test = Color(1, 1, 1, 1)
+    test.r = 0.2
+    --print(test.r)
+    --print(unpack(test))
     math.randomseed(os.time())
     Config.parse()
     ScoreManager.init()
@@ -45,7 +51,7 @@ end
 function love.draw()
     ScreenManager.draw()
 --- BEGIN DEBUG
-    love.graphics.setColor(assets.config.color.black())
+    love.graphics.setColor(Color.black)
     fpsGraph:draw()
     memoryGraph:draw()
 --- END DEBUG

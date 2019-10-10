@@ -1,6 +1,7 @@
 
 
 local Entity = require('src.Entity')
+local Color = require('src.utils.Color')
 
 local Draft = require('lib.draft')
 local draft = Draft()
@@ -12,13 +13,13 @@ local StopWatch = Entity:extend()
 
 function StopWatch:new(area, config)
     Entity.new(self, area, config)
-    self.color = assets.config.stopWatch.startColor
+    self.color = Color.watchStart:clone()
     self.time = assets.config.trialTime
 end
 
 function StopWatch:start()
     self.started = true
-    self.timer:tween(assets.config.trialTime, self, {color = assets.config.stopWatch.endColor})
+    self.timer:tween(assets.config.trialTime, self, {color = Color.watchEnd})
 end
 
 ---@param dt number

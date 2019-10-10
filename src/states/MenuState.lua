@@ -2,6 +2,7 @@
 -- LIBS
 local State = require('src.State')
 local Graphics = require('src.utils.Graphics')
+local Color = require('src.utils.Color')
 
 ---@class MenuState : State
 local MenuState = State:extend()
@@ -64,7 +65,7 @@ function MenuState:draw()
     MenuState.super.draw(self)
     Graphics.drawMusicBars()
     love.graphics.setLineWidth(1)
-    love.graphics.setColor(assets.config.color.black())
+    love.graphics.setColor(Color.black)
     love.graphics.line(assets.config.limitLine, 0, assets.config.limitLine, love.graphics.getHeight())
 end
 

@@ -1,6 +1,11 @@
 
-local AbstractButton = require('src.objects.AbstractButton')
+
+-- LIBS
+local Color = require('src.utils.Color')
 local Rectangle = require('src.utils.Rectangle')
+
+-- Entities
+local AbstractButton = require('src.objects.AbstractButton')
 local Selector = require('src.objects.Selector')
 
 ---@class Button : AbstractButton
@@ -14,7 +19,7 @@ function Button:new(area, config)
         visible = false
     })
     self.selector:createAlpha()
-    self.color = config.color or assets.config.color.black()
+    self.color = config.color or Color.black:clone()
 end
 
 function Button:dispose()
@@ -35,7 +40,7 @@ function Button:pressed()
 end
 
 function Button:released()
-    self:animate(assets.config.transition.tween, self, {color = assets.config.color.black()}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
 end
 
 function Button:leave()

@@ -19,8 +19,13 @@ local function makeSound(path)
 end
 
 local function makeFont(path)
+  -- Using a cache because the font are used all around the app, no need to released them at any moment
+  local cache = {}
   return function(size)
-    return lg.newFont(path, size)
+    if cache[size] then return cache[size] end
+    local ft =  lg.newFont(path, size)
+    cache[size] = ft
+    return ft
   end
 end
 

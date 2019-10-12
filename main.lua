@@ -1,10 +1,5 @@
-_G['assets'] = require('lib.cargo').init('res')
-
 require "lib.tesound"
-local i18n = require('lib.i18n')
 local ScreenManager = require('lib.ScreenManager')
-local Config = require('src.utils.Config')
-local ScoreManager = require('src.utils.ScoreManager')
 local Color = require('src.utils.Color')
 
 --- BEGIN DEBUG
@@ -15,18 +10,12 @@ local memoryGraph = nil
 
 
 function love.load()
-    math.randomseed(os.time())
-    Config.parse()
-    ScoreManager.init()
-    ScoreManager.save()
-    i18n.load(assets.lang)
-    i18n.setLocale(Config.lang or 'en')
-
-    _G['tr'] = function(data)
-        return i18n.translate(string.lower(data), {default = data})
+    if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+        love.window.setFullscreen(true, "exclusive")
     end
 
     local screens = {
+        SplashScreenState = require('src.states.SplashScreenState'),
         PlayState = require('src.states.PlayState'),
         MenuState = require('src.states.MenuState'),
         PauseState = require('src.states.PauseState'),
@@ -36,7 +25,7 @@ function love.load()
         EndGameState = require('src.states.EndGameState'),
         HelpState = require('src.states.HelpState')
     }
-    ScreenManager.init(screens, 'MenuState')
+    ScreenManager.init(screens, 'SplashScreenState')
 
 --- BEGIN DEBUG
     fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200);

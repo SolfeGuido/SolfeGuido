@@ -49,21 +49,23 @@ cargo.loaders = {
   fnt = lg and lg.newFont
 }
 
-function cargo.init(path)
+function cargo.init(path, parts)
   local loaders = cargo.loaders
 
   local total = {}
 
   local start = lf.getDirectoryItems(path, 'directory')
   if not start or #start == 0 then return total end
+  local yields = parts / #start
   for _,v in ipairs(start) do
     local vPath = path .. '/' .. v
     local fInfo = lf.getInfo(vPath)
     if fInfo.type == 'file' then
       local fName, extension = string.match(v, '(.+)%.([^.]+)$')
       total[fName] = loaders[extension](vPath)
+      coroutine.yield(yields)
     elseif fInfo.type == 'directory' then
-      total[v] = cargo.init(vPath)
+      total[v] = cargo.init(vPath, yields)
     end
   end
 

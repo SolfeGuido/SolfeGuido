@@ -57,7 +57,8 @@ function OptionsState:init(...)
             {
                 text = 'Answer',
                 type = 'MultiSelector',
-                config = 'answerType'
+                config = 'answerType',
+                mobile = false
             }
         }
     })

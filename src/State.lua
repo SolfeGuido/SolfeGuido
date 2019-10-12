@@ -6,6 +6,7 @@ local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 local lume = require('lib.lume')
 local Color = require('src.utils.Color')
+local Mobile = require('src.utils.Mobile')
 
 -- ENTITES
 local Button = require('src.objects.Button')
@@ -119,20 +120,22 @@ end
 function State:createUI(uiConfig)
     local yPos = love.graphics.getHeight() / 3
     local defaultFont = assets.MarckScript(assets.config.lineHeight)
-    local conf = {x = 30, font = defaultFont, type = 'Title'}
+    local conf = {x = 30, font = defaultFont, type = 'Title', mobile = true}
     local elements = {}
     for _, column in ipairs(uiConfig) do
         for _, elemConfig in ipairs(column) do
             elemConfig = lume.merge(conf, elemConfig)
-            if not elemConfig.y then
-                elemConfig.y = yPos
-                yPos = yPos + assets.config.lineHeight
-            end
-            if elemConfig.type ~= 'Space' then
-                elements[#elements+1] = {
-                    element = self['add' .. elemConfig.type](self, elemConfig),
-                    target = {x = elemConfig.x, color = Color.black}
-                }
+            if elemConfig.mobile or not Mobile.isMobile then
+                if not elemConfig.y then
+                    elemConfig.y = yPos
+                    yPos = yPos + assets.config.lineHeight
+                end
+                if elemConfig.type ~= 'Space' then
+                    elements[#elements+1] = {
+                        element = self['add' .. elemConfig.type](self, elemConfig),
+                        target = {x = elemConfig.x, color = Color.black}
+                    }
+                end
             end
         end
         yPos = love.graphics.getHeight() / 3

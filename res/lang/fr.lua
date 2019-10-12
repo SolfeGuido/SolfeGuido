@@ -32,5 +32,9 @@ return {
     resume = 'Continuer',
     exit = 'Quitter',
     finished = 'Terminé',
-    restart = 'Recommencer'
+    restart = 'Recommencer',
+    answer = 'Contrôles',
+    buttons = 'Boutons',
+    default = 'Par défaut',
+    letters = 'Lettres (anglais)'
 }

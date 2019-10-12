@@ -1,6 +1,7 @@
 require "lib.tesound"
 local ScreenManager = require('lib.ScreenManager')
 local Color = require('src.utils.Color')
+local Mobile = require('src.utils.Mobile')
 
 --- BEGIN DEBUG
 local debugGraph = require('lib.debugGraph')
@@ -10,9 +11,7 @@ local memoryGraph = nil
 
 
 function love.load()
-    if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
-        love.window.setFullscreen(true, "exclusive")
-    end
+    Mobile.load()
 
     local screens = {
         SplashScreenState = require('src.states.SplashScreenState'),

@@ -32,5 +32,9 @@ return {
     resume = 'Resume',
     exit = 'Exit',
     finished = 'Finished',
-    restart = 'Restart'
+    restart = 'Restart',
+    answer = 'Answer',
+    buttons = 'Buttons',
+    default = 'Default',
+    letters = 'Letters'
 }

@@ -55,12 +55,11 @@ function AbstractButton:touchreleased(id, x, y)
     if not self.fingerId or id ~= self.fingerId then return end
     self.fingerId = nil
     self.state = 'neutral'
+    self:leave()
+    self:released()
     if self:contains(x, y) then
-        self:released()
         self.consumed = true
         self:onclick()
-    else
-        self:leave()
     end
 end
 

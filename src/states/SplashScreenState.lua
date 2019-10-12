@@ -4,6 +4,9 @@ local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
 local i18n = require('lib.i18n')
 local ScreeManager = require('lib.ScreenManager')
+local Color = require('src.utils.Color')
+
+local Line = require('src.objects.Line')
 
 ---@class SplashScreenState : State
 local SplashScreenState = State:extend()
@@ -13,14 +16,14 @@ function SplashScreenState:new()
     State.new(self)
     self.coroutine = nil
     self.totalLoading = 0
-    self.color = {0, 0, 0, 1}
 end
 
 function SplashScreenState:draw()
     State.draw(self)
     love.graphics.setBackgroundColor(1, 1, 1, 1)
-    love.graphics.setColor(self.color)
-    local middle = math.floor(love.graphics.getHeight() / 2)
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.setLineWidth(1)
+    local middle = love.graphics.getHeight() / 3 + 20
     local progress = love.graphics.getWidth() * (self.totalLoading / 100)
     love.graphics.line(0, middle , progress, middle)
 end
@@ -53,12 +56,32 @@ function SplashScreenState:update(dt)
             end
             if coroutine.status(self.coroutine) == "dead" then
                 self.coroutine = "done"
-                self.timer:tween(assets.config.transition.tween, self, { color = {0, 0, 0, 0}}, 'out-expo', function()
-                    ScreeManager.switch('MenuState')
-                end)
+                self:displayLines()
             end
         end
     end
+end
+
+function SplashScreenState:displayLines()
+    local middle = love.graphics.getHeight() / 3 + assets.config.lineHeight
+    for i = 1,4 do
+        local ypos = middle + assets.config.lineHeight * i
+        local line = self:addentity(Line, {
+            x = 0,
+            y = ypos,
+            width = 0,
+        })
+        self.timer:tween(assets.config.transition.tween, line, {width = love.graphics.getWidth()}, 'out-expo')
+    end
+
+    local line = self:addentity(Line, {
+        x = assets.config.limitLine,
+        y = 0,
+        height = 0,
+    })
+    self.timer:tween(assets.config.transition.tween, line, {height = love.graphics.getHeight()}, 'out-expo', function()
+        ScreeManager.switch('MenuState')
+    end)
 end
 
 return SplashScreenState

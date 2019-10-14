@@ -11,6 +11,16 @@ local Line = require('src.objects.Line')
 ---@class SplashScreenState : State
 local SplashScreenState = State:extend()
 
+local allStates = {
+    PlayState = require('src.states.PlayState'),
+    MenuState = require('src.states.MenuState'),
+    PauseState = require('src.states.PauseState'),
+    OptionsState  = require('src.states.OptionsState'),
+    ScoreState = require('src.states.ScoreState'),
+    CreditsState = require('src.states.CreditsState'),
+    EndGameState = require('src.states.EndGameState'),
+    HelpState = require('src.states.HelpState')
+}
 
 function SplashScreenState:new()
     State.new(self)
@@ -28,38 +38,44 @@ function SplashScreenState:draw()
     love.graphics.line(0, middle , progress, middle)
 end
 
+function SplashScreenState:createCoroutine()
+    return coroutine.create(function()
+        math.randomseed(os.time())
+        _G['assets'] = require('lib.cargo').init('res', 97)
+        Config.parse()
+        Mobile.configure()
+        coroutine.yield(1)
+        ScoreManager.init()
+        coroutine.yield(1)
+        i18n.load(assets.lang)
+        i18n.setLocale(Config.lang or 'en')
+        _G['tr'] = function(data)
+            return i18n.translate(string.lower(data), {default = data})
+        end
+        -- Create the two main fonts
+        assets.MarckScript(assets.config.lineHeight)
+        assets.MarckScript(40)
+        coroutine.yield(1)
+    end)
+end
+
+function SplashScreenState:updateCoroutine()
+    local success, progress = coroutine.resume(self.coroutine)
+    if success then
+        self.totalLoading = self.totalLoading + (progress or 0)
+    end
+    if coroutine.status(self.coroutine) == "dead" then
+        self.coroutine = "done"
+        self:displayLines()
+    end
+end
+
 function SplashScreenState:update(dt)
     State.update(self, dt)
     if not self.coroutine then
-        self.coroutine = coroutine.create(function()
-            math.randomseed(os.time())
-            _G['assets'] = require('lib.cargo').init('res', 97)
-            Config.parse()
-            Mobile.configure()
-            coroutine.yield(1)
-            ScoreManager.init()
-            coroutine.yield(1)
-            i18n.load(assets.lang)
-            i18n.setLocale(Config.lang or 'en')
-            _G['tr'] = function(data)
-                return i18n.translate(string.lower(data), {default = data})
-            end
-            -- Create the two main fonts
-            assets.MarckScript(assets.config.lineHeight)
-            assets.MarckScript(40)
-            coroutine.yield(1)
-        end)
-    else
-        if self.coroutine ~= "done" then
-            local success, progress = coroutine.resume(self.coroutine)
-            if success then
-                self.totalLoading = self.totalLoading + (progress or 0)
-            end
-            if coroutine.status(self.coroutine) == "dead" then
-                self.coroutine = "done"
-                self:displayLines()
-            end
-        end
+        self.coroutine = self:createCoroutine()
+    elseif self.coroutine ~= "done" then
+        self:updateCoroutine()
     end
 end
 
@@ -81,7 +97,8 @@ function SplashScreenState:displayLines()
         height = 0,
     })
     self.timer:tween(assets.config.transition.tween, line, {height = love.graphics.getHeight()}, 'out-expo', function()
-        ScreeManager.switch('MenuState')
+        -- Load all states this time
+        ScreeManager.init(allStates, 'MenuState')
     end)
 end
 

@@ -57,7 +57,7 @@ function ScoreState:init()
     space = space / #levels
     for i,v in ipairs(levels) do
         local text = love.graphics.newText(font, v)
-        local padding = (assets.config.limitLine - text:getWidth()) / 2
+        local padding = (space - text:getWidth()) / 2
         elements[#elements+1] = {
             element = self:addentity(Title, {
                 text = text,
@@ -71,7 +71,7 @@ function ScoreState:init()
         for _, key in ipairs(entries) do
             local score = ScoreManager.get(key, v)
             text = love.graphics.newText(font, tostring(score))
-            padding = (assets.config.limitLine - text:getWidth()) / 2
+            padding = (space - text:getWidth()) / 2
             elements[#elements+1] = {
                 element = self:addentity(Title, {
                     text = text,

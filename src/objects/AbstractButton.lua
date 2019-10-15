@@ -34,6 +34,14 @@ function AbstractButton:onclick() end
 function AbstractButton:released() end
 function AbstractButton:hovered() end
 
+function AbstractButton:handleClick()
+    if not self.consumed then
+        self.consumed = true
+        TEsound.play(assets.sounds.click)
+        self:onclick()
+    end
+end
+
 function AbstractButton:boundingBox()
     return Rectangle(self.x, self.y, self.text:getWidth(), self.text:getHeight())
 end
@@ -58,8 +66,7 @@ function AbstractButton:touchreleased(id, x, y)
     self:leave()
     self:released()
     if self:contains(x, y) then
-        self.consumed = true
-        self:onclick()
+        self:handleClick()
     end
 end
 
@@ -88,10 +95,7 @@ function AbstractButton:mousereleased(x, y, button)
         self:released()
         if self:contains(x, y) then
             self.state = "hovered"
-            if not self.consumed then
-                self.consumed = true
-                self:onclick()
-            end
+            self:handleClick()
         else
             self.state = "neutral"
             self:leave()

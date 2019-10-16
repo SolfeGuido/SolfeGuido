@@ -5,7 +5,7 @@ local Graphics = {}
 
 function Graphics.drawMusicBars()
 
-    local middle = love.graphics.getHeight() / 3
+    local middle = assets.config.baseLine
 
     love.graphics.setLineWidth(1)
     love.graphics.setColor(Color.black)

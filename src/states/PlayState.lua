@@ -77,7 +77,7 @@ end
 
 ---@return number
 function PlayState:getBaseLine()
-    return love.graphics.getHeight() / 3 + 5 * assets.config.lineHeight
+    return assets.config.baseLine + 5 * assets.config.lineHeight
 end
 
 function PlayState:finish()

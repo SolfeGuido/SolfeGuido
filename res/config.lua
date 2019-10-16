@@ -1,5 +1,6 @@
 
 local lineHeight = 20
+local titleSize = 40
 
 local order = {'C', 'D','E','F','G','A','B'}
 
@@ -13,6 +14,8 @@ end
 
 
 local config = {
+    titleSize = titleSize,
+    baseLine = titleSize + lineHeight * 2,
     userPreferences = {
         sound = {'on', 'off'},
         lang = {'en', 'fr'},

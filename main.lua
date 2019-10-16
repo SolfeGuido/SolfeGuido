@@ -15,8 +15,8 @@ function love.load()
     ScreenManager.init({SplashScreenState = require('src.states.SplashScreenState')}, 'SplashScreenState')
 
 --- BEGIN DEBUG
-    fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, 0 , 200);
-    memoryGraph = debugGraph:new('mem', love.graphics.getWidth() - 200, 50, 200)
+    fpsGraph = debugGraph:new('fps', love.graphics.getWidth() - 200, love.graphics.getHeight() - 100 , 200);
+    memoryGraph = debugGraph:new('mem', love.graphics.getWidth() - 200, love.graphics.getHeight() - 50, 200)
 --- END DEBUG
 end
 

@@ -118,7 +118,7 @@ function State:keypressed(key)
 end
 
 function State:createUI(uiConfig)
-    local yPos = love.graphics.getHeight() / 3
+    local yPos = assets.config.baseLine
     local defaultFont = assets.MarckScript(assets.config.lineHeight)
     local conf = {x = 30, font = defaultFont, type = 'Title', mobile = true}
     local elements = {}
@@ -138,7 +138,7 @@ function State:createUI(uiConfig)
                 end
             end
         end
-        yPos = love.graphics.getHeight() / 3
+        yPos = assets.config.baseLine
         conf.x = conf.x + assets.config.limitLine
     end
     self:transition(elements)

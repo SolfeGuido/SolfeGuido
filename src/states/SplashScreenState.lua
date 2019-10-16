@@ -33,7 +33,7 @@ function SplashScreenState:draw()
     love.graphics.setBackgroundColor(1, 1, 1, 1)
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.setLineWidth(1)
-    local middle = love.graphics.getHeight() / 3 + 20
+    local middle = 100
     local progress = love.graphics.getWidth() * (self.totalLoading / 100)
     love.graphics.line(0, middle , progress, middle)
 end
@@ -80,7 +80,7 @@ function SplashScreenState:update(dt)
 end
 
 function SplashScreenState:displayLines()
-    local middle = love.graphics.getHeight() / 3 + assets.config.lineHeight
+    local middle = assets.config.baseLine + assets.config.lineHeight
     for i = 1,4 do
         local ypos = middle + assets.config.lineHeight * i
         local line = self:addentity(Line, {

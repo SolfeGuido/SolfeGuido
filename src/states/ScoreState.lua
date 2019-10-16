@@ -34,7 +34,7 @@ function ScoreState:init()
         }
     }
 
-    local middle = love.graphics.getHeight() / 3
+    local middle = assets.config.baseLine
     local font = assets.MarckScript(assets.config.lineHeight)
     for _,v in ipairs(entries) do
         local text = love.graphics.newText(font, v)
@@ -62,12 +62,12 @@ function ScoreState:init()
             element = self:addentity(Title, {
                 text = text,
                 color = Color.transparent:clone(),
-                y = love.graphics.getHeight() / 3,
+                y = assets.config.baseLine,
                 x = -text:getWidth()
             }),
             target = {x = middle + padding, color = Color.black}
         }
-        local yPos = love.graphics.getHeight() / 3 + assets.config.lineHeight
+        local yPos = assets.config.baseLine + assets.config.lineHeight
         for _, key in ipairs(entries) do
             local score = ScoreManager.get(key, v)
             text = love.graphics.newText(font, tostring(score))
@@ -106,7 +106,7 @@ function ScoreState:init()
             callback = function() self:switchState('MenuState') end,
             text = text,
             x = -text:getWidth(),
-            y = love.graphics.getHeight() / 3 + (assets.config.lineHeight * 5),
+            y = assets.config.baseLine + (assets.config.lineHeight * 5),
             color = Color.transparent:clone()
         }),
         target = {x = 30, color = Color.black}

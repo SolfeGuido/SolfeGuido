@@ -5,14 +5,11 @@ local order = {'C', 'D','E','F','G','A','B'}
 
 local notes = {'A1','B1'}
 
-for i = 2,5 do
+for i = 2,6 do
     for j = 1, #order do
         notes[#notes+1] = order[j] .. tostring(i)
     end
 end
-
-notes[#notes+1] = 'D6'
-notes[#notes+1] = 'E6'
 
 
 local config = {

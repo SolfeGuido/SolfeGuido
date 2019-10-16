@@ -17,7 +17,7 @@ function HelpState:init()
         {
             {
                 text = 'Help',
-                fontSize = 40,
+                fontSize = assets.config.titleSize,
                 y = 0
             },
             {

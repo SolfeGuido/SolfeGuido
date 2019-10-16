@@ -22,7 +22,7 @@ function OptionsState:init(...)
         {
             {
                 text = 'Options',
-                fontSize = 40,
+                fontSize = assets.config.titleSize,
                 y = 0,
                 x = 5
             },{

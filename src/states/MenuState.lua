@@ -17,7 +17,7 @@ function MenuState:init(...)
             {
                 type = 'Title',
                 text = 'Menu',
-                fontSize = 40,
+                fontSize = assets.config.titleSize,
                 y = 0
             },
             {

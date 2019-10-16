@@ -4,6 +4,7 @@ mkdir game
 cp -R * game
 cd ./game
 rm -rf game
+rm -rf examples
 rm -rf spec
 rm -rf .git
 rm -rf .vscode

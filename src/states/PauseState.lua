@@ -23,7 +23,7 @@ function PauseState:addButtons()
         {
             {
                 text = 'Pause',
-                fontSize = 40,
+                fontSize = assets.config.titleSize,
                 y = 0
             },{
                 type = 'Button',

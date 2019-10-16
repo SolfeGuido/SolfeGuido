@@ -14,7 +14,7 @@ function CreditsState:init()
         {
             {
                 text = 'Credits',
-                fontSize = 40,
+                fontSize = assets.config.titleSize,
                 y = 0
             }, {
                 type = 'Button',

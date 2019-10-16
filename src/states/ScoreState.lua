@@ -19,7 +19,7 @@ function ScoreState:new()
 end
 
 function ScoreState:init()
-    local titleText = love.graphics.newText(assets.MarckScript(40), "Scores")
+    local titleText = love.graphics.newText(assets.MarckScript(assets.config.titleSize), "Scores")
 
     local entries = { 'level', 'gKey', 'fKey' }
     local elements = {

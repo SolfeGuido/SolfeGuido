@@ -21,7 +21,7 @@ function EndGameState:addButtons(score)
         {
             {
                 text = 'Finished',
-                fontSize = 40,
+                fontSize = assets.config.titleSize,
                 y = 0
             }, {
                 text = 'Score : ' .. tostring(score)

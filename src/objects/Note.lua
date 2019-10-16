@@ -32,12 +32,12 @@ function Note:noteToPosition(note)
 end
 
 function Note:correct()
-    self.color = {0, 0.5, 0, 1}
-    self:fadeTo({0, 0.5, 0, 0})
+    self.color = Color(0, 0.5, 0, 1)
+    self:fadeTo(Color(0, 0.5, 0, 0))
 end
 
 function Note:wrong()
-    self.color = {0.5, 0, 0, 1}
+    self.color = Color(0.5, 0, 0, 1)
     self:fadeTo(Color.transparent)
     self.name = self.area.key:getNoteName(self.note)
 end

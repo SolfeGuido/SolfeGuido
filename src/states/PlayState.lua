@@ -5,6 +5,7 @@ local Graphics = require('src.utils.Graphics')
 local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
 local Color = require('src.utils.Color')
+local Mobile = require('src.utils.Mobile')
 
 -- Parent
 local Scene = require('src.State')
@@ -128,6 +129,7 @@ function PlayState:answerGiven(idx)
         self.score:gainPoint()
     else
         self.notes:shift():wrong()
+        Mobile.vibrate(assets.config.mobile.vibrationTime)
         self.stopWatch:update(assets.config.timeLoss)
     end
 end

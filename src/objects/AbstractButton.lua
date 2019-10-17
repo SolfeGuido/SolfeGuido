@@ -37,7 +37,6 @@ function AbstractButton:hovered() end
 function AbstractButton:handleClick()
     if not self.consumed then
         self.consumed = true
-        TEsound.play(assets.sounds.click)
         self:onclick()
     end
 end

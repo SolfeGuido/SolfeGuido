@@ -18,6 +18,7 @@ local config = {
     baseLine = titleSize + lineHeight * 2,
     userPreferences = {
         sound = {'on', 'off'},
+        vibrations = {'on', 'off'},
         lang = {'en', 'fr'},
         noteStyle = {'en', 'it'},
         keySelect = {'gKey', 'fKey'},
@@ -96,6 +97,9 @@ local config = {
         padding = 10,
         distance = 50,
         fadeAway = 1.5
+    },
+    mobile = {
+        vibrationTime = 0.1
     }
 }
 

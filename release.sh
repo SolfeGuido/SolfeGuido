@@ -1,5 +1,7 @@
 
 # Do some cleanup
+rm -rf ../solfege-release
+
 mkdir game
 cp -R * game
 cd ./game

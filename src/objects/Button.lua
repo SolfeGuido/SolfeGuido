@@ -49,6 +49,7 @@ function Button:leave()
 end
 
 function Button:onclick()
+    TEsound.play(assets.sounds.click)
     if self.callback then self.callback() end
 end
 

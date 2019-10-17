@@ -46,6 +46,7 @@ function MultiSelector:draw()
 end
 
 function MultiSelector:onclick()
+    TEsound.play(assets.sounds.click)
     self.currentChoice = (self.currentChoice  % #self.choices) + 1
     self.selectedText:set( tr(self.choices[self.currentChoice]))
     if self.callback then self.callback(self.choices[self.currentChoice]) end

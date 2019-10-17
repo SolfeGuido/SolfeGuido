@@ -58,7 +58,13 @@ function OptionsState:init(...)
                 text = 'Answer',
                 type = 'MultiSelector',
                 config = 'answerType',
-                mobile = false
+                platform = "desktop"
+            },
+            {
+                text = 'Vibrate',
+                type = 'MultiSelector',
+                config = 'vibrations',
+                platform = "mobile"
             }
         }
     })

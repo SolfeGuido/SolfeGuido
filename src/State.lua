@@ -120,12 +120,12 @@ end
 function State:createUI(uiConfig)
     local yPos = assets.config.baseLine
     local defaultFont = assets.MarckScript(assets.config.lineHeight)
-    local conf = {x = 30, font = defaultFont, type = 'Title', mobile = true}
+    local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all"}
     local elements = {}
     for _, column in ipairs(uiConfig) do
         for _, elemConfig in ipairs(column) do
             elemConfig = lume.merge(conf, elemConfig)
-            if elemConfig.mobile or not Mobile.isMobile then
+            if Mobile.canBeAdded(elemConfig.platform) then
                 if not elemConfig.y then
                     elemConfig.y = yPos
                     yPos = yPos + assets.config.lineHeight

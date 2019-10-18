@@ -14,7 +14,7 @@ end
 
 function MobileButton:boundingBox()
     local padding = assets.config.mobileButton.padding
-    return Rectangle(self.x, self.y, self.text:getWidth() + padding * 2, self.text:getHeight() + padding * 2)
+    return Rectangle(self.x, self.y, self.width or (self.text:getWidth() + padding * 2), self.text:getHeight() + padding * 2)
 end
 
 function MobileButton:hovered()
@@ -46,7 +46,8 @@ function MobileButton:draw()
     love.graphics.rectangle('fill', 0, 0, box.width, box.height)
     love.graphics.setColor(Color.black)
     love.graphics.rectangle('line', 0, 0, box.width, box.height)
-    love.graphics.draw(self.text, assets.config.mobileButton.padding, assets.config.mobileButton.padding)
+    local txtX = (box.width - self.text:getWidth()) / 2
+    love.graphics.draw(self.text, txtX, assets.config.mobileButton.padding)
 
     love.graphics.pop()
 end

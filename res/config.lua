@@ -15,7 +15,7 @@ end
 
 local config = {
     titleSize = titleSize,
-    baseLine = titleSize + lineHeight * 2,
+    baseLine = titleSize + lineHeight,
     userPreferences = {
         sound = {'on', 'off'},
         vibrations = {'on', 'off'},

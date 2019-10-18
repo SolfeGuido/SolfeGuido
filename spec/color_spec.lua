@@ -1,5 +1,6 @@
 local Color = require('src.utils.Color')
 
+_G['unpack'] = table.unpack
 
 describe("Color testing", function()
   

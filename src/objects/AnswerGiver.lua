@@ -40,6 +40,7 @@ function AnswerGiver:addButtons()
     local letters = Config.noteStyle == "en" and assets.config.enNotes or assets.config.itNotes
 
     local padding = assets.config.mobileButton.padding
+    local widths = math.floor((love.graphics.getWidth() / #letters) - padding)
     local totalSize = 0
     local elements = {}
     for i,v in ipairs(letters) do
@@ -50,15 +51,16 @@ function AnswerGiver:addButtons()
             element = self.area:addentity(MobileButton, {
                 x = -text:getWidth() * (#letters - i),
                 y = y,
+                width = widths,
                 text = text,
                 callback = function() if self.callback then self.callback(i) end end
             })
         }
     end
-    local xTarget = love.graphics.getWidth() / 2 - totalSize / 2
+    local xTarget = 5
     for _,v in pairs(elements) do
         v.target = {x = xTarget}
-        xTarget = xTarget + v.element.text:getWidth() + padding * 3
+        xTarget = xTarget + widths + padding
     end
     self.area:transition(elements)
 end

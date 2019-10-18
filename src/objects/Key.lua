@@ -48,7 +48,7 @@ function Key:getRandomNote()
 end
 
 function Key:getSoundFor(note)
-    local noteName = assets.config.notes[(self.keyData.firstNote or 1) + (note or 0) + 1]
+    local noteName = assets.config.notes[(self.keyData.firstNote or 0) + (note or 0) + 1]
     return assets.sounds.notes[noteName]
 end
 

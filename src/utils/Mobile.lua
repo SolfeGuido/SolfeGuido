@@ -14,7 +14,7 @@ local noop = function() end
 local methods = {
     configure = function() Config.update('answerType', 'buttons') end,
     load = function() love.window.setFullscreen(true, 'exclusive') end,
-    vibrate = function(...) if Config.vibrations then love.system.vibrate(...) end end
+    vibrate = function(...) if Config.vibrations == 'on' then love.system.vibrate(...) end end
 }
 
 local os = love.system.getOS()

@@ -1,6 +1,6 @@
 return {
-    gkey = 'G Key',
-    fkey = 'F Key',
+    gkey = 'G',
+    fkey = 'F',
     play = 'Play',
     score = 'Score',
     options = 'Options',
@@ -36,5 +36,6 @@ return {
     answer = 'Answer',
     buttons = 'Buttons',
     default = 'Default',
-    letters = 'Letters'
+    letters = 'Letters',
+    vibrate = 'Vibrations'
 }

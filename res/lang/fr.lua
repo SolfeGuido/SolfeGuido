@@ -1,6 +1,6 @@
 return {
-    gkey = "Clé de Sol",
-    fkey = "Clé de Fa",
+    gkey = "de Sol",
+    fkey = "de Fa",
     play = 'Jouer',
     score = 'Score',
     options = 'Options',
@@ -36,5 +36,6 @@ return {
     answer = 'Contrôles',
     buttons = 'Boutons',
     default = 'Par défaut',
-    letters = 'Lettres (anglais)'
+    letters = 'Lettres (anglais)',
+    vibrate = 'Vibrations'
 }

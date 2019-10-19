@@ -26,15 +26,15 @@ function EndGameState:addButtons(score)
             }, {
                 text = 'Score : ' .. tostring(score)
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Restart',
                 state = 'PlayState'
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Score',
                 state = 'ScoreState'
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Menu',
                 state = 'MenuState'
             }

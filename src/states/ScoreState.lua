@@ -8,7 +8,7 @@ local Color = require('src.utils.Color')
 -- Entities
 local Title = require('src.objects.Title')
 local Line = require('src.objects.Line')
-local Button = require('src.objects.Button')
+local Button = require('src.objects.TextButton')
 
 ---@class ScoreState : State
 local ScoreState = State:extend()

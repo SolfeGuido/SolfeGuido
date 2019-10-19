@@ -9,7 +9,7 @@ local Color = require('src.utils.Color')
 local Mobile = require('src.utils.Mobile')
 
 -- ENTITES
-local Button = require('src.objects.Button')
+local Button = require('src.objects.TextButton')
 local Title = require('src.objects.Title')
 local MultiSelector = require('src.objects.MultiSelector')
 
@@ -34,7 +34,7 @@ function State:init(...)
 
 end
 
-function State:addButton(config)
+function State:addTextButton(config)
     local btnText = love.graphics.newText(config.font, tr(config.text) )
 
     if config.state and not config.callback then

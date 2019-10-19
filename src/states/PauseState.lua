@@ -26,11 +26,11 @@ function PauseState:addButtons()
                 fontSize = assets.config.titleSize,
                 y = 0
             },{
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Resume',
                 callback = function() self:back() end
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Exit',
                 state = 'MenuState'
             }

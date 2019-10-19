@@ -21,27 +21,27 @@ function MenuState:init(...)
                 y = 0
             },
             {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Play',
                 state = 'PlayState'
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Options',
                 state = 'OptionsState'
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Score',
                 state = 'ScoreState'
             },{
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Help',
                 state = 'HelpState'
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Credits',
                 state = 'CreditsState'
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Quit',
                 callback = function() love.event.quit() end
             }

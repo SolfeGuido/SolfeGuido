@@ -17,7 +17,7 @@ function CreditsState:init()
                 fontSize = assets.config.titleSize,
                 y = 0
             }, {
-                type = 'Button',
+                type = 'TextButton',
                 text = 'Back',
                 state = 'MenuState'
             }

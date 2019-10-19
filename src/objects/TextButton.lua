@@ -8,10 +8,10 @@ local Rectangle = require('src.utils.Rectangle')
 local AbstractButton = require('src.objects.AbstractButton')
 local Selector = require('src.objects.Selector')
 
----@class Button : AbstractButton
-local Button = AbstractButton:extend()
+---@class TextButton : AbstractButton
+local TextButton = AbstractButton:extend()
 
-function Button:new(area, config)
+function TextButton:new(area, config)
     AbstractButton.new(self, area, config)
     self.selector = self.area:addentity(Selector, {
         x = self.x - 20,
@@ -22,43 +22,43 @@ function Button:new(area, config)
     self.color = config.color or Color.black:clone()
 end
 
-function Button:dispose()
+function TextButton:dispose()
     self.selector.isDead = true
-    Button.super.dispose(self)
+    TextButton.super.dispose(self)
 end
 
-function Button:boundingBox()
+function TextButton:boundingBox()
     return Rectangle(self.x, self.y, assets.config.limitLine - 10, self.text:getHeight() - 7)
 end
 
-function Button:hovered()
+function TextButton:hovered()
     self.selector.visible = true
 end
 
-function Button:pressed()
+function TextButton:pressed()
     self.selector.visible = true
-    self:animate(assets.config.transition.tween, self, {color = {0.7, 0.7, 0.7, 1}}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Color.gray(0.7)}, 'out-expo')
 end
 
-function Button:released()
+function TextButton:released()
     self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
 end
 
-function Button:leave()
+function TextButton:leave()
     self.selector.visible = false
 end
 
-function Button:onclick()
+function TextButton:onclick()
     TEsound.play(assets.sounds.click)
     if self.callback then self.callback() end
 end
 
-function Button:draw()
+function TextButton:draw()
     love.graphics.setColor(self.color)
     love.graphics.draw(self.text, self.x + 5, self.y)
 end
 
-function Button:update(_)
+function TextButton:update(_)
     self.selector.x = self.x - 20
     self.selector.y = self.y
 end
@@ -66,4 +66,4 @@ end
 
 
 
-return Button
+return TextButton

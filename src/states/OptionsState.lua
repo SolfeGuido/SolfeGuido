@@ -39,7 +39,7 @@ function OptionsState:init(...)
                 config = 'difficulty'
             }, {type = 'Space'}, {
                 text = 'Back',
-                type = 'Button',
+                type = 'TextButton',
                 callback = function() self:back() end
             }
         },

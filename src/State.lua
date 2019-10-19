@@ -118,7 +118,7 @@ function State:keypressed(key)
 end
 
 function State:createUI(uiConfig)
-    local yPos = assets.config.baseLine
+    local yPos = assets.config.baseLine + assets.config.lineHeight
     local defaultFont = assets.MarckScript(assets.config.lineHeight)
     local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all"}
     local elements = {}
@@ -138,7 +138,7 @@ function State:createUI(uiConfig)
                 end
             end
         end
-        yPos = assets.config.baseLine
+        yPos = assets.config.baseLine + assets.config.lineHeight
         conf.x = conf.x + assets.config.limitLine
     end
     self:transition(elements)

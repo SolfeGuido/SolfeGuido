@@ -24,15 +24,15 @@ function MenuState:init(...)
                 type = 'Button',
                 text = 'Play',
                 state = 'PlayState'
-            },{
-                type = 'Button',
-                text = 'Score',
-                state = 'ScoreState'
             }, {
                 type = 'Button',
                 text = 'Options',
                 state = 'OptionsState'
             }, {
+                type = 'Button',
+                text = 'Score',
+                state = 'ScoreState'
+            },{
                 type = 'Button',
                 text = 'Help',
                 state = 'HelpState'
@@ -45,16 +45,6 @@ function MenuState:init(...)
                 text = 'Quit',
                 callback = function() love.event.quit() end
             }
-        }, {
-            {
-                type = 'MultiSelector',
-                text = 'Key',
-                config = 'keySelect'
-            }, {
-                type = 'MultiSelector',
-                text = 'Difficulty',
-                config = 'difficulty'
-            }
         }
     })
 end
@@ -66,7 +56,6 @@ function MenuState:draw()
     Graphics.drawMusicBars()
     love.graphics.setLineWidth(1)
     love.graphics.setColor(Color.black)
-    love.graphics.line(assets.config.limitLine, 0, assets.config.limitLine, love.graphics.getHeight())
 end
 
 return MenuState

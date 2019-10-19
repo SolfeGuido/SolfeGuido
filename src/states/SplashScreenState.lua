@@ -81,7 +81,7 @@ end
 
 function SplashScreenState:displayLines()
     local middle = assets.config.baseLine
-    for i = 1,4 do
+    for i = 1,5 do
         local ypos = middle + assets.config.lineHeight * i
         local line = self:addentity(Line, {
             x = 0,
@@ -93,10 +93,11 @@ function SplashScreenState:displayLines()
 
     local line = self:addentity(Line, {
         x = assets.config.limitLine,
-        y = 0,
+        y = middle + assets.config.lineHeight,
         height = 0,
     })
-    self.timer:tween(assets.config.transition.tween, line, {height = love.graphics.getHeight()}, 'out-expo', function()
+    local hTarget = assets.config.lineHeight * 4
+    self.timer:tween(assets.config.transition.tween, line, {height = hTarget}, 'out-expo', function()
         -- Load all states this time
         ScreeManager.init(allStates, 'MenuState')
     end)

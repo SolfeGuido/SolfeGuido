@@ -44,6 +44,7 @@ cargo.loaders = {
   wav = la and love.sound.newSoundData,
   ogg = la and love.sound.newSoundData,
   txt = lf and lf.read,
+  xml = lf and lf.read,
   ttf = lg and makeFont,
   otf = lg and makeFont,
   fnt = lg and lg.newFont

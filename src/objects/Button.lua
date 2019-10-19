@@ -14,7 +14,7 @@ local Button = AbstractButton:extend()
 function Button:new(area, config)
     AbstractButton.new(self, area, config)
     self.selector = self.area:addentity(Selector, {
-        x = self.x - 10,
+        x = self.x - 20,
         y = self.y + 5,
         visible = false
     })
@@ -59,7 +59,7 @@ function Button:draw()
 end
 
 function Button:update(_)
-    self.selector.x = self.x - 15
+    self.selector.x = self.x - 20
     self.selector.y = self.y
 end
 

@@ -1,5 +1,5 @@
 
-local lineHeight = 20
+local lineHeight = 30
 local titleSize = 40
 
 local order = {'C', 'D','E','F','G','A','B'}

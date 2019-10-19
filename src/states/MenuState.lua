@@ -26,10 +26,6 @@ function MenuState:init(...)
                 state = 'PlayState'
             }, {
                 type = 'TextButton',
-                text = 'Options',
-                state = 'OptionsState'
-            }, {
-                type = 'TextButton',
                 text = 'Score',
                 state = 'ScoreState'
             },{
@@ -41,9 +37,18 @@ function MenuState:init(...)
                 text = 'Credits',
                 state = 'CreditsState'
             }, {
-                type = 'TextButton',
-                text = 'Quit',
+                type = 'IconButton',
+                image = 'exit',
+                x = 0,
+                y = love.graphics.getHeight() - assets.config.titleSize,
                 callback = function() love.event.quit() end
+            },
+            {
+                type = 'IconButton',
+                image = 'gear',
+                y = 0,
+                x = love.graphics.getWidth() - assets.config.titleSize,
+                state = 'OptionsState'
             }
         }
     })

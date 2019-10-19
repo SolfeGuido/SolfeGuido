@@ -9,7 +9,8 @@ local Color = require('src.utils.Color')
 local Mobile = require('src.utils.Mobile')
 
 -- ENTITES
-local Button = require('src.objects.TextButton')
+local TextButton = require('src.objects.TextButton')
+local IconButton = require('src.objects.IconButton')
 local Title = require('src.objects.Title')
 local MultiSelector = require('src.objects.MultiSelector')
 
@@ -34,6 +35,22 @@ function State:init(...)
 
 end
 
+function State:addIconButton(config)
+    local image = assets.images[config.image]
+    if config.state and not config.callback then
+        config.callback = function() self:switchState(config.state) end
+    end
+
+    return self:addentity(IconButton, {
+        image = image,
+        x = -image:getWidth(),
+        y = config.y,
+        height = assets.config.titleSize,
+        color = Color.transparent:clone(),
+        callback = config.callback
+    })
+end
+
 function State:addTextButton(config)
     local btnText = love.graphics.newText(config.font, tr(config.text) )
 
@@ -41,7 +58,7 @@ function State:addTextButton(config)
         config.callback = function() self:switchState(config.state) end
     end
 
-    return self:addentity(Button, {
+    return self:addentity(TextButton, {
         text = btnText,
         x = -btnText:getWidth(),
         y = config.y,

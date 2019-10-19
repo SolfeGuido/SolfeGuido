@@ -13,6 +13,19 @@ local IconButton = AbstractButton:extend()
 function IconButton:new(area, config)
     AbstractButton.new(self, area, config)
     self.color = config.color or Color.black:clone()
+    local scale = 1
+    if config.height then
+        scale = config.height / self.image:getHeight()
+    elseif config.width then
+        scale = config.width / self.image:getWidth()
+    end
+    self._width = self.image:getWidth() * scale
+    self.height = self.image:getHeight() * scale
+    self.scale = scale
+end
+
+function IconButton:width()
+    return self._width
 end
 
 function IconButton:dispose()
@@ -20,7 +33,7 @@ function IconButton:dispose()
 end
 
 function IconButton:boundingBox()
-    return Rectangle(self.x, self.y, self.image:getWidth(), self.image:getHeight())
+    return Rectangle(self.x, self.y, self._width, self.height)
 end
 
 function IconButton:hovered()
@@ -46,7 +59,7 @@ end
 
 function IconButton:draw()
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x, self.y)
+    love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
 end
 
 return IconButton

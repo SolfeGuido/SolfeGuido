@@ -23,8 +23,10 @@ function AbstractButton:animate(...)
 end
 
 function AbstractButton:dispose()
-    self.text:release()
-    self.text = nil
+    if self.text then 
+        self.text:release()
+        self.text = nil
+    end
     AbstractButton.super.dispose(self)
 end
 

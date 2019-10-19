@@ -39,6 +39,8 @@ function State:addIconButton(config)
     local image = assets.images[config.image]
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
+    elseif config.statePush and not config.callback then
+        config.callback = function() ScreenManager.push(config.statePush) end
     end
 
     return self:addentity(IconButton, {
@@ -84,8 +86,9 @@ end
 
 function State:addTitle(config)
     local titleText = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
+    local half = love.graphics.getWidth() / 2 - titleText:getWidth() / 2
     return self:addentity(Title, {
-        x = -titleText:getWidth(),
+        x = config.main and half or -titleText:getWidth(),
         y = config.y,
         color = Color.transparent:clone(),
         text = titleText
@@ -137,7 +140,7 @@ end
 function State:createUI(uiConfig)
     local yPos = assets.config.baseLine + assets.config.lineHeight
     local defaultFont = assets.MarckScript(assets.config.lineHeight)
-    local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all"}
+    local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all", from = "left"}
     local elements = {}
     for _, column in ipairs(uiConfig) do
         for _, elemConfig in ipairs(column) do
@@ -152,6 +155,14 @@ function State:createUI(uiConfig)
                         element = self['add' .. elemConfig.type](self, elemConfig),
                         target = {x = elemConfig.x, color = Color.black}
                     }
+                    if elemConfig.from == "right" then
+                        elements[#elements].element.x = love.graphics.getWidth()
+                    elseif elemConfig.from == "top" then
+                        local last = elements[#elements]
+                        last.target.x = nil
+                        last.target.y = elemConfig.y
+                        last.element.y = -assets.config.titleSize
+                    end
                 end
             end
         end

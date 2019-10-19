@@ -54,7 +54,7 @@ local config = {
     },
     transition = {
         tween = 0.8,
-        spacing = 0.01
+        spacing = 0.03
     },
     gKey = {
         height = lineHeight * 7,

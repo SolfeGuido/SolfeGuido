@@ -18,7 +18,9 @@ function MenuState:init(...)
                 type = 'Title',
                 text = 'Menu',
                 fontSize = assets.config.titleSize,
-                y = 0
+                y = 0,
+                main = true,
+                from = "top"
             },
             {
                 type = 'TextButton',
@@ -38,17 +40,17 @@ function MenuState:init(...)
                 state = 'CreditsState'
             }, {
                 type = 'IconButton',
+                image = 'gear',
+                y = 0,
+                x = love.graphics.getWidth() - assets.config.titleSize,
+                statePush = 'OptionsState',
+                from = "right"
+            }, {
+                type = 'IconButton',
                 image = 'exit',
                 x = 0,
                 y = love.graphics.getHeight() - assets.config.titleSize,
                 callback = function() love.event.quit() end
-            },
-            {
-                type = 'IconButton',
-                image = 'gear',
-                y = 0,
-                x = love.graphics.getWidth() - assets.config.titleSize,
-                state = 'OptionsState'
             }
         }
     })

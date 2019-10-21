@@ -13,6 +13,14 @@ function Title:dispose()
     Title.super.dispose(self)
 end
 
+function Title:setText(text)
+    self.text:set(text)
+end
+
+function Title:center()
+    self.x = love.graphics.getWidth() / 2 - self.text:getWidth()  / 2
+end
+
 function Title:draw()
     love.graphics.setColor(self.color)
     love.graphics.draw(self.text, self.x, self.y)

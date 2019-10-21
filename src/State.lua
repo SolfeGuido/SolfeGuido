@@ -58,6 +58,8 @@ function State:addTextButton(config)
 
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
+    elseif config.statePush and not config.callback then
+        config.callback = function() ScreenManager.push(config.statePush) end
     end
 
     return self:addentity(TextButton, {
@@ -117,7 +119,6 @@ end
 
 ---@param dt number
 function State:update(dt)
-    if not self.active then return end
     self.timer:update(dt)
     for v = #self.entities, 1, -1 do
         local entity = self.entities[v]

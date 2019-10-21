@@ -2,7 +2,7 @@
 local State = require('src.State')
 local Color = require('src.utils.Color')
 local Graphics = require('src.utils.Graphics')
-local ScreeManager = require('lib.ScreenManager')
+local ScreenManager = require('lib.ScreenManager')
 
 --- ENTITIES
 local Title = require('src.objects.Title')
@@ -14,6 +14,10 @@ local RootState = State:extend()
 
 function RootState:new()
     State.new(self)
+end
+
+function RootState:handleEvent(evName, ...)
+    self:callOnEntities(evName, ...)
 end
 
 function RootState:init(...)
@@ -30,8 +34,8 @@ function RootState:init(...)
         y = love.graphics.getHeight(),
         color = Color.transparent:clone(),
         height = assets.config.titleSize,
-        image = "exit", -- todo change the icon
-        callback = function() ScreeManager.pop() end
+        image = "exitLeft", -- todo change the icon
+        callback = function() ScreenManager.publish('pop') end
     })
 
     self.settingsButton = self:addentity(IconButton, {
@@ -40,7 +44,7 @@ function RootState:init(...)
         color = Color.transparent:clone(),
         height = assets.config.titleSize,
         image = "gear",
-        callback = function() ScreeManager.push('OptionsState') end
+        callback = function() ScreenManager.push('OptionsState') end
     })
 
     local text = love.graphics.newText(assets.MarckScript(assets.config.titleSize),"Menu")
@@ -84,10 +88,27 @@ function RootState:init(...)
             }, {
                 type = 'TextButton',
                 text = 'Credits',
-                statePush = 'Credits'
+                callback = function() self:switchTo('Credits') end
             }
         }
     })
+end
+
+function RootState:receive(event, ...)
+    self:handleEvent(event, ...)
+end
+
+function RootState:switchTo(state)
+    local time = assets.config.transition.tween
+    self.timer:tween(time, self.title, {y = -assets.config.titleSize - 15}, 'out-expo',function ()
+        self.title:setText(state)
+        self.title:center()
+        self.timer:tween(time, self.title, {y = 0}, 'out-expo')
+    end)
+    self.timer:tween(time, self.quitButton, {y = love.graphics.getHeight(), color = Color.transparent}, 'out-expo', function()
+        self.timer:tween(time, self.backButton, {color = Color.black, y = love.graphics.getHeight() - assets.config.titleSize}, 'out-expo')
+end)
+    ScreenManager.push(state .. 'State')
 end
 
 function RootState:draw()

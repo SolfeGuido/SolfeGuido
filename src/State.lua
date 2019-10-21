@@ -141,7 +141,7 @@ end
 function State:createUI(uiConfig)
     local yPos = assets.config.baseLine + assets.config.lineHeight
     local defaultFont = assets.MarckScript(assets.config.lineHeight)
-    local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all", from = "left"}
+    local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all"}
     local elements = {}
     for _, column in ipairs(uiConfig) do
         for _, elemConfig in ipairs(column) do
@@ -156,14 +156,6 @@ function State:createUI(uiConfig)
                         element = self['add' .. elemConfig.type](self, elemConfig),
                         target = {x = elemConfig.x, color = Color.black}
                     }
-                    if elemConfig.from == "right" then
-                        elements[#elements].element.x = love.graphics.getWidth()
-                    elseif elemConfig.from == "top" then
-                        local last = elements[#elements]
-                        last.target.x = nil
-                        last.target.y = elemConfig.y
-                        last.element.y = -assets.config.titleSize
-                    end
                 end
             end
         end

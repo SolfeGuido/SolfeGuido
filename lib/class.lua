@@ -32,7 +32,6 @@ end
 
 function Object:implement(...)
   for _, cls in pairs({...}) do
-    print(cls)
     for k, v in pairs(cls) do
       if type(v) == "function" then
         if self[k] == nil then self[k] = v

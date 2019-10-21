@@ -85,17 +85,20 @@ function RootState:init(...)
             }, {
                 type = 'TextButton',
                 text = 'Help',
-                statePush = 'HelpState'
+                callback = self:btnCallBack('Help')
             }, {
                 type = 'TextButton',
                 text = 'Credits',
-                callback = function(btn)
-                    self.selectedState = btn
-                    self:switchTo('Credits')
-                end
+                callback = self:btnCallBack('Credits')
             }
         }
     })
+end
+
+function RootState:btnCallBack(state)
+    return function(btn)
+        self:switchTo(state, btn)
+    end
 end
 
 function RootState:receive(event, ...)
@@ -104,17 +107,27 @@ function RootState:receive(event, ...)
     end
 end
 
-function RootState:switchTo(state)
+function RootState:switchTo(state, btn)
+    local readyCallback = function() ScreenManager.push(state .. 'State') end
+    if self.selectedState then
+        ScreenManager.publish('pop', readyCallback)
+        self.selectedState.consumed = false
+    else
+        self:switchButtons(self.backButton, self.quitButton)
+        readyCallback()
+    end
+    self.selectedState = btn
     self:changeTitle(state)
-    self:switchButtons(self.backButton, self.quitButton)
-    ScreenManager.push(state .. 'State')
 end
 
 function RootState:pop()
-    if self.selectedState then self.selectedState.consumed = false end
-    ScreenManager.publish('pop')
+    if self.selectedState then
+        ScreenManager.publish('pop')
+        self.selectedState.consumed = false
+    end
     self:changeTitle(tr('Menu'))
     self:switchButtons(self.quitButton, self.backButton)
+    self.selectedState = nil
 end
 
 function RootState:changeTitle(newTitle)

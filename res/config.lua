@@ -53,7 +53,7 @@ local config = {
         fontSize = 25
     },
     transition = {
-        tween = 0.8,
+        tween = 0.5,
         spacing = 0.03
     },
     gKey = {

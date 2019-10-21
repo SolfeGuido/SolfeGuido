@@ -50,7 +50,7 @@ end
 
 function TextButton:onclick()
     TEsound.play(assets.sounds.click)
-    if self.callback then self.callback() end
+    if self.callback then self.callback(self) end
 end
 
 function TextButton:draw()

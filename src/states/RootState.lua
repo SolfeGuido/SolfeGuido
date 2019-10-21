@@ -14,6 +14,7 @@ local RootState = State:extend()
 
 function RootState:new()
     State.new(self)
+    self.selectedState = nil
 end
 
 function RootState:handleEvent(evName, ...)
@@ -35,7 +36,7 @@ function RootState:init(...)
         color = Color.transparent:clone(),
         height = assets.config.titleSize,
         image = "exitLeft", -- todo change the icon
-        callback = function() ScreenManager.publish('pop') end
+        callback = function() self:pop() end
     })
 
     self.settingsButton = self:addentity(IconButton, {
@@ -88,27 +89,49 @@ function RootState:init(...)
             }, {
                 type = 'TextButton',
                 text = 'Credits',
-                callback = function() self:switchTo('Credits') end
+                callback = function(btn)
+                    self.selectedState = btn
+                    self:switchTo('Credits')
+                end
             }
         }
     })
 end
 
 function RootState:receive(event, ...)
-    self:handleEvent(event, ...)
+    if event ~= "pop" then
+        self:handleEvent(event, ...)
+    end
 end
 
 function RootState:switchTo(state)
+    self:changeTitle(state)
+    self:switchButtons(self.backButton, self.quitButton)
+    ScreenManager.push(state .. 'State')
+end
+
+function RootState:pop()
+    if self.selectedState then self.selectedState.consumed = false end
+    ScreenManager.publish('pop')
+    self:changeTitle(tr('Menu'))
+    self:switchButtons(self.quitButton, self.backButton)
+end
+
+function RootState:changeTitle(newTitle)
     local time = assets.config.transition.tween
     self.timer:tween(time, self.title, {y = -assets.config.titleSize - 15}, 'out-expo',function ()
-        self.title:setText(state)
+        self.title:setText(newTitle)
         self.title:center()
         self.timer:tween(time, self.title, {y = 0}, 'out-expo')
     end)
-    self.timer:tween(time, self.quitButton, {y = love.graphics.getHeight(), color = Color.transparent}, 'out-expo', function()
-        self.timer:tween(time, self.backButton, {color = Color.black, y = love.graphics.getHeight() - assets.config.titleSize}, 'out-expo')
-end)
-    ScreenManager.push(state .. 'State')
+end
+
+function RootState:switchButtons(enter, leaves)
+    local time = assets.config.transition.tween
+    self.timer:tween(time, leaves, {y = love.graphics.getHeight(), color = Color.transparent}, 'out-expo', function()
+        leaves.consumed = false
+        self.timer:tween(time, enter, {color = Color.black, y = love.graphics.getHeight() - assets.config.titleSize}, 'out-expo')
+    end)
 end
 
 function RootState:draw()

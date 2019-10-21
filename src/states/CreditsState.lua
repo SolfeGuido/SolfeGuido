@@ -20,6 +20,12 @@ function CreditsState:init()
     })
 end
 
+function CreditsState:receive(eventName)
+    if eventName == "pop" then
+        self:slideEntitiesOut(function() ScreeManager.pop() end)
+    end
+end
+
 function CreditsState:draw()
     love.graphics.setScissor(assets.config.limitLine ,assets.config.baseLine, love.graphics.getWidth(), assets.config.baseLine + assets.config.lineHeight * 5)
     State.draw(self)

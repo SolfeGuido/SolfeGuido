@@ -20,29 +20,44 @@ function ScoreState:new()
 end
 
 function ScoreState:init()
-    local titleText = love.graphics.newText(assets.MarckScript(assets.config.titleSize), "Scores")
-
     local entries = { 'level', 'gKey', 'fKey' }
     local elements = {}
 
+    local maxSize = 0
+
     local middle = assets.config.baseLine + assets.config.lineHeight
     local font = assets.MarckScript(assets.config.lineHeight)
+
+    -- Adding titles
     for _,v in ipairs(entries) do
         local text = love.graphics.newText(font, v)
+        maxSize = math.max(maxSize, text:getWidth())
         elements[#elements+1] = {
             element = self:addentity(Title, {
                 text = text,
                 color = Color.transparent:clone(),
                 y = middle,
-                x = - text:getWidth()
+                x = assets.config.limitLine - text:getWidth()
             }),
-            target = {x = 30, color =  Color.black}
+            target = {x = assets.config.limitLine + 10, color =  Color.black}
         }
         middle = middle + assets.config.lineHeight
     end
+    elements[#elements+1] = {
+        element = self:addentity(Line, {
+            color = Color.transparent:clone(),
+            x = assets.config.limitLine - 2,
+            lineWidth = 2,
+            y = assets.config.baseLine + assets.config.lineHeight,
+            height = assets.config.lineHeight * 4,
+        }),
+        target = {x = assets.config.limitLine + maxSize + 15, color = Color.black}
+    }
+
+    -- Now displaying scores
     table.remove(entries, 1)
 
-    middle = assets.config.limitLine + 10
+    middle = assets.config.limitLine + maxSize + 10
     local space = love.graphics.getWidth() - middle
     local levels = assets.config.userPreferences.difficulty
     space = space / #levels
@@ -105,7 +120,9 @@ function ScoreState:receive(eventName, callback)
 end
 
 function ScoreState:draw()
+    love.graphics.setScissor(assets.config.limitLine ,assets.config.baseLine, love.graphics.getWidth(), assets.config.baseLine + assets.config.lineHeight * 5)
     State.draw(self)
+    love.graphics.setScissor()
 end
 
 

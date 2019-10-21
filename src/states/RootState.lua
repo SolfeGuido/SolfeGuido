@@ -83,9 +83,7 @@ function RootState:init(...)
             {
                 type = 'TextButton',
                 text = 'Score',
-                callback = function(btn)
-                    self:switchTo('Score', 'ScoreState', btn, true)
-                end
+                callback = self:btnCallBack('Score')
             }, {
                 type = 'TextButton',
                 text = 'Help',
@@ -111,32 +109,7 @@ function RootState:receive(event, ...)
     end
 end
 
-function RootState:showSide()
-    if not self.sideEnabled then self:toggleSide() end
-end
-
-function RootState:hideSide()
-    if self.sideEnabled then self:toggleSide() end
-end
-
-function RootState:toggleSide()
-    print("toggle sides")
-    local elements = {}
-    for _, e in ipairs(self.entities) do
-        if e:is(TextButton) then
-            elements[#elements+1] = {
-                element = e,
-                target = {x = self.sideEnabled and -e:boundingBox().width or 30, color = self.sideEnabled and Color.transparent  or Color.black}
-            }
-        end
-    end
-    self:transition(elements)
-    self.sideEnabled = not self.sideEnabled
-end
-
-function RootState:switchTo(title, statename, btn, hideSide)
-    if hideSide then self:hideSide() else self:showSide() end
-
+function RootState:switchTo(title, statename, btn)
     local readyCallback = function() ScreenManager.push(statename) end
     if self.selectedState then
         ScreenManager.publish('pop', readyCallback)
@@ -154,7 +127,6 @@ function RootState:pop()
         ScreenManager.publish('pop')
         self.selectedState.consumed = false
     end
-    self:showSide()
 
     self:changeTitle(tr('Menu'))
     self:switchButtons(self.quitButton, self.backButton)

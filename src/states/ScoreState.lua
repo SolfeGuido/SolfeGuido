@@ -1,17 +1,18 @@
 
 -- LIBS
 local State = require('src.State')
-local Graphis = require('src.utils.Graphics')
 local ScoreManager = require('src.utils.ScoreManager')
+local EventTransmitter = require('src.utils.EventTransmitter')
 local Color = require('src.utils.Color')
+local ScreenManager = require('lib.ScreenManager')
 
 -- Entities
 local Title = require('src.objects.Title')
 local Line = require('src.objects.Line')
-local Button = require('src.objects.TextButton')
 
 ---@class ScoreState : State
 local ScoreState = State:extend()
+ScoreState:implement(EventTransmitter)
 
 
 function ScoreState:new()
@@ -22,19 +23,9 @@ function ScoreState:init()
     local titleText = love.graphics.newText(assets.MarckScript(assets.config.titleSize), "Scores")
 
     local entries = { 'level', 'gKey', 'fKey' }
-    local elements = {
-        {
-            element = self:addentity(Title, {
-                text = titleText,
-                color = Color.transparent:clone(),
-                y = 0,
-                x = -titleText:getWidth()
-            }),
-            target = {x = 30, color = Color.black}
-        }
-    }
+    local elements = {}
 
-    local middle = assets.config.baseLine
+    local middle = assets.config.baseLine + assets.config.lineHeight
     local font = assets.MarckScript(assets.config.lineHeight)
     for _,v in ipairs(entries) do
         local text = love.graphics.newText(font, v)
@@ -62,12 +53,12 @@ function ScoreState:init()
             element = self:addentity(Title, {
                 text = text,
                 color = Color.transparent:clone(),
-                y = assets.config.baseLine,
+                y = assets.config.baseLine + assets.config.lineHeight,
                 x = -text:getWidth()
             }),
             target = {x = middle + padding, color = Color.black}
         }
-        local yPos = assets.config.baseLine + assets.config.lineHeight
+        local yPos = assets.config.baseLine + assets.config.lineHeight * 2
         for _, key in ipairs(entries) do
             local score = ScoreManager.get(key, v)
             text = love.graphics.newText(font, tostring(score))
@@ -92,37 +83,30 @@ function ScoreState:init()
                 element = self:addentity(Line, {
                     color = Color.transparent:clone(),
                     x = -1,
-                    y = 0,
-                    height = love.graphics.getHeight(),
+                    y = assets.config.baseLine + assets.config.lineHeight,
+                    height = assets.config.lineHeight * 4,
                 }),
                 target = {x = middle, color = Color.gray(0.5)}
             }
         end
     end
 
-    local text = love.graphics.newText(font, "Back")
-    elements[#elements+1] = {
-        element = self:addentity(Button, {
-            callback = function() self:switchState('MenuState') end,
-            text = text,
-            x = -text:getWidth(),
-            y = assets.config.baseLine + (assets.config.lineHeight * 5),
-            color = Color.transparent:clone()
-        }),
-        target = {x = 30, color = Color.black}
-    }
 
     self:transition(elements)
 end
 
+function ScoreState:receive(eventName, callback)
+    if eventName == "pop" then
+        self:slideEntitiesOut(function()
+            ScreenManager.pop()
+            if callback and type(callback) == "function" then callback() end
+        end)
+    end
+end
+
 function ScoreState:draw()
     State.draw(self)
-
-    Graphis.drawMusicBars()
 end
 
-function ScoreState:back()
-    self:switchState('MenuState')
-end
 
 return ScoreState

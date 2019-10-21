@@ -1,11 +1,12 @@
 
 -- LIBS
 local State = require('src.State')
-local Graphics = require('src.utils.Graphics')
-local Color = require('src.utils.Color')
+local ScreeManager = require('lib.ScreenManager')
+local EventTransmitter= require('src.utils.EventTransmitter')
 
 ---@class MenuState : State
 local MenuState = State:extend()
+MenuState:implement(EventTransmitter)
 
 function MenuState:new()
     MenuState.super.new(self)
@@ -13,56 +14,39 @@ end
 
 function MenuState:init(...)
     self:createUI({
-        {
+        {},{
             {
-                type = 'Title',
-                text = 'Menu',
-                fontSize = assets.config.titleSize,
-                y = 0,
-                main = true,
-                from = "top"
+                type = 'TextButton',
+                text = 'Timed',
+                state = 'PlayState'
             },
             {
                 type = 'TextButton',
-                text = 'Play',
-                state = 'PlayState'
-            }, {
-                type = 'TextButton',
-                text = 'Score',
+                text = 'Zen',
                 state = 'ScoreState'
-            },{
+            },
+            {
                 type = 'TextButton',
-                text = 'Help',
-                state = 'HelpState'
-            }, {
-                type = 'TextButton',
-                text = 'Credits',
-                state = 'CreditsState'
-            }, {
-                type = 'IconButton',
-                image = 'gear',
-                y = 0,
-                x = love.graphics.getWidth() - assets.config.titleSize,
-                statePush = 'OptionsState',
-                from = "right"
-            }, {
-                type = 'IconButton',
-                image = 'exit',
-                x = 0,
-                y = love.graphics.getHeight() - assets.config.titleSize,
-                callback = function() love.event.quit() end
+                text = 'Interval earing',
+                state = 'ScoreState'
             }
         }
     })
 end
 
 
-function MenuState:draw()
-    love.graphics.setBackgroundColor(1,1,1)
-    MenuState.super.draw(self)
-    Graphics.drawMusicBars()
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(Color.black)
+function MenuState:receive(eventName, callback)
+    if eventName == "pop" then
+        self:slideEntitiesOut(function()
+            ScreeManager.pop()
+            if callback and type(callback) == "function" then callback() end
+        end)
+    end
 end
 
+function MenuState:draw()
+    love.graphics.setScissor(assets.config.limitLine ,assets.config.baseLine, love.graphics.getWidth(), assets.config.baseLine + assets.config.lineHeight * 5)
+    State.draw(self)
+    love.graphics.setScissor()
+end
 return MenuState

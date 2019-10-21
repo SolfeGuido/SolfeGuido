@@ -12,6 +12,7 @@ local IconButton = AbstractButton:extend()
 
 function IconButton:new(area, config)
     AbstractButton.new(self, area, config)
+    if type(self.image) == "string" then self.image = assets.images[self.image] end
     self.color = config.color or Color.black:clone()
     local scale = 1
     if config.height then

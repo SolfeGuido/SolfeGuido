@@ -19,7 +19,8 @@ local allStates = {
     ScoreState = require('src.states.ScoreState'),
     CreditsState = require('src.states.CreditsState'),
     EndGameState = require('src.states.EndGameState'),
-    HelpState = require('src.states.HelpState')
+    HelpState = require('src.states.HelpState'),
+    RootState = require('src.states.RootState')
 }
 
 function SplashScreenState:new()
@@ -99,7 +100,7 @@ function SplashScreenState:displayLines()
     local hTarget = assets.config.lineHeight * 4
     self.timer:tween(assets.config.transition.tween, line, {height = hTarget}, 'out-expo', function()
         -- Load all states this time
-        ScreeManager.init(allStates, 'MenuState')
+        ScreeManager.init(allStates, 'RootState')
     end)
 end
 

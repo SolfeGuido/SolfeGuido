@@ -22,4 +22,8 @@ function Title:width()
     return self.text:getWidth()
 end
 
+function Title:height()
+    return self.text:getHeight()
+end
+
 return Title

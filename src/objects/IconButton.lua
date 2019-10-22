@@ -25,6 +25,14 @@ function IconButton:new(area, config)
     self.scale = scale
 end
 
+function IconButton:setImage(img)
+    if type(img) == 'string' then
+        self.image = assets.images[img]
+    else
+        self.image = img
+    end
+end
+
 function IconButton:width()
     return self._width
 end
@@ -55,7 +63,7 @@ end
 
 function IconButton:onclick()
     TEsound.play(assets.sounds.click)
-    if self.callback then self.callback() end
+    if self.callback then self.callback(self) end
 end
 
 function IconButton:draw()

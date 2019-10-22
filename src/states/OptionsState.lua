@@ -3,6 +3,7 @@
 local State = require('src.State')
 local Color = require('src.utils.Color')
 local ScreenManager = require('lib.ScreenManager')
+local Config = require('src.utils.Config')
 
 --- Entities
 local IconButton = require('src.objects.IconButton')
@@ -64,26 +65,27 @@ function OptionsState:init(...)
                 color = Color.transparent:clone()
             }),
             target = {y = 0, color = Color.black}
+        },
+        {
+            element = self:addentity(IconButton, {
+                image = Config.sound == 'on' and 'musicOn' or 'musicOff',
+                x = assets.config.limitLine,
+                y = - assets.config.titleSize,
+                width = assets.config.titleSize,
+                color = Color.transparent:clone(),
+                callback = function(btn)
+                    btn.consumed = false
+                    Config.update('sound', Config.sound == 'on' and 'off' or 'on')
+                    btn:setImage(Config.sound == 'on' and 'musicOn' or 'musicOff')
+                end
+            }),
+            target = {y = 0, color = Color.black}
         }
     }
 
 
     self:transition(elements)
     self:createUI({{},
-        {{
-                text = 'Key',
-                type = 'MultiSelector',
-                config = 'keySelect'
-            }, {
-                text = 'Sound',
-                type = 'MultiSelector',
-                config = 'sound'
-            }, {
-                text = 'Difficulty',
-                type = 'MultiSelector',
-                config = 'difficulty'
-            }
-        },
         {
             {
                 text = 'Notes',

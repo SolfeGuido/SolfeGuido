@@ -202,7 +202,15 @@ end
 local yCompare = lume.lambda "a,b -> a.y > b.y"
 
 local function elemSlide(v)
-    return {element = v, target = {x = v.width and -v:width() or -20, color = Color.transparent}}
+    local x = -20
+    if v.width then
+        if type(v.width) == "number" then
+            x = -v.width
+        elseif type(v.width) == "function" then
+            x = -v:width()
+        end
+    end
+    return {element = v, target = {x = x, color = Color.transparent}}
 end
 
 function State:slideEntitiesOut(callback)

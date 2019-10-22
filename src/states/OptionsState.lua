@@ -22,14 +22,14 @@ end
 function OptionsState:draw()
     local width = love.graphics.getWidth() - self.margin * 2
 
-    love.graphics.setScissor(self.margin - 1, 0, width, love.graphics.getHeight())
+    love.graphics.setScissor(self.margin - 2, 0, width + 5, love.graphics.getHeight())
     love.graphics.push()
     love.graphics.translate(0,self.yBottom - love.graphics.getHeight())
 
-    love.graphics.setColor(1,1,1,0.9)
-    love.graphics.rectangle('fill', self.margin -1, 0, width, love.graphics.getHeight() + 2)
-    love.graphics.setColor(0, 0, 0,0.9)
-    love.graphics.rectangle('line', self.margin -1, 0, width, love.graphics.getHeight() + 2)
+    love.graphics.setColor(0.996, 0.996, 0.980,0.95)
+    love.graphics.rectangle('fill', self.margin - 1, 0, width, love.graphics.getHeight() + 2)
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.rectangle('line', self.margin - 1, 0, width, love.graphics.getHeight() + 2)
     State.draw(self)
 
     love.graphics.pop()
@@ -37,6 +37,7 @@ function OptionsState:draw()
 end
 
 function OptionsState:slideOut()
+    self:slideEntitiesOut()
     self.timer:tween(assets.config.transition.tween, self, {yBottom = 0}, 'out-expo',function()
         ScreenManager.pop()
         ScreenManager.first().settingsButton.consumed = false
@@ -87,7 +88,7 @@ function OptionsState:init(...)
 
 
     self:transition(elements)
-    self:createUI({{},
+    self:createUI({
         {
             {
                 text = 'Notes',

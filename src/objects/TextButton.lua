@@ -30,6 +30,7 @@ function TextButton:boundingBox()
     return Rectangle(self.x, self.y, assets.config.limitLine - 10, assets.config.lineHeight - 1)
 end
 
+
 function TextButton:hovered()
     self.selector.visible = true
 end

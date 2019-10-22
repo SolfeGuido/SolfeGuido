@@ -82,7 +82,8 @@ function State:addMultiSelector(config)
         selected = Config[confName] or assets.config.userPreferences[confName][1],
         choices = assets.config.userPreferences[confName],
         color = Color.transparent:clone(),
-        callback = function(value) Config.update(confName, value) end
+        callback = function(value) Config.update(confName, value) end,
+        centered = config.centered or false
     })
 end
 
@@ -152,9 +153,11 @@ function State:createUI(uiConfig)
                     yPos = yPos + assets.config.lineHeight
                 end
                 if elemConfig.type ~= 'Space' then
+                    local target = {color = Color.black}
+                    if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
                     elements[#elements+1] = {
                         element = self['add' .. elemConfig.type](self, elemConfig),
-                        target = {x = elemConfig.x, color = Color.black}
+                        target = target
                     }
                 end
             end

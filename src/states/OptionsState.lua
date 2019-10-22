@@ -4,6 +4,7 @@ local State = require('src.State')
 local Color = require('src.utils.Color')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
+local Mobile = require('src.utils.Mobile')
 
 --- Entities
 local IconButton = require('src.objects.IconButton')
@@ -15,19 +16,20 @@ local OptionsState = State:extend()
 function OptionsState:new()
     State.new(self)
     self.yBottom = 0
+    self.margin = Mobile.isMobile and 10 or assets.config.limitLine
 end
 
 function OptionsState:draw()
-    local width = love.graphics.getWidth() - assets.config.limitLine * 2
+    local width = love.graphics.getWidth() - self.margin * 2
 
-    love.graphics.setScissor(assets.config.limitLine - 1, 0, width, love.graphics.getHeight())
+    love.graphics.setScissor(self.margin - 1, 0, width, love.graphics.getHeight())
     love.graphics.push()
     love.graphics.translate(0,self.yBottom - love.graphics.getHeight())
 
     love.graphics.setColor(1,1,1,0.9)
-    love.graphics.rectangle('fill', assets.config.limitLine -1, 0, width, love.graphics.getHeight() + 2)
+    love.graphics.rectangle('fill', self.margin -1, 0, width, love.graphics.getHeight() + 2)
     love.graphics.setColor(0, 0, 0,0.9)
-    love.graphics.rectangle('line', assets.config.limitLine -1, 0, width, love.graphics.getHeight() + 2)
+    love.graphics.rectangle('line', self.margin -1, 0, width, love.graphics.getHeight() + 2)
     State.draw(self)
 
     love.graphics.pop()
@@ -42,7 +44,7 @@ function OptionsState:slideOut()
 end
 
 function OptionsState:init(...)
-    local iconX = love.graphics.getWidth() - assets.config.limitLine - assets.config.titleSize
+    local iconX = love.graphics.getWidth() - self.margin - assets.config.titleSize
     local title = love.graphics.newText(assets.MarckScript(assets.config.titleSize), tr("Options"))
     local elements = {
         {
@@ -69,7 +71,7 @@ function OptionsState:init(...)
         {
             element = self:addentity(IconButton, {
                 image = Config.sound == 'on' and 'musicOn' or 'musicOff',
-                x = assets.config.limitLine,
+                x = self.margin,
                 y = - assets.config.titleSize,
                 width = assets.config.titleSize,
                 color = Color.transparent:clone(),
@@ -90,27 +92,35 @@ function OptionsState:init(...)
             {
                 text = 'Notes',
                 type = 'MultiSelector',
-                config = 'noteStyle'
+                config = 'noteStyle',
+                centered = true,
+                x = 0
             },
             {
                 text = 'Language',
                 type = 'MultiSelector',
-                config = 'lang'
+                config = 'lang',
+                centered = true,
+                x = -math.huge
             },
             {
                 text = 'Answer',
                 type = 'MultiSelector',
                 config = 'answerType',
-                platform = 'desktop'
+                platform = 'desktop',
+                centered = true,
+                x = -math.huge
             },
             {
                 text = 'Vibrate',
                 type = 'MultiSelector',
                 config = 'vibrations',
-                platform = 'mobile'
+                platform = 'mobile',
+                centered = true,
+                x = -math.huge
             }
         }
-    })
+    }, self.margin)
     self.timer:tween(assets.config.transition.tween, self, {yBottom = love.graphics.getHeight()}, 'out-expo')
 end
 

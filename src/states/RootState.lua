@@ -116,7 +116,7 @@ function RootState:switchTo(title, statename, btn)
     local readyCallback = function() ScreenManager.push(statename) end
     if self.selectedState then
         ScreenManager.publish('pop', readyCallback)
-        self.selectedState.consumed = false
+        self.selectedState:setConsumed(false)
     else
         self:switchButtons(self.backButton, self.quitButton)
         readyCallback()
@@ -128,7 +128,7 @@ end
 function RootState:pop()
     if self.selectedState then
         ScreenManager.publish('pop')
-        self.selectedState.consumed = false
+        self.selectedState:setConsumed(false)
     end
 
     self:changeTitle(tr('Menu'))

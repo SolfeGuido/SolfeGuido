@@ -43,8 +43,17 @@ function TextButton:released()
     self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
 end
 
+function TextButton:setConsumed(consumed)
+    self.consumed = consumed
+    if not consumed and self.state == "neutral" then
+        self.selector.visible = false
+    end
+end
+
 function TextButton:leave()
-    self.selector.visible = false
+    if not self.consumed then
+        self.selector.visible = false
+    end
 end
 
 function TextButton:onclick()

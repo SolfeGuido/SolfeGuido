@@ -94,7 +94,7 @@ function OptionsState:init(...)
                 type = 'MultiSelector',
                 config = 'noteStyle',
                 centered = true,
-                x = 0
+                x = -math.huge
             },
             {
                 text = 'Language',

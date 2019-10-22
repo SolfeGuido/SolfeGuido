@@ -152,14 +152,12 @@ function State:createUI(uiConfig)
                     elemConfig.y = yPos
                     yPos = yPos + assets.config.lineHeight
                 end
-                if elemConfig.type ~= 'Space' then
-                    local target = {color = Color.black}
-                    if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
-                    elements[#elements+1] = {
-                        element = self['add' .. elemConfig.type](self, elemConfig),
-                        target = target
-                    }
-                end
+                local target = {color = Color.black}
+                if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
+                elements[#elements+1] = {
+                    element = self['add' .. elemConfig.type](self, elemConfig),
+                    target = target
+                }
             end
         end
         yPos = assets.config.baseLine + assets.config.lineHeight

@@ -47,7 +47,9 @@ function RootState:init(...)
         color = Color.transparent:clone(),
         height = assets.config.titleSize,
         image = "gear",
-        callback = function() ScreenManager.push('OptionsState') end
+        callback = function()
+            ScreenManager.push('OptionsState')
+        end
     })
 
     local text = love.graphics.newText(assets.MarckScript(assets.config.titleSize),"Menu")

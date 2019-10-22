@@ -18,7 +18,6 @@ function TextButton:new(area, config)
         y = self.y + 5,
         visible = false
     })
-    self.selector:createAlpha()
     self.color = config.color or Color.black:clone()
 end
 
@@ -28,7 +27,7 @@ function TextButton:dispose()
 end
 
 function TextButton:boundingBox()
-    return Rectangle(self.x, self.y, assets.config.limitLine - 10, self.text:getHeight() - 7)
+    return Rectangle(self.x, self.y, assets.config.limitLine - 10, assets.config.lineHeight - 1)
 end
 
 function TextButton:hovered()

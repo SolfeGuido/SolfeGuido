@@ -55,6 +55,7 @@ function RootState:init(...)
     local text = love.graphics.newText(assets.MarckScript(assets.config.titleSize),"Menu")
     self.title = self:addentity(Title, {
         text = text,
+        framed = true,
         y = -text:getHeight(),
         color = Color.transparent:clone(),
         x = love.graphics.getWidth() / 2 - text:getWidth() / 2
@@ -155,7 +156,6 @@ end
 function RootState:draw()
     State.draw(self)
     Graphics.drawMusicBars()
-    love.graphics.rectangle('line', self.title.x - 5, self.title.y - 5, self.title:width() + 10, self.title:height() + 5)
 end
 
 function RootState:update(dt)

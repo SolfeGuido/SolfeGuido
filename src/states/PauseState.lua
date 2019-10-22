@@ -32,7 +32,7 @@ function PauseState:addButtons()
             }, {
                 type = 'TextButton',
                 text = 'Exit',
-                state = 'MenuState'
+                state = 'RootState'
             }
         }
     })

@@ -89,10 +89,6 @@ function RootState:init(...)
                 callback = self:btnCallBack('Score')
             }, {
                 type = 'TextButton',
-                text = 'Help',
-                callback = self:btnCallBack('Help')
-            }, {
-                type = 'TextButton',
                 text = 'Credits',
                 callback = self:btnCallBack('Credits')
             }

@@ -19,7 +19,6 @@ local allStates = {
     ScoreState = require('src.states.ScoreState'),
     CreditsState = require('src.states.CreditsState'),
     EndGameState = require('src.states.EndGameState'),
-    HelpState = require('src.states.HelpState'),
     RootState = require('src.states.RootState')
 }
 

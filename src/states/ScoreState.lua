@@ -1,25 +1,20 @@
 
 -- LIBS
-local State = require('src.State')
+local BaseState = require('src.states.BaseState')
 local ScoreManager = require('src.utils.ScoreManager')
-local EventTransmitter = require('src.utils.EventTransmitter')
 local Color = require('src.utils.Color')
-local ScreenManager = require('lib.ScreenManager')
 
 -- Entities
 local Title = require('src.objects.Title')
 local Line = require('src.objects.Line')
 
 ---@class ScoreState : State
-local ScoreState = State:extend()
-ScoreState:implement(EventTransmitter)
+local ScoreState = BaseState:extend()
 
 
-function ScoreState:new()
-    State.new(self)
-end
 
 function ScoreState:init()
+    local time = assets.config.transition.tween / 3
     local entries = { 'level', 'gKey', 'fKey' }
     local elements = {}
 
@@ -39,7 +34,8 @@ function ScoreState:init()
                 y = middle,
                 x = assets.config.limitLine - text:getWidth()
             }),
-            target = {x = assets.config.limitLine + 10, color =  Color.black}
+            target = {x = assets.config.limitLine + 10, color =  Color.black},
+            time = time
         }
         middle = middle + assets.config.lineHeight
     end
@@ -51,7 +47,8 @@ function ScoreState:init()
             y = assets.config.baseLine + assets.config.lineHeight,
             height = assets.config.lineHeight * 4,
         }),
-        target = {x = assets.config.limitLine + maxSize + 15, color = Color.black}
+        target = {x = assets.config.limitLine + maxSize + 15, color = Color.black},
+        time = time
     }
 
     -- Now displaying scores
@@ -71,7 +68,8 @@ function ScoreState:init()
                 y = assets.config.baseLine + assets.config.lineHeight,
                 x = -text:getWidth()
             }),
-            target = {x = middle + padding, color = Color.black}
+            target = {x = middle + padding, color = Color.black},
+            time = time
         }
         local yPos = assets.config.baseLine + assets.config.lineHeight * 2
         for _, key in ipairs(entries) do
@@ -85,7 +83,8 @@ function ScoreState:init()
                     y = yPos,
                     x = -text:getWidth()
                 }),
-                target = {x = middle + padding, color = Color.black}
+                target = {x = middle + padding, color = Color.black},
+                time = time
             }
             yPos = yPos + assets.config.lineHeight
         end
@@ -101,29 +100,14 @@ function ScoreState:init()
                     y = assets.config.baseLine + assets.config.lineHeight,
                     height = assets.config.lineHeight * 4,
                 }),
-                target = {x = middle, color = Color.gray(0.5)}
+                target = {x = middle, color = Color.gray(0.5)},
+                time = time
             }
         end
     end
 
 
-    self:transition(elements)
+    self:transition(elements, nil, assets.config.transition.spacing / 3)
 end
-
-function ScoreState:receive(eventName, callback)
-    if eventName == "pop" then
-        self:slideEntitiesOut(function()
-            ScreenManager.pop()
-            if callback and type(callback) == "function" then callback() end
-        end)
-    end
-end
-
-function ScoreState:draw()
-    love.graphics.setScissor(assets.config.limitLine ,assets.config.baseLine, love.graphics.getWidth(), assets.config.baseLine + assets.config.lineHeight * 5)
-    State.draw(self)
-    love.graphics.setScissor()
-end
-
 
 return ScoreState

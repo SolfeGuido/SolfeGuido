@@ -1,12 +1,9 @@
 
 -- LIBS
-local State = require('src.State')
-local ScreeManager = require('lib.ScreenManager')
-local EventTransmitter= require('src.utils.EventTransmitter')
+local BaseState = require('src.states.BaseState')
 
 ---@class MenuState : State
-local MenuState = State:extend()
-MenuState:implement(EventTransmitter)
+local MenuState = BaseState:extend()
 
 function MenuState:new()
     MenuState.super.new(self)
@@ -34,19 +31,4 @@ function MenuState:init(...)
     })
 end
 
-
-function MenuState:receive(eventName, callback)
-    if eventName == "pop" then
-        self:slideEntitiesOut(function()
-            ScreeManager.pop()
-            if callback and type(callback) == "function" then callback() end
-        end)
-    end
-end
-
-function MenuState:draw()
-    love.graphics.setScissor(assets.config.limitLine ,assets.config.baseLine, love.graphics.getWidth(), assets.config.baseLine + assets.config.lineHeight * 5)
-    State.draw(self)
-    love.graphics.setScissor()
-end
 return MenuState

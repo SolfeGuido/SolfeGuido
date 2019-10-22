@@ -166,7 +166,8 @@ function State:createUI(uiConfig)
     self:transition(elements)
 end
 
-function State:transition(elements, callback)
+function State:transition(elements, callback, spacing)
+    spacing = spacing or assets.config.transition.spacing
     local size = #elements
     self.timer:every(assets.config.transition.spacing, function()
         local data = elements[1]
@@ -176,7 +177,7 @@ function State:transition(elements, callback)
 end
 
 function State:addElement(data, callback)
-    self.timer:tween(assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
+    self.timer:tween(data.time or assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
 end
 
 function State:callOnEntities(method, ...)

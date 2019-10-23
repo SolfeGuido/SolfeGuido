@@ -11,7 +11,7 @@ local Mobile = require('src.utils.Mobile')
 local Scene = require('src.State')
 
 -- Entities
-local Key = require('src.objects.Key')
+local Measure = require('src.objects.Measure')
 local Note = require('src.objects.Note')
 local Queue = require('src.utils.Queue')
 local StopWatch = require('src.objects.Stopwatch')
@@ -33,7 +33,10 @@ function PlayState:new()
     self.progress = 0
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
-    self.key = self:addentity(Key, {}, Config.keySelect == 'gKey' and assets.config.gKey or assets.config.fKey)
+    self.measure = self:addentity(Measure, {
+        keyData = Config.keySelect == 'gKey' and assets.config.gKey or assets.config.fKey,
+        height = love.graphics.getHeight() / 2
+    })
     self.stopWatch = self:addentity(StopWatch, {
         x = -assets.config.stopWatch.size,
         y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,
@@ -55,7 +58,7 @@ end
 function PlayState:init(...)
     local elements = {
         {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}},
-        {element = self.key, target = {x = self.key.keyData.x, color = Color.black}},
+        {element = self.measure, target = {x = self.measure.keyData.x, color = Color.black}},
         {element = self.score, target = {x = assets.config.score.x, color = Color.black}}
     }
 
@@ -71,7 +74,7 @@ end
 
 function PlayState:close()
     self.notes = nil
-    self.key = nil
+    self.measure = nil
     self.stopWatch = nil
     Scene.close(self)
 end
@@ -104,8 +107,6 @@ function PlayState:draw()
         love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
     end
 
-    Graphics.drawMusicBars()
-
     PlayState.super.draw(self)
     love.graphics.pop()
 
@@ -123,8 +124,8 @@ end
 function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
     local currentNote = self.notes:peek()
-    TEsound.play(self.key:getSoundFor(currentNote.note))
-    if self.key:isCorrect(currentNote.note, idx) then
+    TEsound.play(self.measure:getSoundFor(currentNote.note))
+    if self.measure:isCorrect(currentNote.note, idx) then
         self.notes:shift():correct()
         self.score:gainPoint()
     else
@@ -153,7 +154,7 @@ function PlayState:doProgress(dt)
 end
 
 function PlayState:addNote()
-    local note = self.key:getRandomNote()
+    local note = self.measure:getRandomNote()
     local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
     self.notes:push(ent)
 end

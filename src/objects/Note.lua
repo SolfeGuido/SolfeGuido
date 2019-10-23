@@ -39,7 +39,7 @@ end
 function Note:wrong()
     self.color = Color(0.5, 0, 0, 1)
     self:fadeTo(Color.transparent)
-    self.name = self.area.key:getNoteName(self.note)
+    self.name = self.area.measure:getNoteName(self.note)
 end
 
 function Note:fadeAway()

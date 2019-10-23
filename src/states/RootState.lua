@@ -3,10 +3,10 @@ local State = require('src.State')
 local Color = require('src.utils.Color')
 local Graphics = require('src.utils.Graphics')
 local ScreenManager = require('lib.ScreenManager')
+local Mobile = require('src.utils.Mobile')
 
 --- ENTITIES
 local Title = require('src.objects.Title')
-local TextButton = require('src.objects.TextButton')
 local IconButton = require('src.objects.IconButton')
 
 ---@class RootState : State
@@ -24,6 +24,14 @@ function RootState:handleEvent(evName, arg1, ...)
         self:pop()
     else
         State[evName](self, arg1, ...)
+    end
+end
+
+function RootState:keypressed(key)
+    if key == "escape" and Mobile.isMobile then
+        love.event.quit()
+    else
+        State.keypressed(self, key)
     end
 end
 

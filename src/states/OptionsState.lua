@@ -44,6 +44,14 @@ function OptionsState:slideOut()
     end)
 end
 
+function OptionsState:keypressed(key)
+    if key == "escape" then
+        self:slideOut()
+    else
+        State.keypressed(self, key)
+    end
+end
+
 function OptionsState:init(...)
     local iconX = love.graphics.getWidth() - self.margin - assets.config.titleSize
     local title = love.graphics.newText(assets.MarckScript(assets.config.titleSize), tr("Options"))

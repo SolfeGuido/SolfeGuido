@@ -132,11 +132,7 @@ function State:update(dt)
 end
 
 function State:keypressed(key)
-    if key == "escape" and self.back then
-        self:back()
-    else
-        self:callOnEntities('keypressed', key)
-    end
+    self:callOnEntities('keypressed', key)
 end
 
 function State:createUI(uiConfig)

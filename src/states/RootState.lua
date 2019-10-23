@@ -19,8 +19,12 @@ function RootState:new()
     self.sideEnabled = false
 end
 
-function RootState:handleEvent(evName, ...)
-    self:callOnEntities(evName, ...)
+function RootState:handleEvent(evName, arg1, ...)
+    if evName == "keypressed" and arg1 == "escape" then
+        self:pop()
+    else
+        State[evName](self, arg1, ...)
+    end
 end
 
 function RootState:init(...)

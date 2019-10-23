@@ -59,7 +59,10 @@ function State:addTextButton(config)
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
     elseif config.statePush and not config.callback then
-        config.callback = function() ScreenManager.push(config.statePush) end
+        config.callback = function(btn)
+            btn:setConsumed(false)
+            ScreenManager.push(config.statePush)
+        end
     end
 
     return self:addentity(TextButton, {
@@ -67,7 +70,10 @@ function State:addTextButton(config)
         x = -btnText:getWidth(),
         y = config.y,
         color = Color.transparent:clone(),
-        callback = config.callback
+        callback = config.callback,
+        framed = config.framed or false,
+        image = config.image or nil,
+        centered = config.centered or false
     })
 end
 

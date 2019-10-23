@@ -23,7 +23,8 @@ local config = {
         noteStyle = {'en_note', 'ro_note'},
         keySelect = {'gKey', 'fKey'},
         difficulty = {'1', '2', '3', '4', 'all'},
-        answerType = {'default', 'letters', 'buttons'}
+        answerType = {'default', 'letters', 'buttons'},
+        time = {'30s', '1mn', '2mn', '5mn'}
     },
     configSave = 'config.lua',
     lineSpace = 20,

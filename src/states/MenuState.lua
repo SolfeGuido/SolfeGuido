@@ -15,7 +15,7 @@ function MenuState:init(...)
             {
                 type = 'TextButton',
                 text = 'Timed',
-                state = 'PlayState'
+                statePush = 'PlaySelectState'
             },
             {
                 type = 'TextButton',

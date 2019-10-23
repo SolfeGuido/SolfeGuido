@@ -208,6 +208,15 @@ function ScreenManager.peek()
 end
 
 ---
+-- Returns the screen at the bottom of the screen stack without removing it.
+-- @treturn table
+--                 The screen at the bottom of the stack.
+--
+function ScreenManager.first()
+    return stack[1]
+end
+
+---
 -- Removes the topmost screen of the stack.
 -- @raise Throws an error if the screen to pop is the last one on the stack.
 --

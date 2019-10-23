@@ -26,7 +26,7 @@ function CarouselButton:tweenOut()
     end
 end
 
-function CarouselButton:update(dt)
+function CarouselButton:update(_)
     self.x = self.target.x
     self.y = self.target.y
 end

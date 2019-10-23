@@ -21,6 +21,17 @@ function MultiSelector:new(area, options)
         color = Color.transparent:clone(),
         visible = false
     })
+    if self.centered then
+        self.timer:tween(assets.config.transition.tween, self, {x = self:getCenterX()}, 'out-expo')
+    end
+end
+
+function MultiSelector:getCenterX()
+    return (love.graphics.getWidth() - self.text:getWidth() - self.selectedText:getWidth()) / 2
+end
+
+function MultiSelector:center()
+    self.x = self:getCenterX()
 end
 
 function MultiSelector:dispose()
@@ -51,6 +62,7 @@ function MultiSelector:onclick()
     self.selectedText:set( tr(self.choices[self.currentChoice]))
     if self.callback then self.callback(self.choices[self.currentChoice]) end
     self.consumed = false
+    if self.centered then self:center() end
 end
 
 function MultiSelector:hovered()

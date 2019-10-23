@@ -4,6 +4,7 @@ local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
 local i18n = require('lib.i18n')
 local ScreeManager = require('lib.ScreenManager')
+local Color = require('src.utils.Color')
 local Mobile = require('src.utils.Mobile')
 
 local Line = require('src.objects.Line')
@@ -19,22 +20,33 @@ local allStates = {
     ScoreState = require('src.states.ScoreState'),
     CreditsState = require('src.states.CreditsState'),
     EndGameState = require('src.states.EndGameState'),
-    HelpState = require('src.states.HelpState')
+    RootState = require('src.states.RootState')
 }
 
 function SplashScreenState:new()
     State.new(self)
     self.coroutine = nil
     self.totalLoading = 0
+    self.color = Color.black:clone()
 end
 
 function SplashScreenState:draw()
     State.draw(self)
-    love.graphics.setBackgroundColor(1, 1, 1, 1)
-    love.graphics.setColor(0, 0, 0, 1)
-    love.graphics.setLineWidth(1)
     local middle = 160
     local progress = love.graphics.getWidth() * (self.totalLoading / 100)
+
+    love.graphics.setBackgroundColor(Color.white)
+    local font = love.graphics.getFont()
+    local text = tostring(math.ceil(self.totalLoading)) .. " %"
+    local width = font:getWidth(text)
+    local height = font:getHeight(text)
+    local txtX = (love.graphics.getWidth() - width) / 2
+
+    love.graphics.setColor(self.color)
+    love.graphics.print(text, txtX, middle - height)
+
+    love.graphics.setColor(Color.black)
+    love.graphics.setLineWidth(1)
     love.graphics.line(0, middle , progress, middle)
 end
 
@@ -80,6 +92,7 @@ function SplashScreenState:update(dt)
 end
 
 function SplashScreenState:displayLines()
+    self.timer:tween(assets.config.transition.tween, self, {color = Color.transparent}, 'linear')
     local middle = assets.config.baseLine
     for i = 1,5 do
         local ypos = middle + assets.config.lineHeight * i
@@ -99,7 +112,7 @@ function SplashScreenState:displayLines()
     local hTarget = assets.config.lineHeight * 4
     self.timer:tween(assets.config.transition.tween, line, {height = hTarget}, 'out-expo', function()
         -- Load all states this time
-        ScreeManager.init(allStates, 'MenuState')
+        ScreeManager.init(allStates, 'RootState')
     end)
 end
 

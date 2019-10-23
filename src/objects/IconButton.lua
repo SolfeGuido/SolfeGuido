@@ -12,6 +12,7 @@ local IconButton = AbstractButton:extend()
 
 function IconButton:new(area, config)
     AbstractButton.new(self, area, config)
+    if type(self.image) == "string" then self.image = assets.images[self.image] end
     self.color = config.color or Color.black:clone()
     local scale = 1
     if config.height then
@@ -22,6 +23,14 @@ function IconButton:new(area, config)
     self._width = self.image:getWidth() * scale
     self.height = self.image:getHeight() * scale
     self.scale = scale
+end
+
+function IconButton:setImage(img)
+    if type(img) == 'string' then
+        self.image = assets.images[img]
+    else
+        self.image = img
+    end
 end
 
 function IconButton:width()
@@ -54,7 +63,7 @@ end
 
 function IconButton:onclick()
     TEsound.play(assets.sounds.click)
-    if self.callback then self.callback() end
+    if self.callback then self.callback(self) end
 end
 
 function IconButton:draw()

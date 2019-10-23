@@ -18,7 +18,6 @@ function TextButton:new(area, config)
         y = self.y + 5,
         visible = false
     })
-    self.selector:createAlpha()
     self.color = config.color or Color.black:clone()
 end
 
@@ -28,8 +27,9 @@ function TextButton:dispose()
 end
 
 function TextButton:boundingBox()
-    return Rectangle(self.x, self.y, assets.config.limitLine - 10, self.text:getHeight() - 7)
+    return Rectangle(self.x, self.y, assets.config.limitLine - 10, assets.config.lineHeight - 1)
 end
+
 
 function TextButton:hovered()
     self.selector.visible = true
@@ -44,13 +44,22 @@ function TextButton:released()
     self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
 end
 
+function TextButton:setConsumed(consumed)
+    self.consumed = consumed
+    if not consumed and self.state == "neutral" then
+        self.selector.visible = false
+    end
+end
+
 function TextButton:leave()
-    self.selector.visible = false
+    if not self.consumed then
+        self.selector.visible = false
+    end
 end
 
 function TextButton:onclick()
     TEsound.play(assets.sounds.click)
-    if self.callback then self.callback() end
+    if self.callback then self.callback(self) end
 end
 
 function TextButton:draw()

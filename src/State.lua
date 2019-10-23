@@ -39,6 +39,8 @@ function State:addIconButton(config)
     local image = assets.images[config.image]
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
+    elseif config.statePush and not config.callback then
+        config.callback = function() ScreenManager.push(config.statePush) end
     end
 
     return self:addentity(IconButton, {
@@ -56,6 +58,8 @@ function State:addTextButton(config)
 
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
+    elseif config.statePush and not config.callback then
+        config.callback = function() ScreenManager.push(config.statePush) end
     end
 
     return self:addentity(TextButton, {
@@ -78,14 +82,16 @@ function State:addMultiSelector(config)
         selected = Config[confName] or assets.config.userPreferences[confName][1],
         choices = assets.config.userPreferences[confName],
         color = Color.transparent:clone(),
-        callback = function(value) Config.update(confName, value) end
+        callback = function(value) Config.update(confName, value) end,
+        centered = config.centered or false
     })
 end
 
 function State:addTitle(config)
     local titleText = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
+    local half = love.graphics.getWidth() / 2 - titleText:getWidth() / 2
     return self:addentity(Title, {
-        x = -titleText:getWidth(),
+        x = config.main and half or -titleText:getWidth(),
         y = config.y,
         color = Color.transparent:clone(),
         text = titleText
@@ -114,7 +120,6 @@ end
 
 ---@param dt number
 function State:update(dt)
-    if not self.active then return end
     self.timer:update(dt)
     for v = #self.entities, 1, -1 do
         local entity = self.entities[v]
@@ -127,11 +132,7 @@ function State:update(dt)
 end
 
 function State:keypressed(key)
-    if key == "escape" and self.back then
-        self:back()
-    else
-        self:callOnEntities('keypressed', key)
-    end
+    self:callOnEntities('keypressed', key)
 end
 
 function State:createUI(uiConfig)
@@ -147,12 +148,12 @@ function State:createUI(uiConfig)
                     elemConfig.y = yPos
                     yPos = yPos + assets.config.lineHeight
                 end
-                if elemConfig.type ~= 'Space' then
-                    elements[#elements+1] = {
-                        element = self['add' .. elemConfig.type](self, elemConfig),
-                        target = {x = elemConfig.x, color = Color.black}
-                    }
-                end
+                local target = {color = Color.black}
+                if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
+                elements[#elements+1] = {
+                    element = self['add' .. elemConfig.type](self, elemConfig),
+                    target = target
+                }
             end
         end
         yPos = assets.config.baseLine + assets.config.lineHeight
@@ -161,7 +162,8 @@ function State:createUI(uiConfig)
     self:transition(elements)
 end
 
-function State:transition(elements, callback)
+function State:transition(elements, callback, spacing)
+    spacing = spacing or assets.config.transition.spacing
     local size = #elements
     self.timer:every(assets.config.transition.spacing, function()
         local data = elements[1]
@@ -171,7 +173,7 @@ function State:transition(elements, callback)
 end
 
 function State:addElement(data, callback)
-    self.timer:tween(assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
+    self.timer:tween(data.time or assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
 end
 
 function State:callOnEntities(method, ...)
@@ -196,7 +198,15 @@ end
 local yCompare = lume.lambda "a,b -> a.y > b.y"
 
 local function elemSlide(v)
-    return {element = v, target = {x = v.width and -v:width() or -20, color = Color.transparent}}
+    local x = -20
+    if v.width then
+        if type(v.width) == "number" then
+            x = -v.width
+        elseif type(v.width) == "function" then
+            x = -v:width()
+        end
+    end
+    return {element = v, target = {x = x, color = Color.transparent}}
 end
 
 function State:slideEntitiesOut(callback)

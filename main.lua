@@ -12,6 +12,7 @@ local memoryGraph = nil
 
 function love.load()
     Mobile.load()
+    ScreenManager.registerCallbacks({'keypressed', 'touchpressed', 'touchmoved', 'touchreleased'})
     ScreenManager.init({SplashScreenState = require('src.states.SplashScreenState')}, 'SplashScreenState')
 
 --- BEGIN DEBUG
@@ -56,7 +57,3 @@ function love.mousereleased(x, y, button, istouch)
         ScreenManager.mousereleased(x, y, button)
     end
 end
-love.keypressed = ScreenManager.keypressed
-love.touchpressed = ScreenManager.touchpressed
-love.touchmoved = ScreenManager.touchmoved
-love.touchreleased = ScreenManager.touchreleased

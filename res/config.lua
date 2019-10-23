@@ -20,7 +20,7 @@ local config = {
         sound = {'on', 'off'},
         vibrations = {'on', 'off'},
         lang = {'en', 'fr'},
-        noteStyle = {'en', 'it'},
+        noteStyle = {'en_note', 'ro_note'},
         keySelect = {'gKey', 'fKey'},
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'default', 'letters', 'buttons'}
@@ -53,7 +53,7 @@ local config = {
         fontSize = 25
     },
     transition = {
-        tween = 0.8,
+        tween = 0.25,
         spacing = 0.01
     },
     gKey = {

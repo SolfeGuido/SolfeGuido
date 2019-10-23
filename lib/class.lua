@@ -33,8 +33,15 @@ end
 function Object:implement(...)
   for _, cls in pairs({...}) do
     for k, v in pairs(cls) do
-      if self[k] == nil and type(v) == "function" then
-        self[k] = v
+      if type(v) == "function" then
+        if self[k] == nil then self[k] = v
+        elseif type(self[k]) == "function" then
+          local replace = self[k]
+          self[k] = function(_, ...)
+            replace(_, ...)
+            return v(...)
+          end
+        end
       end
     end
   end

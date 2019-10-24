@@ -214,7 +214,7 @@ function PlayState:tryPopNote(dt)
         self:addNote()
     else
         local last = self.notes:last().x
-        if love.graphics.getWidth() - last >= assets.config.note.distance then
+        if love.graphics.getWidth() - last > Note.width(self:getMeasure()) then
             self:addNote()
         end
     end

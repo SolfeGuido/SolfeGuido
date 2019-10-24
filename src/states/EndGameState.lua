@@ -32,11 +32,11 @@ function EndGameState:addButtons(score)
             }, {
                 type = 'TextButton',
                 text = 'Score',
-                state = 'ScoreState'
+                state = 'RootState'
             }, {
                 type = 'TextButton',
                 text = 'Menu',
-                state = 'MenuState'
+                state = 'RootState'
             }
         }
     })

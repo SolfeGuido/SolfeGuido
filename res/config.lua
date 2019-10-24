@@ -94,7 +94,7 @@ local config = {
         yOrigin = 184,
         image = 'note';
         padding = 0.5,
-        distance = 50,
+        distance = 0.1,
         fadeAway = 1.5
     },
     mobile = {

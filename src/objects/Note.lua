@@ -59,7 +59,7 @@ function Note:draw()
     local actualWidth = scale * self.image:getWidth()
     local padding = assets.config.note.padding * self.measure.noteHeight
     if self.note <= 4 then
-        for i = 5, self.note, -2 do
+        for i = 5, self.note + 1, -2 do
             local y = self:noteToPosition(i - 1)
             love.graphics.line(self.x, y, self.x + actualWidth + padding * 2, y)
         end

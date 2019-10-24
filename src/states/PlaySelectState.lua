@@ -41,7 +41,7 @@ function PlaySelectState:slideOut()
     end)
 end
 
-function PlaySelectState:init(...)
+function PlaySelectState:init(config)
     local iconX = love.graphics.getWidth() - self.margin - assets.config.titleSize
     local elements = {
         {
@@ -59,8 +59,7 @@ function PlaySelectState:init(...)
 
 
     self:transition(elements)
-    self:createUI({
-        {
+    local UI = {
             {
                 text = 'Key',
                 type = 'MultiSelector',
@@ -74,13 +73,6 @@ function PlaySelectState:init(...)
                 config = 'difficulty',
                 centered = true,
                 x = -math.huge
-            },
-            {
-                text = 'Time',
-                type = 'MultiSelector',
-                config = 'time',
-                centered = true,
-                x = -math.huge
             }, {
                 text = 'Play',
                 type = 'TextButton',
@@ -90,11 +82,22 @@ function PlaySelectState:init(...)
                 y = love.graphics.getHeight() - assets.config.titleSize * 2,
                 image = assets.images.right,
                 callback = function()
-                    ScreenManager.switch('PlayState')
+                    ScreenManager.switch('PlayState', config)
                 end
             }
         }
-    }, self.margin)
+
+    if config.timed then
+        UI[#UI+1] = {
+            text = 'Time',
+            type = 'MultiSelector',
+            config = 'time',
+            centered = true,
+            x = -math.huge
+        }
+    end
+
+    self:createUI({UI}, self.margin)
     self.timer:tween(assets.config.transition.tween, self, {yBottom = love.graphics.getHeight()}, 'out-expo')
 end
 

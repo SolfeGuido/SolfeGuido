@@ -21,7 +21,7 @@ local config = {
         vibrations = {'on', 'off'},
         lang = {'en', 'fr'},
         noteStyle = {'en_note', 'ro_note'},
-        keySelect = {'gKey', 'fKey'},
+        keySelect = {'gKey', 'fKey', 'both'},
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'default', 'letters', 'buttons'},
         time = {'30s', '1mn', '2mn', '5mn'}
@@ -89,11 +89,11 @@ local config = {
         }
     },
     note = {
-        height = lineHeight * 4,
+        height = 4,-- number of 'lines' of height
         xOrigin = 28,
         yOrigin = 184,
         image = 'note';
-        padding = 10,
+        padding = 0.5,
         distance = 50,
         fadeAway = 1.5
     },

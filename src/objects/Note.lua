@@ -19,16 +19,15 @@ end
 
 --- The total width of a note
 ---@return number
-function Note.width()
-    local scale = assets.config.note.height / assets.images.note:getHeight()
-    return assets.config.note.padding * 2 + scale * assets.images.note:getWidth()
+function Note.width(measure)
+    local scale = (measure.noteHeight * assets.config.note.height) / assets.images.note:getHeight()
+    return assets.config.note.padding * 2 * measure.noteHeight + scale * assets.images.note:getWidth()
 end
 
 ---@param note number
 ---@return number
 function Note:noteToPosition(note)
-    local base = self.area:getBaseLine()
-    return math.floor(base - (note - 6) * (assets.config.lineHeight / 2))
+    return self.measure:getNotePosition(note)
 end
 
 function Note:correct()
@@ -39,7 +38,7 @@ end
 function Note:wrong()
     self.color = Color(0.5, 0, 0, 1)
     self:fadeTo(Color.transparent)
-    self.name = self.area.measure:getNoteName(self.note)
+    self.name = self.measure:getNoteName(self.note)
 end
 
 function Note:fadeAway()
@@ -54,18 +53,20 @@ function Note:draw()
     --Color for the (optional) bars
     love.graphics.setColor(0, 0, 0, self.color.a)
     love.graphics.setLineWidth(1)
-    local scale = assets.config.note.height / self.image:getHeight()
+    local scale = (self.measure.noteHeight * assets.config.note.height) / self.image:getHeight()
     local xOrig = assets.config.note.xOrigin
     local yOrig = assets.config.note.yOrigin
     local actualWidth = scale * self.image:getWidth()
-    local padding = assets.config.note.padding
+    local padding = assets.config.note.padding * self.measure.noteHeight
     if self.note <= 4 then
-        for i = 6, self.note, -2 do
-            love.graphics.line(self.x, self:noteToPosition(i), self.x + actualWidth + padding * 2, self:noteToPosition((i)))
+        for i = 5, self.note, -2 do
+            local y = self:noteToPosition(i - 1)
+            love.graphics.line(self.x, y, self.x + actualWidth + padding * 2, y)
         end
     elseif self.note >= 15 then
         for i = 16, self.note, 2 do
-            love.graphics.line(self.x, self:noteToPosition(i), self.x +  actualWidth + padding * 2, self:noteToPosition((i)))
+            local y = self:noteToPosition(i)
+            love.graphics.line(self.x, y, self.x +  actualWidth + padding * 2, y)
         end
     end
 

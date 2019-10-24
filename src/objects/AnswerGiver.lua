@@ -37,7 +37,7 @@ end
 function AnswerGiver:addButtons()
     local size = assets.config.mobileButton.fontSize
     local font = assets.MarckScript(size)
-    local letters = Config.noteStyle == "en" and assets.config.enNotes or assets.config.itNotes
+    local letters = Config.noteStyle == "en" and assets.config.englishNotes or assets.config.romanNotes
 
     local padding = assets.config.mobileButton.padding
     local widths = math.floor((love.graphics.getWidth() / #letters) - padding)

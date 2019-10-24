@@ -20,7 +20,8 @@ local allStates = {
     ScoreState = require('src.states.ScoreState'),
     CreditsState = require('src.states.CreditsState'),
     EndGameState = require('src.states.EndGameState'),
-    RootState = require('src.states.RootState')
+    RootState = require('src.states.RootState'),
+    PlaySelectState = require('src.states.PlaySelectState')
 }
 
 function SplashScreenState:new()

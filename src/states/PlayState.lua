@@ -1,7 +1,6 @@
 
 -- LIBS
 local ScreenManager = require('lib.ScreenManager')
-local Graphics = require('src.utils.Graphics')
 local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
 local Color = require('src.utils.Color')
@@ -11,7 +10,7 @@ local Mobile = require('src.utils.Mobile')
 local Scene = require('src.State')
 
 -- Entities
-local Key = require('src.objects.Key')
+local Measure = require('src.objects.Measure')
 local Note = require('src.objects.Note')
 local Queue = require('src.utils.Queue')
 local StopWatch = require('src.objects.Stopwatch')
@@ -33,7 +32,9 @@ function PlayState:new()
     self.progress = 0
     self.progressSpeed = assets.config.maxProgressSpeed
     self.notes = Queue()
-    self.key = self:addentity(Key, {}, Config.keySelect == 'gKey' and assets.config.gKey or assets.config.fKey)
+    self:addMeasure()
+    self.currentMeasure = 1
+    self.nextMeasureGeneration = 1
     self.stopWatch = self:addentity(StopWatch, {
         x = -assets.config.stopWatch.size,
         y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,
@@ -52,10 +53,41 @@ function PlayState:new()
     })
 end
 
+function PlayState:addMeasure()
+    local btnSize = assets.config.mobileButton.fontSize + assets.config.mobileButton.padding * 2 + 20
+    local availableSpace = love.graphics.getHeight() - (Config.answerType == 'buttons' and btnSize or 0)
+    if Config.keySelect == 'gKey' then
+        self.measures = {self:addentity(Measure, {
+            keyData = assets.config.gKey,
+            height = availableSpace
+        })}
+    elseif Config.keySelect == 'fKey' then
+        self.measures = {self:addentity(Measure, {
+            keyData = assets.config.fKey,
+            height = availableSpace
+        })}
+    elseif Config.keySelect == 'both' then
+        self.measures = {
+            self:addentity(Measure, {
+                keyData = assets.config.gKey,
+                height = availableSpace / 2,
+                y = 0
+            }),
+            self:addentity(Measure, {
+                keyData = assets.config.fKey,
+                height = availableSpace  / 2,
+                y = availableSpace / 2
+            })
+        }
+    else
+        error("unknow key")
+    end
+
+end
+
 function PlayState:init(...)
     local elements = {
         {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}},
-        {element = self.key, target = {x = self.key.keyData.x, color = Color.black}},
         {element = self.score, target = {x = assets.config.score.x, color = Color.black}}
     }
 
@@ -69,9 +101,18 @@ function PlayState:init(...)
     end)
 end
 
+function PlayState:getMeasure()
+    return self.measures[self.currentMeasure]
+end
+
+function PlayState:switchMeasure()
+    if #self.measures == 1 then return end
+    self.currentMeasure = 3 - self.currentMeasure
+end
+
 function PlayState:close()
     self.notes = nil
-    self.key = nil
+    self.measures = nil
     self.stopWatch = nil
     Scene.close(self)
 end
@@ -97,14 +138,12 @@ function PlayState:draw()
 
     love.graphics.setBackgroundColor(1,1,1)
 
-    local width = Note.width()
+    local width = Note.width(self:getMeasure())
     if not self.notes:isEmpty() then
         local x = self.notes:peek().x
         love.graphics.setColor(Color.stripe)
-        love.graphics.rectangle('fill', x, 0, width, love.graphics.getHeight())
+        love.graphics.rectangle('fill', x, self:getMeasure().y , width, self:getMeasure().height)
     end
-
-    Graphics.drawMusicBars()
 
     PlayState.super.draw(self)
     love.graphics.pop()
@@ -122,9 +161,10 @@ end
 
 function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
+    local measure = self:getMeasure()
     local currentNote = self.notes:peek()
-    TEsound.play(self.key:getSoundFor(currentNote.note))
-    if self.key:isCorrect(currentNote.note, idx) then
+    TEsound.play(measure:getSoundFor(currentNote.note))
+    if measure:isCorrect(currentNote.note, idx) then
         self.notes:shift():correct()
         self.score:gainPoint()
     else
@@ -132,6 +172,7 @@ function PlayState:answerGiven(idx)
         Mobile.vibrate(assets.config.mobile.vibrationTime)
         self.stopWatch:update(assets.config.timeLoss)
     end
+    self:switchMeasure()
 end
 
 function PlayState:getMove()
@@ -143,7 +184,7 @@ end
 function PlayState:doProgress(dt)
     local first = self.notes:peek().x
     local normalProg = (dt * self.progressSpeed)
-    local dist = first - assets.config.limitLine
+    local dist = first - self:getMeasure().limitLine
     if dist < 1  then
         self.progress = dist
     else
@@ -153,9 +194,16 @@ function PlayState:doProgress(dt)
 end
 
 function PlayState:addNote()
-    local note = self.key:getRandomNote()
-    local ent = Scene.addentity(self, Note, {note = note,  x = love.graphics.getWidth()})
+    local note = self.measures[self.nextMeasureGeneration]:getRandomNote()
+    local ent = Scene.addentity(self, Note, {
+        note = note,
+        x = love.graphics.getWidth(),
+        measure = self.measures[self.nextMeasureGeneration]
+    })
     self.notes:push(ent)
+    if #self.measures == 2 then
+        self.nextMeasureGeneration = 3 - self.nextMeasureGeneration
+    end
 end
 
 --- Pops a note if needed
@@ -166,7 +214,7 @@ function PlayState:tryPopNote(dt)
         self:addNote()
     else
         local last = self.notes:last().x
-        if love.graphics.getWidth() - last >= assets.config.note.distance then
+        if love.graphics.getWidth() - last > Note.width(self:getMeasure()) then
             self:addNote()
         end
     end

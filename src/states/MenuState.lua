@@ -20,12 +20,12 @@ function MenuState:init(...)
             {
                 type = 'TextButton',
                 text = 'Zen',
-                state = 'ScoreState'
+                statePush = 'PlaySelectState'
             },
             {
                 type = 'TextButton',
                 text = 'Interval earing',
-                state = 'ScoreState'
+                statePush = 'PlaySelectState'
             }
         }
     })

@@ -34,6 +34,7 @@ function PlayState:new()
     self.notes = Queue()
     self:addMeasure()
     self.currentMeasure = 1
+    self.nextMeasureGeneration = 1
     self.stopWatch = self:addentity(StopWatch, {
         x = -assets.config.stopWatch.size,
         y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,
@@ -193,13 +194,16 @@ function PlayState:doProgress(dt)
 end
 
 function PlayState:addNote()
-    local note = self:getMeasure():getRandomNote()
+    local note = self.measures[self.nextMeasureGeneration]:getRandomNote()
     local ent = Scene.addentity(self, Note, {
         note = note,
         x = love.graphics.getWidth(),
-        measure = self:getMeasure()
+        measure = self.measures[self.nextMeasureGeneration]
     })
     self.notes:push(ent)
+    if #self.measures == 2 then
+        self.nextMeasureGeneration = 3 - self.nextMeasureGeneration
+    end
 end
 
 --- Pops a note if needed

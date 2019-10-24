@@ -29,7 +29,6 @@ function Measure:draw()
         love.graphics.line(0 , yPos, width, yPos)
         yPos = yPos + self.noteHeight
     end
-    local diff = yPos - yStart
     love.graphics.line( self.limitLine - 1, yStart, self.limitLine - 1, yPos - self.noteHeight)
 
 
@@ -53,7 +52,7 @@ end
 ---@return string
 function Measure:getNoteName(note)
     note = ((note + self.keyData.lowestNote) % 7) + 1
-    return assets.config[Config.noteStyle == 'it' and 'itNotes' or 'enNotes'][note]
+    return assets.config[Config.noteStyle == 'ro_note' and 'romanNotes' or 'englishNotes'][note]
 end
 
 function Measure:getNotePosition(note)

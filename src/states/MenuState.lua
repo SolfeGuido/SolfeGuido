@@ -23,11 +23,6 @@ function MenuState:init(...)
                 text = 'Zen',
                 statePush = 'PlaySelectState',
                 statePushArgs = {timed = false}
-            },
-            {
-                type = 'TextButton',
-                text = 'Interval earing',
-                statePush = 'PlaySelectState'
             }
         }
     })

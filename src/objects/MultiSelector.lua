@@ -45,7 +45,7 @@ function MultiSelector:width()
 end
 
 function MultiSelector:boundingBox()
-    return Rectangle(self.x, self.y, self:width() + 20, self.text:getHeight() - 7)
+    return Rectangle(self.x, self.y, self:width() + 20, math.max(self.selectedText:getHeight(),self.text:getHeight()) - 7)
 end
 
 function MultiSelector:draw()

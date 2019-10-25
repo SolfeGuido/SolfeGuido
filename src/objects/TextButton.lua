@@ -39,7 +39,7 @@ function TextButton:boundingBox()
         return Rectangle(self.x - 30, self.y - 5, self.text:getWidth() + 50, self.text:getHeight() + 10)
 
     end
-    return Rectangle(self.x, self.y, assets.config.limitLine - 10, assets.config.lineHeight - 1)
+    return Rectangle(self.x, self.y, assets.config.limitLine - 30, assets.config.lineHeight - 1)
 end
 
 

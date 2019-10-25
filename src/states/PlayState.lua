@@ -118,18 +118,15 @@ function PlayState:close()
     Scene.close(self)
 end
 
----@return number
-function PlayState:getBaseLine()
-    return assets.config.baseLine + 5 * assets.config.lineHeight
-end
 
 function PlayState:finish()
+    -- TODO fadeway buttons if necessary
     self.finished = true
     while not self.notes:isEmpty() do
         self.notes:shift():fadeAway()
     end
     self.timer:after(assets.config.note.fadeAway, function()
-        ScoreManager.update(Config.keySelect, Config.difficulty, self.score.points)
+        ScoreManager.update(Config.keySelect, Config.difficulty, Config.time, self.score.points)
         ScreenManager.push('EndGameState', self.score.points)
     end)
 end
@@ -210,8 +207,7 @@ function PlayState:addNote()
 end
 
 --- Pops a note if needed
----@param dt number
-function PlayState:tryPopNote(dt)
+function PlayState:tryPopNote(_)
     if self.finished then return end
     if self.notes:isEmpty() then
         self:addNote()

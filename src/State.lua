@@ -40,7 +40,7 @@ function State:addIconButton(config)
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
     elseif config.statePush and not config.callback then
-        config.callback = function() ScreenManager.push(config.statePush) end
+        config.callback = function() ScreenManager.push(config.statePush, config.statePushArgs) end
     end
 
     return self:addentity(IconButton, {
@@ -61,7 +61,7 @@ function State:addTextButton(config)
     elseif config.statePush and not config.callback then
         config.callback = function(btn)
             btn:setConsumed(false)
-            ScreenManager.push(config.statePush)
+            ScreenManager.push(config.statePush, config.statePushArgs)
         end
     end
 

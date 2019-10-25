@@ -1,52 +1,41 @@
 
 -- LIBS
-local State = require('src.State')
+local DialogState = require('src.states.DialogState')
 
 
 ---@class EndGameState : State
-local EndGameState = State:extend()
+local EndGameState = DialogState:extend()
 
 
 function EndGameState:new()
-    State.new(self)
+    DialogState.new(self)
 end
 
 function EndGameState:init(score)
-    self.color = {1, 1, 1, 0}
-    self.timer:tween(0.2, self, {color = {1, 1, 1, 0.8}}, 'linear', function() self:addButtons(score) end)
-end
-
-function EndGameState:addButtons(score)
     self:createUI({
         {
             {
-                text = 'Finished',
-                fontSize = assets.config.titleSize,
-                y = 0
-            }, {
-                text = 'Score : ' .. tostring(score)
-            }, {
                 type = 'TextButton',
                 text = 'Restart',
-                state = 'PlayState'
+                state = 'PlayState',
+                centered = true,
+                x = -math.huge
             }, {
                 type = 'TextButton',
                 text = 'Score',
-                state = 'RootState'
+                state = 'RootState',
+                centered = true,
+                x = -math.huge
             }, {
                 type = 'TextButton',
                 text = 'Menu',
-                state = 'RootState'
+                state = 'RootState',
+                centered = true,
+                x = -math.huge
             }
         }
     })
-end
-
-function EndGameState:draw()
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-
-    State.draw(self)
+    DialogState.init(self, 'Score : ' .. tostring(score))
 end
 
 return EndGameState

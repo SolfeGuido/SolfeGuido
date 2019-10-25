@@ -35,13 +35,6 @@ function PlayState:new()
     self:addMeasure()
     self.currentMeasure = 1
     self.nextMeasureGeneration = 1
-    self.stopWatch = self:addentity(StopWatch, {
-        x = -assets.config.stopWatch.size,
-        y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,
-        started = false,
-        finishCallback = function()
-            self:finish()
-        end})
 
     local scoreText = love.graphics.newText(assets.MarckScript(assets.config.score.fontSize),"0")
     self.score = self:addentity(Score, {
@@ -85,19 +78,27 @@ function PlayState:addMeasure()
 
 end
 
-function PlayState:init(...)
-    local elements = {
-        {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}},
-        {element = self.score, target = {x = assets.config.score.x, color = Color.black}}
-    }
+function PlayState:init(config)
 
-    self:addentity(AnswerGiver, {
-        callback = function(x) self:answerGiven(x) end
-    })
+    local elements = {{element = self.score, target = {x = assets.config.score.x, color = Color.black}}}
+
+    if config.timed then
+        self.stopWatch = self:addentity(StopWatch, {
+            x = -assets.config.stopWatch.size,
+            y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,
+            started = false,
+            finishCallback = function()
+                self:finish()
+            end})
+        elements[1] = {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}}
+    end
+
+
+    self:addentity(AnswerGiver, { callback = function(x) self:answerGiven(x) end })
 
     self.finished = false
     self:transition(elements, function()
-        self.stopWatch:start()
+        if self.stopWatch then self.stopWatch:start() end
     end)
 end
 
@@ -170,7 +171,9 @@ function PlayState:answerGiven(idx)
     else
         self.notes:shift():wrong()
         Mobile.vibrate(assets.config.mobile.vibrationTime)
-        self.stopWatch:update(assets.config.timeLoss)
+        if self.stopWatch then
+            self.stopWatch:update(assets.config.timeLoss)
+        end
     end
     self:switchMeasure()
 end

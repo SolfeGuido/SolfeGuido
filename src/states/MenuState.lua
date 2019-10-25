@@ -15,17 +15,14 @@ function MenuState:init(...)
             {
                 type = 'TextButton',
                 text = 'Timed',
-                statePush = 'PlaySelectState'
+                statePush = 'PlaySelectState',
+                statePushArgs = {timed = true}
             },
             {
                 type = 'TextButton',
                 text = 'Zen',
-                state = 'ScoreState'
-            },
-            {
-                type = 'TextButton',
-                text = 'Interval earing',
-                state = 'ScoreState'
+                statePush = 'PlaySelectState',
+                statePushArgs = {timed = false}
             }
         }
     })

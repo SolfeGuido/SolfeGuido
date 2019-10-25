@@ -15,7 +15,7 @@ local ScoreState = BaseState:extend()
 
 function ScoreState:init()
     local time = assets.config.transition.tween / 3
-    local entries = { 'level', 'gKey', 'fKey' }
+    local entries = { 'level', 'gKey', 'fKey', 'both' }
     local elements = {}
 
     local maxSize = 0
@@ -25,7 +25,7 @@ function ScoreState:init()
 
     -- Adding titles
     for _,v in ipairs(entries) do
-        local text = love.graphics.newText(font, v)
+        local text = love.graphics.newText(font, tr(v))
         maxSize = math.max(maxSize, text:getWidth())
         elements[#elements+1] = {
             element = self:addentity(Title, {

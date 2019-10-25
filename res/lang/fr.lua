@@ -1,6 +1,7 @@
 return {
-    gkey = "de Sol",
-    fkey = "de Fa",
+    gkey = "Sol",
+    fkey = "Fa",
+    both = 'Sol & Fa',
     play = 'Jouer',
     score = 'Score',
     options = 'Options',

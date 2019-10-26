@@ -67,7 +67,7 @@ function SplashScreenState:createCoroutine()
         end
         -- Create the two main fonts
         assets.MarckScript(assets.config.lineHeight)
-        assets.MarckScript(40)
+        assets.MarckScript(assets.config.titleSize)
         coroutine.yield(1)
     end)
 end

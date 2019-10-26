@@ -79,7 +79,7 @@ function PlayState:addMeasure()
 end
 
 function PlayState:init(config)
-
+    config = config or {timed = true}
     local elements = {{element = self.score, target = {x = assets.config.score.x, color = Color.black}}}
 
     if config.timed then

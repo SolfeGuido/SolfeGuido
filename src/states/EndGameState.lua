@@ -22,12 +22,6 @@ function EndGameState:init(score)
                 x = -math.huge
             }, {
                 type = 'TextButton',
-                text = 'Score',
-                state = 'RootState',
-                centered = true,
-                x = -math.huge
-            }, {
-                type = 'TextButton',
                 text = 'Menu',
                 state = 'RootState',
                 centered = true,

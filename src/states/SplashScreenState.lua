@@ -62,9 +62,6 @@ function SplashScreenState:createCoroutine()
         coroutine.yield(1)
         i18n.load(assets.lang)
         i18n.setLocale(Config.lang or 'en')
-        _G['tr'] = function(data)
-            return i18n.translate(string.lower(data), {default = data})
-        end
         -- Create the two main fonts
         assets.MarckScript(assets.config.lineHeight)
         assets.MarckScript(assets.config.titleSize)
@@ -79,6 +76,10 @@ function SplashScreenState:updateCoroutine()
     end
     if coroutine.status(self.coroutine) == "dead" then
         self.coroutine = "done"
+        -- Not working on windows exe when in coroutine
+        _G['tr'] = function(data)
+            return i18n.translate(string.lower(data), {default = data})
+        end
         self:displayLines()
     end
 end

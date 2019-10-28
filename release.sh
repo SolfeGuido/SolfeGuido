@@ -1,11 +1,12 @@
+#!/bin/bash
 
+WD=`pwd`
+TEMP=`mktemp -d` # create a temporary directory
 # Do some cleanup
-rm -rf ../solfege-release
+rm -rf $WD/../solfege-release
 
-mkdir game
-cp -R * game
-cd ./game
-rm -rf game
+cp -R * $TEMP
+cd $TEMP
 rm -rf examples
 rm -rf spec
 rm -rf .git
@@ -14,10 +15,19 @@ sed -i -e '/--- BEGIN DEBUG/,/--- END DEBUG/d' main.lua
 rm lib/debugGraph.lua
 rm lib/lurker.lua
 
+compile() {
+    cd $TEMP # move to temp
+    for file in $(find . -iname "*.lua") ; do # for each lua file recursively
+        if [ "$file" != "./conf.lua" ]; then
+            luajit -b ${file} ${file} # compile the code with luajit onto itself
+        fi
+    done
+}
+
+compile
+
 rm release.sh
 # Make the releases
-love-release -W32 -W64 -D -M ../../solfege-release .
+love-release -W32 -W64 -D -M $WD/../solfege-release $TMP
 
-# Cleanup self
-cd ..
-rm -rf game
+rm -rf $TEMP # cleanup

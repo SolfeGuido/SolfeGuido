@@ -1,4 +1,26 @@
 return {
     FKey = '?',
-    GKey = 'G'
+    GKey = 'G',
+    QuarterNote = 'q',
+    WholeNote = 'w',
+    BraceRight = '}',
+    Eacute = '>',
+    Music = 'a',
+    FullStar = 'b',
+    EmptyStar = 'c',
+    HalfFullstar = 'd',
+    HalfEmptyStar = 'e',
+    Times = 'f',
+    Minus = 'g',
+    Info = 'h',
+    Home = 'i',
+    VolumeOff = 'j',
+    VolumeOn = 'k',
+    Cog = 'l',
+    Play = 'm',
+    Off = 'n',
+    Opera = 'o',
+    Droplet = 'v',
+    Spinner = 'p',
+    VolumeMute = 'r'
 }

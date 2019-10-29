@@ -48,9 +48,8 @@ local config = {
         spacing = 0.01
     },
     gKey = {
-        height = lineHeight * 7,
-        xOrigin = 32,
-        yOrigin = 132,
+        height = 7,
+        yOrigin = 2.5,
         icon = 'GKey',
         line = 4,
         lowestNote = 'F3',
@@ -64,9 +63,8 @@ local config = {
         }
     },
     fKey = {
-        height = lineHeight * 3,
-        xOrigin = 21,
-        yOrigin = 23,
+        height = 5,
+        yOrigin = 3.5,
         line = 1,
         icon = 'FKey',
         lowestNote = 'A1',
@@ -80,8 +78,7 @@ local config = {
     },
     note = {
         height = 4,-- number of 'lines' of height
-        xOrigin = 28,
-        yOrigin = 184,
+        yOrigin = 3,
         image = 'note';
         padding = 0.5,
         distance = 0.1,

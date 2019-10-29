@@ -13,7 +13,7 @@ function Measure:new(area, options)
     self.y = options.y or 0
     self.x = options.x or 0
     self.baseLine  = options.baseLine or self.y + self.noteHeight * 4
-    local font = assets.IconsFont(self.height)
+    local font = assets.IconsFont(self.noteHeight * self.keyData.height)
     self.image = love.graphics.newText(font, assets.IconName[self.keyData.icon])
     self.color =  options.color or Color.black
     self.limitLine = self.height / 2
@@ -46,7 +46,7 @@ function Measure:draw()
     local imgHeigh = self.image:getHeight()
     local scale = (self.keyData.height / imgHeigh) * localScale
     local xPos = self.x + self.image:getWidth() * scale
-    love.graphics.draw(self.image, self.x, self.y)
+    love.graphics.draw(self.image, self.x + 5, self.y + self.keyData.yOrigin * self.noteHeight)
 end
 
 ---@param expected string

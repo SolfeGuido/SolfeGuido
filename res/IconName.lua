@@ -1,0 +1,4 @@
+return {
+    FKey = '?',
+    GKey = 'G'
+}

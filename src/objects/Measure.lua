@@ -17,6 +17,10 @@ function Measure:new(area, options)
     self.limitLine = self.height / 2
 end
 
+function Measure:indexOf(note)
+
+end
+
 function Measure:draw()
     love.graphics.setColor(self.color)
 

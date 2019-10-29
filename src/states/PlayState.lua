@@ -5,6 +5,7 @@ local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
 local Color = require('src.utils.Color')
 local Mobile = require('src.utils.Mobile')
+local Pitch = require('src.utils.Pitch')
 
 -- Parent
 local Scene = require('src.State')
@@ -161,7 +162,7 @@ function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
     local measure = self:getMeasure()
     local currentNote = self.notes:peek()
-    TEsound.play(measure:getSoundFor(currentNote.note))
+    TEsound.play(assets.sounds.notes.C4, nil, 1.0, 1)
     if measure:isCorrect(currentNote.note, idx) then
         self.notes:shift():correct()
         self.score:gainPoint()

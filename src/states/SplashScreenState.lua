@@ -79,6 +79,9 @@ function SplashScreenState:updateCoroutine()
     end
     if coroutine.status(self.coroutine) == "dead" then
         self.coroutine = "done"
+        _G['tr'] = function(data)
+            return i18n.translate(string.lower(data), {default = data})
+        end
         self:displayLines()
     end
 end

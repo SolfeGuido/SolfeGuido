@@ -11,7 +11,8 @@ local Note = Entity:extend()
 
 function Note:new(area, options)
     Note.super.new(self, area, options)
-    self.image = assets.images.note
+    local font = assets.IconsFont(self.measure.noteHeight * assets.config.note.height)
+    self.image = love.graphics.newText(font, assets.IconName.QuarterNote)
     self.color = Color.black:clone()
     self.name = nil
     self.measureIndex = self.measure:indexOf(self.note)
@@ -23,7 +24,7 @@ end
 ---@return number
 function Note.width(measure)
     local scale = (measure.noteHeight * assets.config.note.height) / assets.images.note:getHeight()
-    return assets.config.note.padding * 3 * measure.noteHeight + scale * assets.images.note:getWidth()
+    return assets.config.note.padding * 2 * measure.noteHeight + scale * assets.images.note:getWidth()
 end
 
 ---@param note number
@@ -55,9 +56,7 @@ function Note:draw()
     --Color for the (optional) bars
     love.graphics.setColor(0, 0, 0, self.color.a)
     love.graphics.setLineWidth(1)
-    local scale = (self.measure.noteHeight * assets.config.note.height) / self.image:getHeight()
-    local xOrig = assets.config.note.xOrigin
-    local yOrig = assets.config.note.yOrigin
+    local scale = 1
     local actualWidth = scale * self.image:getWidth()
     local padding = assets.config.note.padding * self.measure.noteHeight
     if self.measureIndex <= 4 then
@@ -74,7 +73,7 @@ function Note:draw()
 
     if self.measureIndex >= 10 then scale = -scale end
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x +  padding + actualWidth / 2, self.y, 0, scale, scale, xOrig, yOrig)
+    love.graphics.draw(self.image, self.x + padding, self.y, 0, 1, 1, self.image:getWidth() / 2, self.image:getHeight())
 
     if self.name then
         love.graphics.print(self.name, self.x - 15, self.y + 5)

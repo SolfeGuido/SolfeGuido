@@ -86,7 +86,8 @@ function PlayState:init(config)
     if config.timed then
         self.stopWatch = self:addentity(StopWatch, {
             x = -assets.config.stopWatch.size,
-            y = assets.config.stopWatch.y, size = assets.config.stopWatch.size,
+            y = assets.config.stopWatch.y,
+            size = assets.config.stopWatch.size,
             started = false,
             finishCallback = function()
                 self:finish()
@@ -158,15 +159,24 @@ function PlayState:keypressed(key)
     end
 end
 
+function PlayState:playSoundFor(note, correct)
+    if correct then
+        TEsound.play(assets.sounds.notes[note], nil, 1.0, 1)
+    else
+        TEsound.play(assets.sounds.notes[note], nil, 1.0, 1, nil, 'wrongNote')
+    end
+end
+
 function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
     local measure = self:getMeasure()
     local currentNote = self.notes:peek()
-    TEsound.play(assets.sounds.notes.C4, nil, 1.0, 1)
     if measure:isCorrect(currentNote.note, idx) then
+        self:playSoundFor(currentNote.note, true)
         self.notes:shift():correct()
         self.score:gainPoint()
     else
+        self:playSoundFor(currentNote.note, false)
         self.notes:shift():wrong()
         Mobile.vibrate(assets.config.mobile.vibrationTime)
         if self.stopWatch then

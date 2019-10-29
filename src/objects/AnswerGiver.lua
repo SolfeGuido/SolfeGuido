@@ -28,7 +28,7 @@ function AnswerGiver:addKeyAnswers(keys)
     function self:keypressed(key)
         local idx = lume.find(keys, key)
         if idx and self.callback then
-            self.callback(idx)
+            self.callback(assets.config.englishNotes[idx])
         end
     end
 end
@@ -53,7 +53,7 @@ function AnswerGiver:addButtons()
                 y = y,
                 width = widths,
                 text = text,
-                callback = function() if self.callback then self.callback(i) end end
+                callback = function() if self.callback then self.callback( assets.config.englishNotes[i]) end end
             })
         }
     end

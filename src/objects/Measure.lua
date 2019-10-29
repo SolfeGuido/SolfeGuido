@@ -1,6 +1,7 @@
 local Entity = require('src.Entity')
 local Config = require('src.utils.Config')
 local Color = require('src.utils.Color')
+local lume = require('lib.lume')
 
 ---@class Measure : Entity
 local Measure = Entity:extend()
@@ -15,10 +16,13 @@ function Measure:new(area, options)
     self.image = assets.images[self.keyData.image]
     self.color =  options.color or Color.black
     self.limitLine = self.height / 2
+    self.lowestNote = lume.find(assets.NoteName, self.keyData.lowestNote)
 end
 
 function Measure:indexOf(note)
-
+    local index = lume.find(assets.NoteName, note)
+    if index < self.lowestNote then return 0 end
+    return index - self.lowestNote
 end
 
 function Measure:draw()
@@ -44,35 +48,33 @@ function Measure:draw()
     love.graphics.draw(self.image, xPos, self.y + (self.noteHeight * (4 + self.keyData.line)), 0 , scale , scale, self.keyData.xOrigin, self.keyData.yOrigin)
 end
 
----@param expected number
+---@param expected string
 ---@param actual string
 ---@return boolean
 function Measure:isCorrect(expected, actual)
-    local note = ((expected + self.keyData.lowestNote) % 7) + 1
-    return note == actual
+    return expected:sub(1, 1) == actual:sub(1, 1)
 end
 
----@param note number
+---@param noteName string
 ---@return string
-function Measure:getNoteName(note)
-    note = ((note + self.keyData.lowestNote) % 7) + 1
-    return assets.config[Config.noteStyle == 'ro_note' and 'romanNotes' or 'englishNotes'][note]
+function Measure:getNoteName(noteName)
+    local sub = noteName:sub(1, 1)
+    if Config.noteStyle == 'englishNotes' then return sub end
+    local idx = lume.find(assets.config.englishNotes, sub)
+    if not idx then return sub end
+    return assets.config.romanNotes[idx]
 end
 
-function Measure:getNotePosition(note)
-    local base = self.baseLine
-    return math.floor(base + self.noteHeight * 4 - (note - 6) * (self.noteHeight / 2))
+---@param measureIndex number
+---@return number y position
+function Measure:getNotePosition(measureIndex)
+    local base = self.baseLine + self.noteHeight * 7
+    return math.floor(base - (measureIndex) * (self.noteHeight / 2))
 end
 
 function Measure:getRandomNote()
-    return math.random(unpack(self.keyData.difficulties[Config.difficulty]))
+    return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
 
 end
-
-function Measure:getSoundFor(note)
-    local noteName = assets.config.notes[(self.keyData.firstNote or 0) + (note or 0) + 1]
-    return assets.sounds.notes[noteName]
-end
-
 
 return Measure

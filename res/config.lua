@@ -2,16 +2,6 @@
 local lineHeight = 30
 local titleSize = 40
 
-local order = {'C', 'D','E','F','G','A','B'}
-
-local notes = {'A1','B1'}
-
-for i = 2,6 do
-    for j = 1, #order do
-        notes[#notes+1] = order[j] .. tostring(i)
-    end
-end
-
 
 local config = {
     titleSize = titleSize,
@@ -33,7 +23,7 @@ local config = {
     maxProgressSpeed = 100,
     letterOrder = {'s', 'd', 'f', 'g', 'h', 'j', 'k'},
     romanNotes = {'do', 'ré', 'mi', 'fa', 'sol', 'la', 'si'},
-    englishNotes = {'c', 'd', 'e', 'f', 'g', 'a', 'b'},
+    englishNotes = {'C', 'D', 'E', 'F', 'G', 'A', 'B'},
     trialTime = 60,
     timeLoss = 2,
     stopWatch = {
@@ -63,14 +53,14 @@ local config = {
         yOrigin = 132,
         image = 'GKey',
         line = 4,
-        lowestNote = 3,
+        lowestNote = 'F3',
         firstNote = 12,
         difficulties = {
-            ['1'] = {4, 10},
-            ['2'] = {11, 17},
-            ['3'] = {14, 20},
-            ['4'] = {0, 6},
-            ['all'] = {0, 20}
+            ['1'] =     {'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'},
+            ['2'] =     {'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5'},
+            ['3'] =     {'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'},
+            ['4'] =     {'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4'},
+            ['all'] =   {'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'}
         }
     },
     fKey = {
@@ -79,13 +69,13 @@ local config = {
         yOrigin = 23,
         line = 1,
         image = 'FKey',
-        lowestNote = 5,
+        lowestNote = 'A1',
         difficulties = {
-            ['1'] = {10, 16},
-            ['2'] = {3, 9},
-            ['3'] = {0, 6},
-            ['4'] = {14, 20},
-            ['all'] = {0, 20}
+            ['1'] =     {'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'},
+            ['2'] =     {'E2', 'F2', 'G2', 'A2', 'B2', 'C3', 'D3'},
+            ['3'] =     {'A1', 'B1', 'C2', 'D2', 'E2', 'F2', 'G2'},
+            ['4'] =     {'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4'},
+            ['all'] =   {'A1', 'B1', 'C2', 'D2', 'E2', 'F2', 'G2', 'A2', 'B2', 'C3', 'D3',  'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4'}
         }
     },
     note = {
@@ -101,7 +91,5 @@ local config = {
         vibrationTime = 0.1
     }
 }
-
-config['notes'] = notes
 
 return config

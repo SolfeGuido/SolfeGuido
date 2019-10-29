@@ -1,4 +1,4 @@
-local order = {'C', 'C#', 'D', 'D#','E','F', 'F#','G', 'G#','A', 'A#','B'}
+local order = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
 
 local notes = {}
 for i = 1,7 do

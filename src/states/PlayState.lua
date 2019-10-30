@@ -138,11 +138,10 @@ function PlayState:draw()
 
     love.graphics.setBackgroundColor(1,1,1)
 
-    local width = Note.width(self:getMeasure())
     if not self.notes:isEmpty() then
-        local x = self.notes:peek().x
+        local note = self.notes:peek()
         love.graphics.setColor(Color.stripe)
-        love.graphics.rectangle('fill', x, self:getMeasure().y , width, self:getMeasure().height)
+        love.graphics.rectangle('fill', note.x, self:getMeasure().y , note.width, self:getMeasure().height)
     end
 
     PlayState.super.draw(self)
@@ -223,8 +222,8 @@ function PlayState:tryPopNote(_)
     if self.notes:isEmpty() then
         self:addNote()
     else
-        local last = self.notes:last().x
-        if love.graphics.getWidth() - last > Note.width(self:getMeasure()) then
+        local last = self.notes:last()
+        if love.graphics.getWidth() - last.x > last.width * 1.1 then
             self:addNote()
         end
     end

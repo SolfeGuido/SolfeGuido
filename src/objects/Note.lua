@@ -17,15 +17,13 @@ function Note:new(area, options)
     self.name = nil
     self.measureIndex = self.measure:indexOf(self.note)
     self.y = self:noteToPosition(self.measureIndex)
+    self.width = self.image:getWidth() + (assets.config.note.padding * self.image:getWidth() * 2)
+    self.rotation = self.measureIndex >= 10 and math.pi or 0
+    self.yOrigin = assets.config.note.yOrigin * self.measure.noteHeight
+    self.xOrigin = assets.config.note.xOrigin * self.image:getWidth()
 end
 
 
---- The total width of a note
----@return number
-function Note.width(measure)
-    local scale = (measure.noteHeight * assets.config.note.height) / assets.images.note:getHeight()
-    return assets.config.note.padding * 2 * measure.noteHeight + scale * assets.images.note:getWidth()
-end
 
 ---@param note number
 ---@return number
@@ -56,9 +54,8 @@ function Note:draw()
     --Color for the (optional) bars
     love.graphics.setColor(0, 0, 0, self.color.a)
     love.graphics.setLineWidth(1)
-    local scale = 1
-    local actualWidth = scale * self.image:getWidth()
-    local padding = assets.config.note.padding * self.measure.noteHeight
+    local actualWidth = self.image:getWidth()
+    local padding = assets.config.note.padding * actualWidth
     if self.measureIndex <= 4 then
         for i = 5, self.measureIndex + 1, -2 do
             local y = self:noteToPosition(i - 1)
@@ -70,10 +67,9 @@ function Note:draw()
             love.graphics.line(self.x, y, self.x +  actualWidth + padding * 2, y)
         end
     end
-    love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
-    if self.measureIndex >= 10 then scale = -scale end
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x + padding, self.y, 0, 1, 1, 0,assets.config.note.yOrigin * self.measure.noteHeight)
+
+    love.graphics.draw(self.image, self.x + padding + self.xOrigin, self.y, self.rotation, nil, nil,  self.xOrigin, self.yOrigin)
 
     if self.name then
         love.graphics.print(self.name, self.x - 15, self.y + 5)

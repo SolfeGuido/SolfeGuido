@@ -78,7 +78,8 @@ local config = {
     },
     note = {
         height = 4,-- number of 'lines' of height
-        yOrigin = 3.45,
+        yOrigin = 3.475,
+        xOrigin = 0.5,
         image = 'note';
         padding = 0.5,
         distance = 0.1,

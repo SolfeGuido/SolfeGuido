@@ -36,16 +36,17 @@ function State:init(...)
 end
 
 function State:addIconButton(config)
-    local image = assets.images[config.image]
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
     elseif config.statePush and not config.callback then
         config.callback = function() ScreenManager.push(config.statePush, config.statePushArgs) end
     end
 
+    local size = config.size or assets.config.titleSize
     return self:addentity(IconButton, {
-        image = image,
-        x = -image:getWidth(),
+        icon = assets.IconName[config.icon],
+        size = size,
+        x = -size,
         y = config.y,
         height = assets.config.titleSize,
         color = Color.transparent:clone(),
@@ -72,7 +73,7 @@ function State:addTextButton(config)
         color = Color.transparent:clone(),
         callback = config.callback,
         framed = config.framed or false,
-        image = config.image or nil,
+        icon = config.icon or nil,
         centered = config.centered or false
     })
 end

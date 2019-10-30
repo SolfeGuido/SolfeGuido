@@ -14,7 +14,7 @@ TEsound.pitchLevels = {}  -- Pitch levels that multiply the pitches of sounds wi
 -- @param volume A number between 0 and 1 which specifies how loud a sound is. If the sound has a tag which a volume has been specified for, it will multiply this number (ie., if you use the tag "sfx" and volume 0.5, and "sfx" has been tagVolume-ed to 0.6, then the sound will be played at 0.3 volume).
 -- @param pitch A number which specifies the speed/pitch the sound will be played it. If the sound has a tag which a pitch has been specified for, it will multiply this number.
 -- @param func A function which will be called when the sound is finished playing (it's passed one parameter - a list with the sound's volume and pitch). If omitted, no function will be used.
-function TEsound.play(sound, tags, volume, pitch, func)
+function TEsound.play(sound, tags, volume, pitch, func, effect)
   if type(sound) == "table" then
     assert(#sound > 0, "The list of sounds must have at least one sound.")
     sound = sound[love.math.random(#sound)]
@@ -25,6 +25,7 @@ function TEsound.play(sound, tags, volume, pitch, func)
 
   table.insert(TEsound.channels, { love.audio.newSource(sound), func, {volume or 1, pitch or 1}, tags=(type(tags) == "table" and tags or {tags}) })
   local s = TEsound.channels[#TEsound.channels]
+  if effect then s[1]:setEffect(effect) end
   s[1]:play()
   s[1]:setVolume( (volume or 1) * TEsound.findVolume(tags) * (TEsound.volumeLevels.all or 1) )
   s[1]:setPitch( (pitch or 1) * TEsound.findPitch(tags) * (TEsound.pitchLevels.all or 1) )

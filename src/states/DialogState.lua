@@ -43,11 +43,10 @@ function DialogState:init(title)
     local elements = {
         {
             element = self:addentity(IconButton, {
-                image = 'cross',
-                width = assets.config.titleSize,
+                icon = assets.IconName.Times,
                 callback = function() self:slideOut() end,
                 x = iconX,
-                y = - assets.config.titleSize,
+                y = -assets.config.titleSize,
                 color = Color.transparent:clone()
             }),
             target  = {y = 0, color = Color.black}

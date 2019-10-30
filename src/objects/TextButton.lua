@@ -17,7 +17,7 @@ function TextButton:new(area, config)
         x = self.x - 20,
         y = self.y + 5,
         visible = false,
-        image = config.image or nil
+        icon = config.icon or assets.IconName.WholeNote
     })
     self.color = config.color or Color.black:clone()
     if self.centered then

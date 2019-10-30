@@ -55,6 +55,9 @@ function SplashScreenState:createCoroutine()
     return coroutine.create(function()
         math.randomseed(os.time())
         _G['assets'] = require('lib.cargo').init('res', 97)
+        for name, table in pairs(assets.AudioEffects) do
+            love.audio.setEffect(name, table)
+        end
         Config.parse()
         Mobile.configure()
         coroutine.yield(1)
@@ -76,7 +79,6 @@ function SplashScreenState:updateCoroutine()
     end
     if coroutine.status(self.coroutine) == "dead" then
         self.coroutine = "done"
-        -- Not working on windows exe when in coroutine
         _G['tr'] = function(data)
             return i18n.translate(string.lower(data), {default = data})
         end

@@ -28,7 +28,7 @@ function OptionsState:init(...)
     self:transition({
         {
             element = self:addentity(IconButton, {
-                image = Config.sound == 'on' and 'musicOn' or 'musicOff',
+                icon = Config.sound == 'on' and assets.IconName.VolumeOn or assets.IconName.VolumeOff,
                 x = self.margin,
                 y = - assets.config.titleSize,
                 width = assets.config.titleSize,
@@ -36,7 +36,7 @@ function OptionsState:init(...)
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('sound', Config.sound == 'on' and 'off' or 'on')
-                    btn:setImage(Config.sound == 'on' and 'musicOn' or 'musicOff')
+                    btn:setIcon(Config.sound == 'on' and assets.IconName.VolumeOn or assets.IconName.VolumeOff)
                 end
             }),
             target = {y = 0, color = Color.black}

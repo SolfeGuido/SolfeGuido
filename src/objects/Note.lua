@@ -11,8 +11,7 @@ local Note = Entity:extend()
 
 function Note:new(area, options)
     Note.super.new(self, area, options)
-    local font = assets.IconsFont(self.measure.noteHeight * assets.config.note.height)
-    self.image = love.graphics.newText(font, assets.IconName.QuarterNote)
+    self.image = self.measure.noteIcon
     self.color = Color.black:clone()
     self.name = nil
     self.measureIndex = self.measure:indexOf(self.note)

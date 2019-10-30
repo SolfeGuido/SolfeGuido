@@ -18,6 +18,8 @@ function Measure:new(area, options)
     self.color =  options.color or Color.black
     self.limitLine = self.height / 2
     self.lowestNote = lume.find(assets.NoteName, self.keyData.lowestNote)
+    font = assets.IconsFont(self.noteHeight * assets.config.note.height)
+    self.noteIcon =  love.graphics.newText(font, assets.IconName.QuarterNote)
 end
 
 function Measure:indexOf(note)

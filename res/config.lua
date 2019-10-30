@@ -5,6 +5,7 @@ local titleSize = 40
 
 local config = {
     titleSize = titleSize,
+    selectorSize = 18,
     baseLine = titleSize + lineHeight,
     userPreferences = {
         sound = {'on', 'off'},

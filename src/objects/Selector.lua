@@ -7,15 +7,9 @@ local Selector = Entity:extend()
 function Selector:new(area, options)
     Entity.new(self, area, options)
     self.color = {0, 0, 0, 1}
-    if options.image then
-        self.image = options.image
-        self.scale = assets.config.lineHeight / self.image:getHeight()
-        self.addY = 2
-    else
-        self.image = assets.images.whole
-        self.scale = (assets.config.lineHeight / 2) / self.image:getHeight()
-        self.addY = assets.config.lineHeight / 3
-    end
+    local font = assets.IconsFont(assets.config.selectorSize)
+    self.image = love.graphics.newText(font, options.icon or assets.IconName.WholeNote)
+    self.padding = (assets.config.lineHeight - assets.config.selectorSize) / 2
 end
 
 
@@ -25,7 +19,7 @@ function Selector:draw()
     else
         love.graphics.setColor(0, 0, 0, 0.3)
     end
-    love.graphics.draw(self.image, self.x, self.y + self.addY, 0, self.scale, self.scale)
+    love.graphics.draw(self.image, self.x, self.y + self.padding)
 end
 
 

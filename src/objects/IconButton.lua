@@ -12,25 +12,15 @@ local IconButton = AbstractButton:extend()
 
 function IconButton:new(area, config)
     AbstractButton.new(self, area, config)
-    if type(self.image) == "string" then self.image = assets.images[self.image] end
+    local defaultFont = assets.IconsFont(config.size or assets.config.titleSize)
+    self.image = love.graphics.newText(defaultFont,  config.icon)
     self.color = config.color or Color.black:clone()
-    local scale = 1
-    if config.height then
-        scale = config.height / self.image:getHeight()
-    elseif config.width then
-        scale = config.width / self.image:getWidth()
-    end
-    self._width = self.image:getWidth() * scale
-    self.height = self.image:getHeight() * scale
-    self.scale = scale
+    self._width = self.image:getWidth()
+    self.height = self.image:getHeight()
 end
 
-function IconButton:setImage(img)
-    if type(img) == 'string' then
-        self.image = assets.images[img]
-    else
-        self.image = img
-    end
+function IconButton:setIcon(icon)
+    self.image:set(icon)
 end
 
 function IconButton:width()
@@ -38,6 +28,8 @@ function IconButton:width()
 end
 
 function IconButton:dispose()
+    self.image:release()
+    self.image = nil
     IconButton.super.dispose(self)
 end
 
@@ -68,7 +60,7 @@ end
 
 function IconButton:draw()
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
+    love.graphics.draw(self.image, self.x, self.y)
 end
 
 return IconButton

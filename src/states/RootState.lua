@@ -37,19 +37,19 @@ end
 
 function RootState:init(...)
     self.quitButton = self:addentity(IconButton, {
-        x = 0,
+        x = 5,
         color = Color.transparent:clone(),
         y = love.graphics.getHeight(),
         height = assets.config.titleSize,
-        image = "exit",
+        icon = assets.IconName.Off,
         callback = function() love.event.quit() end
     })
     self.backButton = self:addentity(IconButton, {
-        x = 0,
+        x = 5,
         y = love.graphics.getHeight(),
         color = Color.transparent:clone(),
         height = assets.config.titleSize,
-        image = "exitLeft",
+        icon = assets.IconName.Home,
         callback = function() self:pop() end
     })
 
@@ -58,7 +58,7 @@ function RootState:init(...)
         y = 0,
         color = Color.transparent:clone(),
         height = assets.config.titleSize,
-        image = "gear",
+        icon = assets.IconName.Cog,
         callback = function()
             ScreenManager.push('OptionsState')
         end

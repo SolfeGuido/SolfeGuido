@@ -49,7 +49,7 @@ local config = {
     },
     gKey = {
         height = 7,
-        yOrigin = 2.5,
+        yOrigin = 2.6,
         icon = 'GKey',
         line = 4,
         lowestNote = 'F3',
@@ -77,8 +77,8 @@ local config = {
         }
     },
     note = {
-        height = 5.5,-- number of 'lines' of height
-        yOrigin = 3,
+        height = 4,-- number of 'lines' of height
+        yOrigin = 3.45,
         image = 'note';
         padding = 0.5,
         distance = 0.1,

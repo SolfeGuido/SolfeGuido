@@ -70,10 +70,10 @@ function Note:draw()
             love.graphics.line(self.x, y, self.x +  actualWidth + padding * 2, y)
         end
     end
-
+    love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
     if self.measureIndex >= 10 then scale = -scale end
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x + padding, self.y, 0, 1, 1, self.image:getWidth() / 2, self.image:getHeight())
+    love.graphics.draw(self.image, self.x + padding, self.y, 0, 1, 1, 0,assets.config.note.yOrigin * self.measure.noteHeight)
 
     if self.name then
         love.graphics.print(self.name, self.x - 15, self.y + 5)

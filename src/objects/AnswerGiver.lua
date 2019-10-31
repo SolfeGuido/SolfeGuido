@@ -14,6 +14,15 @@ function AnswerGiver:new(area, options)
     self:addFunction(Config.answerType)
 end
 
+function AnswerGiver:hide()
+    self['keypressed'] = nil
+    if self.buttons then
+        for k, button in ipairs(self.buttons) do
+            self.timer:tween(assets.config.transition.tween, button, {y = love.graphics.getHeight() + 20}, 'out-expo')
+        end
+    end
+end
+
 function AnswerGiver:addFunction(config)
     if config == "default" then
         self:addKeyAnswers(assets.config.letterOrder)
@@ -35,6 +44,7 @@ end
 
 
 function AnswerGiver:addButtons()
+    self.buttons = {}
     local size = assets.config.mobileButton.fontSize
     local font = assets.MarckScript(size)
     local letters = Config.noteStyle == "en" and assets.config.englishNotes or assets.config.romanNotes
@@ -47,14 +57,16 @@ function AnswerGiver:addButtons()
         local text = love.graphics.newText(font, v)
         totalSize = totalSize + text:getWidth() + padding * 3
         local y = love.graphics.getHeight() - text:getHeight() - padding * 3
+        local button = self.area:addentity(MobileButton, {
+            x = -text:getWidth() * (#letters - i),
+            y = y,
+            width = widths,
+            text = text,
+            callback = function() if self.callback then self.callback( assets.config.englishNotes[i]) end end
+        })
+        self.buttons[#self.buttons+1] = button
         elements[#elements+1] = {
-            element = self.area:addentity(MobileButton, {
-                x = -text:getWidth() * (#letters - i),
-                y = y,
-                width = widths,
-                text = text,
-                callback = function() if self.callback then self.callback( assets.config.englishNotes[i]) end end
-            })
+            element = button
         }
     end
     local xTarget = 5

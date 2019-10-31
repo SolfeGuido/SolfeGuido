@@ -96,7 +96,7 @@ function PlayState:init(config)
     end
 
 
-    self:addentity(AnswerGiver, { callback = function(x) self:answerGiven(x) end })
+    self.answerGiver = self:addentity(AnswerGiver, { callback = function(x) self:answerGiven(x) end })
 
     self.finished = false
     self:transition(elements, function()
@@ -117,12 +117,14 @@ function PlayState:close()
     self.notes = nil
     self.measures = nil
     self.stopWatch = nil
+    self.answerGiver = nil
     Scene.close(self)
 end
 
 
 function PlayState:finish()
     -- TODO fadeway buttons if necessary
+    self.answerGiver:hide()
     self.finished = true
     while not self.notes:isEmpty() do
         self.notes:shift():fadeAway()

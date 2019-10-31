@@ -5,7 +5,7 @@ local Timer = require('lib.timer')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 local lume = require('lib.lume')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
 
 -- ENTITES
@@ -49,7 +49,7 @@ function State:addIconButton(config)
         x = -size,
         y = config.y,
         height = assets.config.titleSize,
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         callback = config.callback
     })
 end
@@ -70,7 +70,7 @@ function State:addTextButton(config)
         text = btnText,
         x = -btnText:getWidth(),
         y = config.y,
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         callback = config.callback,
         framed = config.framed or false,
         icon = config.icon or nil,
@@ -88,7 +88,7 @@ function State:addMultiSelector(config)
         y = config.y,
         selected = Config[confName] or assets.config.userPreferences[confName][1],
         choices = assets.config.userPreferences[confName],
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         callback = function(value) Config.update(confName, value) end,
         centered = config.centered or false
     })
@@ -100,7 +100,7 @@ function State:addTitle(config)
     return self:addentity(Title, {
         x = config.main and half or -titleText:getWidth(),
         y = config.y,
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         text = titleText
     })
 end
@@ -155,7 +155,7 @@ function State:createUI(uiConfig)
                     elemConfig.y = yPos
                     yPos = yPos + assets.config.lineHeight
                 end
-                local target = {color = Color.black}
+                local target = {color = Theme.font}
                 if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
                 elements[#elements+1] = {
                     element = self['add' .. elemConfig.type](self, elemConfig),
@@ -214,7 +214,7 @@ local function elemSlide(v)
             x = -v:width()
         end
     end
-    return {element = v, target = {x = x, color = Color.transparent}}
+    return {element = v, target = {x = x, color = Theme.transparent}}
 end
 
 function State:slideEntitiesOut(callback)

@@ -4,7 +4,7 @@ local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
 local i18n = require('lib.i18n')
 local ScreeManager = require('lib.ScreenManager')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
 
 local Line = require('src.objects.Line')
@@ -28,7 +28,7 @@ function SplashScreenState:new()
     State.new(self)
     self.coroutine = nil
     self.totalLoading = 0
-    self.color = Color.black:clone()
+    self.color = Theme.font:clone()
 end
 
 function SplashScreenState:draw()
@@ -36,7 +36,7 @@ function SplashScreenState:draw()
     local middle = 160
     local progress = love.graphics.getWidth() * (self.totalLoading / 100)
 
-    love.graphics.setBackgroundColor(Color.white)
+    love.graphics.setBackgroundColor(Theme.background)
     local font = love.graphics.getFont()
     local text = tostring(math.ceil(self.totalLoading)) .. " %"
     local width = font:getWidth(text)
@@ -46,7 +46,7 @@ function SplashScreenState:draw()
     love.graphics.setColor(self.color)
     love.graphics.print(text, txtX, middle - height)
 
-    love.graphics.setColor(Color.black)
+    love.graphics.setColor(Theme.font)
     love.graphics.setLineWidth(1)
     love.graphics.line(0, middle , progress, middle)
 end
@@ -59,6 +59,7 @@ function SplashScreenState:createCoroutine()
             love.audio.setEffect(name, table)
         end
         Config.parse()
+        Theme.init()
         Mobile.configure()
         coroutine.yield(1)
         ScoreManager.init()
@@ -96,7 +97,7 @@ function SplashScreenState:update(dt)
 end
 
 function SplashScreenState:displayLines()
-    self.timer:tween(assets.config.transition.tween, self, {color = Color.transparent}, 'linear')
+    self.timer:tween(assets.config.transition.tween, self, {color = Theme.transparent}, 'linear')
     local middle = assets.config.baseLine
     for i = 1,5 do
         local ypos = middle + assets.config.lineHeight * i

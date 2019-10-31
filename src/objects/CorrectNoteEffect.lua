@@ -1,5 +1,5 @@
 local Entity = require('src.Entity')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 
 ---@class CorrectNoteEffect : Entity
 local CorrectNoteEffect = Entity:extend()
@@ -7,7 +7,7 @@ local CorrectNoteEffect = Entity:extend()
 function CorrectNoteEffect:new(area, options)
     Entity.new(self, area, options)
     self.timer:tween(assets.config.note.fadeAway / 2, self, {
-        color = Color.transparent,
+        color = Theme.transparent,
         scale = 2.5
     }, 'linear', function()
         self.isDead = true

@@ -1,7 +1,7 @@
 require("lib.tesound")
 local ScreenManager = require('lib.ScreenManager')
-local Color = require('src.utils.Color')
 local Mobile = require('src.utils.Mobile')
+local Theme = require('src.utils.Theme')
 
 --- BEGIN DEBUG
 local debugGraph = require('lib.debugGraph')
@@ -24,7 +24,7 @@ end
 function love.draw()
     ScreenManager.draw()
 --- BEGIN DEBUG
-    love.graphics.setColor(Color.black)
+    love.graphics.setColor(Theme.font)
     fpsGraph:draw()
     memoryGraph:draw()
 --- END DEBUG

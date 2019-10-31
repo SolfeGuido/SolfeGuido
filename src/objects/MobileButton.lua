@@ -2,14 +2,14 @@
 
 local AbstractButton = require('src.objects.AbstractButton')
 local Rectangle = require('src.utils.Rectangle')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 
 ---@class MobileButton : AbstractButton
 local MobileButton = AbstractButton:extend()
 
 function MobileButton:new(area, options)
     AbstractButton.new(self, area, options)
-    self.color = options.color or Color.white:clone()
+    self.color = options.color or Theme.background:clone()
 end
 
 function MobileButton:boundingBox()
@@ -18,19 +18,19 @@ function MobileButton:boundingBox()
 end
 
 function MobileButton:hovered()
-    self:animate(assets.config.transition.tween, self, {color = Color.gray(0.7)}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.hovered}, 'out-expo')
 end
 
 function MobileButton:leave()
-    self:animate(assets.config.transition.tween, self, {color = Color.white}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.background}, 'out-expo')
 end
 
 function MobileButton:pressed()
-    self:animate(assets.config.transition.tween, self, {color = Color.gray(0.3)}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.clicked}, 'out-expo')
 end
 
 function MobileButton:released()
-    self:animate(assets.config.transition.tween, self, {color = Color.white}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.background}, 'out-expo')
 end
 
 function MobileButton:onclick()
@@ -44,7 +44,7 @@ function MobileButton:draw()
     local box = self:boundingBox()
     love.graphics.setColor(self.color)
     love.graphics.rectangle('fill', 0, 0, box.width, box.height)
-    love.graphics.setColor(Color.black)
+    love.graphics.setColor(Theme.font)
     love.graphics.rectangle('line', 0, 0, box.width, box.height)
     local txtX = (box.width - self.text:getWidth()) / 2
     love.graphics.draw(self.text, txtX, assets.config.mobileButton.padding)

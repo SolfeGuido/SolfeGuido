@@ -3,9 +3,8 @@
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 local ScoreManager = require('src.utils.ScoreManager')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
-local Pitch = require('src.utils.Pitch')
 
 -- Parent
 local Scene = require('src.State')
@@ -43,7 +42,7 @@ function PlayState:new()
         y = assets.config.score.y,
         points = 0,
         text =  scoreText,
-        color = Color.transparent:clone()
+        color = Theme.transparent:clone()
     })
 end
 
@@ -81,7 +80,7 @@ end
 
 function PlayState:init(config)
     config = config or {timed = true}
-    local elements = {{element = self.score, target = {x = assets.config.score.x, color = Color.black}}}
+    local elements = {{element = self.score, target = {x = assets.config.score.x, color = Theme.font}}}
 
     if config.timed then
         self.stopWatch = self:addentity(StopWatch, {
@@ -138,11 +137,11 @@ end
 function PlayState:draw()
     love.graphics.push()
 
-    love.graphics.setBackgroundColor(1,1,1)
+    love.graphics.setBackgroundColor(Theme.background)
 
     if not self.notes:isEmpty() then
         local note = self.notes:peek()
-        love.graphics.setColor(Color.stripe)
+        love.graphics.setColor(Theme.stripe)
         love.graphics.rectangle('fill', note.x, self:getMeasure().y , note.width, self:getMeasure().height)
     end
 

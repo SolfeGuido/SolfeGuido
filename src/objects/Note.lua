@@ -2,7 +2,7 @@
 
 local Effect = require('src.objects.CorrectNoteEffect')
 local Entity = require('src.Entity')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 
 ---@class Note : Entity
 ---@field public area PlayState
@@ -13,7 +13,7 @@ local Note = Entity:extend()
 function Note:new(area, options)
     Note.super.new(self, area, options)
     self.image = self.measure.noteIcon
-    self.color = Color.black:clone()
+    self.color = Theme.font:clone()
     self.name = nil
     self.measureIndex = self.measure:indexOf(self.note)
     self.y = self:noteToPosition(self.measureIndex)
@@ -32,10 +32,10 @@ function Note:noteToPosition(note)
 end
 
 function Note:correct()
-    self.color = Color(0, 0.5, 0, 1)
+    self.color = Theme.secondary:clone()
     self.area:addentity(Effect, {
         image = self.image,
-        color = Color(0, 0, 0, 0.5),
+        color = Theme.secondary:clone(),
         scale = 1,
         rotation = self.rotation,
         xOrigin = self.xOrigin,
@@ -43,17 +43,17 @@ function Note:correct()
         target = self,
         padding = assets.config.note.padding * self.image:getWidth()
     })
-    self:fadeTo(Color(0, 0.5, 0, 0))
+    self:fadeTo(Theme.transparent)
 end
 
 function Note:wrong()
-    self.color = Color(0.5, 0, 0, 1)
-    self:fadeTo(Color.transparent)
+    self.color = Theme.wrong
+    self:fadeTo(Theme.transparent)
     self.name = self.measure:getNoteName(self.note)
 end
 
 function Note:fadeAway()
-    self:fadeTo( Color.transparent)
+    self:fadeTo(Theme.transparent)
 end
 
 function Note:fadeTo(color)
@@ -62,7 +62,7 @@ end
 
 function Note:draw()
     --Color for the (optional) bars
-    love.graphics.setColor(0, 0, 0, self.color.a)
+    love.graphics.setColor(Theme.font.rgb, self.color.a)
     love.graphics.setLineWidth(1)
     local actualWidth = self.image:getWidth()
     local padding = assets.config.note.padding * actualWidth

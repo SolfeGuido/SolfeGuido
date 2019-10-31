@@ -1,6 +1,6 @@
 local Entity = require('src.Entity')
 local Config = require('src.utils.Config')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local lume = require('lib.lume')
 
 ---@class Measure : Entity
@@ -15,7 +15,7 @@ function Measure:new(area, options)
     self.baseLine  = options.baseLine or self.y + self.noteHeight * 4
     local font = assets.IconsFont(self.noteHeight * self.keyData.height)
     self.image = love.graphics.newText(font, assets.IconName[self.keyData.icon])
-    self.color =  options.color or Color.black
+    self.color =  options.color or Theme.font
     self.limitLine = self.height / 2
     self.lowestNote = lume.find(assets.NoteName, self.keyData.lowestNote)
     font = assets.IconsFont(self.noteHeight * assets.config.note.height)

@@ -1,6 +1,6 @@
 
 local State = require('src.State')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local Graphics = require('src.utils.Graphics')
 local ScreenManager = require('lib.ScreenManager')
 local Mobile = require('src.utils.Mobile')
@@ -38,7 +38,7 @@ end
 function RootState:init(...)
     self.quitButton = self:addentity(IconButton, {
         x = 5,
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         y = love.graphics.getHeight(),
         height = assets.config.titleSize,
         icon = assets.IconName.Off,
@@ -47,7 +47,7 @@ function RootState:init(...)
     self.backButton = self:addentity(IconButton, {
         x = 5,
         y = love.graphics.getHeight(),
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         height = assets.config.titleSize,
         icon = assets.IconName.Home,
         callback = function() self:pop() end
@@ -56,7 +56,7 @@ function RootState:init(...)
     self.settingsButton = self:addentity(IconButton, {
         x = love.graphics.getWidth(),
         y = 5,
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         height = assets.config.titleSize,
         icon = assets.IconName.Cog,
         callback = function(btn)
@@ -71,22 +71,22 @@ function RootState:init(...)
         text = text,
         framed = true,
         y = -text:getHeight(),
-        color = Color.transparent:clone(),
+        color = Theme.transparent:clone(),
         x = love.graphics.getWidth() / 2 - text:getWidth() / 2
     })
 
     self:transition({
         {
             element = self.quitButton,
-            target = {color = Color.black, y = love.graphics.getHeight() - assets.config.titleSize}
+            target = {color = Theme.font, y = love.graphics.getHeight() - assets.config.titleSize}
         },
         {
             element = self.settingsButton,
-            target = {color = Color.black, x = love.graphics.getWidth() - assets.config.titleSize - 5}
+            target = {color = Theme.font, x = love.graphics.getWidth() - assets.config.titleSize - 5}
         },
         {
             element = self.title,
-            target = {color = Color.black, y = 0}
+            target = {color = Theme.font, y = 0}
         }
     }, function() self.sideEnabled = true end)
 
@@ -157,9 +157,9 @@ end
 
 function RootState:switchButtons(enter, leaves)
     local time = assets.config.transition.tween
-    self.timer:tween(time, leaves, {y = love.graphics.getHeight(), color = Color.transparent}, 'out-expo', function()
+    self.timer:tween(time, leaves, {y = love.graphics.getHeight(), color = Theme.transparent}, 'out-expo', function()
         leaves.consumed = false
-        self.timer:tween(time, enter, {color = Color.black, y = love.graphics.getHeight() - assets.config.titleSize}, 'out-expo')
+        self.timer:tween(time, enter, {color = Theme.font, y = love.graphics.getHeight() - assets.config.titleSize}, 'out-expo')
     end)
 end
 

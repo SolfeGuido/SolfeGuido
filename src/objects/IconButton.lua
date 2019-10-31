@@ -1,7 +1,7 @@
 
 
 -- LIBS
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local Rectangle = require('src.utils.Rectangle')
 
 -- Entities
@@ -14,7 +14,7 @@ function IconButton:new(area, config)
     AbstractButton.new(self, area, config)
     local defaultFont = assets.IconsFont(config.size or assets.config.titleSize)
     self.image = love.graphics.newText(defaultFont,  config.icon)
-    self.color = config.color or Color.black:clone()
+    self.color = config.color or Theme.font:clone()
     self._width = self.image:getWidth()
     self.height = self.image:getHeight()
     self.rotation = 0
@@ -41,19 +41,19 @@ function IconButton:boundingBox()
 end
 
 function IconButton:hovered()
-    self:animate(assets.config.transition.tween, self, {color = Color.gray(0.7)}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color =  Theme.hovered}, 'out-expo')
 end
 
 function IconButton:pressed()
-    self:animate(assets.config.transition.tween, self, {color = Color.gray(0.5)}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.clicked}, 'out-expo')
 end
 
 function IconButton:released()
-    self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function IconButton:leave()
-    self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function IconButton:onclick()

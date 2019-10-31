@@ -1,7 +1,7 @@
 
 
 -- LIBS
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local Rectangle = require('src.utils.Rectangle')
 
 -- Entities
@@ -19,7 +19,7 @@ function TextButton:new(area, config)
         visible = false,
         icon = config.icon or assets.IconName.WholeNote
     })
-    self.color = config.color or Color.black:clone()
+    self.color = config.color or Theme.font:clone()
     if self.centered then
         self.timer:tween(assets.config.transition.tween, self, {x = self:getCenterX()}, 'out-expo')
     end
@@ -49,11 +49,11 @@ end
 
 function TextButton:pressed()
     self.selector.visible = true
-    self:animate(assets.config.transition.tween, self, {color = Color.gray(0.7)}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.clicked}, 'out-expo')
 end
 
 function TextButton:released()
-    self:animate(assets.config.transition.tween, self, {color = Color.black}, 'out-expo')
+    self:animate(assets.config.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function TextButton:setConsumed(consumed)

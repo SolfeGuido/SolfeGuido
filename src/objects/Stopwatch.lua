@@ -1,11 +1,8 @@
 
 
 local Entity = require('src.Entity')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local Config = require('src.utils.Config')
-
-local Draft = require('lib.draft')
-local draft = Draft()
 
 ---@class StopWatch : Entity
 ---@field private color Color
@@ -23,7 +20,7 @@ local equivalences = {
 
 function StopWatch:new(area, config)
     Entity.new(self, area, config)
-    self.color = Color.watchStart:clone()
+    self.color = Theme.secondary:clone()
     self.totalTime = equivalences[Config.time] or 60
     self.currentTime = self.totalTime
     self.subTime = self.totalTime
@@ -32,7 +29,6 @@ end
 
 function StopWatch:start()
     self.started = true
-    --self.timer:tween(self.totalTime, self, {color = Color.watchEnd})
 end
 
 ---@param dt number
@@ -60,7 +56,7 @@ end
 function StopWatch:draw()
     love.graphics.setLineWidth(3)
 
-    love.graphics.setColor(Color.watchEnd)
+    love.graphics.setColor(Theme.wrong)
     local width = ( math.max(self.currentTime, self.subTime) / self.totalTime) * love.graphics.getWidth()
     love.graphics.line(0,2, width, 2)
 

@@ -1,7 +1,7 @@
 
 --- LIBS
 local DialogState = require('src.states.DialogState')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 
@@ -32,14 +32,14 @@ function OptionsState:init(...)
                 x = self.margin,
                 y = - assets.config.titleSize,
                 width = assets.config.titleSize,
-                color = Color.transparent:clone(),
+                color = Theme.transparent:clone(),
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('sound', Config.sound == 'on' and 'off' or 'on')
                     btn:setIcon(Config.sound == 'on' and assets.IconName.VolumeOn or assets.IconName.VolumeOff)
                 end
             }),
-            target = {y = 0, color = Color.black}
+            target = {y = 0, color = Theme.font}
             }
         }
     )

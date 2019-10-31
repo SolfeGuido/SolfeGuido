@@ -1,6 +1,6 @@
 
 local Entity = require('src.Entity')
-
+local Theme = require('src.utils.Theme')
 
 local Selector = Entity:extend()
 
@@ -17,7 +17,8 @@ function Selector:draw()
     if self.visible then
         love.graphics.setColor(self.color)
     else
-        love.graphics.setColor(0, 0, 0, 0.3)
+        local r,g,b = unpack(Theme.font.rgb)
+        love.graphics.setColor(r, g, b, 0.3)
     end
     love.graphics.draw(self.image, self.x, self.y + self.padding)
 end

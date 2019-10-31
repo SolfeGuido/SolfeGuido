@@ -15,7 +15,8 @@ local config = {
         keySelect = {'gKey', 'fKey', 'both'},
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'default', 'letters', 'buttons'},
-        time = {'30s', '1mn', '2mn', '5mn'}
+        time = {'30s', '1mn', '2mn', '5mn'},
+        theme = {'dark', 'light'}
     },
     configSave = 'config.lua',
     lineSpace = 20,

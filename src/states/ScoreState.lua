@@ -2,7 +2,7 @@
 -- LIBS
 local BaseState = require('src.states.BaseState')
 local ScoreManager = require('src.utils.ScoreManager')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 
 -- Entities
 local Title = require('src.objects.Title')
@@ -42,10 +42,10 @@ function ScoreState:init()
                 y = middle,
                 selected = assets.config.userPreferences.time[1],
                 choices = assets.config.userPreferences.time,
-                color = Color.transparent:clone(),
+                color = Theme.transparent:clone(),
                 callback = function(value) self:updateScores(value) end,
             }),
-            target = {color = Color.black, x = assets.config.limitLine}
+            target = {color = Theme.font, x = assets.config.limitLine}
         }
     }
 
@@ -58,24 +58,24 @@ function ScoreState:init()
         elements[#elements+1] = {
             element = self:addentity(Title, {
                 text = text,
-                color = Color.transparent:clone(),
+                color = Theme.transparent:clone(),
                 y = middle,
                 x = assets.config.limitLine - text:getWidth()
             }),
-            target = {x = assets.config.limitLine + 10, color =  Color.black},
+            target = {x = assets.config.limitLine + 10, color =  Theme.font},
             time = time
         }
         middle = middle + assets.config.lineHeight
     end
     elements[#elements+1] = {
         element = self:addentity(Line, {
-            color = Color.transparent:clone(),
+            color = Theme.transparent:clone(),
             x = assets.config.limitLine - 2,
             lineWidth = 2,
             y = assets.config.baseLine + assets.config.lineHeight,
             height = assets.config.lineHeight * 4,
         }),
-        target = {x = assets.config.limitLine + maxSize + 15, color = Color.black},
+        target = {x = assets.config.limitLine + maxSize + 15, color = Theme.font},
         time = time
     }
 
@@ -89,11 +89,11 @@ function ScoreState:init()
         elements[#elements+1] = {
             element = self:addentity(Title, {
                 text = text,
-                color = Color.transparent:clone(),
+                color = Theme.transparent:clone(),
                 y = assets.config.baseLine + assets.config.lineHeight,
                 x = -text:getWidth()
             }),
-            target = {x = middle + padding, color = Color.black},
+            target = {x = middle + padding, color = Theme.font},
             time = time
         }
         self.texts[v] = {}
@@ -105,11 +105,11 @@ function ScoreState:init()
             elements[#elements+1] = {
                 element = self:addentity(Title, {
                     text = text,
-                    color = Color.transparent:clone(),
+                    color = Theme.transparent:clone(),
                     y = yPos,
                     x = -text:getWidth()
                 }),
-                target = {x = middle + padding, color = Color.black},
+                target = {x = middle + padding, color = Theme.font},
                 time = time
             }
             self.texts[v][key] = elements[#elements].element
@@ -122,12 +122,12 @@ function ScoreState:init()
         if i ~= #levels then
             elements[#elements+1] = {
                 element = self:addentity(Line, {
-                    color = Color.transparent:clone(),
+                    color = Theme.transparent:clone(),
                     x = -1,
                     y = assets.config.baseLine + assets.config.lineHeight,
                     height = assets.config.lineHeight * 4,
                 }),
-                target = {x = middle, color = Color.gray(0.5)},
+                target = {x = middle, color = Theme.hovered},
                 time = time
             }
         end

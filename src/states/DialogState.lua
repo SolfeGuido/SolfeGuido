@@ -2,7 +2,7 @@
 local State = require('src.State')
 local Mobile = require('src.utils.Mobile')
 local ScreenManager = require('lib.ScreenManager')
-local Color = require('src.utils.Color')
+local Theme = require('src.utils.Theme')
 
 -- Entities
 local Title = require('src.objects.Title')
@@ -53,9 +53,9 @@ function DialogState:init(title)
                 end,
                 x = iconX,
                 y = -assets.config.titleSize,
-                color = Color.transparent:clone()
+                color = Theme.transparent:clone()
             }),
-            target  = {y = 0, color = Color.black}
+            target  = {y = 0, color = Theme.font}
         }
     }
     if title then
@@ -66,9 +66,9 @@ function DialogState:init(title)
                 x = love.graphics.getWidth() /2 - titleText:getWidth() / 2,
                 y = - titleText:getHeight(),
                 framed = true,
-                color = Color.transparent:clone()
+                color = Theme.transparent:clone()
             }),
-            target = {y = 0, color = Color.black}
+            target = {y = 0, color = Theme.font}
         }
     end
 
@@ -83,9 +83,9 @@ function DialogState:draw()
     love.graphics.push()
     love.graphics.translate(0,self.yBottom - love.graphics.getHeight())
 
-    love.graphics.setColor(0.996, 0.996, 0.980,0.95)
+    love.graphics.setColor(Theme.background)
     love.graphics.rectangle('fill', self.margin - 1, 0, width, love.graphics.getHeight() + 2)
-    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.setColor(Theme.font)
     love.graphics.rectangle('line', self.margin - 1, 0, width, love.graphics.getHeight() + 2)
     State.draw(self)
 

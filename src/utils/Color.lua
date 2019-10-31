@@ -27,39 +27,32 @@ function Color:__newindex(k, v)
     end
 end
 
+---@param k string
+---@return number
 function Color:__index(k)
-    if order[k] then
-        return rawget(self, order[k])
-    else
-        return rawget(Color, k)
+    if type(k) == "string" and k:match('^[rgba][rgba]?[rgba]?[rgba]?$') then
+        local values = {}
+        for i = 1, #k do
+            local name = k:sub(i,i)
+            if order[name] then
+                values[#values+1] = rawget(self, order[name])
+            end
+        end
+        return #values == 1 and values[1] or values
     end
+    return rawget(Color, k)
 end
 
 
-Color = setmetatable(Color, {
+Color.fromBytes = function(r,g,b,a)
+    return Color(r / 255, g / 255, b / 255, (a or 255) / 255)
+end
+
+
+return setmetatable(Color, {
     __call = function(table, ...)
         local color = setmetatable({}, table)
-        color:new(...)
+        table.new(color, ...)
         return color
-    end
-})
-
-
----@type Color
-Color.black = Color(0, 0, 0, 1)
----@type Color
-Color.white = Color()
----@type Color
-Color.transparent = Color(0, 0, 0, 0)
----@type Color
-Color.stripe = Color(0.64, 0.77, 0.91, 0.91)
----@type Color
-Color.watchStart = Color(0, 0.5, 0, 1)
----@type Color
-Color.watchEnd = Color(0.5, 0 ,0, 1)
-
-Color.gray = function(gray)
-    return Color(gray, gray, gray, 1)
-end
-
-return Color
+    end}
+)

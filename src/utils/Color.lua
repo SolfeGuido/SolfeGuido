@@ -54,9 +54,9 @@ Color.transparent = Color(0, 0, 0, 0)
 ---@type Color
 Color.stripe = Color(0.64, 0.77, 0.91, 0.91)
 ---@type Color
-Color.watchStart = Color(0, 0.5, 0)
+Color.watchStart = Color(0, 0.5, 0, 1)
 ---@type Color
-Color.watchEnd = Color(0.5, 0 ,0)
+Color.watchEnd = Color(0.5, 0 ,0, 1)
 
 Color.gray = function(gray)
     return Color(gray, gray, gray, 1)

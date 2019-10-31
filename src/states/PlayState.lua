@@ -179,7 +179,7 @@ function PlayState:answerGiven(idx)
         self.notes:shift():wrong()
         Mobile.vibrate(assets.config.mobile.vibrationTime)
         if self.stopWatch then
-            self.stopWatch:update(assets.config.timeLoss)
+            self.stopWatch:looseTime(assets.config.timeLoss)
         end
     end
     self:switchMeasure()

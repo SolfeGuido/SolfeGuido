@@ -92,7 +92,7 @@ function PlayState:init(config)
             finishCallback = function()
                 self:finish()
             end})
-        elements[1] = {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}}
+        elements[#elements + 1] = {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}}
     end
 
 

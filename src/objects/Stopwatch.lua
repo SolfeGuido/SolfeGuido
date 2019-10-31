@@ -30,7 +30,7 @@ end
 
 function StopWatch:start()
     self.started = true
-    self.timer:tween(self.totalTime, self, {color = Color.watchEnd})
+    --self.timer:tween(self.totalTime, self, {color = Color.watchEnd})
 end
 
 ---@param dt number
@@ -44,12 +44,11 @@ function StopWatch:update(dt)
 end
 
 function StopWatch:draw()
-    love.graphics.push()
     love.graphics.setColor(self.color)
-    love.graphics.setLineWidth(2)
-    draft:ellipticArc(self.x, self.y,  self.size, self.size, math.rad(360 * (self.currentTime / self.totalTime)), -math.pi / 2 )
-    love.graphics.pop()
-
+    love.graphics.setLineWidth(3)
+    local width = (self.currentTime / self.totalTime) * love.graphics.getWidth()
+    love.graphics.line(0,2, width, 2)
+    love.graphics.setLineWidth(1)
 end
 
 

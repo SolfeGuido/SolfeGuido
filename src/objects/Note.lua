@@ -1,5 +1,6 @@
 
 
+local Effect = require('src.objects.CorrectNoteEffect')
 local Entity = require('src.Entity')
 local Color = require('src.utils.Color')
 
@@ -32,6 +33,16 @@ end
 
 function Note:correct()
     self.color = Color(0, 0.5, 0, 1)
+    self.area:addentity(Effect, {
+        image = self.image,
+        color = Color(0, 0, 0, 0.5),
+        scale = 1,
+        rotation = self.rotation,
+        xOrigin = self.xOrigin,
+        yOrigin = self.yOrigin,
+        target = self,
+        padding = assets.config.note.padding * self.image:getWidth()
+    })
     self:fadeTo(Color(0, 0.5, 0, 0))
 end
 

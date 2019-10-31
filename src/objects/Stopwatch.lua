@@ -26,30 +26,49 @@ function StopWatch:new(area, config)
     self.color = Color.watchStart:clone()
     self.totalTime = equivalences[Config.time] or 60
     self.currentTime = self.totalTime
+    self.subTime = self.totalTime
+    self.tween = nil
 end
 
 function StopWatch:start()
     self.started = true
-    self.timer:tween(self.totalTime, self, {color = Color.watchEnd})
+    --self.timer:tween(self.totalTime, self, {color = Color.watchEnd})
 end
 
 ---@param dt number
 function StopWatch:update(dt)
     if not self.started then return end
     self.currentTime = math.max(0, self.currentTime - dt)
+    if not self.tween then
+        self.subTime = self.currentTime
+    end
     if self.currentTime == 0 and self.finishCallback then
         self.finishCallback()
         self.finishCallback = nil
     end
 end
 
-function StopWatch:draw()
-    love.graphics.push()
-    love.graphics.setColor(self.color)
-    love.graphics.setLineWidth(2)
-    draft:ellipticArc(self.x, self.y,  self.size, self.size, math.rad(360 * (self.currentTime / self.totalTime)), -math.pi / 2 )
-    love.graphics.pop()
+function StopWatch:looseTime(dt)
+    local time = 1
+    if self.tween then self.timer:cancel(self.tween) end
+    self.tween = self.timer:tween(time, self, {subTime = self.currentTime - dt - time}, 'out-quad', function()
+        self.tween = nil
+    end)
+    self:update(dt)
+end
 
+function StopWatch:draw()
+    love.graphics.setLineWidth(3)
+
+    love.graphics.setColor(Color.watchEnd)
+    local width = ( math.max(self.currentTime, self.subTime) / self.totalTime) * love.graphics.getWidth()
+    love.graphics.line(0,2, width, 2)
+
+    love.graphics.setColor(self.color)
+    width = (self.currentTime / self.totalTime) * love.graphics.getWidth()
+    love.graphics.line(0,2, width, 2)
+
+    love.graphics.setLineWidth(1)
 end
 
 

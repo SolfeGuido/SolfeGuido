@@ -92,11 +92,11 @@ function PlayState:init(config)
             finishCallback = function()
                 self:finish()
             end})
-        elements[1] = {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}}
+        elements[#elements + 1] = {element = self.stopWatch, target = {x = assets.config.stopWatch.x, color = {}}}
     end
 
 
-    self:addentity(AnswerGiver, { callback = function(x) self:answerGiven(x) end })
+    self.answerGiver = self:addentity(AnswerGiver, { callback = function(x) self:answerGiven(x) end })
 
     self.finished = false
     self:transition(elements, function()
@@ -117,12 +117,14 @@ function PlayState:close()
     self.notes = nil
     self.measures = nil
     self.stopWatch = nil
+    self.answerGiver = nil
     Scene.close(self)
 end
 
 
 function PlayState:finish()
     -- TODO fadeway buttons if necessary
+    self.answerGiver:hide()
     self.finished = true
     while not self.notes:isEmpty() do
         self.notes:shift():fadeAway()
@@ -179,7 +181,7 @@ function PlayState:answerGiven(idx)
         self.notes:shift():wrong()
         Mobile.vibrate(assets.config.mobile.vibrationTime)
         if self.stopWatch then
-            self.stopWatch:update(assets.config.timeLoss)
+            self.stopWatch:looseTime(assets.config.timeLoss)
         end
     end
     self:switchMeasure()

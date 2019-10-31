@@ -84,7 +84,7 @@ local config = {
         image = 'note';
         padding = 0.5,
         distance = 0.1,
-        fadeAway = 1.5
+        fadeAway = 2
     },
     mobile = {
         vibrationTime = 0.1

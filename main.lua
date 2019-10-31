@@ -1,4 +1,4 @@
-require "lib.tesound"
+require("lib.tesound")
 local ScreenManager = require('lib.ScreenManager')
 local Color = require('src.utils.Color')
 local Mobile = require('src.utils.Mobile')

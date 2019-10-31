@@ -194,6 +194,7 @@ function State:close()
         self.entities[i]:dispose()
         table.remove(self.entities, i)
     end
+    self.timer:destroy()
     self.timer = nil
     self.entities = nil
 end

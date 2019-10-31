@@ -50,7 +50,8 @@ end
 
 function StopWatch:looseTime(dt)
     local time = 1
-    self.tween = self.timer:tween(time, self, {subTime = self.subTime - dt - time}, 'out-quad', function()
+    if self.tween then self.timer:cancel(self.tween) end
+    self.tween = self.timer:tween(time, self, {subTime = self.currentTime - dt - time}, 'out-quad', function()
         self.tween = nil
     end)
     self:update(dt)

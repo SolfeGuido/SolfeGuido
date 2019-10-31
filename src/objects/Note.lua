@@ -47,7 +47,7 @@ function Note:correct()
 end
 
 function Note:wrong()
-    self.color = Theme.wrong
+    self.color = Theme.wrong:clone()
     self:fadeTo(Theme.transparent)
     self.name = self.measure:getNoteName(self.note)
 end
@@ -62,7 +62,8 @@ end
 
 function Note:draw()
     --Color for the (optional) bars
-    love.graphics.setColor(Theme.font.rgb, self.color.a)
+    local r,g,b = unpack(Theme.font.rgb)
+    love.graphics.setColor(r,g,b, self.color.a)
     love.graphics.setLineWidth(1)
     local actualWidth = self.image:getWidth()
     local padding = assets.config.note.padding * actualWidth

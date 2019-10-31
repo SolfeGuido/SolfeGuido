@@ -22,8 +22,8 @@ local ThemeColors = {
         primary = {0,115,229},
         secondary = {125,220,31},
         transparent = {68,68,68,0},
-        wrong = {125,220,31}, -- TODO
-        stripe = {125,220,31} -- TODO
+        wrong = {179,40,77},
+        stripe = {151,155,194, 74}
     },
     dark = {
         font = {238,238,238},
@@ -42,8 +42,7 @@ local currentTheme = nil
 
 
 function Theme.init()
-    currentTheme = Config.theme or 'light'
-    Theme.updateTheme(currentTheme)
+    Theme.updateTheme(Config.theme or 'light')
 end
 
 

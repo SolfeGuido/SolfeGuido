@@ -17,6 +17,9 @@ function IconButton:new(area, config)
     self.color = config.color or Color.black:clone()
     self._width = self.image:getWidth()
     self.height = self.image:getHeight()
+    self.rotation = 0
+    self.xOrigin = self._width / 2
+    self.yOrigin = self.height / 2
 end
 
 function IconButton:setIcon(icon)
@@ -60,7 +63,7 @@ end
 
 function IconButton:draw()
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x, self.y)
+    love.graphics.draw(self.image, self.x + self.xOrigin, self.y + self.yOrigin, self.rotation, nil, nil, self.xOrigin, self.yOrigin)
 end
 
 return IconButton

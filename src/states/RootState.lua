@@ -55,11 +55,13 @@ function RootState:init(...)
 
     self.settingsButton = self:addentity(IconButton, {
         x = love.graphics.getWidth(),
-        y = 0,
+        y = 5,
         color = Color.transparent:clone(),
         height = assets.config.titleSize,
         icon = assets.IconName.Cog,
-        callback = function()
+        callback = function(btn)
+            print(btn)
+            self.timer:tween(assets.config.transition.tween, btn, {rotation = btn.rotation - math.pi}, 'linear')
             ScreenManager.push('OptionsState')
         end
     })
@@ -80,7 +82,7 @@ function RootState:init(...)
         },
         {
             element = self.settingsButton,
-            target = {color = Color.black, x = love.graphics.getWidth() - assets.config.titleSize}
+            target = {color = Color.black, x = love.graphics.getWidth() - assets.config.titleSize - 5}
         },
         {
             element = self.title,

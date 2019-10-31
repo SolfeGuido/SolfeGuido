@@ -44,7 +44,13 @@ function DialogState:init(title)
         {
             element = self:addentity(IconButton, {
                 icon = assets.IconName.Times,
-                callback = function() self:slideOut() end,
+                callback = function(btn)
+                    local settings = ScreenManager.first().settingsButton
+                    if settings then
+                        self.timer:tween(assets.config.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
+                    end
+                    self:slideOut()
+                end,
                 x = iconX,
                 y = -assets.config.titleSize,
                 color = Color.transparent:clone()

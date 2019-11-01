@@ -23,6 +23,7 @@ local ThemeColors = {
         secondary = {125,220,31},
         transparent = {68,68,68,0},
         wrong = {179,40,77},
+        correct = {125,220,31},
         stripe = {151,155,194, 74}
     },
     dark = {
@@ -33,8 +34,9 @@ local ThemeColors = {
         primary = {0,173,181},
         secondary = {57,62,70},
         transparent = {238,238,238, 0},
-        wrong = {57,62,70}, -- TODO
-        stripe = {57,62,70} -- TODO
+        wrong = {168,17,0},
+        correct = {72, 158, 115},
+        stripe = {57,62,70}
     }
 }
 

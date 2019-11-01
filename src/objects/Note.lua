@@ -24,6 +24,15 @@ function Note:new(area, options)
 end
 
 
+function Note:dispose()
+    self.image = nil
+    if self.name then
+        self.name:release()
+        self.name = nil
+    end
+    self.color = nil
+    Note.super.dispose(self)
+end
 
 ---@param note number
 ---@return number
@@ -32,10 +41,10 @@ function Note:noteToPosition(note)
 end
 
 function Note:correct()
-    self.color = Theme.secondary:clone()
+    self.color = Theme.correct:clone()
     self.area:addentity(Effect, {
         image = self.image,
-        color = Theme.secondary:clone(),
+        color = Theme.correct:clone(),
         scale = 1,
         rotation = self.rotation,
         xOrigin = self.xOrigin,
@@ -43,17 +52,19 @@ function Note:correct()
         target = self,
         padding = Vars.note.padding * self.image:getWidth()
     })
-    self:fadeTo(Theme.transparent)
+    self:fadeAway()
 end
 
 function Note:wrong()
     self.color = Theme.wrong:clone()
-    self:fadeTo(Theme.transparent)
-    self.name = self.measure:getNoteName(self.note)
+    self:fadeAway()
+    local font = love.graphics.newFont(self.measure.noteHeight)
+    self.name = love.graphics.newText(font, self.measure:getNoteName(self.note))
 end
 
 function Note:fadeAway()
-    self:fadeTo(Theme.transparent)
+    local r,g,b = unpack(self.color.rgb)
+    self:fadeTo({r, g, b, 0})
 end
 
 function Note:fadeTo(color)
@@ -83,7 +94,10 @@ function Note:draw()
     love.graphics.draw(self.image, self.x + padding + self.xOrigin, self.y, self.rotation, nil, nil,  self.xOrigin, self.yOrigin)
 
     if self.name then
-        love.graphics.print(self.name, self.x - 15, self.y + 5)
+        r,g,b = unpack(Theme.font.rgb)
+        love.graphics.setColor(r,g,b, self.color.a)
+        local yPos = self.measureIndex % 2 == 0 and 0 or self.measure.noteHeight / 2
+        love.graphics.draw(self.name, self.x - 15, self.y + yPos)
     end
 end
 

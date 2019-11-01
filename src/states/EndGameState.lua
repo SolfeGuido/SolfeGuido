@@ -1,7 +1,7 @@
 
 -- LIBS
 local DialogState = require('src.states.DialogState')
-
+local ScreenManager = require('lib.ScreenManager')
 
 ---@class EndGameState : State
 local EndGameState = DialogState:extend()
@@ -11,16 +11,13 @@ function EndGameState:new()
     DialogState.new(self)
 end
 
+function EndGameState:validate()
+    ScreenManager.switch('PlayState')
+end
+
 function EndGameState:init(score)
     self:createUI({
-        {
-            {
-                type = 'TextButton',
-                text = 'Restart',
-                state = 'PlayState',
-                centered = true,
-                x = -math.huge
-            }, {
+        {{
                 type = 'TextButton',
                 text = 'Menu',
                 state = 'RootState',
@@ -29,7 +26,7 @@ function EndGameState:init(score)
             }
         }
     })
-    DialogState.init(self, 'Score : ' .. tostring(score))
+    DialogState.init(self, {title = 'Score : ' .. tostring(score), validate = 'Restart'})
 end
 
 return EndGameState

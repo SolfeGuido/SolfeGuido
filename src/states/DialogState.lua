@@ -46,7 +46,7 @@ function DialogState:init(title)
                 icon = assets.IconName.Times,
                 callback = function(btn)
                     local settings = ScreenManager.first().settingsButton
-                    if settings then
+                    if tostring(self) == "OptionState" and settings then
                         self.timer:tween(Vars.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
                     end
                     self:slideOut()

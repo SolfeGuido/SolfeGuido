@@ -23,6 +23,9 @@ function OptionsState:slideOut()
     end)
 end
 
+function OptionsState:__tostring()
+    return "OptionState"
+end
 
 function OptionsState:init(...)
     self:transition({

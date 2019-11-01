@@ -22,7 +22,7 @@ function MultiSelector:new(area, options)
         visible = false
     })
     if self.centered then
-        self.timer:tween(assets.config.transition.tween, self, {x = self:getCenterX()}, 'out-expo')
+        self.timer:tween(Vars.transition.tween, self, {x = self:getCenterX()}, 'out-expo')
     end
 end
 
@@ -71,11 +71,11 @@ end
 
 function MultiSelector:pressed()
     self.selector.visible = true
-    self:animate(assets.config.transition.tween, self, {color = {0.7, 0.7, 0.7, 1}}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = {0.7, 0.7, 0.7, 1}}, 'out-expo')
 end
 
 function MultiSelector:released()
-    self:animate(assets.config.transition.tween, self, {color = Theme.font}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function MultiSelector:leave()

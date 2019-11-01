@@ -18,7 +18,7 @@ function Measure:new(area, options)
     self.color =  options.color or Theme.font
     self.limitLine = self.height / 2
     self.lowestNote = lume.find(assets.NoteName, self.keyData.lowestNote)
-    font = assets.IconsFont(self.noteHeight * assets.config.note.height)
+    font = assets.IconsFont(self.noteHeight * Vars.note.height)
     self.noteIcon =  love.graphics.newText(font, assets.IconName.QuarterNote)
 end
 
@@ -44,7 +44,7 @@ function Measure:draw()
 
 
     -- Drawing the key
-    local localScale = self.noteHeight / assets.config.lineHeight
+    local localScale = self.noteHeight / Vars.lineHeight
     local imgHeigh = self.image:getHeight()
     local scale = (self.keyData.height / imgHeigh) * localScale
     local xPos = self.x + self.image:getWidth() * scale
@@ -63,9 +63,9 @@ end
 function Measure:getNoteName(noteName)
     local sub = noteName:sub(1, 1)
     if Config.noteStyle == 'englishNotes' then return sub end
-    local idx = lume.find(assets.config.englishNotes, sub)
+    local idx = lume.find(Vars.englishNotes, sub)
     if not idx then return sub end
-    return assets.config.romanNotes[idx]
+    return Vars.romanNotes[idx]
 end
 
 ---@param measureIndex number

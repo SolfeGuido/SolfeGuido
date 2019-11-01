@@ -21,7 +21,7 @@ function TextButton:new(area, config)
     })
     self.color = config.color or Theme.font:clone()
     if self.centered then
-        self.timer:tween(assets.config.transition.tween, self, {x = self:getCenterX()}, 'out-expo')
+        self.timer:tween(Vars.transition.tween, self, {x = self:getCenterX()}, 'out-expo')
     end
 end
 
@@ -39,7 +39,7 @@ function TextButton:boundingBox()
         return Rectangle(self.x - 30, self.y - 5, self.text:getWidth() + 50, self.text:getHeight() + 10)
 
     end
-    return Rectangle(self.x, self.y, assets.config.limitLine - 30, assets.config.lineHeight - 1)
+    return Rectangle(self.x, self.y, Vars.limitLine - 30, Vars.lineHeight - 1)
 end
 
 
@@ -49,11 +49,11 @@ end
 
 function TextButton:pressed()
     self.selector.visible = true
-    self:animate(assets.config.transition.tween, self, {color = Theme.clicked}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.clicked}, 'out-expo')
 end
 
 function TextButton:released()
-    self:animate(assets.config.transition.tween, self, {color = Theme.font}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function TextButton:setConsumed(consumed)

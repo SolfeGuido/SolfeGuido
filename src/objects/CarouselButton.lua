@@ -12,7 +12,7 @@ end
 
 function CarouselButton:tweenIn()
     if not self.isDisposed then
-        self.timer:tween(assets.config.transition.tween, self, {color = Theme.font}, 'out-quad', function()
+        self.timer:tween(Vars.transition.tween, self, {color = Theme.font}, 'out-quad', function()
             self:tweenOut()
         end)
     end
@@ -20,7 +20,7 @@ end
 
 function CarouselButton:tweenOut()
     if not self.isDisposed then
-        self.timer:tween(assets.config.transition.tween, self, {color = Theme.font}, 'out-quad', function()
+        self.timer:tween(Vars.transition.tween, self, {color = Theme.font}, 'out-quad', function()
             self:tweenIn()
         end)
     end
@@ -37,7 +37,7 @@ function CarouselButton:draw()
     love.graphics.translate(0, 2.5)
     love.graphics.setColor(self.color)
     
-    local middle = assets.config.lineHeight
+    local middle = Vars.lineHeight
     local x = self.target.x
     local y = self.target.y
     local width = self.target:width()

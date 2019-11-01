@@ -13,24 +13,24 @@ function MobileButton:new(area, options)
 end
 
 function MobileButton:boundingBox()
-    local padding = assets.config.mobileButton.padding
+    local padding = Vars.mobileButton.padding
     return Rectangle(self.x, self.y, self.width or (self.text:getWidth() + padding * 2), self.text:getHeight() + padding * 2)
 end
 
 function MobileButton:hovered()
-    self:animate(assets.config.transition.tween, self, {color = Theme.hovered}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.hovered}, 'out-expo')
 end
 
 function MobileButton:leave()
-    self:animate(assets.config.transition.tween, self, {color = Theme.background}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.background}, 'out-expo')
 end
 
 function MobileButton:pressed()
-    self:animate(assets.config.transition.tween, self, {color = Theme.clicked}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.clicked}, 'out-expo')
 end
 
 function MobileButton:released()
-    self:animate(assets.config.transition.tween, self, {color = Theme.background}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.background}, 'out-expo')
 end
 
 function MobileButton:onclick()
@@ -47,7 +47,7 @@ function MobileButton:draw()
     love.graphics.setColor(Theme.font)
     love.graphics.rectangle('line', 0, 0, box.width, box.height)
     local txtX = (box.width - self.text:getWidth()) / 2
-    love.graphics.draw(self.text, txtX, assets.config.mobileButton.padding)
+    love.graphics.draw(self.text, txtX, Vars.mobileButton.padding)
 
     love.graphics.pop()
 end

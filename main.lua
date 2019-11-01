@@ -1,7 +1,9 @@
 require("lib.tesound")
+_G['Vars'] = require('src.Vars')
 local ScreenManager = require('lib.ScreenManager')
 local Mobile = require('src.utils.Mobile')
 local Theme = require('src.utils.Theme')
+local Config = require('src.utils.Config')
 
 --- BEGIN DEBUG
 local debugGraph = require('lib.debugGraph')
@@ -12,6 +14,8 @@ local memoryGraph = nil
 
 function love.load()
     Mobile.load()
+    Config.parse()
+    Theme.init()
     ScreenManager.registerCallbacks({'keypressed', 'touchpressed', 'touchmoved', 'touchreleased'})
     ScreenManager.init({SplashScreenState = require('src.states.SplashScreenState')}, 'SplashScreenState')
 

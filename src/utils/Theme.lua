@@ -42,7 +42,7 @@ local currentTheme = nil
 
 
 function Theme.init()
-    Theme.updateTheme(Config.theme or 'light')
+    Theme.updateTheme(Config.theme or 'dark')
 end
 
 

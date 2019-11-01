@@ -18,8 +18,8 @@ function ScoreState:dispose()
 end
 
 function ScoreState:updateScores(nwTiming)
-    for _, level in ipairs(assets.config.userPreferences.difficulty) do
-        for _, key in ipairs(assets.config.userPreferences.keySelect) do
+    for _, level in ipairs(Vars.userPreferences.difficulty) do
+        for _, key in ipairs(Vars.userPreferences.keySelect) do
             local score = ScoreManager.get(key, level, nwTiming)
             self.texts[level][key]:setText(tostring(score))
         end
@@ -27,9 +27,9 @@ function ScoreState:updateScores(nwTiming)
 end
 
 function ScoreState:init()
-    local time = assets.config.transition.tween / 3
-    local middle = assets.config.baseLine + assets.config.lineHeight
-    local font = assets.MarckScript(assets.config.lineHeight)
+    local time = Vars.transition.tween / 3
+    local middle = Vars.baseLine + Vars.lineHeight
+    local font = assets.MarckScript(Vars.lineHeight)
     local maxSize = 0
 
     self.texts = {}
@@ -40,19 +40,19 @@ function ScoreState:init()
                 text = love.graphics.newText(font," "),
                 x = 0,
                 y = middle,
-                selected = assets.config.userPreferences.time[1],
-                choices = assets.config.userPreferences.time,
+                selected = Vars.userPreferences.time[1],
+                choices = Vars.userPreferences.time,
                 color = Theme.transparent:clone(),
                 callback = function(value) self:updateScores(value) end,
             }),
-            target = {color = Theme.font, x = assets.config.limitLine}
+            target = {color = Theme.font, x = Vars.limitLine}
         }
     }
 
-    middle = middle + assets.config.lineHeight
+    middle = middle + Vars.lineHeight
 
     -- Adding titles
-    for _,v in ipairs(assets.config.userPreferences.keySelect) do
+    for _,v in ipairs(Vars.userPreferences.keySelect) do
         local text = love.graphics.newText(font, tr(v))
         maxSize = math.max(maxSize, text:getWidth())
         elements[#elements+1] = {
@@ -60,28 +60,28 @@ function ScoreState:init()
                 text = text,
                 color = Theme.transparent:clone(),
                 y = middle,
-                x = assets.config.limitLine - text:getWidth()
+                x = Vars.limitLine - text:getWidth()
             }),
-            target = {x = assets.config.limitLine + 10, color =  Theme.font},
+            target = {x = Vars.limitLine + 10, color =  Theme.font},
             time = time
         }
-        middle = middle + assets.config.lineHeight
+        middle = middle + Vars.lineHeight
     end
     elements[#elements+1] = {
         element = self:addentity(Line, {
             color = Theme.transparent:clone(),
-            x = assets.config.limitLine - 2,
+            x = Vars.limitLine - 2,
             lineWidth = 2,
-            y = assets.config.baseLine + assets.config.lineHeight,
-            height = assets.config.lineHeight * 4,
+            y = Vars.baseLine + Vars.lineHeight,
+            height = Vars.lineHeight * 4,
         }),
-        target = {x = assets.config.limitLine + maxSize + 15, color = Theme.font},
+        target = {x = Vars.limitLine + maxSize + 15, color = Theme.font},
         time = time
     }
 
-    middle = assets.config.limitLine + maxSize + 10
+    middle = Vars.limitLine + maxSize + 10
     local space = love.graphics.getWidth() - middle
-    local levels = assets.config.userPreferences.difficulty
+    local levels = Vars.userPreferences.difficulty
     space = space / #levels
     for i,v in ipairs(levels) do
         local text = love.graphics.newText(font, v)
@@ -90,16 +90,16 @@ function ScoreState:init()
             element = self:addentity(Title, {
                 text = text,
                 color = Theme.transparent:clone(),
-                y = assets.config.baseLine + assets.config.lineHeight,
+                y = Vars.baseLine + Vars.lineHeight,
                 x = -text:getWidth()
             }),
             target = {x = middle + padding, color = Theme.font},
             time = time
         }
         self.texts[v] = {}
-        local yPos = assets.config.baseLine + assets.config.lineHeight * 2
-        for _, key in ipairs(assets.config.userPreferences.keySelect) do
-            local score = ScoreManager.get(key, v, assets.config.userPreferences.time[1])
+        local yPos = Vars.baseLine + Vars.lineHeight * 2
+        for _, key in ipairs(Vars.userPreferences.keySelect) do
+            local score = ScoreManager.get(key, v, Vars.userPreferences.time[1])
             text = love.graphics.newText(font, tostring(score))
             padding = (space - text:getWidth()) / 2
             elements[#elements+1] = {
@@ -113,7 +113,7 @@ function ScoreState:init()
                 time = time
             }
             self.texts[v][key] = elements[#elements].element
-            yPos = yPos + assets.config.lineHeight
+            yPos = yPos + Vars.lineHeight
         end
 
         middle = middle + space
@@ -124,8 +124,8 @@ function ScoreState:init()
                 element = self:addentity(Line, {
                     color = Theme.transparent:clone(),
                     x = -1,
-                    y = assets.config.baseLine + assets.config.lineHeight,
-                    height = assets.config.lineHeight * 4,
+                    y = Vars.baseLine + Vars.lineHeight,
+                    height = Vars.lineHeight * 4,
                 }),
                 target = {x = middle, color = Theme.hovered},
                 time = time
@@ -134,7 +134,7 @@ function ScoreState:init()
     end
 
 
-    self:transition(elements, nil, assets.config.transition.spacing / 3)
+    self:transition(elements, nil, Vars.transition.spacing / 3)
 end
 
 return ScoreState

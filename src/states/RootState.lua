@@ -40,7 +40,7 @@ function RootState:init(...)
         x = 5,
         color = Theme.transparent:clone(),
         y = love.graphics.getHeight(),
-        height = assets.config.titleSize,
+        height = Vars.titleSize,
         icon = assets.IconName.Off,
         callback = function() love.event.quit() end
     })
@@ -48,7 +48,7 @@ function RootState:init(...)
         x = 5,
         y = love.graphics.getHeight(),
         color = Theme.transparent:clone(),
-        height = assets.config.titleSize,
+        height = Vars.titleSize,
         icon = assets.IconName.Home,
         callback = function() self:pop() end
     })
@@ -57,16 +57,15 @@ function RootState:init(...)
         x = love.graphics.getWidth(),
         y = 5,
         color = Theme.transparent:clone(),
-        height = assets.config.titleSize,
+        height = Vars.titleSize,
         icon = assets.IconName.Cog,
         callback = function(btn)
-            print(btn)
-            self.timer:tween(assets.config.transition.tween, btn, {rotation = btn.rotation - math.pi}, 'linear')
+            self.timer:tween(Vars.transition.tween, btn, {rotation = btn.rotation - math.pi}, 'linear')
             ScreenManager.push('OptionsState')
         end
     })
 
-    local text = love.graphics.newText(assets.MarckScript(assets.config.titleSize),"Menu")
+    local text = love.graphics.newText(assets.MarckScript(Vars.titleSize),"Menu")
     self.title = self:addentity(Title, {
         text = text,
         framed = true,
@@ -78,11 +77,11 @@ function RootState:init(...)
     self:transition({
         {
             element = self.quitButton,
-            target = {color = Theme.font, y = love.graphics.getHeight() - assets.config.titleSize}
+            target = {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize}
         },
         {
             element = self.settingsButton,
-            target = {color = Theme.font, x = love.graphics.getWidth() - assets.config.titleSize - 5}
+            target = {color = Theme.font, x = love.graphics.getWidth() - Vars.titleSize - 5}
         },
         {
             element = self.title,
@@ -147,8 +146,8 @@ function RootState:pop()
 end
 
 function RootState:changeTitle(newTitle)
-    local time = assets.config.transition.tween
-    self.timer:tween(time, self.title, {y = -assets.config.titleSize - 15}, 'out-expo',function ()
+    local time = Vars.transition.tween
+    self.timer:tween(time, self.title, {y = -Vars.titleSize - 15}, 'out-expo',function ()
         self.title:setText(newTitle)
         self.title:center()
         self.timer:tween(time, self.title, {y = 0}, 'out-expo')
@@ -156,10 +155,10 @@ function RootState:changeTitle(newTitle)
 end
 
 function RootState:switchButtons(enter, leaves)
-    local time = assets.config.transition.tween
+    local time = Vars.transition.tween
     self.timer:tween(time, leaves, {y = love.graphics.getHeight(), color = Theme.transparent}, 'out-expo', function()
         leaves.consumed = false
-        self.timer:tween(time, enter, {color = Theme.font, y = love.graphics.getHeight() - assets.config.titleSize}, 'out-expo')
+        self.timer:tween(time, enter, {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize}, 'out-expo')
     end)
 end
 

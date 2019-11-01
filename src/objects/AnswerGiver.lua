@@ -18,16 +18,16 @@ function AnswerGiver:hide()
     self['keypressed'] = nil
     if self.buttons then
         for k, button in ipairs(self.buttons) do
-            self.timer:tween(assets.config.transition.tween, button, {y = love.graphics.getHeight() + 20}, 'out-expo')
+            self.timer:tween(Vars.transition.tween, button, {y = love.graphics.getHeight() + 20}, 'out-expo')
         end
     end
 end
 
 function AnswerGiver:addFunction(config)
     if config == "default" then
-        self:addKeyAnswers(assets.config.letterOrder)
+        self:addKeyAnswers(Vars.letterOrder)
     elseif config == "letters" then
-        self:addKeyAnswers(assets.config.enNotes)
+        self:addKeyAnswers(Vars.enNotes)
     elseif config == "buttons" then
         self:addButtons()
     end
@@ -37,7 +37,7 @@ function AnswerGiver:addKeyAnswers(keys)
     function self:keypressed(key)
         local idx = lume.find(keys, key)
         if idx and self.callback then
-            self.callback(assets.config.englishNotes[idx])
+            self.callback(Vars.englishNotes[idx])
         end
     end
 end
@@ -45,11 +45,11 @@ end
 
 function AnswerGiver:addButtons()
     self.buttons = {}
-    local size = assets.config.mobileButton.fontSize
+    local size = Vars.mobileButton.fontSize
     local font = assets.MarckScript(size)
-    local letters = Config.noteStyle == "en" and assets.config.englishNotes or assets.config.romanNotes
+    local letters = Config.noteStyle == "en" and Vars.englishNotes or Vars.romanNotes
 
-    local padding = assets.config.mobileButton.padding
+    local padding = Vars.mobileButton.padding
     local widths = math.floor((love.graphics.getWidth() / #letters) - padding)
     local totalSize = 0
     local elements = {}
@@ -62,7 +62,7 @@ function AnswerGiver:addButtons()
             y = y,
             width = widths,
             text = text,
-            callback = function() if self.callback then self.callback( assets.config.englishNotes[i]) end end
+            callback = function() if self.callback then self.callback( Vars.englishNotes[i]) end end
         })
         self.buttons[#self.buttons+1] = button
         elements[#elements+1] = {

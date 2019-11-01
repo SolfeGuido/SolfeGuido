@@ -5,13 +5,13 @@ local Graphics = {}
 
 function Graphics.drawMusicBars()
 
-    local middle = assets.config.baseLine
+    local middle = Vars.baseLine
 
     love.graphics.setLineWidth(1)
     love.graphics.setColor(Theme.font)
-    love.graphics.line(assets.config.limitLine, middle + assets.config.lineHeight, assets.config.limitLine, middle + assets.config.lineHeight * 5)
+    love.graphics.line(Vars.limitLine, middle + Vars.lineHeight, Vars.limitLine, middle + Vars.lineHeight * 5)
     for i = 1,5 do
-        local ypos = middle + assets.config.lineHeight * i
+        local ypos = middle + Vars.lineHeight * i
         love.graphics.line(0, ypos, love.graphics.getWidth(), ypos)
     end
 end

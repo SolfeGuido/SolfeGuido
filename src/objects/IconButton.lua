@@ -12,7 +12,7 @@ local IconButton = AbstractButton:extend()
 
 function IconButton:new(area, config)
     AbstractButton.new(self, area, config)
-    local defaultFont = assets.IconsFont(config.size or assets.config.titleSize)
+    local defaultFont = assets.IconsFont(config.size or Vars.titleSize)
     self.image = love.graphics.newText(defaultFont,  config.icon)
     self.color = config.color or Theme.font:clone()
     self._width = self.image:getWidth()
@@ -41,19 +41,19 @@ function IconButton:boundingBox()
 end
 
 function IconButton:hovered()
-    self:animate(assets.config.transition.tween, self, {color =  Theme.hovered}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color =  Theme.hovered}, 'out-expo')
 end
 
 function IconButton:pressed()
-    self:animate(assets.config.transition.tween, self, {color = Theme.clicked}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.clicked}, 'out-expo')
 end
 
 function IconButton:released()
-    self:animate(assets.config.transition.tween, self, {color = Theme.font}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function IconButton:leave()
-    self:animate(assets.config.transition.tween, self, {color = Theme.font}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function IconButton:onclick()

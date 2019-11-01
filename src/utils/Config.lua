@@ -14,19 +14,19 @@ end
 function Config.parse()
     getSimpleLocale()
     local conf = {}
-    if love.filesystem.getInfo(assets.config.configSave) then
-        conf = lume.deserialize(love.filesystem.read(assets.config.configSave))
+    if love.filesystem.getInfo(Vars.configSave) then
+        conf = lume.deserialize(love.filesystem.read(Vars.configSave))
         for k,v in pairs(conf) do
             Config[k] = v
         end
     else
-        conf = assets.config.userPreferences
+        conf = Vars.userPreferences
         for k,v in pairs(conf) do
             Config[k] = v[1]
         end
         -- trying to get the computer locale
         local l = getSimpleLocale()
-        if lume.find(assets.config.userPreferences.lang, l) then
+        if lume.find(Vars.userPreferences.lang, l) then
             Config.lang = l
         end
     end
@@ -53,7 +53,7 @@ local function isFunction(x)
 end
 
 function Config.save()
-    love.filesystem.write(assets.config.configSave , lume.serialize(lume.reject(Config, isFunction, true)))
+    love.filesystem.write(Vars.configSave , lume.serialize(lume.reject(Config, isFunction, true)))
 end
 
 

@@ -20,7 +20,7 @@ end
 
 function DialogState:getMargin()
     -- Change for mobile, create ratio or something
-    return Mobile.isMobile and 10 or assets.config.limitLine
+    return Mobile.isMobile and 10 or Vars.limitLine
 end
 
 function DialogState:keypressed(key)
@@ -33,13 +33,13 @@ end
 
 function DialogState:slideOut()
     self:slideEntitiesOut()
-    self.timer:tween(assets.config.transition.tween, self, {yBottom = 0}, 'out-expo',function()
+    self.timer:tween(Vars.transition.tween, self, {yBottom = 0}, 'out-expo',function()
         ScreenManager.pop()
     end)
 end
 
 function DialogState:init(title)
-    local iconX = love.graphics.getWidth() - self.margin - assets.config.titleSize
+    local iconX = love.graphics.getWidth() - self.margin - Vars.titleSize
     local elements = {
         {
             element = self:addentity(IconButton, {
@@ -47,19 +47,19 @@ function DialogState:init(title)
                 callback = function(btn)
                     local settings = ScreenManager.first().settingsButton
                     if settings then
-                        self.timer:tween(assets.config.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
+                        self.timer:tween(Vars.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
                     end
                     self:slideOut()
                 end,
                 x = iconX,
-                y = -assets.config.titleSize,
+                y = -Vars.titleSize,
                 color = Theme.transparent:clone()
             }),
             target  = {y = 0, color = Theme.font}
         }
     }
     if title then
-        local titleText = love.graphics.newText(assets.MarckScript(assets.config.titleSize), tr(title))
+        local titleText = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr(title))
         elements[#elements + 1] = {
                 element = self:addentity(Title, {
                 text = titleText,
@@ -73,7 +73,7 @@ function DialogState:init(title)
     end
 
     self:transition(elements)
-    self.timer:tween(assets.config.transition.tween, self, {yBottom = love.graphics.getHeight()}, 'out-expo')
+    self.timer:tween(Vars.transition.tween, self, {yBottom = love.graphics.getHeight()}, 'out-expo')
 end
 
 function DialogState:draw()

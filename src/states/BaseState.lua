@@ -12,7 +12,7 @@ function BaseState:new()
 end
 
 function BaseState:draw()
-    love.graphics.setScissor(assets.config.limitLine ,assets.config.baseLine, love.graphics.getWidth(), assets.config.baseLine + assets.config.lineHeight * 5)
+    love.graphics.setScissor(Vars.limitLine ,Vars.baseLine, love.graphics.getWidth(), Vars.baseLine + Vars.lineHeight * 5)
     State.draw(self)
     love.graphics.setScissor()
 end

@@ -42,13 +42,13 @@ function State:addIconButton(config)
         config.callback = function() ScreenManager.push(config.statePush, config.statePushArgs) end
     end
 
-    local size = config.size or assets.config.titleSize
+    local size = config.size or Vars.titleSize
     return self:addentity(IconButton, {
         icon = assets.IconName[config.icon],
         size = size,
         x = -size,
         y = config.y,
-        height = assets.config.titleSize,
+        height = Vars.titleSize,
         color = Theme.transparent:clone(),
         callback = config.callback
     })
@@ -86,8 +86,8 @@ function State:addMultiSelector(config)
         text = msText,
         x = -msText:getWidth() * 3,
         y = config.y,
-        selected = Config[confName] or assets.config.userPreferences[confName][1],
-        choices = assets.config.userPreferences[confName],
+        selected = Config[confName] or Vars.userPreferences[confName][1],
+        choices = Vars.userPreferences[confName],
         color = Theme.transparent:clone(),
         callback = function(value) Config.update(confName, value) end,
         centered = config.centered or false
@@ -143,8 +143,8 @@ function State:keypressed(key)
 end
 
 function State:createUI(uiConfig)
-    local yPos = assets.config.baseLine + assets.config.lineHeight
-    local defaultFont = assets.MarckScript(assets.config.lineHeight)
+    local yPos = Vars.baseLine + Vars.lineHeight
+    local defaultFont = assets.MarckScript(Vars.lineHeight)
     local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all"}
     local elements = {}
     for _, column in ipairs(uiConfig) do
@@ -153,7 +153,7 @@ function State:createUI(uiConfig)
             if Mobile.canBeAdded(elemConfig.platform) then
                 if not elemConfig.y then
                     elemConfig.y = yPos
-                    yPos = yPos + assets.config.lineHeight
+                    yPos = yPos + Vars.lineHeight
                 end
                 local target = {color = Theme.font}
                 if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
@@ -163,16 +163,16 @@ function State:createUI(uiConfig)
                 }
             end
         end
-        yPos = assets.config.baseLine + assets.config.lineHeight
-        conf.x = conf.x + assets.config.limitLine
+        yPos = Vars.baseLine + Vars.lineHeight
+        conf.x = conf.x + Vars.limitLine
     end
     self:transition(elements)
 end
 
 function State:transition(elements, callback, spacing)
-    spacing = spacing or assets.config.transition.spacing
+    spacing = spacing or Vars.transition.spacing
     local size = #elements
-    self.timer:every(assets.config.transition.spacing, function()
+    self.timer:every(Vars.transition.spacing, function()
         local data = elements[1]
         table.remove(elements, 1)
         self:addElement(data, #elements == 0 and callback or nil)
@@ -180,7 +180,7 @@ function State:transition(elements, callback, spacing)
 end
 
 function State:addElement(data, callback)
-    self.timer:tween(data.time or assets.config.transition.tween, data.element, data.target, 'out-expo', callback)
+    self.timer:tween(data.time or Vars.transition.tween, data.element, data.target, 'out-expo', callback)
 end
 
 function State:callOnEntities(method, ...)

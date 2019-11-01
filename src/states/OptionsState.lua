@@ -17,7 +17,7 @@ end
 
 function OptionsState:slideOut()
     self:slideEntitiesOut()
-    self.timer:tween(assets.config.transition.tween, self, {yBottom = 0}, 'out-expo',function()
+    self.timer:tween(Vars.transition.tween, self, {yBottom = 0}, 'out-expo',function()
         ScreenManager.pop()
         ScreenManager.first().settingsButton.consumed = false
     end)
@@ -30,8 +30,8 @@ function OptionsState:init(...)
             element = self:addentity(IconButton, {
                 icon = Config.sound == 'on' and assets.IconName.VolumeOn or assets.IconName.VolumeOff,
                 x = self.margin,
-                y = - assets.config.titleSize,
-                width = assets.config.titleSize,
+                y = - Vars.titleSize,
+                width = Vars.titleSize,
                 color = Theme.transparent:clone(),
                 callback = function(btn)
                     btn.consumed = false

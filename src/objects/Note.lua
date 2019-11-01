@@ -17,10 +17,10 @@ function Note:new(area, options)
     self.name = nil
     self.measureIndex = self.measure:indexOf(self.note)
     self.y = self:noteToPosition(self.measureIndex)
-    self.width = self.image:getWidth() + (assets.config.note.padding * self.image:getWidth() * 2)
+    self.width = self.image:getWidth() + (Vars.note.padding * self.image:getWidth() * 2)
     self.rotation = self.measureIndex >= 10 and math.pi or 0
-    self.yOrigin = assets.config.note.yOrigin * self.measure.noteHeight
-    self.xOrigin = assets.config.note.xOrigin * self.image:getWidth()
+    self.yOrigin = Vars.note.yOrigin * self.measure.noteHeight
+    self.xOrigin = Vars.note.xOrigin * self.image:getWidth()
 end
 
 
@@ -41,7 +41,7 @@ function Note:correct()
         xOrigin = self.xOrigin,
         yOrigin = self.yOrigin,
         target = self,
-        padding = assets.config.note.padding * self.image:getWidth()
+        padding = Vars.note.padding * self.image:getWidth()
     })
     self:fadeTo(Theme.transparent)
 end
@@ -57,7 +57,7 @@ function Note:fadeAway()
 end
 
 function Note:fadeTo(color)
-    self.timer:tween(assets.config.note.fadeAway, self, {color = color}, 'linear', function() self.isDead = true end)
+    self.timer:tween(Vars.note.fadeAway, self, {color = color}, 'linear', function() self.isDead = true end)
 end
 
 function Note:draw()
@@ -66,7 +66,7 @@ function Note:draw()
     love.graphics.setColor(r,g,b, self.color.a)
     love.graphics.setLineWidth(1)
     local actualWidth = self.image:getWidth()
-    local padding = assets.config.note.padding * actualWidth
+    local padding = Vars.note.padding * actualWidth
     if self.measureIndex <= 4 then
         for i = 5, self.measureIndex + 1, -2 do
             local y = self:noteToPosition(i - 1)

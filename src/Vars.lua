@@ -3,7 +3,7 @@ local lineHeight = 30
 local titleSize = 40
 
 
-local config = {
+return {
     titleSize = titleSize,
     selectorSize = 18,
     baseLine = titleSize + lineHeight,
@@ -91,5 +91,3 @@ local config = {
         vibrationTime = 0.1
     }
 }
-
-return config

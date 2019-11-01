@@ -31,7 +31,7 @@ function PlaySelectState:init(config)
                 centered = true,
                 framed = true,
                 x = -math.huge,
-                y = love.graphics.getHeight() - assets.config.titleSize * 2,
+                y = love.graphics.getHeight() - Vars.titleSize * 2,
                 icon = assets.IconName.Play,
                 callback = function()
                     ScreenManager.switch('PlayState', config)

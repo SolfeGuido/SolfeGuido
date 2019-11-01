@@ -58,8 +58,6 @@ function SplashScreenState:createCoroutine()
         for name, table in pairs(assets.AudioEffects) do
             love.audio.setEffect(name, table)
         end
-        Config.parse()
-        Theme.init()
         Mobile.configure()
         coroutine.yield(1)
         ScoreManager.init()
@@ -67,8 +65,8 @@ function SplashScreenState:createCoroutine()
         i18n.load(assets.lang)
         i18n.setLocale(Config.lang or 'en')
         -- Create the two main fonts
-        assets.MarckScript(assets.config.lineHeight)
-        assets.MarckScript(assets.config.titleSize)
+        assets.MarckScript(Vars.lineHeight)
+        assets.MarckScript(Vars.titleSize)
         coroutine.yield(1)
     end)
 end
@@ -97,25 +95,25 @@ function SplashScreenState:update(dt)
 end
 
 function SplashScreenState:displayLines()
-    self.timer:tween(assets.config.transition.tween, self, {color = Theme.transparent}, 'linear')
-    local middle = assets.config.baseLine
+    self.timer:tween(Vars.transition.tween, self, {color = Theme.transparent}, 'linear')
+    local middle = Vars.baseLine
     for i = 1,5 do
-        local ypos = middle + assets.config.lineHeight * i
+        local ypos = middle + Vars.lineHeight * i
         local line = self:addentity(Line, {
             x = 0,
             y = ypos,
             width = 0,
         })
-        self.timer:tween(assets.config.transition.tween, line, {width = love.graphics.getWidth()}, 'out-expo')
+        self.timer:tween(Vars.transition.tween, line, {width = love.graphics.getWidth()}, 'out-expo')
     end
 
     local line = self:addentity(Line, {
-        x = assets.config.limitLine,
-        y = middle + assets.config.lineHeight,
+        x = Vars.limitLine,
+        y = middle + Vars.lineHeight,
         height = 0,
     })
-    local hTarget = assets.config.lineHeight * 4
-    self.timer:tween(assets.config.transition.tween, line, {height = hTarget}, 'out-expo', function()
+    local hTarget = Vars.lineHeight * 4
+    self.timer:tween(Vars.transition.tween, line, {height = hTarget}, 'out-expo', function()
         -- Load all states this time
         ScreeManager.init(allStates, 'RootState')
     end)

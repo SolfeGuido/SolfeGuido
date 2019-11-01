@@ -43,7 +43,7 @@ local currentTheme = nil
 
 
 function Theme.init(theme)
-    Theme.updateTheme(theme or 'dark')
+    Theme.updateTheme(theme or 'light')
 end
 
 

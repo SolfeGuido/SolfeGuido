@@ -13,19 +13,33 @@ local OptionsState = DialogState:extend()
 
 function OptionsState:new()
     DialogState.new(self)
+    self.options = {}
+end
+
+function OptionsState:validate()
+    local changed = false
+    for k,v in pairs(self.options) do
+        changed = changed or Config.update(k, v)
+    end
+    if changed then
+        ScreenManager.switch('RootState')
+    else
+        self:slideOut()
+    end
 end
 
 function OptionsState:slideOut()
     self:slideEntitiesOut()
+    local settings = ScreenManager.first().settingsButton
+    if settings then
+        self.timer:tween(Vars.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
+    end
     self.timer:tween(Vars.transition.tween, self, {yBottom = 0}, 'out-expo',function()
         ScreenManager.pop()
         ScreenManager.first().settingsButton.consumed = false
     end)
 end
 
-function OptionsState:__tostring()
-    return "OptionState"
-end
 
 function OptionsState:init(...)
     self:transition({
@@ -77,10 +91,16 @@ function OptionsState:init(...)
                 platform = 'mobile',
                 centered = true,
                 x = -math.huge
+            }, {
+                text = 'Theme',
+                type = 'MultiSelector',
+                config = 'theme',
+                centered = true,
+                x = -math.huge
             }
         }
     }, self.margin)
-    DialogState.init(self, "Options")
+    DialogState.init(self, {title = "Options", validate = 'Save'})
 end
 
 return OptionsState

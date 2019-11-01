@@ -1,5 +1,4 @@
 
-local Config = require('src.utils.Config')
 local Color = require('src.utils.Color')
 
 ---@class Theme
@@ -43,8 +42,8 @@ local ThemeColors = {
 local currentTheme = nil
 
 
-function Theme.init()
-    Theme.updateTheme(Config.theme or 'dark')
+function Theme.init(theme)
+    Theme.updateTheme(theme or 'dark')
 end
 
 

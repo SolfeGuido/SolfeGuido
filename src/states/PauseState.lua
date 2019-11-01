@@ -11,16 +11,13 @@ function PauseState:new()
     DialogState.new(self)
 end
 
+function PauseState:validate()
+    self:slideOut()
+end
+
 function PauseState:init(...)
     self:createUI({
-        {
-            {
-                type = 'TextButton',
-                text = 'Resume',
-                callback = function() self:slideOut() end,
-                centered = true,
-                x = -math.huge
-            }, {
+        {{
                 type = 'TextButton',
                 text = 'Exit',
                 state = 'RootState',
@@ -29,7 +26,7 @@ function PauseState:init(...)
             }
         }
     })
-    DialogState.init(self,"Pause")
+    DialogState.init(self, {title = 'Pause', validate = 'Resume'})
 end
 
 return PauseState

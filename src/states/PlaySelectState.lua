@@ -10,7 +10,12 @@ function PlaySelectState:new()
     DialogSate.new(self)
 end
 
+function PlaySelectState:validate()
+    ScreenManager.switch('PlayState', self.config)
+end
+
 function PlaySelectState:init(config)
+    self.config = config
     local UI = {
             {
                 text = 'Key',
@@ -25,17 +30,6 @@ function PlaySelectState:init(config)
                 config = 'difficulty',
                 centered = true,
                 x = -math.huge
-            }, {
-                text = 'Play',
-                type = 'TextButton',
-                centered = true,
-                framed = true,
-                x = -math.huge,
-                y = love.graphics.getHeight() - Vars.titleSize * 2,
-                icon = assets.IconName.Play,
-                callback = function()
-                    ScreenManager.switch('PlayState', config)
-                end
             }
         }
 
@@ -50,7 +44,7 @@ function PlaySelectState:init(config)
     end
 
     self:createUI({UI}, self.margin)
-    DialogSate.init(self)
+    DialogSate.init(self, {title = 'Play', validate = 'Play'})
 end
 
 return PlaySelectState

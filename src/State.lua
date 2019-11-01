@@ -89,7 +89,13 @@ function State:addMultiSelector(config)
         selected = Config[confName] or Vars.userPreferences[confName][1],
         choices = Vars.userPreferences[confName],
         color = Theme.transparent:clone(),
-        callback = function(value) Config.update(confName, value) end,
+        callback = function(value)
+            if self.options then
+                self.options[confName] = value
+            else
+                Config.update(confName, value)
+            end
+        end,
         centered = config.centered or false
     })
 end
@@ -120,6 +126,7 @@ function State:addentity(Type, options, ...)
 end
 
 function State:draw()
+    love.graphics.setBackgroundColor(Theme.background)
     for _,v in ipairs(self.entities) do
         v:draw()
     end

@@ -1,6 +1,7 @@
 
 local lume = require('lib.lume')
 local i18n = require('lib.i18n')
+local Theme = require('src.utils.Theme')
 
 local Config = {}
 
@@ -34,18 +35,20 @@ function Config.parse()
 end
 
 function Config.updateSound()
-    if Config.sound == 'off' then
-        love.audio.setVolume(0)
-    else
-        love.audio.setVolume(1)
-    end
+    love.audio.setVolume(Config.sound == 'off' and 0 or 1)
 end
 
+---@param key string the key config to update
+---@param value any the value to set
+---@return boolean true if the value was updated, false otherwise
 function Config.update(key, value)
+    if Config[key] == value then return false end
     Config[key] = value
     if key == "sound" then Config.updateSound() end
     if key == "lang" then i18n.setLocale(value) end
+    if key == "theme" then Theme.updateTheme(value) end
     Config.save()
+    return true
 end
 
 local function isFunction(x)

@@ -137,8 +137,6 @@ end
 function PlayState:draw()
     love.graphics.push()
 
-    love.graphics.setBackgroundColor(Theme.background)
-
     if not self.notes:isEmpty() then
         local note = self.notes:peek()
         love.graphics.setColor(Theme.stripe)

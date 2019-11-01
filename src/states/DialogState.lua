@@ -7,6 +7,7 @@ local Theme = require('src.utils.Theme')
 -- Entities
 local Title = require('src.objects.Title')
 local IconButton = require('src.objects.IconButton')
+local TextButton = require('src.objects.TextButton')
 
 ---@class DialogState : State
 local DialogState = State:extend()
@@ -17,6 +18,8 @@ function DialogState:new()
     self.yBottom = 0
     self.margin = self:getMargin()
 end
+
+function DialogState:validate() end
 
 function DialogState:getMargin()
     -- Change for mobile, create ratio or something
@@ -38,28 +41,35 @@ function DialogState:slideOut()
     end)
 end
 
-function DialogState:init(title)
+function DialogState:init(options)
     local iconX = love.graphics.getWidth() - self.margin - Vars.titleSize
     local elements = {
         {
             element = self:addentity(IconButton, {
                 icon = assets.IconName.Times,
-                callback = function(btn)
-                    local settings = ScreenManager.first().settingsButton
-                    if tostring(self) == "OptionState" and settings then
-                        self.timer:tween(Vars.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
-                    end
-                    self:slideOut()
-                end,
+                callback = function() self:slideOut() end,
                 x = iconX,
                 y = -Vars.titleSize,
                 color = Theme.transparent:clone()
             }),
             target  = {y = 0, color = Theme.font}
+        },
+        {
+            element = self:addentity(TextButton, {
+                icon = assets.IconName.Play,
+                callback = function() self:validate() end,
+                x = 0,
+                framed = true,
+                centered = true,
+                y = love.graphics.getHeight(),
+                color = Theme.transparent:clone(),
+                text = love.graphics.newText(assets.MarckScript(Vars.lineHeight), tr(options.validate or 'Validate'))
+            }),
+            target = {y = love.graphics.getHeight() - Vars.titleSize * 2, color = Theme.font}
         }
     }
-    if title then
-        local titleText = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr(title))
+    if options.title then
+        local titleText = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr(options.title))
         elements[#elements + 1] = {
                 element = self:addentity(Title, {
                 text = titleText,

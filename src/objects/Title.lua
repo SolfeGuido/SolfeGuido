@@ -7,6 +7,7 @@ local Title = Entity:extend()
 
 function Title:new(area, options)
     Entity.new(self, area, options)
+    if options.centered then self:center() end
 end
 
 function Title:dispose()

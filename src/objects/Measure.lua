@@ -20,6 +20,7 @@ function Measure:new(area, options)
     self.lowestNote = lume.find(assets.NoteName, self.keyData.lowestNote)
     font = assets.IconsFont(self.noteHeight * Vars.note.height)
     self.noteIcon =  love.graphics.newText(font, assets.IconName.QuarterNote)
+    self.noteChoice = 1
 end
 
 function Measure:indexOf(note)
@@ -72,11 +73,13 @@ end
 ---@return number y position
 function Measure:getNotePosition(measureIndex)
     local base = self.baseLine + self.noteHeight * 7
-    return math.floor(base - (measureIndex) * (self.noteHeight / 2))
+    return base - (measureIndex) * (self.noteHeight / 2)
 end
 
 function Measure:getRandomNote()
-    return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
+    self.noteChoice = (self.noteChoice % #self.keyData.difficulties[Config.difficulty]) + 1
+    --return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
+    return self.keyData.difficulties[Config.difficulty][self.noteChoice]
 
 end
 

@@ -33,7 +33,9 @@ function ScoreManager.update(key, difficulty, timing, score)
     if score > scores[key][difficulty][timing] then
         scores[key][difficulty][timing] = score
         ScoreManager.save()
+        return true
     end
+    return false
 end
 
 function ScoreManager.save()

@@ -107,7 +107,8 @@ function State:addTitle(config)
         x = config.main and half or -titleText:getWidth(),
         y = config.y,
         color = Theme.transparent:clone(),
-        text = titleText
+        text = titleText,
+        centered = config.centered
     })
 end
 

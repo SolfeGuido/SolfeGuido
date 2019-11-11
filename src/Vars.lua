@@ -16,7 +16,7 @@ return {
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'default', 'letters', 'buttons'},
         time = {'30s', '1mn', '2mn', '5mn'},
-        theme = {'dark', 'light'}
+        theme = {'light', 'dark'}
     },
     configSave = 'config.lua',
     lineSpace = 20,
@@ -79,8 +79,8 @@ return {
         }
     },
     note = {
-        height = 4,-- number of 'lines' of height
-        yOrigin = 3.475,
+        height = 4.1,-- number of 'lines' of height
+        yOrigin = 3.6,-- lower values = higher note position (and lower for reversed note)
         xOrigin = 0.5,
         image = 'note';
         padding = 0.5,

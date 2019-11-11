@@ -55,9 +55,6 @@ function SplashScreenState:createCoroutine()
     return coroutine.create(function()
         math.randomseed(os.time())
         _G['assets'] = require('lib.cargo').init('res', 97)
-        for name, table in pairs(assets.AudioEffects) do
-            love.audio.setEffect(name, table)
-        end
         Mobile.configure()
         coroutine.yield(1)
         ScoreManager.init()

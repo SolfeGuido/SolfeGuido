@@ -129,8 +129,8 @@ function PlayState:finish()
         self.notes:shift():fadeAway()
     end
     self.timer:after(Vars.note.fadeAway, function()
-        ScoreManager.update(Config.keySelect, Config.difficulty, Config.time, self.score.points)
-        ScreenManager.push('EndGameState', self.score.points)
+        local bestScore = ScoreManager.update(Config.keySelect, Config.difficulty, Config.time, self.score.points)
+        ScreenManager.push('EndGameState', self.score.points, bestScore)
     end)
 end
 

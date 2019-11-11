@@ -65,7 +65,7 @@ function RootState:init(...)
         end
     })
 
-    local text = love.graphics.newText(assets.MarckScript(Vars.titleSize),"Menu")
+    local text = love.graphics.newText(assets.MarckScript(Vars.titleSize), Vars.appName)
     self.title = self:addentity(Title, {
         text = text,
         framed = true,
@@ -77,7 +77,7 @@ function RootState:init(...)
     self:transition({
         {
             element = self.quitButton,
-            target = {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize}
+            target = {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize - 5}
         },
         {
             element = self.settingsButton,
@@ -140,7 +140,7 @@ function RootState:pop()
         self.selectedState:setConsumed(false)
     end
 
-    self:changeTitle(tr('Menu'))
+    self:changeTitle(Vars.appName)
     self:switchButtons(self.quitButton, self.backButton)
     self.selectedState = nil
 end
@@ -158,7 +158,7 @@ function RootState:switchButtons(enter, leaves)
     local time = Vars.transition.tween
     self.timer:tween(time, leaves, {y = love.graphics.getHeight(), color = Theme.transparent}, 'out-expo', function()
         leaves.consumed = false
-        self.timer:tween(time, enter, {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize}, 'out-expo')
+        self.timer:tween(time, enter, {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize - 5}, 'out-expo')
     end)
 end
 

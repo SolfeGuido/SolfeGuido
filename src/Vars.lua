@@ -4,6 +4,7 @@ local titleSize = 40
 
 
 return {
+    appName = 'SolfeGuido',
     titleSize = titleSize,
     selectorSize = 18,
     baseLine = titleSize + lineHeight,

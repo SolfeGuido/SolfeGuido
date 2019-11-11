@@ -42,7 +42,7 @@ function DialogState:slideOut()
 end
 
 function DialogState:init(options)
-    local iconX = love.graphics.getWidth() - self.margin - Vars.titleSize
+    local iconX = love.graphics.getWidth() - self.margin - Vars.titleSize - 5
     local elements = {
         {
             element = self:addentity(IconButton, {
@@ -52,11 +52,11 @@ function DialogState:init(options)
                 y = -Vars.titleSize,
                 color = Theme.transparent:clone()
             }),
-            target  = {y = 0, color = Theme.font}
+            target  = {y = 5, color = Theme.font}
         },
         {
             element = self:addentity(TextButton, {
-                icon = assets.IconName.Play,
+                icon = options.validateIcon or assets.IconName.Play,
                 callback = function() self:validate() end,
                 x = 0,
                 framed = true,

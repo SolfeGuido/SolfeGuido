@@ -15,6 +15,10 @@ function EndGameState:validate()
     ScreenManager.switch('PlayState')
 end
 
+function EndGameState:slideOut()
+    ScreenManager.switch('RootState')
+end
+
 function EndGameState:init(score)
     self:createUI({
         {{

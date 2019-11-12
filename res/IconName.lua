@@ -25,4 +25,10 @@ return {
     VolumeOn        =   'X',
     VolumeOff       =   'Y',
     Trophy          =   'Z',
+    FloppyDisk      =   '[',
+    List            =   '\\',
+    Flag            =   ']',
+    Keyboard        =   '^',
+    Mouse           =   '_',
+    Pointer         =   '`'
 }

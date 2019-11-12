@@ -78,7 +78,6 @@ end
 
 
 function PlayState:finish()
-    -- TODO fadeway buttons if necessary
     self.answerGiver:hide()
     self.finished = true
     while not self.notes:isEmpty() do

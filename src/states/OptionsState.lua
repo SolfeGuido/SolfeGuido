@@ -100,7 +100,7 @@ function OptionsState:init(...)
             }
         }
     }, self.margin)
-    DialogState.init(self, {title = "Options", validate = 'Save', validateIcon = assets.IconName.Check})
+    DialogState.init(self, {title = "Options", validate = 'Save', validateIcon = assets.IconName.FloppyDisk})
 end
 
 return OptionsState

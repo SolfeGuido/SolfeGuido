@@ -92,7 +92,7 @@ function GamePrepareState:createMeasures()
                 y = availableSpace / 2
             })
         }
-        sounds = lume.merge(self.measures[1]:getRequiredNotes(), self.measures[2]:getRequiredNotes())
+        sounds = lume.concat(self.measures[1]:getRequiredNotes(), self.measures[2]:getRequiredNotes())
     else
         error("unknow key")
     end

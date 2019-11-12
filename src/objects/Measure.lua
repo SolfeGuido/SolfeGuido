@@ -80,9 +80,9 @@ function Measure:getRequiredNotes()
 end
 
 function Measure:getRandomNote()
-    self.noteChoice = (self.noteChoice % #self.keyData.difficulties[Config.difficulty]) + 1
-    --return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
-    return self.keyData.difficulties[Config.difficulty][self.noteChoice]
+    --self.noteChoice = (self.noteChoice % #self.keyData.difficulties[Config.difficulty]) + 1
+    --return self.keyData.difficulties[Config.difficulty][self.noteChoice]
+    return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
 
 end
 

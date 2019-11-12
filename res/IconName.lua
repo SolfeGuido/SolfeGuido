@@ -30,5 +30,7 @@ return {
     Flag            =   ']',
     Keyboard        =   '^',
     Mouse           =   '_',
-    Pointer         =   '`'
+    Pointer         =   '`',
+    Headphones      =   'a',
+    Stopwatch       =   'b'
 }

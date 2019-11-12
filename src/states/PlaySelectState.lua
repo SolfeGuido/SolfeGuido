@@ -11,7 +11,7 @@ function PlaySelectState:new()
 end
 
 function PlaySelectState:validate()
-    ScreenManager.switch('PlayState', self.config)
+    ScreenManager.switch('GamePrepareState', self.config)
 end
 
 function PlaySelectState:init(config)

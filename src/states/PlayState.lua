@@ -32,68 +32,24 @@ function PlayState:new()
     self.progress = 0
     self.progressSpeed = Vars.maxProgressSpeed
     self.notes = Queue()
-    self:addMeasure()
     self.currentMeasure = 1
     self.nextMeasureGeneration = 1
-
-    local scoreText = love.graphics.newText(assets.MarckScript(Vars.score.fontSize),"0")
-    self.score = self:addentity(Score, {
-        x = -scoreText:getWidth(),
-        y = Vars.score.y,
-        points = 0,
-        text =  scoreText,
-        color = Theme.transparent:clone()
-    })
 end
 
-function PlayState:addMeasure()
-    local btnSize = Vars.mobileButton.fontSize + Vars.mobileButton.padding * 2 + 20
-    local availableSpace = love.graphics.getHeight() - (Config.answerType == 'buttons' and btnSize or 0)
-    if Config.keySelect == 'gKey' then
-        self.measures = {self:addentity(Measure, {
-            keyData = Vars.gKey,
-            height = availableSpace
-        })}
-    elseif Config.keySelect == 'fKey' then
-        self.measures = {self:addentity(Measure, {
-            keyData = Vars.fKey,
-            height = availableSpace
-        })}
-    elseif Config.keySelect == 'both' then
-        self.measures = {
-            self:addentity(Measure, {
-                keyData = Vars.gKey,
-                height = availableSpace / 2,
-                y = 0
-            }),
-            self:addentity(Measure, {
-                keyData = Vars.fKey,
-                height = availableSpace  / 2,
-                y = availableSpace / 2
-            })
-        }
-    else
-        error("unknow key")
-    end
-
-end
 
 function PlayState:init(config)
-    config = config or {timed = true}
+    self.score = self:insertEntity(config.score)
+    self.measures = config.measures
+
+    for _,v in ipairs(self.measures) do self:insertEntity(v) end
+
     local elements = {{element = self.score, target = {x = Vars.score.x, color = Theme.font}}}
 
-    if config.timed then
-        self.stopWatch = self:addentity(StopWatch, {
-            x = -Vars.stopWatch.size,
-            y = Vars.stopWatch.y,
-            size = Vars.stopWatch.size,
-            started = false,
-            finishCallback = function()
-                self:finish()
-            end})
-        elements[#elements + 1] = {element = self.stopWatch, target = {x = Vars.stopWatch.x, color = {}}}
+    if config.stopWatch then
+        self.stopWatch = self:insertEntity(config.stopWatch)
+        self.stopWatch.finishCallback = function() self:finish() end
+        elements[#elements + 1] = {element = self.stopWatch, target = {x = Vars.stopWatch.x}}
     end
-
 
     self.answerGiver = self:addentity(AnswerGiver, { callback = function(x) self:answerGiven(x) end })
 

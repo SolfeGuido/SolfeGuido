@@ -41,4 +41,11 @@ function Queue:push(item)
   return table.insert(self.data, item)
 end
 
+--- Copies the array into a new queue
+function Queue.fromArray(array)
+    local queue = Queue()
+    queue.data = {table.unpack(array)}
+    return queue
+end
+
 return Queue

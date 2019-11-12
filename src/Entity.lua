@@ -9,10 +9,10 @@ local Class = require('lib.class')
 ---@field public y number
 local Entity = Class:extend()
 
-function Entity:new(area, options)
+function Entity:new(state, options)
     Entity.super.new(self)
-    self.area = area
-    self.timer = self.area.timer
+    self.area = state
+    self.timer = state and state.timer or nil
     self.isDead = false
     for k,v in pairs(options) do
         self[k] = v

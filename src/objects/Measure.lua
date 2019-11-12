@@ -48,7 +48,6 @@ function Measure:draw()
     local localScale = self.noteHeight / Vars.lineHeight
     local imgHeigh = self.image:getHeight()
     local scale = (self.keyData.height / imgHeigh) * localScale
-    local xPos = self.x + self.image:getWidth() * scale
     love.graphics.draw(self.image, self.x + 5, self.y + self.keyData.yOrigin * self.noteHeight)
 end
 
@@ -74,6 +73,10 @@ end
 function Measure:getNotePosition(measureIndex)
     local base = self.baseLine + self.noteHeight * 7
     return base - (measureIndex) * (self.noteHeight / 2)
+end
+
+function Measure:getRequiredNotes()
+    return self.keyData.difficulties[Config.difficulty]
 end
 
 function Measure:getRandomNote()

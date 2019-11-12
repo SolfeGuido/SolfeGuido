@@ -126,6 +126,13 @@ function State:addentity(Type, options, ...)
     return ent
 end
 
+function State:insertEntity(entity)
+    self.entities[#self.entities+1] = entity
+    entity.area = self
+    entity.timer = self.timer
+    return entity
+end
+
 function State:draw()
     love.graphics.setBackgroundColor(Theme.background)
     for _,v in ipairs(self.entities) do

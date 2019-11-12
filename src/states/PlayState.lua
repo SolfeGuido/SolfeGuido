@@ -117,7 +117,6 @@ function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
     local measure = self:getMeasure()
     local currentNote = self.notes:peek()
-    print(currentNote.note, assets.sounds.notes[currentNote.note])
     TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)
     if measure:isCorrect(currentNote.note, idx) then
         self.notes:shift():correct()

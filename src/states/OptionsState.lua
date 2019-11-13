@@ -127,8 +127,8 @@ function OptionsState:init(...)
                 y = baseY * 5 + padding,
                 callback = function(btn)
                     btn.consumed = false
-                    if Config.vibrations == 'on' then btn:shake() end
                     Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
+                    if Config.vibrations == 'on' then btn:shake() end
                     btn:setIcon(Config.vibrations == 'on' and assets.IconName.MobileVibrate or assets.IconName.Mobile)
                 end
             }),

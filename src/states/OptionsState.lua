@@ -118,12 +118,14 @@ function OptionsState:init(...)
     if Mobile.isMobile then
         elements[#elements+1] = {
             element = self:addIconButton({
-                type = 'IconButton',
-                icon = 'Flag',
-                statePush = 'vibrations',
-                platform = 'mobile',
+                icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
                 x = hiddenX,
-                y = baseY * 5
+                y = baseY,
+                callback = function(btn)
+                    btn.consumed = false
+                    Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
+                    btn:setIcon(Config.vibrations == 'on' and assets.IconName.MobileVibrate or assets.IconName.Mobile)
+                end
             }),
             target = targets
         }

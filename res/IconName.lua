@@ -33,5 +33,9 @@ return {
     Pointer         =   '`',
     Headphones      =   'a',
     Stopwatch       =   'b',
-    Sphere          =   'c'
+    Sphere          =   'c',
+    Vibrations      =   'd',
+    Tag             =   'e',
+    Mobile          =   'f',
+    MobileVibrate   =   'g',
 }

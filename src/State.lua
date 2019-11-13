@@ -46,7 +46,7 @@ function State:addIconButton(config)
     return self:addentity(IconButton, {
         icon = assets.IconName[config.icon],
         size = size,
-        x = -size,
+        x = config.x or -size,
         y = config.y,
         height = Vars.titleSize,
         color = Theme.transparent:clone(),

@@ -46,24 +46,22 @@ function OptionsState:draw()
     local height = love.graphics.getHeight()
     local width = Vars.titleSize * 2
     love.graphics.setColor(Theme.background)
-    love.graphics.rectangle('fill',self.xPos, -5, width, height + 5)
+    love.graphics.rectangle('fill',self.xPos, -5, width, height + 10)
 
     love.graphics.setColor(Theme.font)
-    love.graphics.rectangle('line', self.xPos, -5, width, height + 5)
+    love.graphics.rectangle('line', self.xPos, -5, width, height + 10)
     State.draw(self)
 end
 
 function OptionsState:init(...)
-    self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() - Vars.titleSize - 10}, 'out-expo')
+    self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() - Vars.titleSize * 1.5}, 'out-expo')
 
     local optionIcons = 6
     local remainingSpace = (love.graphics.getHeight() - Vars.titleSize * optionIcons)
-    print(love.graphics.getHeight(), remainingSpace)
     local padding = remainingSpace / (optionIcons + 1)
-    print(padding)
 
     local hiddenX = love.graphics.getWidth()
-    local xPos = love.graphics.getWidth() - Vars.titleSize - 5
+    local xPos = love.graphics.getWidth() - Vars.titleSize * 1.25
     local baseY = Vars.titleSize  + padding
     local targets = {x = xPos, color = Theme.font}
     local elements = {
@@ -129,6 +127,7 @@ function OptionsState:init(...)
                 y = baseY * 5 + padding,
                 callback = function(btn)
                     btn.consumed = false
+                    if Config.vibrations == 'on' then btn:shake() end
                     Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
                     btn:setIcon(Config.vibrations == 'on' and assets.IconName.MobileVibrate or assets.IconName.Mobile)
                 end

@@ -20,7 +20,23 @@ function IconButton:new(area, config)
     self.rotation = 0
     self.xOrigin = self._width / 2
     self.yOrigin = self.height / 2
+    self.shaking = nil
 end
+
+function IconButton:shake()
+    if self.shaking then return end
+    local shakeTime = 0.1
+    local shakeDistance = 8
+    local originX = self.x
+    self.shaking = self.timer:tween(shakeTime, self, {x = originX - shakeDistance}, 'linear', function()
+        self.shaking = self.timer:tween(shakeTime, self, {x = originX + shakeDistance}, 'linear', function()
+            self.shaking = self.timer:tween(shakeTime, self, {x = originX}, 'linear', function()
+                self.shaking = nil
+            end)
+        end)
+    end)
+end
+
 
 function IconButton:setIcon(icon)
     self.image:set(icon)

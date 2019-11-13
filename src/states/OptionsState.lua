@@ -6,11 +6,14 @@ local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 local Mobile = require('src.utils.Mobile')
 
---- Entities
-local IconButton = require('src.objects.IconButton')
-
 ---@class OptionsState : State
 local OptionsState = State:extend()
+
+local inputIcons = {
+    default = 'Keyboard',
+    letters = 'Piano',
+    Pointer = 'Finger'
+}
 
 function OptionsState:new()
     State.new(self)
@@ -64,23 +67,24 @@ function OptionsState:init(...)
     local xPos = love.graphics.getWidth() - Vars.titleSize * 1.25
     local baseY = Vars.titleSize  + padding
     local targets = {x = xPos, color = Theme.font}
-    local elements = {
+    self:transition({
         {
             element = self:addIconButton({
                 icon = 'Times',
                 x = hiddenX,
-                y = padding,
+                y = 5,
+                size = Vars.titleSize / 1.5,
                 callback = function()
                     self:slideOut()
                 end
             }),
-            target = targets
+            target = {x = xPos - Vars.titleSize, color = Theme.font}
         },
         {
             element = self:addIconButton({
                 icon = Config.sound == 'on' and 'VolumeOn' or 'VolumeOff',
                 x = hiddenX,
-                y = baseY + padding,
+                y = padding,
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('sound', Config.sound == 'on' and 'off' or 'on')
@@ -92,7 +96,14 @@ function OptionsState:init(...)
         {
             element = self:addIconButton({
                 icon = 'Tag',
-                statePush = 'NoteStyleState',
+                x = hiddenX,
+                y = baseY + padding
+            }),
+            target = targets
+        },
+        {
+            element = self:addIconButton({
+                icon = 'Sphere',
                 x = hiddenX,
                 y = baseY * 2 + padding
             }),
@@ -100,8 +111,8 @@ function OptionsState:init(...)
         },
         {
             element = self:addIconButton({
-                icon = 'Sphere',
-                statePush = 'LanguageState',
+                type = 'IconButton',
+                icon = 'Droplet',
                 x = hiddenX,
                 y = baseY * 3 + padding
             }),
@@ -109,22 +120,9 @@ function OptionsState:init(...)
         },
         {
             element = self:addIconButton({
-                type = 'IconButton',
-                icon = 'Droplet',
-                statePush = 'ThemeState',
-                x = hiddenX,
-                y = baseY * 4 + padding
-            }),
-            target = targets
-        }
-    }
-
-    if Mobile.isMobile then
-        elements[#elements+1] = {
-            element = self:addIconButton({
                 icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
                 x = hiddenX,
-                y = baseY * 5 + padding,
+                y = baseY * 4 + padding,
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
@@ -133,19 +131,16 @@ function OptionsState:init(...)
                 end
             }),
             target = targets
-        }
-    else
-        elements[#elements+1] = {
+        },
+        {
             element = self:addIconButton({
                 icon = 'Mouse',
-                statePush = 'AnswerTypeState',
                 x = hiddenX,
                 y = baseY * 5 + padding
             }),
             target = targets
         }
-    end
-    self:transition(elements)
+    })
     --DialogState.init(self, {title = "Options", validate = 'Save', validateIcon = assets.IconName.FloppyDisk})
 end
 

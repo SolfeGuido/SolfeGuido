@@ -23,7 +23,7 @@ function DialogState:validate() end
 
 function DialogState:getMargin()
     -- Change for mobile, create ratio or something
-    return Mobile.isMobile and love.graphics.limitLine / 4 or Vars.limitLine
+    return Mobile.isMobile and love.graphics.getWidth() / 6 or Vars.limitLine
 end
 
 function DialogState:keypressed(key)

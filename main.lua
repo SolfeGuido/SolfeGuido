@@ -28,9 +28,10 @@ end
 function love.draw()
     ScreenManager.draw()
 --- BEGIN DEBUG
-    love.graphics.setColor(Theme.font)
-    fpsGraph:draw()
-    memoryGraph:draw()
+    --love.graphics.setColor(Theme.font)
+    --love.graphics.setLineWidth(1)
+    --fpsGraph:draw()
+    --memoryGraph:draw()
 --- END DEBUG
 end
 

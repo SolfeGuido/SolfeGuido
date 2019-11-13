@@ -32,5 +32,6 @@ return {
     Mouse           =   '_',
     Pointer         =   '`',
     Headphones      =   'a',
-    Stopwatch       =   'b'
+    Stopwatch       =   'b',
+    Sphere          =   'c'
 }

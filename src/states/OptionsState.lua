@@ -14,8 +14,7 @@ local OptionsState = State:extend()
 
 function OptionsState:new()
     State.new(self)
-    self.xPos = love.graphics.getWidth()
-    self.yMax = (Vars.titleSize  + 5) * 6
+    self.xPos = love.graphics.getWidth() - 5
 end
 
 function OptionsState:slideOut()
@@ -30,7 +29,7 @@ function OptionsState:slideOut()
         ScreenManager.pop()
         ScreenManager.first().settingsButton.consumed = false
     end, 0)
-    self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth()}, 'out-expo')
+    self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() + 5}, 'out-expo')
     local settings = ScreenManager.first().settingsButton
     if settings then
         self.timer:tween(Vars.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
@@ -44,28 +43,35 @@ function OptionsState:keypressed(key)
 end
 
 function OptionsState:draw()
+    local height = love.graphics.getHeight()
+    local width = Vars.titleSize * 2
     love.graphics.setColor(Theme.background)
-    love.graphics.rectangle('fill',self.xPos, 0,Vars.titleSize * 2, self.yMax)
+    love.graphics.rectangle('fill',self.xPos, -5, width, height + 5)
 
     love.graphics.setColor(Theme.font)
-    love.graphics.rectangle('line', self.xPos, 0, Vars.titleSize * 2, self.yMax)
+    love.graphics.rectangle('line', self.xPos, -5, width, height + 5)
     State.draw(self)
 end
 
 function OptionsState:init(...)
     self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() - Vars.titleSize - 10}, 'out-expo')
 
+    local optionIcons = 6
+    local remainingSpace = (love.graphics.getHeight() - Vars.titleSize * optionIcons)
+    print(love.graphics.getHeight(), remainingSpace)
+    local padding = remainingSpace / (optionIcons + 1)
+    print(padding)
 
     local hiddenX = love.graphics.getWidth()
     local xPos = love.graphics.getWidth() - Vars.titleSize - 5
-    local baseY = Vars.titleSize  + 5
+    local baseY = Vars.titleSize  + padding
     local targets = {x = xPos, color = Theme.font}
     local elements = {
         {
             element = self:addIconButton({
                 icon = 'Times',
                 x = hiddenX,
-                y = 0,
+                y = padding,
                 callback = function()
                     self:slideOut()
                 end
@@ -76,7 +82,7 @@ function OptionsState:init(...)
             element = self:addIconButton({
                 icon = Config.sound == 'on' and 'VolumeOn' or 'VolumeOff',
                 x = hiddenX,
-                y = baseY,
+                y = baseY + padding,
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('sound', Config.sound == 'on' and 'off' or 'on')
@@ -87,10 +93,10 @@ function OptionsState:init(...)
         },
         {
             element = self:addIconButton({
-                icon = 'Music',
+                icon = 'Tag',
                 statePush = 'NoteStyleState',
                 x = hiddenX,
-                y = baseY * 2
+                y = baseY * 2 + padding
             }),
             target = targets
         },
@@ -99,7 +105,7 @@ function OptionsState:init(...)
                 icon = 'Sphere',
                 statePush = 'LanguageState',
                 x = hiddenX,
-                y = baseY * 3
+                y = baseY * 3 + padding
             }),
             target = targets
         },
@@ -109,7 +115,7 @@ function OptionsState:init(...)
                 icon = 'Droplet',
                 statePush = 'ThemeState',
                 x = hiddenX,
-                y = baseY * 4
+                y = baseY * 4 + padding
             }),
             target = targets
         }
@@ -120,7 +126,7 @@ function OptionsState:init(...)
             element = self:addIconButton({
                 icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
                 x = hiddenX,
-                y = baseY,
+                y = baseY * 5 + padding,
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
@@ -135,7 +141,7 @@ function OptionsState:init(...)
                 icon = 'Mouse',
                 statePush = 'AnswerTypeState',
                 x = hiddenX,
-                y = baseY * 5
+                y = baseY * 5 + padding
             }),
             target = targets
         }

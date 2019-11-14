@@ -80,6 +80,9 @@ end
 function IconButton:draw()
     love.graphics.setColor(self.color)
     love.graphics.draw(self.image, self.x + self.xOrigin, self.y + self.yOrigin, self.rotation, nil, nil, self.xOrigin, self.yOrigin)
+    if self.circled then
+        love.graphics.circle('line', self.x + self.xOrigin, self.y + self.yOrigin, self._width * 0.8, 100)
+    end
 end
 
 return IconButton

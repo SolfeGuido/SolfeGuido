@@ -50,7 +50,8 @@ function State:addIconButton(config)
         y = config.y,
         height = Vars.titleSize,
         color = Theme.transparent:clone(),
-        callback = config.callback
+        callback = config.callback,
+        circled = config.circled or false
     })
 end
 

@@ -26,7 +26,7 @@ function OptionsState:slideOut()
     for _,v in ipairs(self.entities) do
         elements[#elements+1] = {
             element = v,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
+            target = {color = Theme.transparent, x = love.graphics.getWidth() + 10}
         }
     end
     self:transition(elements, function()
@@ -73,13 +73,14 @@ function OptionsState:init(...)
             element = self:addIconButton({
                 icon = 'Times',
                 x = hiddenX,
-                y = 5,
+                y = 10,
+                circled = true,
                 size = Vars.titleSize / 1.5,
                 callback = function()
                     self:slideOut()
                 end
             }),
-            target = {x = xPos - Vars.titleSize, color = Theme.font}
+            target = {x = xPos - Vars.titleSize * 1.25, color = Theme.font}
         },
         {
             element = self:addIconButton({
@@ -96,9 +97,23 @@ function OptionsState:init(...)
         },
         {
             element = self:addIconButton({
+                icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
+                x = hiddenX,
+                y = baseY + padding,
+                callback = function(btn)
+                    btn.consumed = false
+                    Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
+                    if Config.vibrations == 'on' then btn:shake() end
+                    btn:setIcon(Config.vibrations == 'on' and assets.IconName.MobileVibrate or assets.IconName.Mobile)
+                end
+            }),
+            target = targets
+        },
+        {
+            element = self:addIconButton({
                 icon = 'Tag',
                 x = hiddenX,
-                y = baseY + padding
+                y = baseY  * 2 + padding
             }),
             target = targets
         },
@@ -106,7 +121,7 @@ function OptionsState:init(...)
             element = self:addIconButton({
                 icon = 'Sphere',
                 x = hiddenX,
-                y = baseY * 2 + padding
+                y = baseY * 3 + padding
             }),
             target = targets
         },
@@ -115,21 +130,7 @@ function OptionsState:init(...)
                 type = 'IconButton',
                 icon = 'Droplet',
                 x = hiddenX,
-                y = baseY * 3 + padding
-            }),
-            target = targets
-        },
-        {
-            element = self:addIconButton({
-                icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
-                x = hiddenX,
-                y = baseY * 4 + padding,
-                callback = function(btn)
-                    btn.consumed = false
-                    Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
-                    if Config.vibrations == 'on' then btn:shake() end
-                    btn:setIcon(Config.vibrations == 'on' and assets.IconName.MobileVibrate or assets.IconName.Mobile)
-                end
+                y = baseY * 4 + padding
             }),
             target = targets
         },

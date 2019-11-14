@@ -38,4 +38,6 @@ return {
     Tag             =   'e',
     Mobile          =   'f',
     MobileVibrate   =   'g',
+    Waves           =   'h',
+    PianoKeys       =   'j'
 }

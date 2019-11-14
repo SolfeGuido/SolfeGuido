@@ -11,8 +11,9 @@ local OptionsState = State:extend()
 
 local inputIcons = {
     default = 'Keyboard',
-    letters = 'Piano',
-    Pointer = 'Finger'
+    letters = 'PianoKeys',
+    buttons = 'Pointer',
+    piano   = 'PianoKeys'
 }
 
 function OptionsState:new()
@@ -134,7 +135,7 @@ function OptionsState:init(...)
         },
         {
             element = self:addIconButton({
-                icon = 'Mouse',
+                icon = inputIcons[Config.answerType],
                 x = hiddenX,
                 y = baseY * 5 + padding
             }),

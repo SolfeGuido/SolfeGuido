@@ -4,7 +4,7 @@ local State = require('src.State')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
-local Mobile = require('src.utils.Mobile')
+local UIFactory = require('src.utils.UIFactroy')
 
 ---@class OptionsState : State
 local OptionsState = State:extend()
@@ -70,7 +70,7 @@ function OptionsState:init(...)
     local targets = {x = xPos, color = Theme.font}
     self:transition({
         {
-            element = self:addIconButton({
+            element = UIFactory.createIconButton(self, {
                 icon = 'Times',
                 x = hiddenX,
                 y = 10,
@@ -83,7 +83,7 @@ function OptionsState:init(...)
             target = {x = xPos - Vars.titleSize * 1.25, color = Theme.font}
         },
         {
-            element = self:addIconButton({
+            element = UIFactory.createIconButton(self, {
                 icon = Config.sound == 'on' and 'VolumeOn' or 'VolumeOff',
                 x = hiddenX,
                 y = padding,
@@ -96,7 +96,7 @@ function OptionsState:init(...)
             target = targets
         },
         {
-            element = self:addIconButton({
+            element = UIFactory.createIconButton(self, {
                 icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
                 x = hiddenX,
                 y = baseY + padding,
@@ -110,7 +110,7 @@ function OptionsState:init(...)
             target = targets
         },
         {
-            element = self:addIconButton({
+            element = UIFactory.createIconButton(self, {
                 icon = 'Tag',
                 x = hiddenX,
                 y = baseY  * 2 + padding
@@ -118,7 +118,7 @@ function OptionsState:init(...)
             target = targets
         },
         {
-            element = self:addIconButton({
+            element = UIFactory.createIconButton(self, {
                 icon = inputIcons[Config.answerType],
                 x = hiddenX,
                 y = baseY * 3 + padding
@@ -126,7 +126,7 @@ function OptionsState:init(...)
             target = targets
         },
         {
-            element = self:addIconButton({
+            element = UIFactory.createIconButton(self, {
                 icon = 'Sphere',
                 x = hiddenX,
                 y = baseY * 4 + padding
@@ -134,7 +134,7 @@ function OptionsState:init(...)
             target = targets
         },
         {
-            element = self:addIconButton({
+            element = UIFactory.createIconButton(self, {
                 type = 'IconButton',
                 icon = 'Droplet',
                 x = hiddenX,

@@ -3,16 +3,10 @@
 local Class = require('lib.class')
 local Timer = require('lib.timer')
 local ScreenManager = require('lib.ScreenManager')
-local Config = require('src.utils.Config')
 local lume = require('lib.lume')
 local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
-
--- ENTITES
-local TextButton = require('src.objects.TextButton')
-local IconButton = require('src.objects.IconButton')
-local Title = require('src.objects.Title')
-local MultiSelector = require('src.objects.MultiSelector')
+local UIFactory = require('src.utils.UIFactroy')
 
 ---@class State
 ---@field public entities table
@@ -33,87 +27,6 @@ end
 
 function State:init(...)
 
-end
-
-function State:addIconButton(config)
-    if config.state and not config.callback then
-        config.callback = function() self:switchState(config.state) end
-    elseif config.statePush and not config.callback then
-        config.callback = function(btn)
-            btn.consumed = false
-            ScreenManager.push(config.statePush, config.statePushArgs)
-        end
-    end
-
-    local size = config.size or Vars.titleSize
-    return self:addentity(IconButton, {
-        icon = assets.IconName[config.icon],
-        size = size,
-        x = config.x or -size,
-        y = config.y,
-        height = Vars.titleSize,
-        color = Theme.transparent:clone(),
-        callback = config.callback,
-        circled = config.circled or false
-    })
-end
-
-function State:addTextButton(config)
-    local btnText = love.graphics.newText(config.font, tr(config.text) )
-
-    if config.state and not config.callback then
-        config.callback = function() self:switchState(config.state) end
-    elseif config.statePush and not config.callback then
-        config.callback = function(btn)
-            btn:setConsumed(false)
-            ScreenManager.push(config.statePush, config.statePushArgs)
-        end
-    end
-
-    return self:addentity(TextButton, {
-        text = btnText,
-        x = -btnText:getWidth(),
-        y = config.y,
-        color = Theme.transparent:clone(),
-        callback = config.callback,
-        framed = config.framed or false,
-        icon = config.icon or nil,
-        centered = config.centered or false
-    })
-end
-
-function State:addMultiSelector(config)
-    local msText = love.graphics.newText(config.font, tr(config.text) )
-    assert(config.config, "Can't create multiselect from something else than configuration")
-    local confName = config.config
-    return self:addentity(MultiSelector, {
-        text = msText,
-        x = -msText:getWidth() * 3,
-        y = config.y,
-        selected = Config[confName] or Vars.userPreferences[confName][1],
-        choices = Vars.userPreferences[confName],
-        color = Theme.transparent:clone(),
-        callback = function(value)
-            if self.options then
-                self.options[confName] = value
-            else
-                Config.update(confName, value)
-            end
-        end,
-        centered = config.centered or false
-    })
-end
-
-function State:addTitle(config)
-    local titleText = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
-    local half = love.graphics.getWidth() / 2 - titleText:getWidth() / 2
-    return self:addentity(Title, {
-        x = config.main and half or -titleText:getWidth(),
-        y = config.y,
-        color = Theme.transparent:clone(),
-        text = titleText,
-        centered = config.centered
-    })
 end
 
 function State:isActive()
@@ -177,7 +90,7 @@ function State:createUI(uiConfig)
                 local target = {color = Theme.font}
                 if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
                 elements[#elements+1] = {
-                    element = self['add' .. elemConfig.type](self, elemConfig),
+                    element = UIFactory['create' .. elemConfig.type](self, elemConfig),
                     target = target
                 }
             end

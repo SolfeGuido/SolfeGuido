@@ -41,5 +41,7 @@ return {
     Waves           =   'h',
     PianoKeys       =   'i',
     PianoWithNotes  =   'j',
-    Inifinity       =   'k'
+    Inifinity       =   'k',
+    Sun             =   'l',
+    Moon            =   'm'
 }

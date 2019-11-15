@@ -6,7 +6,7 @@ local ScreenManager = require('lib.ScreenManager')
 local lume = require('lib.lume')
 local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
-local UIFactory = require('src.utils.UIFactroy')
+local UIFactory = require('src.utils.UIFactory')
 
 ---@class State
 ---@field public entities table

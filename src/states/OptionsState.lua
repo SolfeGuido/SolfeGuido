@@ -4,7 +4,8 @@ local State = require('src.State')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
-local UIFactory = require('src.utils.UIFactroy')
+local UIFactory = require('src.utils.UIFactory')
+local Drawer = require('src.objects.Drawer')
 
 ---@class OptionsState : State
 local OptionsState = State:extend()
@@ -55,6 +56,40 @@ function OptionsState:draw()
     love.graphics.setColor(Theme.font)
     love.graphics.rectangle('line', self.xPos, -5, width, height + 10)
     State.draw(self)
+end
+
+function OptionsState:createDrawers(config)
+    for _, v in ipairs(config) do
+        local choices = {}
+        for k, icon in pairs(v.icons) do
+            choices[#choices+1] = {
+                icon = icon,
+                configValues = k
+            }
+        end
+
+        local callback = nil
+        if v.config == "lang" or v.config == "theme" then
+            callback = function(drawer)
+                if Config.update(v.config, drawer.selected) then
+                    ScreenManager.switch('RootState')
+                end
+            end
+        else
+            callback = function(drawer)
+                Config.update(v.config, drawer.selected)
+                drawer:hide()
+            end
+        end
+
+        self[v.config .. 'Drawer'] = self:addentity(Drawer, {
+            x = love.graphics.getWidth(),
+            y = v.y,
+            selected = Config[v.config],
+            choices = choices,
+            callback = callback
+        })
+    end
 end
 
 function OptionsState:init(...)
@@ -113,7 +148,10 @@ function OptionsState:init(...)
             element = UIFactory.createIconButton(self, {
                 icon = 'Tag',
                 x = hiddenX,
-                y = baseY  * 2 + padding
+                y = baseY  * 2 + padding,
+                callback = function(btn)
+                    btn.consumed = false
+                end
             }),
             target = targets
         },
@@ -121,7 +159,11 @@ function OptionsState:init(...)
             element = UIFactory.createIconButton(self, {
                 icon = inputIcons[Config.answerType],
                 x = hiddenX,
-                y = baseY * 3 + padding
+                y = baseY * 3 + padding,
+                callback = function(btn)
+                    btn.consumed = false
+                    self.answerTypeDrawer:show()
+                end
             }),
             target = targets
         },
@@ -139,9 +181,38 @@ function OptionsState:init(...)
                 icon = 'Droplet',
                 x = hiddenX,
                 y = baseY * 5 + padding,
-                statePush = 'ThemeSelectState'
             }),
             target = targets
+        }
+    })
+    self:createDrawers({
+        {
+            icons = {
+                -- ?? 'Do ré' | 'Do re' | 'c d'
+            },
+            config = 'noteStyle',
+            y = baseY * 2 + padding
+        },
+        {
+            icons = inputIcons,
+            config = 'answerType',
+            y = baseY * 3 + padding
+        },
+        {
+            icons = {
+                fr = 'Sun',
+                en = 'Moon'
+            },
+            config = 'lang',
+            y = baseY * 4 + padding
+        },
+        {
+            icons = {
+                light = 'Sun',
+                dark = 'Moon'
+            },
+            config = 'theme',
+            y = baseY * 5 + padding
         }
     })
 end

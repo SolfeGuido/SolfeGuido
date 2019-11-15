@@ -10,6 +10,7 @@ local IconButton    = require('src.objects.IconButton')
 local TextButton    = require('src.objects.TextButton')
 local MultiSelector = require('src.objects.MultiSelector')
 local Title         = require('src.objects.Title')
+local RadioButton   = require('src.objects.RadioButton')
 
 local UIFactory = {}
 
@@ -22,10 +23,6 @@ local function createCallback(area, config)
             ScreenManager.push(config.statePush, config.statePushArgs)
         end
     end
-end
-
-function UIFactory.createRadioButton(area, config)
-
 end
 
 function UIFactory.createIconButton(area, config)
@@ -91,6 +88,22 @@ function UIFactory.createMultiSelector(area, config)
             end
         end,
         centered = config.centered or false
+    })
+end
+
+function UIFactory.createRadioButton(area, config)
+    if config.icon and not config.image then
+        config.image = love.graphics.newText(assets.IconsFont(config.size or Vars.titleSize), assets.IconName[config.icon])
+    end
+
+    return area:addentity(RadioButton, {
+        x = config.x,
+        y = config.y,
+        isChecked = config.isChecked or false,
+        color = Theme.transparent:clone(),
+        callback = config.callback,
+        image = config.image,
+        framed = config.framed or false
     })
 end
 

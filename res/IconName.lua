@@ -39,6 +39,7 @@ return {
     Mobile          =   'f',
     MobileVibrate   =   'g',
     Waves           =   'h',
-    PianoKeys       =   'j',
-    PianoWithNotes  =   'k',
+    PianoKeys       =   'i',
+    PianoWithNotes  =   'j',
+    Inifinity       =   'k'
 }

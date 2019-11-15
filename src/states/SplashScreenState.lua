@@ -22,7 +22,8 @@ local allStates = {
     EndGameState = require('src.states.EndGameState'),
     RootState = require('src.states.RootState'),
     PlaySelectState = require('src.states.PlaySelectState'),
-    GamePrepareState = require('src.states.GamePrepareState')
+    GamePrepareState = require('src.states.GamePrepareState'),
+    ThemeSelectState = require('src.states.ThemeSelectState')
 }
 
 function SplashScreenState:new()

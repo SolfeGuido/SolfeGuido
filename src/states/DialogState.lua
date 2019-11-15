@@ -52,7 +52,7 @@ function DialogState:init(options)
                 y = -Vars.titleSize,
                 color = Theme.transparent:clone()
             }),
-            target  = {y = 5, color = Theme.font}
+            target  = {y = 20, color = Theme.font}
         },
         {
             element = self:addentity(TextButton, {
@@ -74,16 +74,16 @@ function DialogState:init(options)
                 element = self:addentity(Title, {
                 text = titleText,
                 x = love.graphics.getWidth() /2 - titleText:getWidth() / 2,
-                y = - titleText:getHeight(),
+                y = -titleText:getHeight() ,
                 framed = true,
                 color = Theme.transparent:clone()
             }),
-            target = {y = 0, color = Theme.font}
+            target = {y = 20, color = Theme.font}
         }
     end
 
     self:transition(elements)
-    self.timer:tween(Vars.transition.tween, self, {yBottom = love.graphics.getHeight()}, 'out-expo')
+    self.timer:tween(Vars.transition.tween, self, {yBottom = love.graphics.getHeight() - 10}, 'out-expo')
 end
 
 function DialogState:draw()
@@ -94,9 +94,9 @@ function DialogState:draw()
     love.graphics.translate(0,self.yBottom - love.graphics.getHeight())
 
     love.graphics.setColor(Theme.background)
-    love.graphics.rectangle('fill', self.margin - 1, 0, width, love.graphics.getHeight() + 2)
+    love.graphics.rectangle('fill', self.margin - 1, 20, width, love.graphics.getHeight() - 20)
     love.graphics.setColor(Theme.font)
-    love.graphics.rectangle('line', self.margin - 1, 0, width, love.graphics.getHeight() + 2)
+    love.graphics.rectangle('line', self.margin - 1, 20, width, love.graphics.getHeight() - 20)
     State.draw(self)
 
     love.graphics.pop()

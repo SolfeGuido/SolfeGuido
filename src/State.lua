@@ -39,7 +39,10 @@ function State:addIconButton(config)
     if config.state and not config.callback then
         config.callback = function() self:switchState(config.state) end
     elseif config.statePush and not config.callback then
-        config.callback = function() ScreenManager.push(config.statePush, config.statePushArgs) end
+        config.callback = function(btn)
+            btn.consumed = false
+            ScreenManager.push(config.statePush, config.statePushArgs)
+        end
     end
 
     local size = config.size or Vars.titleSize

@@ -119,9 +119,17 @@ function OptionsState:init(...)
         },
         {
             element = self:addIconButton({
-                icon = 'Sphere',
+                icon = inputIcons[Config.answerType],
                 x = hiddenX,
                 y = baseY * 3 + padding
+            }),
+            target = targets
+        },
+        {
+            element = self:addIconButton({
+                icon = 'Sphere',
+                x = hiddenX,
+                y = baseY * 4 + padding
             }),
             target = targets
         },
@@ -130,20 +138,12 @@ function OptionsState:init(...)
                 type = 'IconButton',
                 icon = 'Droplet',
                 x = hiddenX,
-                y = baseY * 4 + padding
-            }),
-            target = targets
-        },
-        {
-            element = self:addIconButton({
-                icon = inputIcons[Config.answerType],
-                x = hiddenX,
-                y = baseY * 5 + padding
+                y = baseY * 5 + padding,
+                statePush = 'ThemeSelectState'
             }),
             target = targets
         }
     })
-    --DialogState.init(self, {title = "Options", validate = 'Save', validateIcon = assets.IconName.FloppyDisk})
 end
 
 return OptionsState

@@ -34,7 +34,7 @@ function UIFactory.createIconButton(area, config)
         x = config.x or -size,
         y = config.y,
         height = Vars.titleSize,
-        color = Theme.transparent:clone(),
+        color = config.color or Theme.transparent:clone(),
         callback = config.callback,
         circled = config.circled or false
     })
@@ -95,15 +95,16 @@ function UIFactory.createRadioButton(area, config)
     if config.icon and not config.image then
         config.image = love.graphics.newText(assets.IconsFont(config.size or Vars.titleSize), assets.IconName[config.icon])
     end
-
     return area:addentity(RadioButton, {
         x = config.x,
         y = config.y,
+        value = config.value,
         isChecked = config.isChecked or false,
-        color = Theme.transparent:clone(),
+        color = config.color or Theme.transparent:clone(),
         callback = config.callback,
         image = config.image,
-        framed = config.framed or false
+        framed = config.framed or false,
+        padding = config.padding or 0
     })
 end
 

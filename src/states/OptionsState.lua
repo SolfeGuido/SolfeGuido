@@ -12,7 +12,7 @@ local OptionsState = State:extend()
 
 local inputIcons = {
     default = 'Keyboard',
-    letters = 'PianoKeys',
+    letters = 'PianoWithNotes',
     buttons = 'Pointer',
     piano   = 'PianoKeys'
 }
@@ -58,13 +58,13 @@ function OptionsState:draw()
     State.draw(self)
 end
 
-function OptionsState:createDrawers(config)
+function OptionsState:createDrawers(config, height)
     for _, v in ipairs(config) do
         local choices = {}
         for k, icon in pairs(v.icons) do
             choices[#choices+1] = {
                 icon = icon,
-                configValues = k
+                configValue = k
             }
         end
 
@@ -81,14 +81,18 @@ function OptionsState:createDrawers(config)
                 drawer:hide()
             end
         end
-
-        self[v.config .. 'Drawer'] = self:addentity(Drawer, {
-            x = love.graphics.getWidth(),
+        local drawer = self:addentity(Drawer, {
+            x = love.graphics.getWidth() + 5,
             y = v.y,
+            height = height
+        })
+        self[v.config .. 'Drawer']  = drawer
+        drawer:init({
             selected = Config[v.config],
             choices = choices,
-            callback = callback
+            callback = callback,
         })
+
     end
 end
 
@@ -181,6 +185,10 @@ function OptionsState:init(...)
                 icon = 'Droplet',
                 x = hiddenX,
                 y = baseY * 5 + padding,
+                callback = function(btn)
+                    btn.consumed = false
+                    self.themeDrawer:show()
+                end
             }),
             target = targets
         }
@@ -196,7 +204,7 @@ function OptionsState:init(...)
         {
             icons = inputIcons,
             config = 'answerType',
-            y = baseY * 3 + padding
+            y = baseY * 3 + padding / 2
         },
         {
             icons = {
@@ -214,7 +222,7 @@ function OptionsState:init(...)
             config = 'theme',
             y = baseY * 5 + padding
         }
-    })
+    }, padding + Vars.titleSize)
 end
 
 return OptionsState

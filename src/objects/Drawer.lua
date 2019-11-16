@@ -2,6 +2,7 @@
 local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
+local lume = require('lib.lume')
 
 ---@class Drawer : Entity
 local Drawer = Entity:extend()
@@ -37,6 +38,7 @@ function Drawer:init(options)
             isChecked = options.selected == v.configValue,
             value = v.configValue,
             icon = v.icon,
+            image = v.image,
             padding = math.floor(self.padding),
             callback = function(btn)
                 btn.consumed = false
@@ -74,7 +76,9 @@ function Drawer:init(options)
             end
         })
     
-    self.width = #self.childs * (Vars.titleSize + self.padding * 2)
+    self.width = #self.childs * self.padding * 2 + lume.reduce(self.childs, function(acc, b)
+            return acc + b:width()
+    end, 0)
 end
 
 function Drawer:show()
@@ -94,8 +98,10 @@ function Drawer:draw()
 end
 
 function Drawer:update(dt)
+    local x = self.x + self.padding
     for i, v in ipairs(self.childs) do
-        v.x = self.x + (i-1) * Vars.titleSize + self.padding * (2*i-1)
+        v.x = x
+        x = x + self.padding * 2 + v:width()
     end
 end
 

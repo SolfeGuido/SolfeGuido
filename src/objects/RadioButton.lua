@@ -9,12 +9,19 @@ local RadioButton = AbstractButton:extend()
 function RadioButton:new(area, options)
     AbstractButton.new(self, area, options)
     self.isChecked = options.isChecked or false
-    self.width = self.image:getWidth()
-    self.height = self.image:getHeight()
     self.value = options.value
     self.padding = options.padding or 0
     self.backgroundColor = self.isChecked and Theme.secondary:clone() or Theme.background:clone()
     self.tween = nil
+    if self.image:type() == "Image" then
+        self.scale = Vars.titleSize / self.image:getHeight()
+    end
+    self._width = self.image:getWidth() * (self.scale or 1)
+    self.height = self.image:getHeight() * (self.scale or 1)
+end
+
+function RadioButton:width()
+    return self._width
 end
 
 function RadioButton:uncheck()
@@ -34,7 +41,7 @@ function RadioButton:toggle()
 end
 
 function RadioButton:boundingBox()
-    return Rectangle(self.x - self.padding, self.y - self.padding, self.width + self.padding * 2, self.height + self.padding * 2)
+    return Rectangle(self.x - self.padding, self.y - self.padding, self._width + self.padding * 2, self.height + self.padding * 2)
 end
 
 function RadioButton:onclick()
@@ -44,14 +51,15 @@ end
 
 function RadioButton:draw()
     love.graphics.setColor(self.backgroundColor)
-    love.graphics.rectangle('fill', self.x - self.padding, self.y - self.padding, self.width + self.padding * 2, self.height + self.padding * 2)
+    love.graphics.rectangle('fill', self.x - self.padding, self.y - self.padding, self._width + self.padding * 2, self.height + self.padding * 2)
     if self.framed then
         love.graphics.setColor(Theme.font)
-        love.graphics.rectangle('line', self.x - self.padding, self.y - self.padding, self.width + self.padding * 2, self.height + self.padding * 2)
+        love.graphics.rectangle('line', self.x - self.padding, self.y - self.padding, self._width + self.padding * 2, self.height + self.padding * 2)
     end
-
-    love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x, self.y)
+    if self.image:type() ~= "Image" then
+        love.graphics.setColor(self.color)
+    end
+    love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
 end
 
 

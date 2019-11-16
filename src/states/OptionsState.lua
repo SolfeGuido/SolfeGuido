@@ -65,8 +65,9 @@ function OptionsState:createDrawers(config, height)
     for _, v in ipairs(config) do
         local choices = {}
         for k, icon in pairs(v.icons) do
+            local key = type(icon) == 'string' and 'icon' or 'image'
             choices[#choices+1] = {
-                icon = icon,
+                [key] = icon,
                 configValue = k
             }
         end
@@ -179,7 +180,11 @@ function OptionsState:init(...)
             element = UIFactory.createIconButton(self, {
                 icon = 'Sphere',
                 x = hiddenX,
-                y = baseY * 4 + padding
+                y = baseY * 4 + padding,
+                callback = function(btn)
+                    btn.consumed = false
+                    self.langDrawer:show()
+                end
             }),
             target = targets
         },
@@ -212,8 +217,8 @@ function OptionsState:init(...)
         },
         {
             icons = {
-                fr = 'Sun',
-                en = 'Moon'
+                fr = assets.images.flags.fr,
+                en = assets.images.flags.en
             },
             config = 'lang',
             y = baseY * 4 + padding

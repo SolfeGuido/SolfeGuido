@@ -116,8 +116,11 @@ function State:addElement(data, callback)
 end
 
 function State:callOnEntities(method, ...)
-    for _,v in ipairs(self.entities) do
-        if v[method] then v[method](v, ...) end
+    for i = #self.entities, 1, -1 do
+        local entity = self.entities[i]
+        if entity[method] and entity[method](entity, ...) then
+            return
+        end
     end
 end
 

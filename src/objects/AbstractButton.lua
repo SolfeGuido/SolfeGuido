@@ -40,7 +40,9 @@ function AbstractButton:handleClick()
     if not self.consumed then
         self.consumed = true
         self:onclick()
+        return true
     end
+    return false
 end
 
 function AbstractButton:boundingBox()
@@ -52,23 +54,26 @@ function AbstractButton:contains(x, y)
 end
 
 function AbstractButton:touchpressed(id, x, y)
-    if self.fingerId then return end-- can't be pressed by two touches
+    if self.fingerId then return false end-- can't be pressed by two touches
     if self:contains(x, y) then
         self.fingerId = id
         self.state = "pressed"
         self:pressed()
+        return true
     end
+    return false
 end
 
 function AbstractButton:touchreleased(id, x, y)
-    if not self.fingerId or id ~= self.fingerId then return end
+    if not self.fingerId or id ~= self.fingerId then return false end
     self.fingerId = nil
     self.state = 'neutral'
     self:leave()
     self:released()
     if self:contains(x, y) then
-        self:handleClick()
+        return self:handleClick()
     end
+    return false
 end
 
 function AbstractButton:mousemoved(x, y)
@@ -87,8 +92,10 @@ function AbstractButton:mousepressed(x, y, button)
         if self:contains(x, y) then
             self.state = "pressed"
             self:pressed()
+            return true
         end
     end
+    return false
 end
 
 function AbstractButton:mousereleased(x, y, button)
@@ -96,12 +103,13 @@ function AbstractButton:mousereleased(x, y, button)
         self:released()
         if self:contains(x, y) then
             self.state = "hovered"
-            self:handleClick()
+            return self:handleClick()
         else
             self.state = "neutral"
             self:leave()
         end
     end
+    return false
 end
 
 return AbstractButton

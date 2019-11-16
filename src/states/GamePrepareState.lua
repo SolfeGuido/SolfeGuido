@@ -63,9 +63,14 @@ function GamePrepareState:init(config)
     end)
 end
 
+local spaces = {
+    buttons = Vars.mobileButton.fontSize + Vars.mobileButton.padding * 2 + 20,
+    piano = Vars.pianoHeight,
+    pianoWithNotes = Vars.pianoHeight
+}
+
 function GamePrepareState:createMeasures()
-    local btnSize = Vars.mobileButton.fontSize + Vars.mobileButton.padding * 2 + 20
-    local availableSpace = love.graphics.getHeight() - (Config.answerType == 'buttons' and btnSize or 0)
+    local availableSpace = love.graphics.getHeight() - (spaces[Config.answerType] or 0)
     local sounds = nil
     if Config.keySelect == 'gKey' then
         self.measures = {Measure(nil,{

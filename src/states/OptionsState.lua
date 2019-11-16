@@ -199,9 +199,9 @@ function OptionsState:init(...)
     self:createDrawers({
         {
             icons = {
-                en_note = 'EnglishNotes',
-                fr_note = 'RomanNotes',
-                latin_note  = 'LatinNotes'
+                englishNotes = 'EnglishNotes',
+                romanNotes = 'RomanNotes',
+                latinNotes  = 'LatinNotes'
             },
             config = 'noteStyle',
             y = baseY * 2 + padding / 2

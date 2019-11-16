@@ -1,13 +1,13 @@
 
 local Entity = require('src.Entity')
 local Config = require('src.utils.Config')
-local lume = require('lib.lume')
+local PianoKey = require('src.objects.PianoKey')
+local Theme = require('src.utils.Theme')
 
 local MobileButton = require('src.objects.MobileButton')
 
 ---@class AnswerGiver : Entity
 local AnswerGiver = Entity:extend()
-
 
 function AnswerGiver:new(area, options)
     Entity.new(self, area, options)
@@ -24,30 +24,56 @@ function AnswerGiver:hide()
 end
 
 function AnswerGiver:addFunction(config)
-    if config == "default" then
-        self:addKeyAnswers(Vars.letterOrder)
-    elseif config == "letters" then
-        self:addKeyAnswers(Vars.enNotes)
+    if config == "piano" then
+        self:addPianoKeys(false)
+    elseif config == "pianoWithNotes" then
+        self:addPianoKeys(true)
     elseif config == "buttons" then
         self:addButtons()
     end
 end
 
-function AnswerGiver:addKeyAnswers(keys)
-    function self:keypressed(key)
-        local idx = lume.find(keys, key)
-        if idx and self.callback then
-            self.callback(Vars.englishNotes[idx])
-        end
+function AnswerGiver:addPianoKeys(showNote)
+    local totalWidth = love.graphics.getWidth()
+    local whiteKeyWidth = totalWidth / 7
+    local height = Vars.pianoHeight-- might change
+    local yPos = love.graphics.getHeight() - height
+
+    for i = 1, 7 do
+        self.area:addentity(PianoKey, {
+            x = (i-1) * whiteKeyWidth,
+            y = yPos,
+            height = height,
+            width = whiteKeyWidth,
+            callback = function(btn)
+                btn.consumed = false
+                if self.callback then self.callback( Vars.englishNotes[i]) end
+            end
+        })
+    end
+    local blackKeys = {
+        3 *whiteKeyWidth / 4,
+        7 * whiteKeyWidth / 4,
+        15 * whiteKeyWidth / 4,
+        19 * whiteKeyWidth / 4,
+        23 * whiteKeyWidth / 4
+    }
+    for i,v in ipairs(blackKeys) do
+        self.area:addentity(PianoKey, {
+            x = v,
+            y = yPos,
+            height = 3 * height / 4,
+            width = whiteKeyWidth / 2,
+            backgroundColor = Theme.font:clone()
+        })
     end
 end
-
 
 function AnswerGiver:addButtons()
     self.buttons = {}
     local size = Vars.mobileButton.fontSize
     local font = assets.MarckScript(size)
-    local letters = Config.noteStyle == "en_note" and Vars.englishNotes or Vars.romanNotes
+    local letters = Vars[Config.noteStyle]
 
     local padding = Vars.mobileButton.padding
     local widths = math.floor((love.graphics.getWidth() / #letters) - padding)

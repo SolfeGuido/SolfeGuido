@@ -62,10 +62,10 @@ end
 ---@return string
 function Measure:getNoteName(noteName)
     local sub = noteName:sub(1, 1)
-    if Config.noteStyle == 'en_note' then return sub end
+    if Config.noteStyle == 'englishNotes' then return sub end
     local idx = lume.find(Vars.englishNotes, sub)
     if not idx then return sub end
-    return Vars.romanNotes[idx]
+    return Vars[Config.noteStyle][idx]
 end
 
 ---@param measureIndex number

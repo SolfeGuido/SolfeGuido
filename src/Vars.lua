@@ -12,7 +12,7 @@ return {
         sound = {'on', 'off'},
         vibrations = {'on', 'off'},
         lang = {'en', 'fr'},
-        noteStyle = {'en_note', 'ro_note', 'latin_note'},
+        noteStyle = {'englishNotes', 'romanNotes', 'latinNotes'},
         keySelect = {'gKey', 'fKey', 'both'},
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'buttons', 'piano', 'pianoWithNotes'},
@@ -24,7 +24,6 @@ return {
     lineHeight = lineHeight,
     limitLine = 150,
     maxProgressSpeed = 100,
-    letterOrder = {'s', 'd', 'f', 'g', 'h', 'j', 'k'},
     romanNotes = {'do', 'ré', 'mi', 'fa', 'sol', 'la', 'si'},
     latinNotes = {'do', 're', 'mi', 'fa', 'sol', 'la', 'si'},
     englishNotes = {'C', 'D', 'E', 'F', 'G', 'A', 'B'},
@@ -91,5 +90,6 @@ return {
     },
     mobile = {
         vibrationTime = 0.1
-    }
+    },
+    pianoHeight = 100
 }

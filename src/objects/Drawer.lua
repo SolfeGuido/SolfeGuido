@@ -17,6 +17,7 @@ function Drawer:init(options)
         UIFactory.createIconButton(self.area, {
             y = self.y + self.padding,
             icon = 'Check',
+            framed = true,
             color = Theme.font:clone(),
             x = self.x,
             callback = function()
@@ -36,7 +37,7 @@ function Drawer:init(options)
             isChecked = options.selected == v.configValue,
             value = v.configValue,
             icon = v.icon,
-            padding = math.floor((self.padding) / 2),
+            padding = math.floor(self.padding),
             callback = function(btn)
                 btn.consumed = false
                 if not btn.isChecked then
@@ -49,9 +50,10 @@ function Drawer:init(options)
     end
 
     self.childs[#self.childs+1] = UIFactory.createIconButton(self.area, {
-            x = self.x + Vars.titleSize * (#options.choices + 1),
+            x = self.x + (Vars.titleSize + self.padding * 2) * (#options.choices + 1),
             y = self.y + self.padding,
             icon = 'Times',
+            framed = true,
             color = Theme.font:clone(),
             callback = function(btn)
                 btn.consumed = false
@@ -63,7 +65,7 @@ function Drawer:init(options)
             end
         })
     
-    self.width = #self.childs * Vars.titleSize + (#self.childs + 1) * self.padding
+    self.width = #self.childs * (Vars.titleSize + self.padding * 2)
 end
 
 function Drawer:show()
@@ -76,15 +78,15 @@ end
 
 function Drawer:draw()
     love.graphics.setColor(Theme.background)
-    love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
+    love.graphics.rectangle('fill', self.x, self.y, self.width + 10, self.height)
 
     love.graphics.setColor(self.color)
-    love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
+    love.graphics.rectangle('line', self.x, self.y, self.width + 10, self.height)
 end
 
 function Drawer:update(dt)
     for i, v in ipairs(self.childs) do
-        v.x = self.x + (i-1) * Vars.titleSize + self.padding * i
+        v.x = self.x + (i-1) * Vars.titleSize + self.padding * (2*i-1)
     end
 end
 

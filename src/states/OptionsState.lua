@@ -20,9 +20,12 @@ local inputIcons = {
 function OptionsState:new()
     State.new(self)
     self.xPos = love.graphics.getWidth() - 5
+    self.drawers = {}
 end
 
 function OptionsState:slideOut()
+    for _, drawer in ipairs(self.drawers) do drawer:hide() end
+    self.drawers = nil
     local elements = {}
     for _,v in ipairs(self.entities) do
         elements[#elements+1] = {
@@ -86,6 +89,7 @@ function OptionsState:createDrawers(config, height)
             y = v.y,
             height = height
         })
+        self.drawers[#self.drawers+1] = drawer
         self[v.config .. 'Drawer']  = drawer
         drawer:init({
             selected = Config[v.config],

@@ -10,6 +10,10 @@ function PianoKey:new(area, options)
     self.backgroundColor = options.backgroundColor or Theme.background:clone()
     self._bgColor = self.backgroundColor:clone()
     self.color = options.color or Theme.font:clone()
+    if self.text then
+        self.textX = self.x + self.width / 2 - self.text:getWidth() / 2
+        self.textY = self.y + self.height - self.text:getHeight() - 10
+    end
 end
 
 function PianoKey:boundingBox()
@@ -36,7 +40,7 @@ function PianoKey:draw()
     love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
 
     if self.text then
-        love.graphics.draw(self.text, self.x, self.y)
+        love.graphics.draw(self.text, self.textX, self.textY)
     end
 
 end

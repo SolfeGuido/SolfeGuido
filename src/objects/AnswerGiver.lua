@@ -39,6 +39,7 @@ function AnswerGiver:addPianoKeys(showNote)
     local height = Vars.pianoHeight-- might change
     local yPos = love.graphics.getHeight() - height
 
+    local font = assets.MarckScript(Vars.mobileButton.fontSize)
     for i = 1, 7 do
         self.area:addentity(PianoKey, {
             x = (i-1) * whiteKeyWidth,
@@ -48,7 +49,8 @@ function AnswerGiver:addPianoKeys(showNote)
             callback = function(btn)
                 btn.consumed = false
                 if self.callback then self.callback( Vars.englishNotes[i]) end
-            end
+            end,
+            text = showNote and love.graphics.newText(font,Vars[Config.noteStyle][i]) or nil
         })
     end
     local blackKeys = {

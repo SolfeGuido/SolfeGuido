@@ -21,7 +21,8 @@ function Drawer:init(options)
             framed = true,
             color = Theme.font:clone(),
             x = self.x,
-            callback = function()
+            callback = function(btn)
+                btn.consumed = false
                 if self.selected ~= options.selected and options.callback then
                     options.callback(self)
                 else

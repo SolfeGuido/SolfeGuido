@@ -9,7 +9,6 @@ local RadioButton = AbstractButton:extend()
 function RadioButton:new(area, options)
     AbstractButton.new(self, area, options)
     self.isChecked = options.isChecked or false
-    self.value = options.value
     self.padding = options.padding or 0
     self.backgroundColor = self.isChecked and Theme.secondary:clone() or Theme.background:clone()
     self.tween = nil

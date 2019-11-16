@@ -6,9 +6,11 @@ local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.utils.Config')
 local UIFactory = require('src.utils.UIFactory')
 local Drawer = require('src.objects.Drawer')
+local EventTransmitter = require('src.utils.EventTransmitter')
 
 ---@class OptionsState : State
 local OptionsState = State:extend()
+OptionsState:implement(EventTransmitter)
 
 function OptionsState:new()
     State.new(self)

@@ -41,7 +41,10 @@ return {
     Waves           =   'h',
     PianoKeys       =   'i',
     PianoWithNotes  =   'j',
-    Inifinity       =   'k',
+    Infinity        =   'k',
     Sun             =   'l',
-    Moon            =   'm'
+    Moon            =   'm',
+    RomanNotes      =   'n',
+    LatinNotes      =   'o',
+    EnglishNotes    =   'p',
 }

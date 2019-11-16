@@ -12,7 +12,6 @@ local noop = function() end
 --- Mobile specific methods
 --- If on mobile, theses methods will be called, otherwise, the "noop" method is called
 local methods = {
-    configure = function() Config.update('answerType', 'buttons') end,
     load = function() love.window.setFullscreen(true, 'exclusive') end,
     vibrate = function(...) if Config.vibrations == 'on' then love.system.vibrate(...) end end
 }

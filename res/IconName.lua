@@ -38,7 +38,7 @@ return {
     Tag             =   'e',
     Mobile          =   'f',
     MobileVibrate   =   'g',
-    Waves           =   'h',
+    NotesButton     =   'h',
     PianoKeys       =   'i',
     PianoWithNotes  =   'j',
     Infinity        =   'k',

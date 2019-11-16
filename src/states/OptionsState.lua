@@ -10,13 +10,6 @@ local Drawer = require('src.objects.Drawer')
 ---@class OptionsState : State
 local OptionsState = State:extend()
 
-local inputIcons = {
-    default = 'Keyboard',
-    letters = 'PianoWithNotes',
-    buttons = 'Pointer',
-    piano   = 'PianoKeys'
-}
-
 function OptionsState:new()
     State.new(self)
     self.xPos = love.graphics.getWidth() - 5
@@ -92,6 +85,7 @@ function OptionsState:createDrawers(config, height)
         })
         self.drawers[#self.drawers+1] = drawer
         self[v.config .. 'Drawer']  = drawer
+        print(v.config, ' = ', Config[v.config])
         drawer:init({
             selected = Config[v.config],
             choices = choices,
@@ -160,13 +154,14 @@ function OptionsState:init(...)
                 y = baseY  * 2 + padding,
                 callback = function(btn)
                     btn.consumed = false
+                    self.noteStyleDrawer:show()
                 end
             }),
             target = targets
         },
         {
             element = UIFactory.createIconButton(self, {
-                icon = inputIcons[Config.answerType],
+                icon = 'Pointer',
                 x = hiddenX,
                 y = baseY * 3 + padding,
                 callback = function(btn)
@@ -205,13 +200,19 @@ function OptionsState:init(...)
     self:createDrawers({
         {
             icons = {
-                -- ?? 'Do ré' | 'Do re' | 'c d'
+                en_note = 'EnglishNotes',
+                fr_note = 'RomanNotes',
+                latin_note  = 'LatinNotes'
             },
             config = 'noteStyle',
-            y = baseY * 2 + padding
+            y = baseY * 2 + padding / 2
         },
         {
-            icons = inputIcons,
+            icons = {
+                buttons        = 'NotesButton',
+                piano          = 'PianoKeys',
+                pianoWithNotes = 'PianoWithNotes',
+            },
             config = 'answerType',
             y = baseY * 3 + padding / 2
         },
@@ -221,7 +222,7 @@ function OptionsState:init(...)
                 en = assets.images.flags.en
             },
             config = 'lang',
-            y = baseY * 4 + padding
+            y = baseY * 4 + padding / 2
         },
         {
             icons = {
@@ -229,7 +230,7 @@ function OptionsState:init(...)
                 dark = 'Moon'
             },
             config = 'theme',
-            y = baseY * 5 + padding
+            y = baseY * 5 + padding / 2
         }
     }, padding + Vars.titleSize)
 end

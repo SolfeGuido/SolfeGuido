@@ -11,7 +11,7 @@ function love.conf(t)
  
     t.window.title = "Solfège"         -- The window title (string)
     t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
-    t.window.width = 900                -- The window width (number)
+    t.window.width = 800                -- The window width (number)
     t.window.height = 350               -- The window height (number)
     t.window.borderless = false         -- Remove all border visuals from the window (boolean)
     t.window.resizable = false          -- Let the window be user-resizable (boolean)

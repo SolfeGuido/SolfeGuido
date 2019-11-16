@@ -1,6 +1,6 @@
 
 -- LIBS
-local BaseState = require('src.states.BaseState')
+local State = require('src.State')
 local ScoreManager = require('src.utils.ScoreManager')
 local Theme = require('src.utils.Theme')
 
@@ -10,11 +10,11 @@ local Line = require('src.objects.Line')
 local MultiSelector = require('src.objects.MultiSelector')
 
 ---@class ScoreState : State
-local ScoreState = BaseState:extend()
+local ScoreState = State:extend()
 
 function ScoreState:dispose()
     self.texts = {}
-    BaseState.dispose(self)
+    State.dispose(self)
 end
 
 function ScoreState:updateScores(nwTiming)

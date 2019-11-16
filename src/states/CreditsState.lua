@@ -1,7 +1,7 @@
-local BaseState = require('src.states.BaseState')
+local State = require('src.State')
 
 ---@class CreditsState : State
-local CreditsState = BaseState:extend()
+local CreditsState = State:extend()
 
 function CreditsState:init()
     self:createUI({

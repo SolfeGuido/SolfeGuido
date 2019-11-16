@@ -20,10 +20,8 @@ local allStates = {
     ScoreState = require('src.states.ScoreState'),
     CreditsState = require('src.states.CreditsState'),
     EndGameState = require('src.states.EndGameState'),
-    RootState = require('src.states.RootState'),
     PlaySelectState = require('src.states.PlaySelectState'),
     GamePrepareState = require('src.states.GamePrepareState'),
-    ThemeSelectState = require('src.states.ThemeSelectState')
 }
 
 function SplashScreenState:new()
@@ -114,7 +112,7 @@ function SplashScreenState:displayLines()
     local hTarget = Vars.lineHeight * 4
     self.timer:tween(Vars.transition.tween, line, {height = hTarget}, 'out-expo', function()
         -- Load all states this time
-        ScreeManager.init(allStates, 'RootState')
+        ScreeManager.init(allStates, 'MenuState')
     end)
 end
 

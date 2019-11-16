@@ -41,9 +41,14 @@ function Drawer:init(options)
             callback = function(btn)
                 btn.consumed = false
                 if not btn.isChecked then
-                    for _, child in ipairs(self.childs) do child.isChecked = false end
+                    for _, child in ipairs(self.childs) do
+                        if child == btn then
+                            child:check()
+                        elseif child.uncheck then
+                            child:uncheck()
+                        end
+                    end
                     self.selected = v.configValue
-                    btn.isChecked = true
                 end
             end
         })
@@ -59,7 +64,11 @@ function Drawer:init(options)
                 btn.consumed = false
                 self.selected = options.selected
                 for _, child in ipairs(self.childs) do
-                    child.isChecked = child.value == options.selected
+                    if child.value == options.selected then
+                        child:check()
+                    elseif child.uncheck then
+                        child:uncheck()
+                    end
                 end
                 self:hide()
             end

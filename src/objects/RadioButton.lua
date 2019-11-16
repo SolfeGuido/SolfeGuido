@@ -13,6 +13,24 @@ function RadioButton:new(area, options)
     self.height = self.image:getHeight()
     self.value = options.value
     self.padding = options.padding or 0
+    self.backgroundColor = self.isChecked and Theme.secondary:clone() or Theme.background:clone()
+    self.tween = nil
+end
+
+function RadioButton:uncheck()
+    if not self.isChecked then return end
+    self:toggle()
+end
+
+function RadioButton:check()
+    if self.isChecked then return end
+    self:toggle()
+end
+
+function RadioButton:toggle()
+    if self.tween then self.timer:cancel(self.tween) end
+    self.timer:tween(Vars.transition.tween, self, {backgroundColor = self.isChecked and Theme.background or Theme.secondary}, 'linear')
+    self.isChecked = not self.isChecked
 end
 
 function RadioButton:boundingBox()
@@ -25,7 +43,7 @@ function RadioButton:onclick()
 end
 
 function RadioButton:draw()
-    love.graphics.setColor(self.isChecked and Theme.secondary or Theme.background)
+    love.graphics.setColor(self.backgroundColor)
     love.graphics.rectangle('fill', self.x - self.padding, self.y - self.padding, self.width + self.padding * 2, self.height + self.padding * 2)
     if self.framed then
         love.graphics.setColor(Theme.font)

@@ -85,7 +85,6 @@ function OptionsState:createDrawers(config, height)
         })
         self.drawers[#self.drawers+1] = drawer
         self[v.config .. 'Drawer']  = drawer
-        print(v.config, ' = ', Config[v.config])
         drawer:init({
             selected = Config[v.config],
             choices = choices,

@@ -47,7 +47,7 @@ function AnswerGiver:addButtons()
     self.buttons = {}
     local size = Vars.mobileButton.fontSize
     local font = assets.MarckScript(size)
-    local letters = Config.noteStyle == "en" and Vars.englishNotes or Vars.romanNotes
+    local letters = Config.noteStyle == "en_note" and Vars.englishNotes or Vars.romanNotes
 
     local padding = Vars.mobileButton.padding
     local widths = math.floor((love.graphics.getWidth() / #letters) - padding)

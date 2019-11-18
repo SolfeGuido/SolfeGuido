@@ -71,7 +71,7 @@ function OptionsState:createDrawers(config, height)
         if v.config == "lang" or v.config == "theme" then
             callback = function(drawer)
                 if Config.update(v.config, drawer.selected) then
-                    ScreenManager.switch('RootState')
+                    ScreenManager.switch('MenuState')
                 end
             end
         else

@@ -16,7 +16,7 @@ function EndGameState:validate()
 end
 
 function EndGameState:slideOut()
-    ScreenManager.switch('RootState')
+    ScreenManager.switch('MenuState')
 end
 
 function EndGameState:init(score, best)

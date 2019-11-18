@@ -3,6 +3,10 @@
 local State = require('src.State')
 local ScoreManager = require('src.utils.ScoreManager')
 local Theme = require('src.utils.Theme')
+local Graphics = require('src.utils.Graphics')
+local UIFactory = require('src.utils.UIFactory')
+local ScreenManager = require('lib.ScreenManager')
+
 
 -- Entities
 local Title = require('src.objects.Title')
@@ -26,6 +30,11 @@ function ScoreState:updateScores(nwTiming)
     end
 end
 
+function ScoreState:draw()
+    Graphics.drawMusicBars()
+    State.draw(self)
+end
+
 function ScoreState:init()
     local time = Vars.transition.tween / 3
     local middle = Vars.baseLine + Vars.lineHeight
@@ -33,20 +42,33 @@ function ScoreState:init()
     local maxSize = 0
 
     self.texts = {}
+    local title = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr("Score"))
+
 
     local elements = {
         {
-            element = self:addentity(MultiSelector, {
-                text = love.graphics.newText(font," "),
-                x = 0,
-                y = middle,
-                selected = Vars.userPreferences.time[1],
-                choices = Vars.userPreferences.time,
-                color = Theme.transparent:clone(),
-                callback = function(value) self:updateScores(value) end,
+            element = UIFactory.createIconButton(self, {
+                icon = 'Home',
+                x = 5,
+                y = love.graphics.getHeight(),
+                callback = function()
+                    self:slideEntitiesOut(function()
+                        ScreenManager.switch('MenuState')
+                    end)
+                end
             }),
-            target = {color = Theme.font, x = Vars.limitLine}
-        }
+            target = {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize - 5}
+        },
+        {
+            element = UIFactory.createTitle(self, {
+                name = 'title',
+                text = title,
+                y = -title:getHeight(),
+                color = Theme.transparent:clone(),
+                x = love.graphics.getWidth() / 2 - title:getWidth() / 2
+            }),
+            target = {color = Theme.font, y = 0}
+        },
     }
 
     middle = middle + Vars.lineHeight
@@ -62,24 +84,12 @@ function ScoreState:init()
                 y = middle,
                 x = Vars.limitLine - text:getWidth()
             }),
-            target = {x = Vars.limitLine + 10, color =  Theme.font},
-            time = time
+            target = {x = Vars.limitLine / 2 - text:getWidth() / 2, color =  Theme.font},
         }
         middle = middle + Vars.lineHeight
     end
-    elements[#elements+1] = {
-        element = self:addentity(Line, {
-            color = Theme.transparent:clone(),
-            x = Vars.limitLine - 2,
-            lineWidth = 2,
-            y = Vars.baseLine + Vars.lineHeight,
-            height = Vars.lineHeight * 4,
-        }),
-        target = {x = Vars.limitLine + maxSize + 15, color = Theme.font},
-        time = time
-    }
 
-    middle = Vars.limitLine + maxSize + 10
+    middle = Vars.limitLine + 10
     local space = love.graphics.getWidth() - middle
     local levels = Vars.userPreferences.difficulty
     space = space / #levels

@@ -9,15 +9,15 @@ local ScreenManager = require('lib.ScreenManager')
 
 
 -- Entities
-local Title = require('src.objects.Title')
 local Line = require('src.objects.Line')
-local MultiSelector = require('src.objects.MultiSelector')
 
 ---@class ScoreState : State
 local ScoreState = State:extend()
 
 function ScoreState:dispose()
     self.texts = {}
+    self.radioButtons = {}
+    self.titles = {}
     State.dispose(self)
 end
 
@@ -28,6 +28,34 @@ function ScoreState:updateScores(nwTiming)
             self.texts[level][key]:setText(tostring(score))
         end
     end
+end
+
+function ScoreState:slideOut(callback)
+    local elements = {
+        {
+            element = self.title,
+            target  = {y = -Vars.titleSize * 2, color = Theme.transparent}
+        },
+        {
+            element = self.home,
+            target = {y = love.graphics.getHeight(), color = Theme.transparent}
+        }
+    }
+    for _,v in ipairs(self.radioButtons) do
+        elements[#elements+1] = {
+            element = v,
+            target = {y = love.graphics.getHeight() + 20, color = Theme.transparent}
+        }
+    end
+
+    for _,v in ipairs(self.titles) do
+        elements[#elements+1] = {
+            element = v,
+            target = {x = -Vars.limitLine}
+        }
+    end
+
+    self:transition(elements, callback)
 end
 
 function ScoreState:draw()
@@ -43,17 +71,19 @@ function ScoreState:init()
 
     self.texts = {}
     self.radioButtons = {}
+    self.titles = {}
     local title = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr("Score"))
 
 
     local elements = {
         {
             element = UIFactory.createIconButton(self, {
+                name = 'home',
                 icon = 'Home',
                 x = 5,
                 y = love.graphics.getHeight(),
                 callback = function()
-                    self:slideEntitiesOut(function()
+                    self:slideOut(function()
                         ScreenManager.switch('MenuState')
                     end)
                 end
@@ -79,9 +109,9 @@ function ScoreState:init()
         local text = love.graphics.newText(font, tr(v))
         maxSize = math.max(maxSize, text:getWidth())
         elements[#elements+1] = {
-            element = self:addentity(Title, {
+            element = UIFactory.createTitle(self, {
+                name = 'titles',
                 text = text,
-                color = Theme.transparent:clone(),
                 y = middle,
                 x = Vars.limitLine - text:getWidth()
             }),
@@ -98,7 +128,8 @@ function ScoreState:init()
         local text = love.graphics.newText(font, v)
         local padding = (space - text:getWidth()) / 2
         elements[#elements+1] = {
-            element = self:addentity(Title, {
+            element = UIFactory.createTitle(self, {
+                name = 'titles',
                 text = text,
                 color = Theme.transparent:clone(),
                 y = Vars.baseLine + Vars.lineHeight,
@@ -114,7 +145,8 @@ function ScoreState:init()
             text = love.graphics.newText(font, tostring(score))
             padding = (space - text:getWidth()) / 2
             elements[#elements+1] = {
-                element = self:addentity(Title, {
+                element = UIFactory.createTitle(self, {
+                    name = 'titles',
                     text = text,
                     color = Theme.transparent:clone(),
                     y = yPos,
@@ -131,16 +163,18 @@ function ScoreState:init()
 
 
         if i ~= #levels then
-            elements[#elements+1] = {
-                element = self:addentity(Line, {
+            local line = self:addentity(Line, {
                     color = Theme.transparent:clone(),
                     x = -1,
                     y = Vars.baseLine + Vars.lineHeight,
                     height = Vars.lineHeight * 4,
-                }),
+            })
+            elements[#elements+1] = {
+                element = line,
                 target = {x = middle, color = Theme.hovered},
                 time = time
             }
+            self.titles[#self.titles+1] = line
         end
     end
 
@@ -151,14 +185,14 @@ function ScoreState:init()
     for i, v in ipairs(Vars.userPreferences.time) do
         elements[#elements+1] = {
             element = UIFactory.createRadioButton(self, {
-                x = - Vars.titleSize * 2,
+                x = xPos,
                 value = v,
                 name = 'radioButtons',
                 padding = 10,
                 width = space / 2,
                 centerImage = true,
                 isChecked = i == 1,
-                y = yPos,
+                y = love.graphics.getHeight()  + 20,
                 framed = true,
                 callback = function(btn)
                     btn.consumed = false
@@ -173,7 +207,7 @@ function ScoreState:init()
                 end,
                 image = love.graphics.newText(font, v)
             }),
-            target = {color = Theme.font, x = xPos}
+            target = {color = Theme.font, y = yPos}
         }
         xPos = xPos + space
     end

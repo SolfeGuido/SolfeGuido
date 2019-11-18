@@ -96,7 +96,11 @@ function MenuState:init(...)
                 size = Vars.titleSize * 1.5,
                 framed = true,
                 centered = true,
-                color = Theme.transparent:clone()
+                color = Theme.transparent:clone(),
+                callback = function(btn)
+                    btn.consumed = false
+                    ScreenManager.push('PlaySelectState')
+                end
             }),
             target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize - 5}
         },

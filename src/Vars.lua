@@ -17,7 +17,8 @@ return {
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'buttons', 'piano', 'pianoWithNotes'},
         time = {'30s', '1mn', '2mn', '5mn'},
-        theme = {'light', 'dark'}
+        theme = {'light', 'dark'},
+        gameMode = {'timed', 'zen'}
     },
     configSave = 'config.lua',
     lineSpace = 20,

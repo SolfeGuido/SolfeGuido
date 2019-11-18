@@ -47,4 +47,5 @@ return {
     RomanNotes      =   'n',
     LatinNotes      =   'o',
     EnglishNotes    =   'p',
+    BothKeys        =   'q',
 }

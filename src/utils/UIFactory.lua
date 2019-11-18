@@ -28,7 +28,13 @@ end
 local function addToState(config, element)
     local name = config.name
     if not name then return element end
-    if not element.area[name] then element.area[name] = element end
+    local area = element.area
+    local obj = area[name]
+    if not obj then
+        area[name] = element
+    elseif type(obj) == "table" then
+        obj[#obj+1] = element
+    end
     return element
 end
 
@@ -118,7 +124,9 @@ function UIFactory.createRadioButton(area, config)
         callback = config.callback,
         image = config.image,
         framed = config.framed or false,
-        padding = config.padding or 0
+        padding = config.padding or 0,
+        width = config.width,
+        centerImage = config.centerImage
     }))
 end
 

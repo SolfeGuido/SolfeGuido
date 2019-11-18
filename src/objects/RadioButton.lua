@@ -15,7 +15,7 @@ function RadioButton:new(area, options)
     if self.image:type() == "Image" then
         self.scale = Vars.titleSize / self.image:getHeight()
     end
-    self._width = self.image:getWidth() * (self.scale or 1)
+    self._width = options.width or self.image:getWidth() * (self.scale or 1)
     self.height = self.image:getHeight() * (self.scale or 1)
 end
 
@@ -58,7 +58,13 @@ function RadioButton:draw()
     if self.image:type() ~= "Image" then
         love.graphics.setColor(self.color)
     end
-    love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
+
+    if self.centerImage then
+        local x = self.x + self._width / 2 - self.image:getWidth() / 2
+        love.graphics.draw(self.image, x, self.y)
+    else
+        love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
+    end
 end
 
 

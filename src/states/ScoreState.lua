@@ -42,6 +42,7 @@ function ScoreState:init()
     local maxSize = 0
 
     self.texts = {}
+    self.radioButtons = {}
     local title = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr("Score"))
 
 
@@ -68,7 +69,7 @@ function ScoreState:init()
                 x = love.graphics.getWidth() / 2 - title:getWidth() / 2
             }),
             target = {color = Theme.font, y = 0}
-        },
+        }
     }
 
     middle = middle + Vars.lineHeight
@@ -143,7 +144,39 @@ function ScoreState:init()
         end
     end
 
-
+    local radioSpace = love.graphics.getWidth() - Vars.limitLine - space
+    space = radioSpace / #Vars.userPreferences.time
+    local yPos = Vars.baseLine + Vars.lineHeight * 6
+    local xPos = Vars.limitLine +  space / 2  - (Vars.titleSize * 0.60)
+    for i, v in ipairs(Vars.userPreferences.time) do
+        elements[#elements+1] = {
+            element = UIFactory.createRadioButton(self, {
+                x = - Vars.titleSize * 2,
+                value = v,
+                name = 'radioButtons',
+                padding = 10,
+                width = space / 2,
+                centerImage = true,
+                isChecked = i == 1,
+                y = yPos,
+                framed = true,
+                callback = function(btn)
+                    btn.consumed = false
+                    for _, radio in ipairs(self.radioButtons) do
+                        if radio == btn then
+                            self:updateScores(v)
+                            radio:check()
+                        else
+                            radio:uncheck()
+                        end
+                    end
+                end,
+                image = love.graphics.newText(font, v)
+            }),
+            target = {color = Theme.font, x = xPos}
+        }
+        xPos = xPos + space
+    end
     self:transition(elements, nil, Vars.transition.spacing / 3)
 end
 

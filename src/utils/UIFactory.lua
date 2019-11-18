@@ -25,10 +25,17 @@ local function createCallback(area, config)
     end
 end
 
+local function addToState(config, element)
+    local name = config.name
+    if not name then return element end
+    if not element.area[name] then element.area[name] = element end
+    return element
+end
+
 function UIFactory.createIconButton(area, config)
     createCallback(area, config)
     local size = config.size or Vars.titleSize
-    return area:addentity(IconButton, {
+    return addToState(config, area:addentity(IconButton, {
         icon = assets.IconName[config.icon],
         size = size,
         x = config.x or -size,
@@ -36,8 +43,11 @@ function UIFactory.createIconButton(area, config)
         height = Vars.titleSize,
         color = config.color or Theme.transparent:clone(),
         callback = config.callback,
-        circled = config.circled or false
-    })
+        circled = config.circled or false,
+        framed = config.framed,
+        centered = config.centered,
+        anchor = config.anchor
+    }))
 end
 
 function UIFactory.createTextButton(area, config)
@@ -45,7 +55,7 @@ function UIFactory.createTextButton(area, config)
 
     local btnText = love.graphics.newText(config.font, tr(config.text) )
 
-    return area:addentity(TextButton, {
+    return addToState(config, area:addentity(TextButton, {
         text = btnText,
         x = -btnText:getWidth(),
         y = config.y,
@@ -54,26 +64,30 @@ function UIFactory.createTextButton(area, config)
         framed = config.framed or false,
         icon = config.icon or nil,
         centered = config.centered or false
-    })
+    }))
 end
 
 function UIFactory.createTitle(area, config)
-    local titleText = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
-    local half = love.graphics.getWidth() / 2 - titleText:getWidth() / 2
-    return area:addentity(Title, {
-        x = config.main and half or -titleText:getWidth(),
+    if type(config.text) == "string" then
+        config.text = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
+    end
+
+    local half = love.graphics.getWidth() / 2 - config.text:getWidth() / 2
+    return addToState(config, area:addentity(Title, {
+        x = config.x and half or -config.text:getWidth(),
         y = config.y,
-        color = Theme.transparent:clone(),
-        text = titleText,
-        centered = config.centered
-    })
+        color = config.color or Theme.transparent:clone(),
+        text = config.text,
+        centered = config.centered,
+        framed = config.framed
+    }))
 end
 
 function UIFactory.createMultiSelector(area, config)
     local msText = love.graphics.newText(config.font, tr(config.text) )
     assert(config.config, "Can't create multiselect from something else than configuration")
     local confName = config.config
-    return area:addentity(MultiSelector, {
+    return addToState(config, area:addentity(MultiSelector, {
         text = msText,
         x = -msText:getWidth() * 3,
         y = config.y,
@@ -88,14 +102,14 @@ function UIFactory.createMultiSelector(area, config)
             end
         end,
         centered = config.centered or false
-    })
+    }))
 end
 
 function UIFactory.createRadioButton(area, config)
     if config.icon and not config.image then
         config.image = love.graphics.newText(assets.IconsFont(config.size or Vars.titleSize), assets.IconName[config.icon])
     end
-    return area:addentity(RadioButton, {
+    return addToState(config, area:addentity(RadioButton, {
         x = config.x,
         y = config.y,
         value = config.value,
@@ -105,7 +119,7 @@ function UIFactory.createRadioButton(area, config)
         image = config.image,
         framed = config.framed or false,
         padding = config.padding or 0
-    })
+    }))
 end
 
 return UIFactory

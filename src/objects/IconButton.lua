@@ -17,7 +17,14 @@ function IconButton:new(area, config)
     self.color = config.color or Theme.font:clone()
     self._width = self.image:getWidth()
     self.height = self.image:getHeight()
+    if self.centered then
+        self.x = love.graphics.getWidth() / 2 - self._width / 2
+    end
     self.rotation = 0
+    if self.anchor then
+        self.x = self.x - self._width * self.anchor
+        self.y = self.y - self.height * self.anchor
+    end
     self.xOrigin = self._width / 2
     self.yOrigin = self.height / 2
     self.shaking = nil
@@ -81,6 +88,11 @@ function IconButton:draw()
     love.graphics.setColor(self.color)
     if self.circled then
         love.graphics.circle('line', self.x + self.xOrigin, self.y + self.yOrigin, self._width * 0.8, 100)
+    elseif self.framed then
+        love.graphics.setColor(Theme.background)
+        love.graphics.rectangle('fill', self.x - 5, self.y - 5 , self._width + 10, self._width + 10)
+        love.graphics.setColor(self.color)
+        love.graphics.rectangle('line', self.x - 5, self.y - 5 , self._width + 10, self._width + 10)
     end
 
     love.graphics.draw(self.image, self.x + self.xOrigin, self.y + self.yOrigin, self.rotation, nil, nil, self.xOrigin, self.yOrigin)

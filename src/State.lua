@@ -16,7 +16,7 @@ local State = Class:extend()
 local function stateCall(methodName)
     return function(tbl, ...) return tbl:callOnEntities(methodName, ...) end
 end
-local redirectedevents = {'mousemoved', 'mousepressed', 'mousereleased', 'touchpressed', 'touchmoved', 'touchreleased'}
+local redirectedevents = {'keypressed', 'mousemoved', 'mousepressed', 'mousereleased', 'touchpressed', 'touchmoved', 'touchreleased'}
 
 function State:new()
     State.super.new(self)
@@ -70,10 +70,6 @@ function State:update(dt)
     end
 end
 
-function State:keypressed(key)
-    self:callOnEntities('keypressed', key)
-end
-
 function State:createUI(uiConfig)
     local yPos = Vars.baseLine + Vars.lineHeight
     local defaultFont = assets.MarckScript(Vars.lineHeight)
@@ -104,7 +100,7 @@ end
 function State:transition(elements, callback, spacing)
     spacing = spacing or Vars.transition.spacing
     local size = #elements
-    self.timer:every(Vars.transition.spacing, function()
+    self.timer:every(spacing, function()
         local data = elements[1]
         table.remove(elements, 1)
         self:addElement(data, #elements == 0 and callback or nil)

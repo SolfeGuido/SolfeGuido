@@ -53,10 +53,9 @@ end
 
 function SplashScreenState:createCoroutine()
     return coroutine.create(function()
+        print("here")
         math.randomseed(os.time())
-        _G['assets'] = require('lib.cargo').init('res', 97)
-        Mobile.configure()
-        coroutine.yield(1)
+        _G['assets'] = require('lib.cargo').init('res', 98)
         ScoreManager.init()
         coroutine.yield(1)
         i18n.load(assets.lang)

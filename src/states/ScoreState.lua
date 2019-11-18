@@ -51,7 +51,7 @@ function ScoreState:slideOut(callback)
     for _,v in ipairs(self.titles) do
         elements[#elements+1] = {
             element = v,
-            target = {x = -Vars.limitLine}
+            target = {color = Theme.transparent}
         }
     end
 
@@ -107,15 +107,16 @@ function ScoreState:init()
     -- Adding titles
     for _,v in ipairs(Vars.userPreferences.keySelect) do
         local text = love.graphics.newText(font, tr(v))
+        local x = Vars.limitLine / 2 - text:getWidth() / 2
         maxSize = math.max(maxSize, text:getWidth())
         elements[#elements+1] = {
             element = UIFactory.createTitle(self, {
                 name = 'titles',
                 text = text,
                 y = middle,
-                x = Vars.limitLine - text:getWidth()
+                x = x
             }),
-            target = {x = Vars.limitLine / 2 - text:getWidth() / 2, color =  Theme.font},
+            target = {color =  Theme.font},
         }
         middle = middle + Vars.lineHeight
     end
@@ -133,9 +134,9 @@ function ScoreState:init()
                 text = text,
                 color = Theme.transparent:clone(),
                 y = Vars.baseLine + Vars.lineHeight,
-                x = -text:getWidth()
+                x = middle + padding
             }),
-            target = {x = middle + padding, color = Theme.font},
+            target = {color = Theme.font},
             time = time
         }
         self.texts[v] = {}
@@ -150,9 +151,9 @@ function ScoreState:init()
                     text = text,
                     color = Theme.transparent:clone(),
                     y = yPos,
-                    x = -text:getWidth()
+                    x = middle + padding
                 }),
-                target = {x = middle + padding, color = Theme.font},
+                target = {color = Theme.font},
                 time = time
             }
             self.texts[v][key] = elements[#elements].element
@@ -165,13 +166,13 @@ function ScoreState:init()
         if i ~= #levels then
             local line = self:addentity(Line, {
                     color = Theme.transparent:clone(),
-                    x = -1,
+                    x = middle,
                     y = Vars.baseLine + Vars.lineHeight,
                     height = Vars.lineHeight * 4,
             })
             elements[#elements+1] = {
                 element = line,
-                target = {x = middle, color = Theme.hovered},
+                target = {color = Theme.hovered},
                 time = time
             }
             self.titles[#self.titles+1] = line

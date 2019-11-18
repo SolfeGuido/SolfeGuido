@@ -78,9 +78,9 @@ function UIFactory.createTitle(area, config)
         config.text = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
     end
 
-    local half = love.graphics.getWidth() / 2 - config.text:getWidth() / 2
+    --local half = love.graphics.getWidth() / 2 - config.text:getWidth() / 2
     return addToState(config, area:addentity(Title, {
-        x = config.x and half or -config.text:getWidth(),
+        x = config.x or -config.text:getWidth(),
         y = config.y,
         color = config.color or Theme.transparent:clone(),
         text = config.text,

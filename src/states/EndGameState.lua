@@ -25,7 +25,7 @@ function EndGameState:init(score, best)
             {
                 type = 'TextButton',
                 text = 'Menu',
-                state = 'RootState',
+                state = 'MenuState',
                 centered = true,
                 x = -math.huge
             },

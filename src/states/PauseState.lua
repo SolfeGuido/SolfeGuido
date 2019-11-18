@@ -20,7 +20,7 @@ function PauseState:init(...)
         {{
                 type = 'TextButton',
                 text = 'Exit',
-                state = 'RootState',
+                state = 'MenuState',
                 centered = true,
                 x = -math.huge
             }

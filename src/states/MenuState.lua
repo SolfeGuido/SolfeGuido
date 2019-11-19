@@ -93,6 +93,7 @@ function MenuState:init(...)
                 name = 'playButton',
                 icon = 'Music',
                 y = -Vars.titleSize - 5,
+                padding = 10,
                 size = Vars.titleSize * 1.5,
                 framed = true,
                 centered = true,
@@ -102,23 +103,25 @@ function MenuState:init(...)
                     ScreenManager.push('PlaySelectState')
                 end
             }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize - 5}
+            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize - 15}
         },
         {
             element = UIFactory.createIconButton(self, {
                 name = 'achievementsButton',
                 anchor = 0.5,
+                padding = 5,
                 icon = 'Trophy',
                 y = -Vars.titleSize * 2,
                 framed = true,
                 x = love.graphics.getWidth() / 2 - Vars.titleSize * 2,
                 color = Theme.transparent:clone()
             }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize / 1.15}
+            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize}
         },
         {
             element = UIFactory.createIconButton(self, {
                 name = 'scoresButton',
+                padding = 5,
                 anchor = 0.5,
                 icon = 'List',
                 y = -Vars.titleSize * 2,
@@ -131,7 +134,7 @@ function MenuState:init(...)
                     end)
                 end
             }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize / 1.15}
+            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize}
         }
     })
 end

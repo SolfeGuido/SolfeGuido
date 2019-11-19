@@ -52,7 +52,7 @@ function DialogState:keypressed(key)
 end
 
 function DialogState:slideOut()
-    self.timer:tween(Vars.transition.tween, self, {yBottom = 0}, 'out-expo',function()
+    self.timer:tween(Vars.transition.tween, self, {yBottom = -10}, 'out-expo',function()
         ScreenManager.pop()
     end)
 end

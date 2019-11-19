@@ -52,7 +52,8 @@ function UIFactory.createIconButton(area, config)
         circled = config.circled or false,
         framed = config.framed,
         centered = config.centered,
-        anchor = config.anchor
+        anchor = config.anchor,
+        padding = config.padding or 0
     }))
 end
 
@@ -128,6 +129,7 @@ function UIFactory.createRadioButton(area, config)
         framed = config.framed or false,
         padding = config.padding or 0,
         width = config.width,
+        minWidth = config.minWidth,
         centerImage = config.centerImage
     }))
 end

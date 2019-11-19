@@ -15,8 +15,16 @@ function RadioButton:new(area, options)
     if self.image:type() == "Image" then
         self.scale = Vars.titleSize / self.image:getHeight()
     end
-    self._width = options.width or self.image:getWidth() * (self.scale or 1)
-    self.height = self.image:getHeight() * (self.scale or 1)
+    if options.minWidth then
+        local mWidth = self.image:getWidth() + self.padding * 2
+        if mWidth < options.minWidth then
+            self.padding = (options.minWidth - mWidth) / 2
+        end
+        self._width = options.minWidth
+    else
+        self._width = (options.width or self.image:getWidth() * (self.scale or 1)) + self.padding * 2
+    end
+    self.height = (self.image:getHeight() * (self.scale or 1)) + (self.padding * 2)
 end
 
 function RadioButton:width()
@@ -40,7 +48,7 @@ function RadioButton:toggle()
 end
 
 function RadioButton:boundingBox()
-    return Rectangle(self.x - self.padding, self.y - self.padding, self._width + self.padding * 2, self.height + self.padding * 2)
+    return Rectangle(self.x, self.y, self._width, self.height)
 end
 
 function RadioButton:onclick()
@@ -50,20 +58,22 @@ end
 
 function RadioButton:draw()
     love.graphics.setColor(self.backgroundColor)
-    love.graphics.rectangle('fill', self.x - self.padding, self.y - self.padding, self._width + self.padding * 2, self.height + self.padding * 2)
+    love.graphics.rectangle('fill', self.x, self.y, self._width, self.height)
     if self.framed then
         love.graphics.setColor(Theme.font)
-        love.graphics.rectangle('line', self.x - self.padding, self.y - self.padding, self._width + self.padding * 2, self.height + self.padding * 2)
+        love.graphics.rectangle('line', self.x, self.y, self._width, self.height)
     end
     if self.image:type() ~= "Image" then
         love.graphics.setColor(self.color)
+    else
+        love.graphics.setColor(1, 1, 1, 1)
     end
 
     if self.centerImage then
         local x = self.x + self._width / 2 - self.image:getWidth() / 2
-        love.graphics.draw(self.image, x, self.y)
+        love.graphics.draw(self.image, x, self.y + self.padding)
     else
-        love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
+        love.graphics.draw(self.image, self.x + self.padding, self.y + self.padding, 0, self.scale, self.scale)
     end
 end
 

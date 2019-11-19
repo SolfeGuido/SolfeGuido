@@ -1,4 +1,4 @@
-local Color = require('src.utils.Color')
+local Color = require('lib.Color')
 
 _G['unpack'] = table.unpack
 

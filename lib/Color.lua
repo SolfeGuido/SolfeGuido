@@ -8,6 +8,10 @@ local order = {
     r = 1, g = 2, b = 3, a = 4
 }
 
+---@param r number between 0 and 1
+---@param g number between 0 and 1
+---@param b number between 0 and 1
+---@param a number between 0 and 1
 function Color:new(r, g, b, a)
     self.r = r or 1
     self.g = g or 1
@@ -15,6 +19,7 @@ function Color:new(r, g, b, a)
     self.a = a or 1
 end
 
+---@return Color the cloned version of the color
 function Color:clone()
     return Color(unpack(self))
 end
@@ -43,9 +48,13 @@ function Color:__index(k)
     return rawget(Color, k)
 end
 
-
+---@param r number between 0 and 255
+---@param g number between 0 and 255
+---@param b number between 0 and 255
+---@param a number between 0 and 255
+---@return Color a new Color made with the given colors
 Color.fromBytes = function(r,g,b,a)
-    return Color(r / 255, g / 255, b / 255, (a or 255) / 255)
+    return Color(love.math.colorFromBytes(r, g, b, a))
 end
 
 

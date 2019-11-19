@@ -1,5 +1,5 @@
 
-local Color = require('src.utils.Color')
+local Color = require('lib.Color')
 
 ---@class Theme
 ---@field font Color public

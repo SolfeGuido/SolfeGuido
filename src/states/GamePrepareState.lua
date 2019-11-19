@@ -31,7 +31,7 @@ end
 
 function GamePrepareState:init()
     self.coroutine = coroutine.create(function()
-        local timed = Config.gamemode == 'timed'
+        local timed = Config.gameMode == 'timed'
         local sounds = self:createMeasures()
         local step = 100 / (2 + #sounds + (timed and 1 or 0))
         coroutine.yield(step)

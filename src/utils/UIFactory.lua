@@ -8,7 +8,6 @@ local Config        = require('src.utils.Config')
 --- ENTITIES
 local IconButton    = require('src.objects.IconButton')
 local TextButton    = require('src.objects.TextButton')
-local MultiSelector = require('src.objects.MultiSelector')
 local Title         = require('src.objects.Title')
 local RadioButton   = require('src.objects.RadioButton')
 
@@ -59,23 +58,32 @@ end
 
 function UIFactory.createTextButton(area, config)
     createCallback(area, config)
-
+    if not config.font then
+        config.font = assets.MarckScript(config.fontSize or Vars.titleSize)
+    end
     local btnText = love.graphics.newText(config.font, tr(config.text) )
+    if config.icon then
+        config.icon = love.graphics.newText(assets.IconsFont(config.fontSize or Vars.titleSize), assets.IconName[config.icon])
+    end
 
     return addToState(config, area:addentity(TextButton, {
         text = btnText,
-        x = -btnText:getWidth(),
+        icon = config.icon,
+        x = config.x,
         y = config.y,
-        color = Theme.transparent:clone(),
+        padding = config.padding or 0,
+        color = config.color,
         callback = config.callback,
         framed = config.framed or false,
-        icon = config.icon or nil,
-        centered = config.centered or false
+        centerText = config.centerText or false
     }))
 end
 
 function UIFactory.createTitle(area, config)
     if type(config.text) == "string" then
+        if not config.fontSize and not config.font then
+            config.fontSize = Vars.titleSize
+        end
         config.text = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
     end
 
@@ -90,33 +98,11 @@ function UIFactory.createTitle(area, config)
     }))
 end
 
-function UIFactory.createMultiSelector(area, config)
-    local msText = love.graphics.newText(config.font, tr(config.text) )
-    assert(config.config, "Can't create multiselect from something else than configuration")
-    local confName = config.config
-    return addToState(config, area:addentity(MultiSelector, {
-        text = msText,
-        x = -msText:getWidth() * 3,
-        y = config.y,
-        selected = Config[confName] or Vars.userPreferences[confName][1],
-        choices = Vars.userPreferences[confName],
-        color = Theme.transparent:clone(),
-        callback = function(value)
-            if area.options then
-                area.options[confName] = value
-            else
-                Config.update(confName, value)
-            end
-        end,
-        centered = config.centered or false
-    }))
-end
-
 function UIFactory.createRadioButton(area, config)
     if config.icon and not config.image then
         config.image = love.graphics.newText(assets.IconsFont(config.size or Vars.titleSize), assets.IconName[config.icon])
     elseif config.text and not config.image then
-        config.image = love.graphics.newText(assets.MarckScript(config.size or Vars.titleSize), config.text)
+        config.image = love.graphics.newText(assets.MarckScript(config.size or Vars.titleSize), tr(config.text))
     end
     return addToState(config, area:addentity(RadioButton, {
         x = config.x,

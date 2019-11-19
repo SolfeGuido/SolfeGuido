@@ -17,8 +17,9 @@ function Config.parse()
     local conf = {}
     if love.filesystem.getInfo(Vars.configSave) then
         conf = lume.deserialize(love.filesystem.read(Vars.configSave))
-        for k,v in pairs(conf) do
-            Config[k] = v
+        local allPrefs = Vars.userPreferences
+        for k,v in pairs(allPrefs) do
+            Config[k] = conf[k] or v[1]
         end
     else
         conf = Vars.userPreferences

@@ -48,4 +48,5 @@ return {
     LatinNotes      =   'o',
     EnglishNotes    =   'p',
     BothKeys        =   'q',
+    Reload          =   'r',
 }

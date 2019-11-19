@@ -115,14 +115,14 @@ function PlaySelectState:init()
         size = Vars.mobileButton.fontSize
     })
     self:transition(elements)
-    DialogSate.init(self, {validate = 'Play'})
+    DialogSate.init(self)
 
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
 
     self:transition({
         {
             element = self:addentity(PlayButton, {
-                color = Theme.transparent,
+                color = Theme.transparent:clone(),
                 x = dialogMiddle,
                 y = love.graphics.getHeight() - Vars.titleSize,
                 callback = function()

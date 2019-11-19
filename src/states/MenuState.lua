@@ -18,6 +18,18 @@ function MenuState:draw()
     MenuState.super.draw(self)
 end
 
+function MenuState:keypressed(key)
+    if key == "escape" then
+        love.event.quit()
+    elseif key == "p" then
+        ScreenManager.push('EndGameState')
+    elseif key == "a" then
+        ScreenManager.push('PauseState')
+    else
+        State.keypressed(self, key)
+    end
+end
+
 function MenuState:slideOut(callback)
     self:transition({
         {

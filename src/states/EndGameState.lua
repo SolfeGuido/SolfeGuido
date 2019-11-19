@@ -2,6 +2,8 @@
 -- LIBS
 local DialogState = require('src.states.DialogState')
 local ScreenManager = require('lib.ScreenManager')
+local Theme = require('src.utils.Theme')
+local UIFactory = require('src.utils.UIFactory')
 
 ---@class EndGameState : State
 local EndGameState = DialogState:extend()
@@ -20,23 +22,76 @@ function EndGameState:slideOut()
 end
 
 function EndGameState:init(score, best)
-    self:createUI({
+    local text = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr('Finished'))
+    local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
+    local middle = dialogMiddle - text:getWidth() / 2
+    local yStart = 100
+    local padding = 10
+    self:transition({
         {
-            {
-                type = 'TextButton',
-                text = 'Menu',
-                state = 'MenuState',
-                centered = true,
-                x = -math.huge
-            },
-            best and {
-                text = 'Best score',
-                x = -math.huge,
-                centered = true
-            } or nil
+            element = UIFactory.createTitle(self, {
+                text = text,
+                y = -Vars.titleSize,
+                x = middle,
+                color = Theme.transparent:clone()
+            }),
+            target = {y = 20, color = Theme.font}
+        },
+        {
+            element = UIFactory.createTextButton(self, {
+                text = 'Restart',
+                icon = 'Reload',
+                x = dialogMiddle,
+                centerText = true,
+                padding = padding,
+                framed = true,
+                y = -Vars.titleSize,
+                fontSize = Vars.mobileButton.fontSize,
+                color = Theme.transparent:clone(),
+                callback = function()
+                    ScreenManager.push('CircleCloseState', 'open', 'GamePrepareState')
+                end
+            }),
+            target = {y = yStart + Vars.mobileButton.fontSize + padding * 5, color = Theme.font}
+        },
+        {
+            element = UIFactory.createTextButton(self, {
+                text= 'Menu',
+                icon = 'Home',
+                x = dialogMiddle,
+                centerText = true,
+                framed = true,
+                y = -Vars.titleSize,
+                fontSize = Vars.mobileButton.fontSize,
+                padding = padding,
+                color = Theme.transparent:clone(),
+                callback = function()
+                    -- Transition ?
+                    ScreenManager.switch('MenuState')
+                end
+            }),
+            target = {y = yStart + Vars.mobileButton.fontSize * 2 + padding * 10, color = Theme.font}
+        },
+        {
+            element = UIFactory.createTextButton(self, {
+                text = 'Scores',
+                icon = 'List',
+                x = dialogMiddle,
+                centerText = true,
+                framed = true,
+                y = -Vars.titleSize,
+                fontSize = Vars.mobileButton.fontSize,
+                padding = padding,
+                color = Theme.transparent:clone(),
+                callback = function()
+                    -- Transition ?
+                    ScreenManager.switch('ScoreState')
+                end
+            }),
+            target = {y = yStart, color = Theme.font}
         }
     })
-    DialogState.init(self, {title = 'Score : ' .. tostring(score), validate = 'Restart'})
+    DialogState.init(self)
 end
 
 return EndGameState

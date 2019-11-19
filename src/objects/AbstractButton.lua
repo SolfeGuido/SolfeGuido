@@ -46,7 +46,7 @@ function AbstractButton:handleClick()
 end
 
 function AbstractButton:boundingBox()
-    return Rectangle(self.x, self.y, self.text:getWidth(), self.text:getHeight())
+    return Rectangle(self.x, self.y, self.width, self.height)
 end
 
 function AbstractButton:contains(x, y)

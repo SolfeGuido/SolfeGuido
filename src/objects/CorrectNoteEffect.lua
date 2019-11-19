@@ -6,7 +6,7 @@ local CorrectNoteEffect = Entity:extend()
 
 function CorrectNoteEffect:new(area, options)
     Entity.new(self, area, options)
-    self.timer:tween(Vars.note.fadeAway / 2, self, {
+    self.timer:tween(Vars.note.fadeAway, self, {
         color = Theme.transparent,
         scale = 2.5
     }, 'linear', function()

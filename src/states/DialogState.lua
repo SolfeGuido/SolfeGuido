@@ -52,7 +52,7 @@ function DialogState:slideOut()
     end)
 end
 
-function DialogState:init(options)
+function DialogState:init()
     local iconX = love.graphics.getWidth() - self.margin * 2 - Vars.titleSize / 1.2
     local elements = {
         {
@@ -67,20 +67,6 @@ function DialogState:init(options)
             target  = {y = 25, color = Theme.font}
         }
     }
-    if options.title then
-        local titleText = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr(options.title))
-        elements[#elements + 1] = {
-                element = self:addentity(Title, {
-                text = titleText,
-                x = love.graphics.getWidth() /2 - titleText:getWidth() / 2,
-                y = -titleText:getHeight() ,
-                framed = true,
-                color = Theme.transparent:clone()
-            }),
-            target = {y = 20, color = Theme.font}
-        }
-    end
-
     self:transition(elements)
     self.timer:tween(Vars.transition.tween, self, {yBottom = love.graphics.getHeight() - 10}, 'out-expo')
 end

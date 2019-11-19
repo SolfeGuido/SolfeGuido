@@ -4,6 +4,7 @@ local ScreenManager = require('lib.ScreenManager')
 local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local Config = require('src.utils.Config')
+local PlayButton = require('src.objects.PlayButton')
 
 ---@class PlaySelectState : State
 local PlaySelectState = DialogSate:extend()
@@ -112,9 +113,26 @@ function PlaySelectState:init()
         padding =  5,
         size = Vars.mobileButton.fontSize
     })
-
     self:transition(elements)
     DialogSate.init(self, {validate = 'Play'})
+
+    local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
+
+    self:transition({
+        {
+            element = self:addentity(PlayButton, {
+                color = Theme.transparent,
+                x = dialogMiddle,
+                y = yStart + Vars.titleSize * 2.25,
+                callback = function()
+                    ScreenManager.switch('GamePrepareState')
+                end
+            }),
+            target = {color = Theme.font}
+        }
+    
+    })
 end
+
 
 return PlaySelectState

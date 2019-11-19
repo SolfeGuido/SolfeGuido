@@ -93,7 +93,7 @@ end
 function DialogState:draw()
     local width = love.graphics.getWidth() - self.margin * 2
 
-    love.graphics.setScissor(self.margin - 2, 0, width + 5, love.graphics.getHeight())
+    --love.graphics.setScissor(self.margin - 2, 0, width + 5, love.graphics.getHeight())
     love.graphics.push()
     love.graphics.translate(self.margin ,self.yBottom - love.graphics.getHeight())
 
@@ -104,7 +104,7 @@ function DialogState:draw()
     State.draw(self)
 
     love.graphics.pop()
-    love.graphics.setScissor()
+    --love.graphics.setScissor()
 end
 
 return DialogState

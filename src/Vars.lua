@@ -49,6 +49,7 @@ return {
     },
     transition = {
         tween = 0.25,
+        state = 1,
         spacing = 0.01
     },
     gKey = {

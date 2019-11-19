@@ -28,10 +28,11 @@ function GamePrepareState:new()
     self.iconRotation = 0
 end
 
-function GamePrepareState:init(config)
+function GamePrepareState:init()
     self.coroutine = coroutine.create(function()
+        local timed = Config.gamemode == 'timed'
         local sounds = self:createMeasures()
-        local step = 100 / (2 + #sounds + (config.timed and 1 or 0))
+        local step = 100 / (2 + #sounds + (timed and 1 or 0))
         coroutine.yield(step)
         local scoreText = love.graphics.newText(assets.MarckScript(Vars.score.fontSize),"0")
         self.score = Score(nil, {
@@ -42,7 +43,7 @@ function GamePrepareState:init(config)
             color = Theme.transparent:clone()
         })
         coroutine.yield(step)
-        if config.timed then
+        if timed then
             self.stopWatch = StopWatch(nil, {
                 x = -Vars.stopWatch.size,
                 y = Vars.stopWatch.y,

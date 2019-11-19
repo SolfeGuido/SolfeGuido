@@ -17,6 +17,7 @@ local GamePrepareState = State:extend()
 
 function GamePrepareState:new()
     State.new(self)
+    self.color = Theme.font:clone()
     self.loadingIcon = love.graphics.newText(assets.IconsFont(Vars.titleSize),assets.IconName.Spinner)
     self.progress = 0
     self.notesQueue = nil
@@ -120,10 +121,9 @@ function GamePrepareState:draw()
     local height = font:getHeight(text)
     local txtX = (love.graphics.getWidth() - width) / 2
 
-    love.graphics.setColor(Theme.font)
+    love.graphics.setColor(self.color)
     love.graphics.print(text, txtX, middle - height)
 
-    love.graphics.setColor(Theme.font)
     love.graphics.setLineWidth(1)
     love.graphics.line(0, middle , progress, middle)
     love.graphics.draw(self.loadingIcon, love.graphics.getWidth() / 2, middle + Vars.titleSize, self.iconRotation, 1, 1, Vars.titleSize / 2, Vars.titleSize / 2)
@@ -132,18 +132,21 @@ end
 function GamePrepareState:update(dt)
     self.iconRotation = self.iconRotation + dt
     State.update(self, dt)
-    if coroutine.status(self.coroutine) ~= "dead" then
+    if self.coroutine and coroutine.status(self.coroutine) ~= "dead" then
         local success, coProgress = coroutine.resume(self.coroutine)
         self.progress = self.progress + (coProgress or 0)
     end
     if self.coroutine and coroutine.status(self.coroutine) == "dead" then
         self.coroutine = nil
-        -- Transition to playState
-        ScreenManager.switch('PlayState', {
-            stopWatch = self.stopWatch,
-            measures = self.measures,
-            score = self.score
-        })
+        self.timer:tween(Vars.transition.tween, self, {color = Theme.background}, 'out-expo', function()
+                -- Transition to playState
+                ScreenManager.switch('PlayState', {
+                    stopWatch = self.stopWatch,
+                    measures = self.measures,
+                    score = self.score
+                })
+                ScreenManager.push('CircleCloseState')
+        end)
     end
 end
 

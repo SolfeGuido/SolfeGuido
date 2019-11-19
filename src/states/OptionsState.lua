@@ -10,10 +10,10 @@ local EventTransmitter = require('src.utils.EventTransmitter')
 
 ---@class OptionsState : State
 local OptionsState = State:extend()
-OptionsState:implement(EventTransmitter)
 
 function OptionsState:new()
     State.new(self)
+    EventTransmitter.transmitEvents(self)
     self.xPos = love.graphics.getWidth() - 5
     self.drawers = {}
 end

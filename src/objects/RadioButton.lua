@@ -51,6 +51,10 @@ function RadioButton:boundingBox()
     return Rectangle(self.x, self.y, self._width, self.height)
 end
 
+function RadioButton:__tostring()
+    return "RadioButton(" .. tostring(self.value) .. ")"
+end
+
 function RadioButton:onclick()
     TEsound.play(assets.sounds.click)
     if self.callback then self.callback(self) end

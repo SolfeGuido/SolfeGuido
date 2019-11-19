@@ -17,14 +17,9 @@ local DialogState = State:extend()
 function DialogState:new()
     State.new(self)
     self.yBottom = 0
-    self.margin = self:getMargin()
+    self.margin = Vars.limitLine / 2
     self:redirectMouse('mousemoved', 'mousepressed', 'mousereleased')
     self:redirectTouch('touchmoved', 'touchpressed', 'touchreleased')
-end
-
-function DialogState:getMargin()
-    -- Change for mobile, create ratio or something
-    return Mobile.isMobile and love.graphics.getWidth() / 6 or Vars.limitLine
 end
 
 function DialogState:redirectMouse(...)

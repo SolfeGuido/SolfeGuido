@@ -41,7 +41,7 @@ function Drawer:init(options)
             value = v.configValue,
             icon = v.icon,
             image = v.image,
-            padding = math.floor(self.padding),
+            padding = math.floor(self.padding) -1,
             callback = function(btn)
                 btn.consumed = false
                 if not btn.isChecked then

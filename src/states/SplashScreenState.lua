@@ -22,6 +22,7 @@ local allStates = {
     EndGameState = require('src.states.EndGameState'),
     PlaySelectState = require('src.states.PlaySelectState'),
     GamePrepareState = require('src.states.GamePrepareState'),
+    CircleCloseState = require('src.states.CircleCloseState')
 }
 
 function SplashScreenState:new()

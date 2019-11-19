@@ -65,7 +65,8 @@ end
 function PlaySelectState:init()
     local elements = {}
     local yStart = 30
-    local verticalGap = 15
+    local verticalGap = 13
+    local pad = 3
     self:addRadioButtons({
         y = yStart,
         target = elements,
@@ -76,9 +77,9 @@ function PlaySelectState:init()
         },
         listName = 'gameModeButtons',
         width = Vars.titleSize * 2,
-        padding =  5
+        padding =  pad
     })
-    yStart = yStart + Vars.titleSize + 10 + verticalGap
+    yStart = yStart + Vars.titleSize + pad * 2 + verticalGap
     self:addRadioButtons({
         y = yStart,
         target = elements,
@@ -90,27 +91,27 @@ function PlaySelectState:init()
         },
         listName = 'keyButtons',
         width = Vars.titleSize * 2,
-        padding =  5,
+        padding =  pad,
         size = Vars.titleSize
     })
-    yStart = yStart + Vars.titleSize + 10 + verticalGap
+    yStart = yStart + Vars.titleSize + pad *2 + verticalGap
     self:addRadioButtons({
         y = yStart,
         target = elements,
         configName = 'time',
         listName = 'timeButtons',
         width = Vars.titleSize * 1.5,
-        padding =  5,
+        padding =  pad,
         size = Vars.mobileButton.fontSize
     })
-    yStart = yStart + Vars.mobileButton.fontSize + 17 + verticalGap
+    yStart = yStart + Vars.mobileButton.fontSize + pad * 3 + 5 + verticalGap
     self:addRadioButtons({
         y = yStart,
         target = elements,
         configName = 'difficulty',
         listName = 'difficultyButtons',
         width = Vars.titleSize * 1.5,
-        padding =  5,
+        padding =  pad,
         size = Vars.mobileButton.fontSize
     })
     self:transition(elements)
@@ -123,7 +124,7 @@ function PlaySelectState:init()
             element = self:addentity(PlayButton, {
                 color = Theme.transparent,
                 x = dialogMiddle,
-                y = yStart + Vars.titleSize * 2.25,
+                y = love.graphics.getHeight() - Vars.titleSize,
                 callback = function()
                     ScreenManager.switch('GamePrepareState')
                 end

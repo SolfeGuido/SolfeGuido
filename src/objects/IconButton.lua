@@ -60,6 +60,10 @@ function IconButton:dispose()
     IconButton.super.dispose(self)
 end
 
+function IconButton:__tostring()
+    return "IconButton(" .. tostring(self.image) .. ")"
+end
+
 function IconButton:boundingBox()
     return Rectangle(self.x, self.y, self._width, self.height)
 end

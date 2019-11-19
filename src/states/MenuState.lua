@@ -139,18 +139,4 @@ function MenuState:init(...)
     })
 end
 
-function MenuState:handleEvent(evName, arg1, ...)
-    if evName == "keypressed" and arg1 == "escape" then
-        self:pop()
-    else
-        State[evName](self, arg1, ...)
-    end
-end
-
-function MenuState:receive(event, ...)
-    if event ~= "pop" then
-        self:handleEvent(event, ...)
-    end
-end
-
 return MenuState

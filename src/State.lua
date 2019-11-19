@@ -115,9 +115,10 @@ function State:callOnEntities(method, ...)
     for i = #self.entities, 1, -1 do
         local entity = self.entities[i]
         if entity[method] and entity[method](entity, ...) then
-            return
+            return true
         end
     end
+    return false
 end
 
 function State:close()

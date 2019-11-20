@@ -111,7 +111,7 @@ function SplashScreenState:displayLines()
     local hTarget = Vars.lineHeight * 4
     self.timer:tween(Vars.transition.tween, line, {height = hTarget}, 'out-expo', function()
         -- Load all states this time
-        ScreeManager.init(allStates, 'MenuState')
+        ScreeManager.init(allStates, 'CreditsState')
     end)
 end
 

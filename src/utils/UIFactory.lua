@@ -3,13 +3,13 @@
 --- LIBS
 local ScreenManager = require('lib.ScreenManager')
 local Theme         = require('src.utils.Theme')
-local Config        = require('src.utils.Config')
 
 --- ENTITIES
 local IconButton    = require('src.objects.IconButton')
 local TextButton    = require('src.objects.TextButton')
 local Title         = require('src.objects.Title')
 local RadioButton   = require('src.objects.RadioButton')
+local Image         = require('src.objects.Image')
 
 local UIFactory = {}
 
@@ -76,6 +76,16 @@ function UIFactory.createTextButton(area, config)
         callback = config.callback,
         framed = config.framed or false,
         centerText = config.centerText or false
+    }))
+end
+
+function UIFactory.createImage(area, config)
+    return addToState(config, area:addentity(Image, {
+        image = config.image,
+        size = config.size,
+        x = config.x,
+        y = config.y,
+        color = config.color or Theme.transparent:clone()
     }))
 end
 

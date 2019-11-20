@@ -60,6 +60,10 @@ function MenuState:slideOut(callback)
         {
             element = self.scoresButton,
             target = {color = Theme.transparent, y = love.graphics.getHeight()}
+        },
+        {
+            element = self.creditsButton,
+            target = {color = Theme.transparent, y = -Vars.titleSize}
         }
     }, callback)
 end
@@ -79,6 +83,23 @@ function MenuState:init(...)
                 callback = function() love.event.quit() end
             }),
             target = {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize - 5}
+        },
+        {
+            element = UIFactory.createIconButton(self, {
+                name = 'creditsButton',
+                x = 5,
+                size = Vars.mobileButton.fontSize,
+                color = Theme.transparent:clone(),
+                y = -Vars.titleSize,
+                height = Vars.titleSize,
+                icon = 'Info',
+                callback = function()
+                    self:slideOut(function()
+                        ScreenManager.switch('CreditsState')
+                    end)
+                end
+            }),
+            target = {color = Theme.font, y = 5}
         },
         {
             element = UIFactory.createIconButton(self, {

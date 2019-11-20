@@ -41,6 +41,7 @@ local ThemeColors = {
 
 local currentTheme = nil
 
+Theme.white = Color(1, 1, 1, 1)
 
 function Theme.init(theme)
     Theme.updateTheme(theme or 'light')

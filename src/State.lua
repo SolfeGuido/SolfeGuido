@@ -70,33 +70,6 @@ function State:update(dt)
     end
 end
 
-function State:createUI(uiConfig)
-    local yPos = Vars.baseLine + Vars.lineHeight
-    local defaultFont = assets.MarckScript(Vars.lineHeight)
-    local conf = {x = 30, font = defaultFont, type = 'Title', platform = "all"}
-    local elements = {}
-    for _, column in ipairs(uiConfig) do
-        for _, elemConfig in ipairs(column) do
-            elemConfig = lume.merge(conf, elemConfig)
-            if Mobile.canBeAdded(elemConfig.platform) then
-                if not elemConfig.y then
-                    elemConfig.y = yPos
-                    yPos = yPos + Vars.lineHeight
-                end
-                local target = {color = Theme.font}
-                if elemConfig.x ~= -math.huge then target.x = elemConfig.x end
-                elements[#elements+1] = {
-                    element = UIFactory['create' .. elemConfig.type](self, elemConfig),
-                    target = target
-                }
-            end
-        end
-        yPos = Vars.baseLine + Vars.lineHeight
-        conf.x = conf.x + Vars.limitLine
-    end
-    self:transition(elements)
-end
-
 function State:transition(elements, callback, spacing)
     spacing = spacing or Vars.transition.spacing
     local size = #elements

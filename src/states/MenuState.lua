@@ -19,15 +19,20 @@ function MenuState:draw()
 end
 
 function MenuState:keypressed(key)
-    if key == "escape" then
-        love.event.quit()
-    elseif key == "p" then
-        ScreenManager.push('EndGameState')
-    elseif key == "a" then
-        ScreenManager.push('PauseState')
-    else
-        State.keypressed(self, key)
+    if self:isActive() then
+        if key == "escape" then
+            return love.event.quit()
+        elseif key == "menu" then
+            return self:openOptions(self.settingsButton)
+        end
     end
+    State.keypressed(self, key)
+end
+
+function MenuState:openOptions(btn)
+    btn.consumed = false
+    self.timer:tween(Vars.transition.tween, btn, {rotation = btn.rotation - math.pi}, 'linear')
+    ScreenManager.push('OptionsState')
 end
 
 function MenuState:slideOut(callback)
@@ -84,8 +89,7 @@ function MenuState:init(...)
                 height = Vars.titleSize,
                 icon = 'Cog',
                 callback = function(btn)
-                    self.timer:tween(Vars.transition.tween, btn, {rotation = btn.rotation - math.pi}, 'linear')
-                    ScreenManager.push('OptionsState')
+                    self:openOptions(btn)
                 end
             }),
             target = {color = Theme.font, x = love.graphics.getWidth() - Vars.titleSize - 5}

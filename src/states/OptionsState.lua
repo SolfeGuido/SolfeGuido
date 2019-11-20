@@ -59,11 +59,11 @@ end
 function OptionsState:createDrawers(config, height)
     for _, v in ipairs(config) do
         local choices = {}
-        for k, icon in pairs(v.icons) do
-            local key = type(icon) == 'string' and 'icon' or 'image'
+        for _, icon in pairs(v.icons) do
+            local key = type(icon[2]) == 'string' and 'icon' or 'image'
             choices[#choices+1] = {
-                [key] = icon,
-                configValue = k
+                [key] = icon[2],
+                configValue = icon[1]
             }
         end
 
@@ -201,34 +201,34 @@ function OptionsState:init(...)
     self:createDrawers({
         {
             icons = {
-                englishNotes = 'EnglishNotes',
-                romanNotes = 'RomanNotes',
-                latinNotes  = 'LatinNotes'
+                {'englishNotes', 'EnglishNotes'},
+                {'romanNotes', 'RomanNotes'},
+                {'latinNotes', 'LatinNotes'}
             },
             config = 'noteStyle',
             y = baseY * 2 + padding / 2
         },
         {
             icons = {
-                buttons        = 'NotesButton',
-                piano          = 'PianoKeys',
-                pianoWithNotes = 'PianoWithNotes',
+                {'buttons', 'NotesButton'},
+                {'piano', 'PianoKeys'},
+                {'pianoWithNotes', 'PianoWithNotes'},
             },
             config = 'answerType',
             y = baseY * 3 + padding / 2
         },
         {
             icons = {
-                fr = assets.images.flags.fr,
-                en = assets.images.flags.en
+                {'fr', assets.images.flags.fr},
+                {'en', assets.images.flags.en}
             },
             config = 'lang',
             y = baseY * 4 + padding / 2
         },
         {
             icons = {
-                light = 'Sun',
-                dark = 'Moon'
+                {'light', 'Sun'},
+                {'dark', 'Moon'}
             },
             config = 'theme',
             y = baseY * 5 + padding / 2

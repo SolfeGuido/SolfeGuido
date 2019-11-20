@@ -117,11 +117,17 @@ function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
     local measure = self:getMeasure()
     local currentNote = self.notes:peek()
-    TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)
     if measure:isCorrect(currentNote.note, idx) then
+        TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)
         self.notes:shift():correct()
         self.score:gainPoint()
     else
+        self.timer:script(function(wait)
+            for i = 1, Vars.note.wrongRepeat do
+                TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)
+                wait(Vars.note.wrongSpace)
+            end
+        end)
         self.notes:shift():wrong()
         Mobile.vibrate(Vars.mobile.vibrationTime)
         if self.stopWatch then

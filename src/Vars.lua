@@ -88,7 +88,9 @@ return {
         image = 'note';
         padding = 0.5,
         distance = 0.1,
-        fadeAway = 2
+        fadeAway = 2,
+        wrongRepeat = 3,
+        wrongSpace = 0.3
     },
     mobile = {
         vibrationTime = 0.1

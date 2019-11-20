@@ -132,7 +132,7 @@ function MenuState:init(...)
                 x = love.graphics.getWidth() / 2 - Vars.titleSize * 2,
                 color = Theme.transparent:clone()
             }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize}
+            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize +5}
         },
         {
             element = UIFactory.createIconButton(self, {
@@ -150,7 +150,7 @@ function MenuState:init(...)
                     end)
                 end
             }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize}
+            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize + 5}
         }
     })
 end

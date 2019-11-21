@@ -42,7 +42,9 @@ end
 function OptionsState:keypressed(key)
     if key == "escape" then
         self:slideOut()
+        return true
     end
+    return State.keypressed(self, key)
 end
 
 function OptionsState:draw()

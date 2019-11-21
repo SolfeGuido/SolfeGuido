@@ -1,7 +1,5 @@
 
 local ScreenManager = require('lib.ScreenManager')
-local State = require('src.State')
-
 local EventTransmitter = {}
 
 local events = {
@@ -12,8 +10,9 @@ local events = {
 
 function EventTransmitter.transmitEvents(state)
     for _, ev in ipairs(events) do
+        local base = state[ev] or function() end
         state[ev] = function(tbl, ...)
-            if not State[ev](tbl, ...) then
+            if not base(tbl, ...) then
                 local first = ScreenManager:first()
                 first[ev](first, ...)
             end

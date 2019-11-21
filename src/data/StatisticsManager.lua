@@ -84,15 +84,17 @@ function StatisticsManager.init()
     end
 end
 
+function StatisticsManager.add(stats)
+    gameList[#gameList+1] = stats:finalize()
+end
+
 function StatisticsManager.save()
     local str = lume.serialize(gameList)
     local data = love.data.compress('data',Vars.statistics.dataFormat, str)
     love.filesystem.write(Vars.statistics.fileName, data)
 end
 
-function StatisticsManager.add(stats)
-    gameList[#gameList+1] = stats
-end
+
 
 function StatisticsManager.getAll()
     return gameList

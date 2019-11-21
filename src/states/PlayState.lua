@@ -3,6 +3,7 @@
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.data.Config')
 local ScoreManager = require('src.data.ScoreManager')
+local StatisticsManager = require('src.data.StatisticsManager')
 local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
 
@@ -10,11 +11,10 @@ local Mobile = require('src.utils.Mobile')
 local Scene = require('src.State')
 
 -- Entities
-local Measure = require('src.objects.Measure')
+local GameStatistics = require('src.objects.GameStatistics')
 local Note = require('src.objects.Note')
 local Queue = require('src.utils.Queue')
-local StopWatch = require('src.objects.Stopwatch')
-local Score = require('src.objects.Score')
+
 local AnswerGiver = require('src.objects.AnswerGiver')
 
 
@@ -51,11 +51,13 @@ function PlayState:init(config)
         elements[#elements + 1] = {element = self.stopWatch, target = {x = Vars.stopWatch.x}}
     end
 
-    self.answerGiver = self:addentity(AnswerGiver, { callback = function(x) self:answerGiven(x) end })
+    self.answerGiver = self:addentity(AnswerGiver, {callback = function(x) self:answerGiven(x) end })
+    self.stats = self:addentity(GameStatistics)
 
     self.finished = false
     self:transition(elements, function()
         if self.stopWatch then self.stopWatch:start() end
+        self.stats:start()
     end)
 end
 
@@ -79,6 +81,8 @@ end
 
 function PlayState:finish()
     self.answerGiver:hide()
+    self.stats:stop()
+    StatisticsManager.add(self.stats)
     self.finished = true
     while not self.notes:isEmpty() do
         self.notes:shift():fadeAway()
@@ -119,9 +123,11 @@ function PlayState:answerGiven(idx)
     local currentNote = self.notes:peek()
     if measure:isCorrect(currentNote.note, idx) then
         TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)
+        self.stats:correct()
         self.notes:shift():correct()
         self.score:gainPoint()
     else
+        self.stats:wrong()
         self.timer:script(function(wait)
             for i = 1, Vars.note.wrongRepeat do
                 TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)

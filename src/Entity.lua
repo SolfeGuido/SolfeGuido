@@ -14,8 +14,10 @@ function Entity:new(state, options)
     self.area = state
     self.timer = state and state.timer or nil
     self.isDead = false
-    for k,v in pairs(options) do
-        self[k] = v
+    if options then
+        for k,v in pairs(options) do
+            self[k] = v
+        end
     end
 end
 

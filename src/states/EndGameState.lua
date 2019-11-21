@@ -22,7 +22,8 @@ function EndGameState:slideOut()
 end
 
 function EndGameState:init(score, best)
-    local text = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr('Finished'))
+    local title = best and 'Best Score' or 'Score'
+    local text = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr(title) .. ' : ' .. tostring(score))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
     local middle = dialogMiddle - text:getWidth() / 2
     local yStart = 100

@@ -47,6 +47,11 @@ return {
         y = 5,
         fontSize = 25
     },
+    statistics = {
+        dataFormat = 'zlib',
+        containerType = 'data',
+        fileName = 'statistics.bin'
+    },
     transition = {
         tween = 0.25,
         state = 1,

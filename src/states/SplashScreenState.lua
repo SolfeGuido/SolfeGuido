@@ -1,7 +1,7 @@
 
 local State = require('src.State')
-local Config = require('src.utils.Config')
-local ScoreManager = require('src.utils.ScoreManager')
+local Config = require('src.data.Config')
+local ScoreManager = require('src.data.ScoreManager')
 local i18n = require('lib.i18n')
 local ScreeManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
@@ -111,7 +111,7 @@ function SplashScreenState:displayLines()
     local hTarget = Vars.lineHeight * 4
     self.timer:tween(Vars.transition.tween, line, {height = hTarget}, 'out-expo', function()
         -- Load all states this time
-        ScreeManager.init(allStates, 'CreditsState')
+        ScreeManager.init(allStates, 'MenuState')
     end)
 end
 

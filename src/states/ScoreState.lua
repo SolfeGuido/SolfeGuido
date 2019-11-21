@@ -1,7 +1,7 @@
 
 -- LIBS
 local State = require('src.State')
-local ScoreManager = require('src.utils.ScoreManager')
+local ScoreManager = require('src.data.ScoreManager')
 local Theme = require('src.utils.Theme')
 local Graphics = require('src.utils.Graphics')
 local UIFactory = require('src.utils.UIFactory')

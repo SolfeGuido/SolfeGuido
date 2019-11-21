@@ -3,7 +3,7 @@ local DialogSate = require('src.states.DialogState')
 local ScreenManager = require('lib.ScreenManager')
 local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
-local Config = require('src.utils.Config')
+local Config = require('src.data.Config')
 local PlayButton = require('src.objects.PlayButton')
 
 ---@class PlaySelectState : State

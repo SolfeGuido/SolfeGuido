@@ -3,7 +3,7 @@ _G['Vars'] = require('src.Vars')
 local ScreenManager = require('lib.ScreenManager')
 local Mobile = require('src.utils.Mobile')
 local Theme = require('src.utils.Theme')
-local Config = require('src.utils.Config')
+local Config = require('src.data.Config')
 
 --- BEGIN DEBUG
 local debugGraph = require('lib.debugGraph')

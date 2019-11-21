@@ -2,7 +2,7 @@
 --- LIBS
 local State = require('src.State')
 local lume = require('lib.lume')
-local Config = require('src.utils.Config')
+local Config = require('src.data.Config')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 

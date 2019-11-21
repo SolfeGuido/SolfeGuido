@@ -1,8 +1,8 @@
 
 -- LIBS
 local ScreenManager = require('lib.ScreenManager')
-local Config = require('src.utils.Config')
-local ScoreManager = require('src.utils.ScoreManager')
+local Config = require('src.data.Config')
+local ScoreManager = require('src.data.ScoreManager')
 local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
 

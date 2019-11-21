@@ -1,5 +1,5 @@
 
-local Config = require('src.utils.Config')
+local Config = require('src.data.Config')
 
 ---@class Mobile
 ---@field configure function

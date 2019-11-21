@@ -1,5 +1,5 @@
 local Entity = require('src.Entity')
-local Config = require('src.utils.Config')
+local Config = require('src.data.Config')
 local Theme = require('src.utils.Theme')
 local lume = require('lib.lume')
 

@@ -2,7 +2,7 @@
 
 local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
-local Config = require('src.utils.Config')
+local Config = require('src.data.Config')
 
 ---@class StopWatch : Entity
 ---@field private color Color

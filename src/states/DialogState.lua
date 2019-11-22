@@ -1,14 +1,10 @@
 -- LIBS
 local State = require('src.State')
-local Mobile = require('src.utils.Mobile')
 local ScreenManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 
 -- Entities
 local UIFactory = require('src.utils.UIFactory')
-local Title = require('src.objects.Title')
-local IconButton = require('src.objects.IconButton')
-local TextButton = require('src.objects.TextButton')
 
 ---@class DialogState : State
 local DialogState = State:extend()
@@ -20,6 +16,7 @@ function DialogState:new()
     self.margin = Vars.limitLine / 2
     self:redirectMouse('mousemoved', 'mousepressed', 'mousereleased')
     self:redirectTouch('touchmoved', 'touchpressed', 'touchreleased')
+    self.slidingOut = false
 end
 
 function DialogState:redirectMouse(...)
@@ -47,6 +44,8 @@ function DialogState:keypressed(key)
 end
 
 function DialogState:slideOut()
+    if self.slidingOut then return end
+    self.slidingOut = true
     self.timer:tween(Vars.transition.tween, self, {yBottom = -10}, 'out-expo',function()
         ScreenManager.pop()
     end)

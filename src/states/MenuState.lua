@@ -30,7 +30,6 @@ function MenuState:keypressed(key)
 end
 
 function MenuState:openOptions(btn)
-    btn.consumed = false
     self.timer:tween(Vars.transition.tween, btn, {rotation = btn.rotation - math.pi}, 'linear')
     ScreenManager.push('OptionsState')
 end

@@ -49,9 +49,6 @@ local function extractGlobals(games)
         longestStreak = maxStreak,
         currentStreak = currentStreak,
     }
-    for k,v in pairs(res) do
-        print(k,v)
-    end
     return res
 end
 

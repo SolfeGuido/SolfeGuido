@@ -16,9 +16,12 @@ function OptionsState:new()
     EventTransmitter.transmitEvents(self)
     self.xPos = love.graphics.getWidth() - 5
     self.drawers = {}
+    self.slidingOut = false
 end
 
 function OptionsState:slideOut()
+    if self.slidingOut then return end
+    self.slidingOut = true
     for _, drawer in ipairs(self.drawers) do drawer:hide() end
     self.drawers = nil
     local elements = {}
@@ -28,12 +31,13 @@ function OptionsState:slideOut()
             target = {color = Theme.transparent, x = love.graphics.getWidth() + 10}
         }
     end
+    local settings = ScreenManager.first().settingsButton
+
     self:transition(elements, function()
         ScreenManager.pop()
-        ScreenManager.first().settingsButton.consumed = false
+        if settings then settings.consumed = false end
     end, 0)
     self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() + 5}, 'out-expo')
-    local settings = ScreenManager.first().settingsButton
     if settings then
         self.timer:tween(Vars.transition.tween, settings, {rotation = settings.rotation + math.pi}, 'linear')
     end

@@ -72,6 +72,8 @@ function SplashScreenState:updateCoroutine()
     local success, progress = coroutine.resume(self.coroutine)
     if success then
         self.totalLoading = self.totalLoading + (progress or 0)
+    else
+        error("Loading failed, reason : " .. progress)
     end
     if coroutine.status(self.coroutine) == "dead" then
         self.coroutine = "done"

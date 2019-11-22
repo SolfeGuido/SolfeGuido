@@ -56,16 +56,15 @@ function love.run()
             love.update(fixed_dt)
             accumulator = accumulator - fixed_dt
         end
- 
+
 		if love.graphics.isActive() then
 			love.graphics.origin()
 			love.graphics.clear(love.graphics.getBackgroundColor())
- 
+
 			love.draw()
- 
 			love.graphics.present()
 		end
- 
+
 		love.timer.sleep(0.0001)
 	end
 end

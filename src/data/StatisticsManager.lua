@@ -1,22 +1,15 @@
 
 local lume = require('lib.lume')
+local DateUtils = require('src.utils.DateUtils')
 
 local StatisticsManager = {}
 
 local gameList = nil
 local globalStats = nil
 
-local oneDayDuration = 24 * 60 * 60
 
-local function lessThanOneDayDiff(dateA, dateB)
-    return os.difftime(os.time(dateB), os.time(dateA)) <= oneDayDuration
-end
-
-local function sameDay(dateA, dateB)
-    return dateA.day == dateB.day
-end
-
-local function extractGlobals(games, today)
+local function extractGlobals(games)
+    local today = DateUtils.now()
     table.sort(games, function(a,b) return os.difftime(os.time(a.date), os.time(b.date)) < 0 end)
     local tPlayed = 0
     local tCorrect = 0
@@ -31,11 +24,11 @@ local function extractGlobals(games, today)
         tPlayed = tPlayed + (v.timePlayed or 0)
         tCorrect = tCorrect + (v.correctNotes or 0)
         tWrong = tWrong + (v.wrongNotes or 0)
-        avgReac = avgReac + (v.averageReactionTime * (v.correctNotes or 1))
+        avgReac = avgReac + (v.avgReacTime * (v.correctNotes or 1))
 
         -- Find streaks
-        if lessThanOneDayDiff(firstDay, v.date) then
-            if not sameDay(firstDay, v.date) then
+        if DateUtils.within24Hours(firstDay, v.date) then
+            if not DateUtils.sameDay(firstDay, v.date) then
                 currentStreak = currentStreak + 1
             end
         else
@@ -50,13 +43,11 @@ local function extractGlobals(games, today)
     avgReac = avgReac / tCorrect
     local res = {
         totalGames = #gameList,
-        date = today,
         totalCorrectNotes = tCorrect,
         totalWrongNotes = tWrong,
-        averageReactionTime = avgReac,
-        playedToday = games[#games].date.day == today.day,
-        longestPlayStreak = maxStreak,
-        currentPlayStreak = currentStreak,
+        avgReacTime = avgReac,
+        longestStreak = maxStreak,
+        currentStreak = currentStreak,
     }
     for k,v in pairs(res) do
         print(k,v)
@@ -72,29 +63,46 @@ function StatisticsManager.init()
         is just for the user...
         If the user cheats, he just cheats on himself
     ]]--
-    local today = os.date("*t")
+    gameList = {}
+    globalStats = {
+        totalGames = #gameList,
+        totalCorrectNotes = 0,
+        totalWrongNotes = 0,
+        avgReacTime = 0,
+        longestStreak = 0,
+        currentStreak = 0
+    }
     if love.filesystem.getInfo(Vars.statistics.fileName) then
         local data = love.filesystem.read(Vars.statistics.fileName)
         local str = love.data.decompress('string', Vars.statistics.dataFormat, data)
         gameList = lume.deserialize(str)
-        globalStats = extractGlobals(gameList, today)
-    else
-        gameList = {}
-        globalStats = {
-            totalGames = #gameList,
-            date = today,
-            totalCorrectNotes = 0,
-            totalWrongNotes = 0,
-            averageReactionTime = 0,
-            playedToday = false,
-            longestPlayStreak = 0,
-            currentPlayStreak = 0
-        }
+        if #gameList > 0 then
+            globalStats = extractGlobals(gameList)
+        end
     end
 end
 
+---@param stats GameStatistics
 function StatisticsManager.add(stats)
-    gameList[#gameList+1] = stats:finalize()
+    local obj = stats:finalize()
+    local now = DateUtils.now()
+    gameList[#gameList+1] = obj
+    if not globalStats.playedToday then
+        if #gameList == 1 then
+            globalStats.currentStreak = 1
+            globalStats.longestStreak = 1
+        else
+            local previous = gameList[#gameList - 1]
+            if DateUtils.within24Hours(previous.date, now) and not DateUtils.sameDay(previous.date, now) then
+                globalStats.currentStreak = globalStats.currentStreak + 1
+                globalStats.longestStreak = math.max(globalStats.currentStreak, globalStats.longestStreak)
+            end
+        end
+    end
+    local tCorrect = globalStats.totalCorrectNotes
+    globalStats.totalCorrectNotes = tCorrect + obj.correctNotes
+    globalStats.totalWrongNotes = globalStats.totalWrongNotes + obj.wrongNotes
+    globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) + obj.avgReacTime) / (tCorrect + 1)
 end
 
 function StatisticsManager.save()

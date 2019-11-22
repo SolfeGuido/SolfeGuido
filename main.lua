@@ -56,8 +56,6 @@ function love.run()
             love.update(fixed_dt)
             accumulator = accumulator - fixed_dt
         end
-		-- Call update and draw
-		love.update(dt)
  
 		if love.graphics.isActive() then
 			love.graphics.origin()

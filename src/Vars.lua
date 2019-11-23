@@ -52,6 +52,11 @@ return {
         containerType = 'data',
         fileName = 'statistics.bin'
     },
+    achievements = {
+        dataFormat = 'zlib',
+        containerType = 'data',
+        fileName = 'achievements.bin',
+    },
     transition = {
         tween = 0.25,
         state = 1,

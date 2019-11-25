@@ -1,8 +1,10 @@
 local utf8 = require("utf8")
+local Logger = require('lib.logger')
 
 local function error_printer(msg, layer)
 	print((debug.traceback("Error: " .. tostring(msg), 1+(layer or 1)):gsub("\n[^\n]+$", "")))
 end
+
 
 function love.errorhandler(msg)
 	msg = tostring(msg)
@@ -67,10 +69,19 @@ function love.errorhandler(msg)
 	p = p:gsub("\t", "")
 	p = p:gsub("%[string \"(.-)\"%]", "%1")
 
+    Logger.fatal(p)
+
+    local messages = {
+        'Whoops, looks like there was an error\n',
+        'Try to restart the app\n',
+        'If it still does not work',
+        'Please tell the dev he\'s done a bad job :('
+    }
 	local function draw()
 		local pos = 70
-		love.graphics.clear(89/255, 157/255, 220/255)
-		love.graphics.printf(p, pos, pos, love.graphics.getWidth() - pos)
+        love.graphics.clear(245/255, 245/255, 245/255)
+        love.graphics.setColor(68/255, 68 / 255, 68 / 255)
+		love.graphics.printf(table.concat(messages,'\n'), pos, pos, love.graphics.getWidth() - pos)
 		love.graphics.present()
 	end
 

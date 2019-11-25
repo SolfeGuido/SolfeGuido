@@ -2,7 +2,7 @@
 local run = true
 local function log(level, message)
     local today = os.date('*t')
-    local content = string.format('%02d/%02d/%04d %02dh%02dm%02s[%s]%s\n',
+    local content = string.format('%02d/%02d/%04d %02dh%02dm%02ds[%s]%s\n',
         today.day, today.month, today.year,
         today.hour, today.min, today.sec,
         level, message

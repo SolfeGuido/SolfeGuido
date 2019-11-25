@@ -6,6 +6,7 @@ local StatisticsManager = require('src.data.StatisticsManager')
 local i18n = require('lib.i18n')
 local ScreeManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
+local Logger = require('src.logs.Logger')
 
 local Line = require('src.objects.Line')
 
@@ -55,6 +56,7 @@ end
 function SplashScreenState:createCoroutine()
     return coroutine.create(function()
         math.randomseed(os.time())
+        Logger.init()
         _G['assets'] = require('lib.cargo').init('res', 98)
         ScoreManager.init()
         StatisticsManager.init()
@@ -73,6 +75,7 @@ function SplashScreenState:updateCoroutine()
     if success then
         self.totalLoading = self.totalLoading + (progress or 0)
     else
+        Logger.fatal('Failed to boot up :' .. progress)
         error("Loading failed, reason : " .. progress)
     end
     if coroutine.status(self.coroutine) == "dead" then

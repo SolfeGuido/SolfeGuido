@@ -5,6 +5,7 @@ local Mobile = require('src.utils.Mobile')
 local Theme = require('src.utils.Theme')
 local Config = require('src.data.Config')
 local StatisticsManager = require('src.data.StatisticsManager')
+local Logger = require('src.logs.Logger')
 
 --- BEGIN DEBUG
 local debugGraph = require('lib.debugGraph')
@@ -72,6 +73,8 @@ end
 function love.quit(a)
     Config.save()
     StatisticsManager.save()
+    Logger.info('Exiting...')
+    Logger.close()
     return a
 end
 

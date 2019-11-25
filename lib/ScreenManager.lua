@@ -99,6 +99,27 @@ local function push( screen, args )
 end
 
 ---
+--- Removes the given state from the stack
+---
+local function removeSelf( screen )
+    for i = #stack, 1, -1 do
+        if stack[i] == screen then
+            -- Remove the found screen
+            table.remove(stack, i)
+
+            -- Close it
+            screen:close()
+
+            -- Activate next screen on the stack
+            ScreenManager.peek():setActive(true)
+
+            -- Stop the loop
+            return
+        end
+    end
+end
+
+---
 -- Check if the screen is valid or error if not
 --
 local function validateScreen( screen )
@@ -114,6 +135,7 @@ local function validateScreen( screen )
         error( string.format( ERROR_MSG, tostring( screen ), str ), 3 )
     end
 end
+
 
 -- ------------------------------------------------
 -- Public Functions
@@ -137,6 +159,8 @@ function ScreenManager.performChanges()
             push( change.screen, change.args )
         elseif change.action == 'push' then
             push( change.screen, change.args )
+        elseif change.action == 'removeSelf' then
+            removeSelf( change.args )
         end
     end
 end
@@ -226,6 +250,15 @@ function ScreenManager.pop()
         changes[#changes + 1] = { action = 'pop' }
     else
         error("Can't close the last screen. Use switch() to clear the screen manager and add a new screen.", 2)
+    end
+end
+
+function ScreenManager.removeSelf(state)
+    if height > 1 then
+        height = height - 1
+        changes[#changes+1] = {action = 'removeSelf', args = state}
+    else
+        error("Can't close the last screen. Use switch() to clear the screen manager and add a new scree.", 2)
     end
 end
 

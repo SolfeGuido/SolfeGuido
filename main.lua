@@ -65,7 +65,7 @@ function love.run()
 			love.graphics.present()
 		end
 
-		love.timer.sleep(0.0001)
+		love.timer.sleep(0.001)
 	end
 end
 

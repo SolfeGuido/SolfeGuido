@@ -1,15 +1,16 @@
 
-local lume = require('lib.lume')
+local FileUtils = require('src.utils.FilesUtils')
 local ScoreManager = {}
 
 local scores = {}
 
 function ScoreManager.init()
-    local existing = {}
-    if love.filesystem.getInfo(Vars.score.fileName) then
-        local data = love.filesystem.read(Vars.score.fileName)
-        local str = love.data.decompress('string', Vars.score.dataFormat, data)
-        existing = lume.deserialize(str)
+    local success, existing = pcall(FileUtils.readCompressedData, Vars.score.fileName, Vars.score.dataFormat)
+    if not success then
+        -- Log error message
+        -- Issue error message ?
+        print(existing)
+        existing = {}
     end
 
     for _, key in ipairs(Vars.userPreferences.keySelect) do
@@ -39,9 +40,10 @@ function ScoreManager.update(key, difficulty, timing, score)
 end
 
 function ScoreManager.save()
-    local str = lume.serialize(scores)
-    local data = love.data.compress('data',Vars.score.dataFormat, str)
-    love.filesystem.write(Vars.score.fileName, data)
+    local success, message = FileUtils.writeCompressedData(Vars.score.fileName, Vars.score.dataFormat, scores)
+    if not success then
+        print(message)
+    end
 end
 
 return ScoreManager

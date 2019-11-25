@@ -8,6 +8,7 @@ local ScreeManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 local Logger = require('lib.logger')
 
+
 local Line = require('src.objects.Line')
 
 ---@class SplashScreenState : State

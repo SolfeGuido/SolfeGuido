@@ -1,6 +1,7 @@
 
 local lume = require('lib.lume')
 local i18n = require('lib.i18n')
+local FileUtils = require('src.utils.FilesUtils')
 local Theme = require('src.utils.Theme')
 
 local Config = {}
@@ -14,24 +15,27 @@ end
 
 
 function Config.parse()
-    local conf = {}
-    if love.filesystem.getInfo(Vars.configSave) then
-        conf = lume.deserialize(love.filesystem.read(Vars.configSave))
-        local allPrefs = Vars.userPreferences
-        for k,v in pairs(allPrefs) do
-            _configData[k] = conf[k] or v[1]
-        end
-    else
-        conf = Vars.userPreferences
-        for k,v in pairs(conf) do
-            _configData[k] = v[1]
-        end
-        -- trying to get the computer locale
+    local sucess, conf = pcall(FileUtils.readData, Vars.configSave)
+    if not sucess then
+        print(conf)
+        conf = {}
+    end
+
+    -- Find user locale
+    if not conf.lang then
         local l = getSimpleLocale()
         if lume.find(Vars.userPreferences.lang, l) then
-            _configData.lang = l
+            conf.lang = l
         end
     end
+
+    -- Setting the config
+    local allPrefs = Vars.userPreferences
+    for k,v in pairs(allPrefs) do
+        _configData[k] = conf[k] or v[1]
+    end
+
+
     Config.updateSound()
 end
 
@@ -53,7 +57,10 @@ function Config.update(key, value)
 end
 
 function Config.save()
-    love.filesystem.write(Vars.configSave , lume.serialize(_configData))
+    local success, message = FileUtils.writeData(Vars.configSave, _configData)
+    if not success then
+        print(message)
+    end
 end
 
 return setmetatable(Config, {

@@ -1,17 +1,13 @@
 
 local FileUtils = require('src.utils.FilesUtils')
+local Logger = require('lib.logger')
 local ScoreManager = {}
 
 local scores = {}
 
 function ScoreManager.init()
     local success, existing = pcall(FileUtils.readCompressedData, Vars.score.fileName, Vars.score.dataFormat)
-    if not success then
-        -- Log error message
-        -- Issue error message ?
-        print(existing)
-        existing = {}
-    end
+    if not success then Logger.error(existing) end
 
     for _, key in ipairs(Vars.userPreferences.keySelect) do
         scores[key] = {}

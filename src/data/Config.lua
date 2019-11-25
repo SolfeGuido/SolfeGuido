@@ -1,6 +1,7 @@
 
 local lume = require('lib.lume')
 local i18n = require('lib.i18n')
+local Logger = require('lib.logger')
 local FileUtils = require('src.utils.FilesUtils')
 local Theme = require('src.utils.Theme')
 
@@ -16,10 +17,7 @@ end
 
 function Config.parse()
     local sucess, conf = pcall(FileUtils.readData, Vars.configSave)
-    if not sucess then
-        print(conf)
-        conf = {}
-    end
+    if not sucess then Logger.error(conf) end
 
     -- Find user locale
     if not conf.lang then

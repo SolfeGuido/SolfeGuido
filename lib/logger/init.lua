@@ -1,7 +1,17 @@
+
+---@class Logger
+---@field close function
+---@field init function
+---@field debug function
+---@field info function
+---@field warning function
+---@field error function
+---@field fatal function
 local Logger = {}
 
 local levels = {'DEBUG', 'INFO', 'WARNING', 'ERROR', 'FATAL'}
 local thread = nil
+local currentFilePath = (...):gsub("%.init$",""):gsub('%.', '/')
 
 function Logger.log(level, message)
     love.thread.getChannel('info'):push({type = 'log', level = level, message = message})
@@ -10,6 +20,8 @@ end
 function Logger.close()
     love.thread.getChannel('info'):push({type = 'stop'})
     thread:wait()
+    thread:release()
+    thread = nil
 end
 
 for _, v in ipairs(levels) do
@@ -17,7 +29,7 @@ for _, v in ipairs(levels) do
 end
 
 function Logger.init()
-    thread = love.thread.newThread('src/logs/LoggerThread.lua')
+    thread = love.thread.newThread(currentFilePath .. '/LoggerThread.lua')
     thread:start()
     Logger.info('Starting up')
 end

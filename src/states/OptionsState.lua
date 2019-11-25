@@ -32,10 +32,10 @@ function OptionsState:slideOut()
         }
     end
     local settings = ScreenManager.first().settingsButton
+    if settings then settings.consumed = false end
 
     self:transition(elements, function()
         ScreenManager.removeSelf(self)
-        if settings then settings.consumed = false end
     end, 0)
     self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() + 5}, 'out-expo')
     if settings then

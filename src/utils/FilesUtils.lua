@@ -9,7 +9,7 @@ function FilesUtils.readCompressedData(fileName, compressionType)
     if love.filesystem.getInfo(fileName, 'file') then
         return lume.deserialize(love.data.decompress('string', compressionType, love.filesystem.read(fileName)))
     end
-    return nil
+    return {}
 end
 
 ---@param fileName string
@@ -26,7 +26,7 @@ function FilesUtils.readData(fileName)
     if love.filesystem.getInfo(fileName, 'file') then
         return lume.deserialize(love.filesystem.read(fileName))
     end
-    return nil
+    return {}
 end
 
 ---@param fileName string

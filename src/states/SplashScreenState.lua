@@ -6,7 +6,7 @@ local StatisticsManager = require('src.data.StatisticsManager')
 local i18n = require('lib.i18n')
 local ScreeManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
-local Logger = require('src.logs.Logger')
+local Logger = require('lib.logger')
 
 local Line = require('src.objects.Line')
 

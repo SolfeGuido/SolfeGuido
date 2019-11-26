@@ -47,6 +47,11 @@ return {
         y = 5,
         fontSize = 25
     },
+    logs = {
+        logFile = 'solfeguido.log',
+        maxSize = 5 * 1024 * 1024,
+        logZip = 'solfeguidolog.zip'
+    },
     statistics = {
         dataFormat = 'zlib',
         containerType = 'data',

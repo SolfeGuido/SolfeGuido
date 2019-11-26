@@ -28,9 +28,9 @@ for _, v in ipairs(levels) do
     Logger[string.lower(v)] = function(...) Logger.log(v, ...) end
 end
 
-function Logger.init()
+function Logger.init(config)
     thread = love.thread.newThread(currentFilePath .. '/LoggerThread.lua')
-    thread:start()
+    thread:start(config)
     Logger.info('Starting up')
 end
 

@@ -1,15 +1,32 @@
 
+local config = ...
+
+config.logFile = config.logFile or 'logs.log'
+config.maxSize = config.maxSize or 5 * 1024 * 1024-- 5 MB
+config.logZip = config.logZip or config.logFile .. '.zip'
+
 local run = true
+
+local function compressLogFile()
+    if love.filesystem.getInfo(config.logZip) then
+        love.filesystem.remove(config.logZip)
+    end
+    love.filesystem.write(config.logZip, love.data.compress('data','zlib', love.filesystem.read(config.logFile)))
+    love.filesystem.remove(config.logFile)
+end
+
 local function log(level, message)
-    local today = os.date('*t')
+    local now = os.date('*t')
     local content = string.format('%02d/%02d/%04d %02dh%02dm%02ds[%s]%s\n',
-        today.day, today.month, today.year,
-        today.hour, today.min, today.sec,
+        now.day, now.month, now.year,
+        now.hour, now.min, now.sec,
         level, message
     )
-    love.filesystem.append('solfeguido.log', content)
-    -- check for size, and if too big, zip and create new one
-    -- if error ... ignore or fatal ?
+    love.filesystem.append(config.logFile, content)
+    local info = love.filesystem.getInfo(config.logFile)
+    if info and info.size > config.maxSize then
+            compressLogFile()
+    end
 end
 
 while run do

@@ -57,7 +57,7 @@ end
 function SplashScreenState:createCoroutine()
     return coroutine.create(function()
         math.randomseed(os.time())
-        Logger.init()
+        Logger.init(Vars.logs)
         _G['assets'] = require('lib.cargo').init('res', 98)
         ScoreManager.init()
         StatisticsManager.init()

@@ -8,7 +8,6 @@ local ScreenManager = require('lib.ScreenManager')
 local Mobile = require('src.utils.Mobile')
 local Theme = require('src.utils.Theme')
 local Config = require('src.data.Config')
-local request = require('lib.luajit-request')
 
 
 --- BEGIN DEBUG

@@ -63,9 +63,9 @@ return {
         fileName = 'achievements.bin',
     },
     transition = {
-        tween = 0.25,
+        tween = 0.3,
         state = 1,
-        spacing = 0.01
+        spacing = 0.05
     },
     gKey = {
         height = 7,

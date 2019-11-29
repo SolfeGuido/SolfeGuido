@@ -21,16 +21,25 @@ function ScoreState:dispose()
     State.dispose(self)
 end
 
+function ScoreState:keypressed(key)
+    if key == "escape" then
+        self:slideOut()
+    else
+        State.keypressed(self, key)
+    end
+end
+
 function ScoreState:updateScores(nwTiming)
     for _, level in ipairs(Vars.userPreferences.difficulty) do
         for _, key in ipairs(Vars.userPreferences.keySelect) do
             local score = ScoreManager.get(key, level, nwTiming)
-            self.texts[level][key]:setText(tostring(score))
+            self.texts[level][key]:setCenteredText(tostring(score))
         end
     end
 end
 
 function ScoreState:slideOut(callback)
+    callback = callback or function() ScreenManager.switch('MenuState') end
     local elements = {
         {
             element = self.title,
@@ -55,7 +64,7 @@ function ScoreState:slideOut(callback)
         }
     end
 
-    self:transition(elements, callback)
+    self:transition(elements, callback, Vars.transition.spacing / 10)
 end
 
 function ScoreState:draw()
@@ -66,7 +75,7 @@ end
 function ScoreState:init()
     local time = Vars.transition.tween / 3
     local middle = Vars.baseLine + Vars.lineHeight
-    local font = assets.fonts.MarckScript(Vars.lineHeight)
+    local font = assets.fonts.Oswald(2 * Vars.lineHeight / 3)
     local maxSize = 0
 
     self.texts = {}
@@ -83,9 +92,7 @@ function ScoreState:init()
                 x = 5,
                 y = love.graphics.getHeight(),
                 callback = function()
-                    self:slideOut(function()
-                        ScreenManager.switch('MenuState')
-                    end)
+                    self:slideOut()
                 end
             }),
             target = {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize - 5}

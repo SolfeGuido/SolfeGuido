@@ -9,7 +9,7 @@ local MobileButton = AbstractButton:extend()
 
 function MobileButton:new(area, options)
     AbstractButton.new(self, area, options)
-    self.color = options.color or Theme.background:clone()
+    self.color = options.color or Theme.font:clone()
 end
 
 function MobileButton:boundingBox()
@@ -22,7 +22,7 @@ function MobileButton:hovered()
 end
 
 function MobileButton:leave()
-    self:animate(Vars.transition.tween, self, {color = Theme.background}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function MobileButton:pressed()
@@ -30,7 +30,7 @@ function MobileButton:pressed()
 end
 
 function MobileButton:released()
-    self:animate(Vars.transition.tween, self, {color = Theme.background}, 'out-expo')
+    self:animate(Vars.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
 function MobileButton:onclick()
@@ -42,9 +42,9 @@ function MobileButton:draw()
     love.graphics.push()
     love.graphics.translate(self.x, self.y)
     local box = self:boundingBox()
-    love.graphics.setColor(self.color)
+    love.graphics.setColor(Theme.background)
     love.graphics.rectangle('fill', 0, 0, box.width, box.height)
-    love.graphics.setColor(Theme.font)
+    love.graphics.setColor(self.color)
     love.graphics.rectangle('line', 0, 0, box.width, box.height)
     local txtX = (box.width - self.text:getWidth()) / 2
     love.graphics.draw(self.text, txtX, Vars.mobileButton.padding)

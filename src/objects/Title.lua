@@ -19,6 +19,13 @@ function Title:setText(text)
     self.text:set(text)
 end
 
+function Title:setCenteredText(text)
+    local oldWidth = self.text:getWidth()
+    self.text:set(text)
+    local nwWidth = self.text:getWidth()
+    self.x = self.x + (oldWidth - nwWidth) / 2
+end
+
 function Title:center()
     self.x = love.graphics.getWidth() / 2 - self.text:getWidth()  / 2
 end

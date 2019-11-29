@@ -72,6 +72,7 @@ function CreditsState:slideOut(callback)
 end
 
 function CreditsState:init()
+    local fontSize = 2 * Vars.lineHeight / 3
     self:transition({
         {
             element = UIFactory.createTitle(self, {
@@ -100,49 +101,54 @@ function CreditsState:init()
         {
             element = UIFactory.createTitle(self, {
                 text = 'Made with',
+                fontName = 'Oswald',
                 name =  'madeWithTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight,
-                fontSize = Vars.lineHeight
+                fontSize = fontSize
             }),
             target = {color = Theme.font, x = Vars.limitLine - self.madeWithTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'By',
+                fontName = 'Oswald',
                 name = 'byTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 2,
-                fontSize = Vars.lineHeight
+                fontSize = fontSize
             }),
             target = {color = Theme.font, x = Vars.limitLine - self.byTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'Icons',
+                fontName = 'Oswald',
                 name = 'iconsTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 3,
-                fontSize = Vars.lineHeight
+                fontSize = fontSize
             }),
             target = {color = Theme.font, x = Vars.limitLine - self.iconsTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'Sounds',
+                fontName = 'Oswald',
                 name = 'soundsTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = Vars.lineHeight
+                fontSize = fontSize
             }),
             target = {color = Theme.font, x = Vars.limitLine - self.soundsTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'Azarias',
+                fontName = 'Oswald',
                 name = 'azariasTitle',
                 x = love.graphics.getWidth(),
-                fontSize = Vars.lineHeight,
+                fontSize = fontSize,
                 y = Vars.baseLine + Vars.lineHeight * 2
             }),
             target = {color = Theme.font, x = Vars.limitLine + 5}
@@ -150,9 +156,10 @@ function CreditsState:init()
         {
             element = UIFactory.createTitle(self, {
                 text = 'IconMoonApp',
+                fontName = 'Oswald',
                 name = 'iconMoonTitle',
                 x = love.graphics.getWidth(),
-                fontSize = Vars.lineHeight,
+                fontSize = fontSize,
                 y = Vars.baseLine + Vars.lineHeight * 3
             }),
             target = {color = Theme.font, x = Vars.limitLine + 5}
@@ -160,10 +167,11 @@ function CreditsState:init()
         {
             element = UIFactory.createTitle(self, {
                 text = 'University of Iowa',
+                fontName = 'Oswald',
                 name = 'iowaTitle',
                 x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = Vars.lineHeight
+                fontSize = fontSize
             }),
             target = {color = Theme.font, x = Vars.limitLine + 5}
         },
@@ -180,10 +188,11 @@ function CreditsState:init()
         {
             element = UIFactory.createTitle(self, {
                 text = 'Löve2d',
+                fontName = 'Oswald',
                 name = 'loveTitle',
                 x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight,
-                fontSize = Vars.lineHeight
+                fontSize = fontSize
             }),
             target = {color = Theme.font, x = Vars.limitLine + Vars.lineHeight}
         }

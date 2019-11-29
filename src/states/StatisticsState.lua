@@ -4,6 +4,7 @@ local Graphics = require('src.utils.Graphics')
 local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
+local StatisticsManager = require('src.data.StatisticsManager')
 
 ---@class StatisticsState : State
 local StatisticsState = State:extend()
@@ -21,8 +22,17 @@ function StatisticsState:draw()
     State.draw(self)
 end
 
+function StatisticsState:keypressed(key)
+    if key == "escape" then
+        self:slideOut()
+    else
+        State.keypressed(self, key)
+    end
+end
+
 function StatisticsState:slideOut(callback)
-    self:transition({
+    callback = callback or function() ScreenManager.switch('MenuState') end
+    local elements = {
         {
             element = self.title,
             target = {color = Theme.transparent, y = -Vars.titleSize}
@@ -31,47 +41,30 @@ function StatisticsState:slideOut(callback)
             element = self.homeButton,
             target = {color = Theme.transparent, y = love.graphics.getHeight()}
         },
-        {
-            element = self.madeWithTitle,
-            target = {color = Theme.transparent, x = -self.madeWithTitle:width() - 5}
-        },
-        {
-            element = self.soundsTitle,
-            target = {color = Theme.transparent, x = -self.soundsTitle:width() - 5}
-        },
-        {
-            element = self.iconsTitle,
-            target = {color = Theme.transparent, x = -self.iconsTitle:width() - 5}
-        },
-        {
-            element = self.byTitle,
-            target = {color = Theme.transparent, x = -self.byTitle:width() - 5}
-        },
-        {
-            element = self.loveImage,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.loveTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.azariasTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.iowaTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.iconMoonTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
+    }
+
+    for _,v in ipairs(self.fromLeft) do
+        elements[#elements+1] = {
+            element = v,
+            target = { color = Theme.transparent, x = -v:width() }
         }
-    }, callback)
+    end
+
+    for _,v in ipairs(self.fromRight) do
+        elements[#elements+1] = {
+            element = v,
+            target = { color = Theme.transparent, x = love.graphics.getWidth() + 5}
+        }
+    end
+
+    self:transition(elements, callback)
 end
 
 function StatisticsState:init()
     local titleSizes = 2 * Vars.lineHeight / 3
+    local stats = StatisticsManager.getGlobals()
+    self.fromLeft = {}
+    self.fromRight = {}
     self:transition({
         {
             element = UIFactory.createTitle(self, {
@@ -103,51 +96,51 @@ function StatisticsState:init()
             element = UIFactory.createTitle(self, {
                 text = 'Total games',
                 fontName = 'Oswald',
-                name =  'totalGamesTitle',
+                name =  'fromLeft',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.totalGamesTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'Total points',
                 fontName = 'Oswald',
-                name = 'totalPointsTitle',
+                name = 'fromLeft',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 2,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.totalPointsTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'Avg. reaction time',
                 fontName = 'Oswald',
-                name = 'averageReactionTimeTitle',
+                name = 'fromLeft',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 3,
                 fontSize =  titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.averageReactionTimeTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'Longest streak',
                 fontName = 'Oswald',
-                name = 'longestStreakTitle',
+                name = 'fromLeft',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 4,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.longestStreakTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Azarias',
+                text = tostring(stats.totalCorrectNotes),
                 fontName = 'Oswald',
-                name = 'azariasTitle',
+                name = 'fromRight',
                 x = love.graphics.getWidth(),
                 fontSize = titleSizes,
                 y = Vars.baseLine + Vars.lineHeight * 2
@@ -156,9 +149,9 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'IconMoonApp',
+                text = string.format('%02.02f s', stats.avgReacTime),
                 fontName = 'Oswald',
-                name = 'iconMoonTitle',
+                name = 'fromRight',
                 x = love.graphics.getWidth(),
                 fontSize = titleSizes,
                 y = Vars.baseLine + Vars.lineHeight * 3
@@ -167,9 +160,11 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'University of Iowa',
+                -- TODO translate 'days'
+                -- And handle the plural
+                text = tostring(stats.longestStreak) .. ' days',
                 fontName = 'Oswald',
-                name = 'iowaTitle',
+                name = 'fromRight',
                 x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight * 4,
                 fontSize = titleSizes
@@ -178,14 +173,14 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Löve2d',
+                text = tostring(stats.totalGames),
                 fontName = 'Oswald',
-                name = 'loveTitle',
+                name = 'fromRight',
                 x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine + Vars.lineHeight}
+            target = {color = Theme.font, x = Vars.limitLine + 5}
         }
     })
 end

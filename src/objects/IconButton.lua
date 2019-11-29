@@ -12,7 +12,7 @@ local IconButton = AbstractButton:extend()
 
 function IconButton:new(area, config)
     AbstractButton.new(self, area, config)
-    local defaultFont = assets.IconsFont(config.size or Vars.titleSize)
+    local defaultFont = assets.fonts.Icons(config.size or Vars.titleSize)
     self.image = love.graphics.newText(defaultFont,  config.icon)
     self.padding = config.padding or 0
     self.color = config.color or Theme.font:clone()

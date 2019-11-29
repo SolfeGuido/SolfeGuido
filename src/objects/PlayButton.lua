@@ -8,7 +8,7 @@ local PlayButton = AbstractButton:extend()
 
 function  PlayButton:new(area, options)
     AbstractButton.new(self, area, options)
-    self.image = love.graphics.newText(assets.IconsFont(Vars.mobileButton.fontSize),assets.IconName.Play)
+    self.image = love.graphics.newText(assets.fonts.Icons(Vars.mobileButton.fontSize),assets.IconName.Play)
     self.radius = self.image:getWidth() * 1.5
     self.color = options.color or Theme.font:clone()
     self.xOrigin = self.image:getWidth() / 2

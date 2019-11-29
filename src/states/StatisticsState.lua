@@ -5,24 +5,23 @@ local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 
----@class CreditsState : State
-local CreditsState = State:extend()
+---@class StatisticsState : State
+local StatisticsState = State:extend()
 
-function CreditsState:keypressed(key)
+function StatisticsState:keypressed(key)
     if key == "escape" then
-        self:slideOut()
+
     else
         State.keypressed(self, key)
     end
 end
 
-function CreditsState:draw()
+function StatisticsState:draw()
     Graphics.drawMusicBars()
     State.draw(self)
 end
 
-function CreditsState:slideOut(callback)
-    callback = callback or function() ScreenManager.switch('MenuState') end
+function StatisticsState:slideOut(callback)
     self:transition({
         {
             element = self.title,
@@ -71,13 +70,14 @@ function CreditsState:slideOut(callback)
     }, callback)
 end
 
-function CreditsState:init()
+function StatisticsState:init()
+    local titleSizes = 2 * Vars.lineHeight / 3
     self:transition({
         {
             element = UIFactory.createTitle(self, {
                 centered = true,
                 name = 'title',
-                text = 'Credits',
+                text = 'Statistics',
                 x = 0,
                 y = -Vars.titleSize,
                 color = Theme.transparent:clone()
@@ -92,57 +92,64 @@ function CreditsState:init()
                 y = love.graphics.getHeight(),
                 color = Theme.transparent:clone(),
                 callback = function()
-                    self:slideOut()
+                    self:slideOut(function()
+                        ScreenManager.switch('MenuState')
+                    end)
                 end
             }),
             target = {color = Theme.font, y = love.graphics.getHeight() -Vars.titleSize - 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Made with',
-                name =  'madeWithTitle',
+                text = 'Total games',
+                fontName = 'Oswald',
+                name =  'totalGamesTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight,
-                fontSize = Vars.lineHeight
+                fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.madeWithTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.totalGamesTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'By',
-                name = 'byTitle',
+                text = 'Total points',
+                fontName = 'Oswald',
+                name = 'totalPointsTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 2,
-                fontSize = Vars.lineHeight
+                fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.byTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.totalPointsTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Icons',
-                name = 'iconsTitle',
+                text = 'Avg. reaction time',
+                fontName = 'Oswald',
+                name = 'averageReactionTimeTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 3,
-                fontSize = Vars.lineHeight
+                fontSize =  titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.iconsTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.averageReactionTimeTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Sounds',
-                name = 'soundsTitle',
+                text = 'Longest streak',
+                fontName = 'Oswald',
+                name = 'longestStreakTitle',
                 x = -100,
                 y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = Vars.lineHeight
+                fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.soundsTitle:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.longestStreakTitle:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = 'Azarias',
+                fontName = 'Oswald',
                 name = 'azariasTitle',
                 x = love.graphics.getWidth(),
-                fontSize = Vars.lineHeight,
+                fontSize = titleSizes,
                 y = Vars.baseLine + Vars.lineHeight * 2
             }),
             target = {color = Theme.font, x = Vars.limitLine + 5}
@@ -150,9 +157,10 @@ function CreditsState:init()
         {
             element = UIFactory.createTitle(self, {
                 text = 'IconMoonApp',
+                fontName = 'Oswald',
                 name = 'iconMoonTitle',
                 x = love.graphics.getWidth(),
-                fontSize = Vars.lineHeight,
+                fontSize = titleSizes,
                 y = Vars.baseLine + Vars.lineHeight * 3
             }),
             target = {color = Theme.font, x = Vars.limitLine + 5}
@@ -160,30 +168,22 @@ function CreditsState:init()
         {
             element = UIFactory.createTitle(self, {
                 text = 'University of Iowa',
+                fontName = 'Oswald',
                 name = 'iowaTitle',
                 x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = Vars.lineHeight
+                fontSize = titleSizes
             }),
             target = {color = Theme.font, x = Vars.limitLine + 5}
         },
         {
-            element = UIFactory.createImage(self, {
-                image = assets.images.loveIcon,
-                name = 'loveImage',
-                x = love.graphics.getWidth() + Vars.lineHeight,
-                y = Vars.baseLine + Vars.lineHeight * 1.5,
-                size = Vars.lineHeight - 5,
-            }),
-            target = {color = Theme.white, x = Vars.limitLine + Vars.lineHeight / 2}
-        },
-        {
             element = UIFactory.createTitle(self, {
                 text = 'Löve2d',
+                fontName = 'Oswald',
                 name = 'loveTitle',
                 x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight,
-                fontSize = Vars.lineHeight
+                fontSize = titleSizes
             }),
             target = {color = Theme.font, x = Vars.limitLine + Vars.lineHeight}
         }
@@ -191,4 +191,4 @@ function CreditsState:init()
 end
 
 
-return CreditsState
+return StatisticsState

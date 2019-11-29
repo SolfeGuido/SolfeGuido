@@ -66,13 +66,13 @@ end
 function ScoreState:init()
     local time = Vars.transition.tween / 3
     local middle = Vars.baseLine + Vars.lineHeight
-    local font = assets.MarckScript(Vars.lineHeight)
+    local font = assets.fonts.MarckScript(Vars.lineHeight)
     local maxSize = 0
 
     self.texts = {}
     self.radioButtons = {}
     self.titles = {}
-    local title = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr("Score"))
+    local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr("Score"))
 
 
     local elements = {

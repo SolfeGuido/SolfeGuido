@@ -18,7 +18,7 @@ local GamePrepareState = State:extend()
 function GamePrepareState:new()
     State.new(self)
     self.color = Theme.font:clone()
-    self.loadingIcon = love.graphics.newText(assets.IconsFont(Vars.titleSize),assets.IconName.Spinner)
+    self.loadingIcon = love.graphics.newText(assets.fonts.Icons(Vars.titleSize),assets.IconName.Spinner)
     self.progress = 0
     self.notesQueue = nil
     self.coroutine = nil
@@ -35,7 +35,7 @@ function GamePrepareState:init()
         local sounds = self:createMeasures()
         local step = 100 / (2 + #sounds + (timed and 1 or 0))
         coroutine.yield(step)
-        local scoreText = love.graphics.newText(assets.MarckScript(Vars.score.fontSize),"0")
+        local scoreText = love.graphics.newText(assets.fonts.MarckScript(Vars.score.fontSize),"0")
         self.score = Score(nil, {
             x = -scoreText:getWidth(),
             y = Vars.score.y,

@@ -68,7 +68,7 @@ function MenuState:slideOut(callback)
 end
 
 function MenuState:init(...)
-    local title = love.graphics.newText(assets.MarckScript(Vars.titleSize), Vars.appName)
+    local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), Vars.appName)
 
     self:transition({
         {
@@ -146,11 +146,17 @@ function MenuState:init(...)
                 name = 'achievementsButton',
                 anchor = 0.5,
                 padding = 5,
-                icon = 'Trophy',
+                icon = 'BarCharts',
                 y = -Vars.titleSize * 2,
                 framed = true,
                 x = love.graphics.getWidth() / 2 - Vars.titleSize * 2,
-                color = Theme.transparent:clone()
+                color = Theme.transparent:clone(),
+                callback = function(btn)
+                    btn.consumed = false
+                    self:slideOut(function()
+                        ScreenManager.switch('StatisticsState')
+                    end)
+                end
             }),
             target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize +5}
         },

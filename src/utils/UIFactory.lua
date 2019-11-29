@@ -59,11 +59,11 @@ end
 function UIFactory.createTextButton(area, config)
     createCallback(area, config)
     if not config.font then
-        config.font = assets.MarckScript(config.fontSize or Vars.titleSize)
+        config.font = assets.fonts.MarckScript(config.fontSize or Vars.titleSize)
     end
     local btnText = love.graphics.newText(config.font, tr(config.text) )
     if config.icon then
-        config.icon = love.graphics.newText(assets.IconsFont(config.fontSize or Vars.titleSize), assets.IconName[config.icon])
+        config.icon = love.graphics.newText(assets.fonts.Icons(config.fontSize or Vars.titleSize), assets.IconName[config.icon])
     end
 
     return addToState(config, area:addentity(TextButton, {
@@ -94,7 +94,10 @@ function UIFactory.createTitle(area, config)
         if not config.fontSize and not config.font then
             config.fontSize = Vars.titleSize
         end
-        config.text = love.graphics.newText(config.fontSize and assets.MarckScript(config.fontSize) or config.font, tr(config.text))
+        if not config.fontName and not config.font then
+            config.fontName = 'MarckScript'
+        end
+        config.text = love.graphics.newText(config.fontSize and assets.fonts[config.fontName](config.fontSize) or config.font, tr(config.text))
     end
 
     --local half = love.graphics.getWidth() / 2 - config.text:getWidth() / 2
@@ -110,9 +113,9 @@ end
 
 function UIFactory.createRadioButton(area, config)
     if config.icon and not config.image then
-        config.image = love.graphics.newText(assets.IconsFont(config.size or Vars.titleSize), assets.IconName[config.icon])
+        config.image = love.graphics.newText(assets.fonts.Icons(config.size or Vars.titleSize), assets.IconName[config.icon])
     elseif config.text and not config.image then
-        config.image = love.graphics.newText(assets.MarckScript(config.size or Vars.titleSize), tr(config.text))
+        config.image = love.graphics.newText(assets.fonts.MarckScript(config.size or Vars.titleSize), tr(config.text))
     end
     return addToState(config, area:addentity(RadioButton, {
         x = config.x,

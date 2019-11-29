@@ -24,7 +24,8 @@ local allStates = {
     EndGameState = require('src.states.EndGameState'),
     PlaySelectState = require('src.states.PlaySelectState'),
     GamePrepareState = require('src.states.GamePrepareState'),
-    CircleCloseState = require('src.states.CircleCloseState')
+    CircleCloseState = require('src.states.CircleCloseState'),
+    StatisticsState = require('src.states.StatisticsState')
 }
 
 function SplashScreenState:new()
@@ -65,8 +66,8 @@ function SplashScreenState:createCoroutine()
         i18n.load(assets.lang)
         i18n.setLocale(Config.lang or 'en')
         -- Create the two main fonts
-        assets.MarckScript(Vars.lineHeight)
-        assets.MarckScript(Vars.titleSize)
+        assets.fonts.MarckScript(Vars.lineHeight)
+        assets.fonts.MarckScript(Vars.titleSize)
         coroutine.yield(1)
     end)
 end

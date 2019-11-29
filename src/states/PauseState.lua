@@ -17,7 +17,7 @@ function PauseState:validate()
 end
 
 function PauseState:init(...)
-    local text = love.graphics.newText(assets.MarckScript(Vars.titleSize), tr('Paused'))
+    local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr('Paused'))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
     local middle = dialogMiddle - text:getWidth() / 2
     local yStart = 100

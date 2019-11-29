@@ -13,12 +13,12 @@ function Measure:new(area, options)
     self.y = options.y or 0
     self.x = options.x or 0
     self.baseLine  = options.baseLine or self.y + self.noteHeight * 4
-    local font = assets.IconsFont(self.noteHeight * self.keyData.height)
+    local font = assets.fonts.Icons(self.noteHeight * self.keyData.height)
     self.image = love.graphics.newText(font, assets.IconName[self.keyData.icon])
     self.color =  options.color or Theme.font
     self.limitLine = self.height / 2
     self.lowestNote = lume.find(assets.NoteName, self.keyData.lowestNote)
-    font = assets.IconsFont(self.noteHeight * Vars.note.height)
+    font = assets.fonts.Icons(self.noteHeight * Vars.note.height)
     self.noteIcon =  love.graphics.newText(font, assets.IconName.QuarterNote)
     self.noteChoice = 1
 end

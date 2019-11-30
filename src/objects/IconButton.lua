@@ -1,8 +1,7 @@
-
-
 -- LIBS
 local Theme = require('src.utils.Theme')
 local Rectangle = require('src.utils.Rectangle')
+local lume = require('lib.lume')
 
 -- Entities
 local AbstractButton = require('src.objects.AbstractButton')
@@ -29,6 +28,12 @@ function IconButton:new(area, config)
     self.xOrigin = self._width / 2
     self.yOrigin = self.height / 2
     self.shaking = nil
+    if self.circled then
+        self.sqrWidth = math.pow(self._width + self.padding, 2)
+        self.contains = function(this, x, y)
+            return lume.distance(this.x + this._width / 2, this.y + this.height / 2, x, y, true) <= this.sqrWidth
+        end
+    end
 end
 
 function IconButton:shake()
@@ -92,7 +97,7 @@ end
 function IconButton:draw()
     love.graphics.setColor(self.color)
     if self.circled then
-        love.graphics.circle('line', self.x + self.xOrigin, self.y + self.yOrigin, self._width * 0.8, 100)
+        love.graphics.circle('line', self.x + self.xOrigin, self.y + self.yOrigin, self._width * 0.8 + self.padding, 100)
     elseif self.framed then
         love.graphics.setColor(Theme.background)
         love.graphics.rectangle('fill', self.x, self.y, self._width, self._width)

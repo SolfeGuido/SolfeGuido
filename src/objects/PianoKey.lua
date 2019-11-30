@@ -43,7 +43,4 @@ function PianoKey:draw()
 
 end
 
-function PianoKey:update(dt)
-end
-
 return PianoKey

@@ -160,9 +160,7 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                -- TODO translate 'days'
-                -- And handle the plural
-                text = tostring(stats.longestStreak) .. ' days',
+                text = tr('days', {days = stats.longestStreak}),
                 fontName = 'Oswald',
                 name = 'fromRight',
                 x = love.graphics.getWidth(),

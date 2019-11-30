@@ -1,7 +1,7 @@
 return {
-    gkey = "Sol",
-    fkey = "Fa",
-    both = 'Sol & Fa',
+    gkey = "Clé de Sol",
+    fkey = "Clé de Fa",
+    both = 'Clé de Sol & Fa',
     play = 'Jouer',
     score = 'Score',
     options = 'Options',
@@ -17,10 +17,6 @@ return {
     created_by_azarias = 'Développé par Azarias',
     with_love2d = 'Avec Love2d',
     and_many_libs = 'Et beaucoup de bibliothèques',
-    help_1 = 'Appuie sur la touche correspondant à la note surlignée',
-    help_2 = 'Chaque réponse correcte rapporte un point',
-    help_3 = 'Chaque mauvaise réponse fait perdre 2 secondes',
-    help_4 = 'Il est possible de changer la clé et la difficulté',
     sound = 'Son',
     on = 'Activé',
     off = 'Désactivé',
@@ -38,6 +34,9 @@ return {
     answer = 'Contrôles',
     buttons = 'Boutons',
     default = 'Par défaut',
-    letters = 'Lettres (anglais)',
-    vibrate = 'Vibrations'
+    vibrate = 'Vibrations',
+    days = {
+        one = '1 jour',
+        other = '%{days} jours'
+    }
 }

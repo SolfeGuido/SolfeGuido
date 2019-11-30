@@ -38,5 +38,9 @@ return {
     buttons = 'Buttons',
     default = 'Default',
     letters = 'Letters',
-    vibrate = 'Vibrations'
+    vibrate = 'Vibrations',
+    days = {
+        one = '1 day',
+        other = '%{days} days'
+    }
 }

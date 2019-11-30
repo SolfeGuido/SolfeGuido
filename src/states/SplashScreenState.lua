@@ -7,6 +7,7 @@ local i18n = require('lib.i18n')
 local ScreeManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 local Logger = require('lib.logger')
+local lume = require('lib.lume')
 
 
 local Line = require('src.objects.Line')
@@ -82,8 +83,8 @@ function SplashScreenState:updateCoroutine()
     end
     if coroutine.status(self.coroutine) == "dead" then
         self.coroutine = "done"
-        _G['tr'] = function(data)
-            return i18n.translate(string.lower(data), {default = data})
+        _G['tr'] = function(data, options)
+            return i18n.translate(string.lower(data), lume.merge(options or {default = data},{default = data}))
         end
         self:displayLines()
     end

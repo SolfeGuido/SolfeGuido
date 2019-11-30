@@ -16,8 +16,9 @@ end
 
 
 function Config.parse()
-    local sucess, conf = pcall(FileUtils.readData, Vars.configSave)
-    if not sucess then Logger.error(conf) end
+    local conf = Logger.try('Init config', function()
+        return FileUtils.readData(Vars.configSave)
+    end, {})
 
     -- Find user locale
     if not conf.lang then
@@ -55,10 +56,8 @@ function Config.update(key, value)
 end
 
 function Config.save()
-    local success, message = FileUtils.writeData(Vars.configSave, _configData)
-    if not success then
-        print(message)
-    end
+    Logger.info('Saving config')
+    Logger.try('Saving config', function() FileUtils.writeData(Vars.configSave, _configData) end)
 end
 
 return setmetatable(Config, {

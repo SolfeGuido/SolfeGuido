@@ -1,4 +1,4 @@
-local lume = require('lib.lume')
+local json = require('lib.json')
 
 local FilesUtils = {}
 
@@ -7,7 +7,7 @@ local FilesUtils = {}
 ---@return table|nil table if file was found and correctly read, nil otherwise
 function FilesUtils.readCompressedData(fileName, compressionType)
     if love.filesystem.getInfo(fileName, 'file') then
-        return lume.deserialize(love.data.decompress('string', compressionType, love.filesystem.read(fileName)))
+        return json.decode(love.data.decompress('string', compressionType, love.filesystem.read(fileName)))
     end
     return {}
 end
@@ -17,14 +17,15 @@ end
 ---@param data table
 ---@return boolean,string success and error message if necessary
 function FilesUtils.writeCompressedData(fileName, compressionType, data)
-    return love.filesystem.write(fileName, love.data.compress('data', compressionType, lume.serialize(data)))
+    local success, message = love.filesystem.write(fileName, love.data.compress('data', compressionType, json.encode(data)))
+    if not success then error(message) end
 end
 
 ---@param fileName string
 ---@return table|nil read data if any, nil otherwise
 function FilesUtils.readData(fileName)
     if love.filesystem.getInfo(fileName, 'file') then
-        return lume.deserialize(love.filesystem.read(fileName))
+        return json.decode(love.filesystem.read(fileName))
     end
     return {}
 end
@@ -33,7 +34,8 @@ end
 ---@param data table
 ---@return boolean, string success and error message if necessary
 function FilesUtils.writeData(fileName, data)
-    return love.filesystem.write(fileName, lume.serialize(data))
+    local success, message = love.filesystem.write(fileName, json.encode(data))
+    if not success then error(message) end
 end
 
 return FilesUtils

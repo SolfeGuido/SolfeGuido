@@ -1,6 +1,8 @@
 
 local lume = require('lib.lume')
+local Logger = require('lib.logger')
 local DateUtils = require('src.utils.DateUtils')
+local FileUtils = require('src.utils.FilesUtils')
 
 local StatisticsManager = {}
 
@@ -69,13 +71,11 @@ function StatisticsManager.init()
         longestStreak = 0,
         currentStreak = 0
     }
-    if love.filesystem.getInfo(Vars.statistics.fileName) then
-        local data = love.filesystem.read(Vars.statistics.fileName)
-        local str = love.data.decompress('string', Vars.statistics.dataFormat, data)
-        gameList = lume.deserialize(str)
-        if #gameList > 0 then
-            globalStats = extractGlobals(gameList)
-        end
+    gameList = Logger.try('Init statistics manager', function()
+        return FileUtils.readCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat)
+    end, {})
+    if #gameList > 0 then
+        globalStats = extractGlobals(gameList)
     end
 end
 
@@ -103,9 +103,9 @@ function StatisticsManager.add(stats)
 end
 
 function StatisticsManager.save()
-    local str = lume.serialize(gameList)
-    local data = love.data.compress('data',Vars.statistics.dataFormat, str)
-    love.filesystem.write(Vars.statistics.fileName, data)
+    Logger.try('Saving statistics', function()
+        return FileUtils.writeCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat, gameList)
+    end)
 end
 
 

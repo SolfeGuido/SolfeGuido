@@ -20,7 +20,7 @@ return {
         theme = {'light', 'dark'},
         gameMode = {'timed', 'zen'}
     },
-    configSave = 'config.lua',
+    configSave = 'config.json',
     lineSpace = 20,
     lineHeight = lineHeight,
     limitLine = 150,

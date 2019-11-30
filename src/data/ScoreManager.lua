@@ -6,8 +6,9 @@ local ScoreManager = {}
 local scores = {}
 
 function ScoreManager.init()
-    local success, existing = pcall(FileUtils.readCompressedData, Vars.score.fileName, Vars.score.dataFormat)
-    if not success then Logger.error(existing) end
+    local existing = Logger.try('Init score manager', function()
+        return FileUtils.readCompressedData(Vars.score.fileName, Vars.score.dataFormat)
+    end, {})
 
     for _, key in ipairs(Vars.userPreferences.keySelect) do
         scores[key] = {}
@@ -36,10 +37,9 @@ function ScoreManager.update(key, difficulty, timing, score)
 end
 
 function ScoreManager.save()
-    local success, message = FileUtils.writeCompressedData(Vars.score.fileName, Vars.score.dataFormat, scores)
-    if not success then
-        print(message)
-    end
+    Logger.try('Saving scores', function()
+        FileUtils.writeCompressedData(Vars.score.fileName, Vars.score.dat)
+    end)
 end
 
 return ScoreManager

@@ -1,6 +1,7 @@
 return {
-    gkey = 'G',
-    fkey = 'F',
+    gkey = 'G Key',
+    fkey = 'F Key',
+    both = 'G & F keys',
     play = 'Play',
     score = 'Score',
     options = 'Options',

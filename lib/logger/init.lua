@@ -28,6 +28,16 @@ for _, v in ipairs(levels) do
     Logger[string.lower(v)] = function(...) Logger.log(v, ...) end
 end
 
+function Logger.try(message, func, default)
+    Logger.info(message)
+    local success, data = pcall(func, default)
+    if not success then
+        Logger.error(data)
+        return default
+    end
+    return data
+end
+
 function Logger.init(config)
     thread = love.thread.newThread(currentFilePath .. '/LoggerThread.lua')
     thread:start(config)

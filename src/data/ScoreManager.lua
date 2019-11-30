@@ -38,7 +38,7 @@ end
 
 function ScoreManager.save()
     Logger.try('Saving scores', function()
-        FileUtils.writeCompressedData(Vars.score.fileName, Vars.score.dat)
+        FileUtils.writeCompressedData(Vars.score.fileName, Vars.score.dataFormat, scores)
     end)
 end
 

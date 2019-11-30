@@ -1,5 +1,4 @@
 
-local lume = require('lib.lume')
 local Logger = require('lib.logger')
 local DateUtils = require('src.utils.DateUtils')
 local FileUtils = require('src.utils.FilesUtils')

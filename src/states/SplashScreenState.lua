@@ -38,7 +38,7 @@ end
 
 function SplashScreenState:draw()
     State.draw(self)
-    local middle = 160
+    local middle = Vars.baseLine + Vars.lineHeight * 3
     local progress = love.graphics.getWidth() * (self.totalLoading / 100)
 
     love.graphics.setBackgroundColor(Theme.background)
@@ -100,7 +100,8 @@ function SplashScreenState:update(dt)
 end
 
 function SplashScreenState:displayLines()
-    self.timer:tween(Vars.transition.tween, self, {color = Theme.transparent}, 'linear')
+    local time = Vars.transition.tween * 4
+    self.timer:tween(time, self, {color = Theme.transparent}, 'linear')
     local middle = Vars.baseLine
     for i = 1,5 do
         local ypos = middle + Vars.lineHeight * i
@@ -109,7 +110,7 @@ function SplashScreenState:displayLines()
             y = ypos,
             width = 0,
         })
-        self.timer:tween(Vars.transition.tween, line, {width = love.graphics.getWidth()}, 'out-expo')
+        self.timer:tween(time, line, {width = love.graphics.getWidth()}, 'out-sine')
     end
 
     local line = self:addentity(Line, {
@@ -118,7 +119,7 @@ function SplashScreenState:displayLines()
         height = 0,
     })
     local hTarget = Vars.lineHeight * 4
-    self.timer:tween(Vars.transition.tween, line, {height = hTarget}, 'out-expo', function()
+    self.timer:tween(time, line, {height = hTarget}, 'out-sine', function()
         -- Load all states this time
         ScreeManager.init(allStates, 'MenuState')
     end)

@@ -1,13 +1,14 @@
 
+local middle = love.graphics.getHeight() / 2
 local lineHeight = 30
+
 local titleSize = 40
 
 
 return {
     appName = 'SolfeGuido',
     titleSize = titleSize,
-    selectorSize = 18,
-    baseLine = titleSize + lineHeight,
+    baseLine = middle - (lineHeight * 3),
     userPreferences = {
         sound = {'on', 'off'},
         vibrations = {'on', 'off'},

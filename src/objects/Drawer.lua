@@ -16,22 +16,27 @@ function Drawer:init(options)
     self.padding = (self.height - Vars.titleSize) / 2
     self.childs = {
         UIFactory.createIconButton(self.area, {
+            x = self.x,
             y = self.y + self.padding - 2,
-            icon = 'Check',
             padding = 2,
+            icon = 'Times',
             framed = true,
             color = Theme.font:clone(),
-            x = self.x,
             callback = function(btn)
                 btn.consumed = false
-                if self.selected ~= options.selected and options.callback then
-                    options.callback(self)
-                else
-                    self:hide()
+                self.selected = options.selected
+                for _, child in ipairs(self.childs) do
+                    if child.value == options.selected then
+                        child:check()
+                    elseif child.uncheck then
+                        child:uncheck()
+                    end
                 end
+                self:hide()
             end
         })
     }
+    self.selected = options.selected
     for i, v in ipairs(options.choices) do
         self.childs[#self.childs+1] = UIFactory.createRadioButton(self.area, {
             x = self.x + i * Vars.titleSize,
@@ -59,26 +64,22 @@ function Drawer:init(options)
     end
 
     self.childs[#self.childs+1] = UIFactory.createIconButton(self.area, {
-            x = self.x + (Vars.titleSize + self.padding * 2) * (#options.choices + 1),
-            y = self.y + self.padding - 2,
-            padding = 2,
-            icon = 'Times',
-            framed = true,
-            color = Theme.font:clone(),
-            callback = function(btn)
-                btn.consumed = false
-                self.selected = options.selected
-                for _, child in ipairs(self.childs) do
-                    if child.value == options.selected then
-                        child:check()
-                    elseif child.uncheck then
-                        child:uncheck()
-                    end
-                end
+        y = self.y + self.padding - 2,
+        icon = 'Check',
+        padding = 2,
+        framed = true,
+        color = Theme.font:clone(),
+        x = self.x + (Vars.titleSize + self.padding * 2) * (#options.choices + 1),
+        callback = function(btn)
+            btn.consumed = false
+            if self.selected ~= options.selected and options.callback then
+                options.callback(self)
+            else
                 self:hide()
             end
-        })
-    
+        end
+    })
+
     self.width = self.padding * 2 + lume.reduce(self.childs, function(acc, b)
             return acc + b:width()
     end, 0)

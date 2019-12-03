@@ -105,7 +105,7 @@ return {
         padding = 0.5,
         distance = 0.1,
         fadeAway = 2,
-        wrongRepeat = 3,
+        wrongRepeat = 1,
         wrongSpace = 0.3
     },
     mobile = {

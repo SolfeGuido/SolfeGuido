@@ -11,6 +11,7 @@ local EndGameState = DialogState:extend()
 
 function EndGameState:new()
     DialogState.new(self)
+    self:setWidth(Vars.titleSize * 10)
 end
 
 function EndGameState:validate()
@@ -26,7 +27,7 @@ function EndGameState:init(score, best)
     local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr(title) .. ' : ' .. tostring(score))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
     local middle = dialogMiddle - text:getWidth() / 2
-    local yStart = 100
+    local yStart = 85
     local padding = 10
     self:transition({
         {
@@ -36,7 +37,7 @@ function EndGameState:init(score, best)
                 x = middle,
                 color = Theme.transparent:clone()
             }),
-            target = {y = 20, color = Theme.font}
+            target = {y = 5, color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
@@ -92,6 +93,7 @@ function EndGameState:init(score, best)
             target = {y = yStart, color = Theme.font}
         }
     })
+    self.height =  yStart + Vars.mobileButton.fontSize * 6 + padding * 7
     DialogState.init(self)
 end
 

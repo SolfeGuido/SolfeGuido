@@ -16,7 +16,12 @@ function DialogState:new()
     self:redirectMouse('mousemoved', 'mousepressed', 'mousereleased')
     self:redirectTouch('touchmoved', 'touchpressed', 'touchreleased')
     self.slidingOut = false
-    self.margin = Vars.limitLine / 2
+    self:setWidth(Vars.limitLine / 2)
+end
+
+function DialogState:setWidth(width)
+    self.width = width
+    self.margin = (love.graphics.getWidth() - self.width) / 2
 end
 
 function DialogState:redirectMouse(...)
@@ -76,14 +81,13 @@ function DialogState:init()
 end
 
 function DialogState:draw()
-    local width = love.graphics.getWidth() - self.margin * 2
     love.graphics.push()
     love.graphics.translate(self.margin ,self.yBottom)
 
     love.graphics.setColor(Theme.background)
-    love.graphics.rectangle('fill', 0, 0, width, self.height)
+    love.graphics.rectangle('fill', 0, 0, self.width, self.height)
     love.graphics.setColor(Theme.font)
-    love.graphics.rectangle('line', 0, 0, width, self.height)
+    love.graphics.rectangle('line', 0, 0, self.width, self.height)
     State.draw(self)
 
     love.graphics.pop()

@@ -16,7 +16,7 @@ function PlaySelectState:new()
     self.timeButtons  = {}
     self.difficultyButtons = {}
     self.gameModeButtons = {}
-    self.margin = (love.graphics.getWidth() - Vars.titleSize * 10) / 2
+    self:setWidth(Vars.titleSize * 10)
 end
 
 function PlaySelectState:validate()
@@ -29,7 +29,7 @@ function PlaySelectState:addRadioButtons(config)
     local padding = config.padding or 0
     local buttonSize = config.size or Vars.titleSize
     local buttonFullWidth = config.width + padding * 2 + 5
-    local space = love.graphics.getWidth() + 5 - self.margin * 2 -buttonFullWidth * #list
+    local space = self.width -buttonFullWidth * #list
     local startSpace = space / 2
 
     for i, v in ipairs(list) do
@@ -119,7 +119,7 @@ function PlaySelectState:init()
     self.height = yStart + Vars.mobileButton.fontSize * 2 + pad * 3 + 5 + verticalGap
     DialogSate.init(self)
 
-    local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
+    local dialogMiddle =  self.width / 2
 
     self:transition({
         {

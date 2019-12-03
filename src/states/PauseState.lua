@@ -10,6 +10,7 @@ local PauseState = DialogState:extend()
 
 function PauseState:new()
     DialogState.new(self)
+    self:setWidth(Vars.titleSize * 6)
 end
 
 function PauseState:validate()
@@ -20,7 +21,7 @@ function PauseState:init(...)
     local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr('Paused'))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
     local middle = dialogMiddle - text:getWidth() / 2
-    local yStart = 100
+    local yStart = 80
     local padding = 10
     self:transition({
         {
@@ -30,7 +31,7 @@ function PauseState:init(...)
                 x = middle,
                 color = Theme.transparent:clone()
             }),
-            target = {y = 20, color = Theme.font}
+            target = {y = 5, color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
@@ -43,7 +44,7 @@ function PauseState:init(...)
                 y = -Vars.titleSize,
                 fontSize = Vars.mobileButton.fontSize,
                 color = Theme.transparent:clone(),
-                callback = function(btn)
+                callback = function()
                     self:slideOut()
                 end
             }),
@@ -79,13 +80,13 @@ function PauseState:init(...)
                 padding = padding,
                 color = Theme.transparent:clone(),
                 callback = function()
-                    -- Transition ?
                     ScreenManager.push('CircleCloseState', 'open', 'GamePrepareState')
                 end
             }),
             target = {y = yStart + Vars.mobileButton.fontSize + padding * 5, color = Theme.font}
         }
     })
+    self.height =  yStart + Vars.mobileButton.fontSize * 6 + padding * 7
     DialogState.init(self)
 end
 

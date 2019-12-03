@@ -21,7 +21,7 @@ end
 
 function PlayButton:onclick()
     TEsound.play(assets.sounds.click)
-    local a = self.y
+    local a = self.y * 2
     local b = love.graphics.getWidth() / 2
     local maxRadius = math.sqrt(a*a + b*b)
     self.timer:tween(Vars.transition.state, self, {radius = maxRadius, color = Theme.background}, 'in-out-expo', self.callback)

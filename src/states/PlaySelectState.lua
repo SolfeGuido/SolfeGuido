@@ -16,6 +16,7 @@ function PlaySelectState:new()
     self.timeButtons  = {}
     self.difficultyButtons = {}
     self.gameModeButtons = {}
+    self.margin = (love.graphics.getWidth() - Vars.titleSize * 10) / 2
 end
 
 function PlaySelectState:validate()
@@ -64,7 +65,7 @@ end
 
 function PlaySelectState:init()
     local elements = {}
-    local yStart = 30
+    local yStart = 5
     local verticalGap = 13
     local pad = 3
     self:addRadioButtons({
@@ -115,6 +116,7 @@ function PlaySelectState:init()
         size = Vars.mobileButton.fontSize
     })
     self:transition(elements)
+    self.height = yStart + Vars.mobileButton.fontSize * 2 + pad * 3 + 5 + verticalGap
     DialogSate.init(self)
 
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
@@ -124,7 +126,7 @@ function PlaySelectState:init()
             element = self:addentity(PlayButton, {
                 color = Theme.transparent:clone(),
                 x = dialogMiddle,
-                y = love.graphics.getHeight() - Vars.titleSize,
+                y = self.height,
                 callback = function()
                     ScreenManager.switch('GamePrepareState')
                 end

@@ -13,7 +13,7 @@ return {
     all = 'tout',
     menu = 'Menu',
     back = 'Retour',
-    level = 'Niveau',
+    level = 'Niveau %{level}',
     created_by_azarias = 'Développé par Azarias',
     with_love2d = 'Avec Love2d',
     and_many_libs = 'Et beaucoup de bibliothèques',

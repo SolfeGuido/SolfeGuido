@@ -13,7 +13,6 @@ return {
     all = 'all',
     menu = 'Menu',
     back = 'Back',
-    level = 'Level',
     created_by_azarias = 'Created by Azarias',
     with_love2d = 'With Love2d',
     and_many_libs = 'And many libs',
@@ -43,5 +42,6 @@ return {
     days = {
         one = '1 day',
         other = '%{days} days'
-    }
+    },
+    level = 'level %{level}'
 }

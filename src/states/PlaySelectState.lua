@@ -32,10 +32,17 @@ function PlaySelectState:addRadioButtons(config)
     local space = self.width -buttonFullWidth * #list
     local startSpace = space / 2
 
+    local function levelName(lvl)
+        if config.configName ~= 'difficulty' then return lvl end
+        if lvl == 'all' then return lvl end
+        return tr('level', {level = lvl})
+    end
+
     for i, v in ipairs(list) do
         config.target[#config.target+1] = {
             element = UIFactory.createRadioButton(self, {
-                text = config.icon and nil or v,
+                text = config.icon and nil or levelName(v),
+                font = 'Oswald',
                 icon = config.icons and config.icons[v] or nil,
                 y = config.y,
                 x = startSpace + buttonFullWidth * (i-1),
@@ -103,9 +110,9 @@ function PlaySelectState:init()
         listName = 'timeButtons',
         width = Vars.titleSize * 1.5,
         padding =  pad,
-        size = Vars.mobileButton.fontSize
+        size = Vars.mobileButton.fontSize / 1.5
     })
-    yStart = yStart + Vars.mobileButton.fontSize + pad * 3 + 5 + verticalGap
+    yStart = yStart + Vars.mobileButton.fontSize / 1.5 + pad * 3 + 5 + verticalGap
     self:addRadioButtons({
         y = yStart,
         target = elements,
@@ -113,7 +120,7 @@ function PlaySelectState:init()
         listName = 'difficultyButtons',
         width = Vars.titleSize * 1.5,
         padding =  pad,
-        size = Vars.mobileButton.fontSize
+        size = Vars.mobileButton.fontSize / 1.5
     })
     self:transition(elements)
     self.height = yStart + Vars.mobileButton.fontSize * 2 + pad * 3 + 5 + verticalGap

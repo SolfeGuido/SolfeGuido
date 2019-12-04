@@ -2,6 +2,7 @@
 local AbstractButton = require('src.objects.AbstractButton')
 local Theme = require('src.utils.Theme')
 local Rectangle = require('src.utils.Rectangle')
+local lume = require('lib.lume')
 
 ---@class RadioButton : Entity
 local RadioButton = AbstractButton:extend()
@@ -74,12 +75,11 @@ function RadioButton:draw()
     else
         love.graphics.setColor(1, 1, 1, 1)
     end
-
     if self.centerImage then
-        local x = self.x + self._width / 2 - self.image:getWidth() / 2
-        love.graphics.draw(self.image, x, self.y + self.padding)
+        local x = lume.round(self.x + self._width / 2 - self.image:getWidth() / 2)
+        love.graphics.draw(self.image, x, lume.round(self.y + self.padding))
     else
-        love.graphics.draw(self.image, self.x + self.padding, self.y + self.padding, 0, self.scale, self.scale)
+        love.graphics.draw(self.image, lume.round(self.x + self.padding), lume.round(self.y + self.padding), 0, self.scale, self.scale)
     end
 end
 

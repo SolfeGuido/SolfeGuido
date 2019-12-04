@@ -115,7 +115,8 @@ function UIFactory.createRadioButton(area, config)
     if config.icon and not config.image then
         config.image = love.graphics.newText(assets.fonts.Icons(config.size or Vars.titleSize), assets.IconName[config.icon])
     elseif config.text and not config.image then
-        config.image = love.graphics.newText(assets.fonts.MarckScript(config.size or Vars.titleSize), tr(config.text))
+        local font = config.font or 'MarkScript'
+        config.image = love.graphics.newText(assets.fonts[font](config.size or Vars.titleSize), tr(config.text))
     end
     return addToState(config, area:addentity(RadioButton, {
         x = config.x,

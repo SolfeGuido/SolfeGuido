@@ -37,7 +37,7 @@ return {
         size = 20,
     },
     mobileButton = {
-        fontSize = 30,
+        fontSize = 20,
         padding = 10
     },
     score = {

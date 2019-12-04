@@ -110,9 +110,9 @@ function PlaySelectState:init()
         listName = 'timeButtons',
         width = Vars.titleSize * 1.5,
         padding =  pad,
-        size = Vars.mobileButton.fontSize / 1.5
+        size = Vars.mobileButton.fontSize
     })
-    yStart = yStart + Vars.mobileButton.fontSize / 1.5 + pad * 3 + 5 + verticalGap
+    yStart = yStart + Vars.mobileButton.fontSize + pad * 3 + 5 + verticalGap
     self:addRadioButtons({
         y = yStart,
         target = elements,
@@ -120,7 +120,7 @@ function PlaySelectState:init()
         listName = 'difficultyButtons',
         width = Vars.titleSize * 1.5,
         padding =  pad,
-        size = Vars.mobileButton.fontSize / 1.5
+        size = Vars.mobileButton.fontSize
     })
     self:transition(elements)
     self.height = yStart + Vars.mobileButton.fontSize * 2 + pad * 3 + 5 + verticalGap

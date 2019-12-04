@@ -27,7 +27,7 @@ function EndGameState:init(score, best)
     local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr(title) .. ' : ' .. tostring(score))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
     local middle = dialogMiddle - text:getWidth() / 2
-    local yStart = 85
+    local yStart = 50
     local padding = 10
     self:transition({
         {
@@ -37,12 +37,13 @@ function EndGameState:init(score, best)
                 x = middle,
                 color = Theme.transparent:clone()
             }),
-            target = {y = 5, color = Theme.font}
+            target = {y = 2, color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
                 text = 'Restart',
                 icon = 'Reload',
+                fontName = 'Oswald',
                 x = dialogMiddle,
                 centerText = true,
                 padding = padding,
@@ -54,11 +55,12 @@ function EndGameState:init(score, best)
                     ScreenManager.push('CircleCloseState', 'open', 'GamePrepareState')
                 end
             }),
-            target = {y = yStart + Vars.mobileButton.fontSize + padding * 5, color = Theme.font}
+            target = {y = yStart + Vars.mobileButton.fontSize + padding * 4, color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
                 text= 'Menu',
+                fontName = 'Oswald',
                 icon = 'Home',
                 x = dialogMiddle,
                 centerText = true,
@@ -72,12 +74,13 @@ function EndGameState:init(score, best)
                     ScreenManager.switch('MenuState')
                 end
             }),
-            target = {y = yStart + Vars.mobileButton.fontSize * 2 + padding * 10, color = Theme.font}
+            target = {y = yStart + Vars.mobileButton.fontSize * 2 + padding * 8, color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
                 text = 'Scores',
                 icon = 'List',
+                fontName = 'Oswald',
                 x = dialogMiddle,
                 centerText = true,
                 framed = true,
@@ -93,7 +96,7 @@ function EndGameState:init(score, best)
             target = {y = yStart, color = Theme.font}
         }
     })
-    self.height =  yStart + Vars.mobileButton.fontSize * 6 + padding * 7
+    self.height =  yStart + Vars.mobileButton.fontSize * 6 + padding * 6
     DialogState.init(self)
 end
 

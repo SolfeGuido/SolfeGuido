@@ -56,7 +56,8 @@ function TextButton:draw()
     love.graphics.setColor(self.color)
     local x = self.x + self.padding
     if self.icon then
-        love.graphics.draw(self.icon, x, self.y + self.padding)
+        local iconY = self.y + self.height / 2 - self.icon:getHeight() / 2
+        love.graphics.draw(self.icon, x, iconY)
         x = x + self.icon:getWidth() + self.padding
     end
 

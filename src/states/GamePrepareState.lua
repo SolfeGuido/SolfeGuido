@@ -5,6 +5,7 @@ local lume = require('lib.lume')
 local Config = require('src.data.Config')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
+local Logger = require('lib.logger')
 
 --- Entities
 local Score = require('src.objects.Score')
@@ -18,51 +19,19 @@ local GamePrepareState = State:extend()
 function GamePrepareState:new()
     State.new(self)
     self.color = Theme.font:clone()
-    self.loadingIcon = love.graphics.newText(assets.fonts.Icons(Vars.titleSize),assets.IconName.Spinner)
-    self.progress = 0
     self.notesQueue = nil
     self.coroutine = nil
     self.measures = nil
     self.scoreText = nil
     self.stopWatch = nil
-    self.singleStep = 1
-    self.iconRotation = 0
-end
 
-function GamePrepareState:init()
-    self.coroutine = coroutine.create(function()
-        local timed = Config.gameMode == 'timed'
-        local sounds = self:createMeasures()
-        local step = 100 / (2 + #sounds + (timed and 1 or 0))
-        coroutine.yield(step)
-        local scoreText = love.graphics.newText(assets.fonts.MarckScript(Vars.score.fontSize),"0")
-        self.score = Score(nil, {
-            x = -scoreText:getWidth(),
-            y = Vars.score.y,
-            points = 0,
-            text =  scoreText,
-            color = Theme.transparent:clone()
-        })
-        coroutine.yield(step)
-        if timed then
-            self.stopWatch = StopWatch(nil, {
-                x = -Vars.stopWatch.size,
-                y = Vars.stopWatch.y,
-                size = Vars.stopWatch.size,
-                started = false
-            })
-            coroutine.yield(step)
-        end
-        if not assets.sounds.notes then
-            assets.sounds.notes  = {}
-        end
-        for _, v in ipairs(sounds) do
-            if not assets.sounds.notes[v] then
-                assets.sounds.notes[v] = love.sound.newSoundData('notes/' .. v .. '.ogg')
-                coroutine.yield(step)
-            end
-        end
-    end)
+    local middle = love.graphics.getHeight() / 2
+    local font = love.graphics.getFont()
+    self.text = tr('loading')
+    local width = font:getWidth(self.text)
+    local height = font:getHeight(self.text)
+    self.textX = (love.graphics.getWidth() - width) / 2
+    self.textY = middle - (height / 2)
 end
 
 local spaces = {
@@ -101,43 +70,67 @@ function GamePrepareState:createMeasures()
         }
         sounds = lume.concat(self.measures[1]:getRequiredNotes(), self.measures[2]:getRequiredNotes())
     else
-        error("unknow key")
+        Logger.error('Unknown key : ' .. Config.keySelect)
+        -- Show error dialog ?
+        ScreenManager.switch('MenuState')
     end
     return sounds
 end
 
 function GamePrepareState:draw()
     -- Do not call state draw, to do not draw the prepared entities
-
     love.graphics.setBackgroundColor(Theme.background)
-
-    local middle = love.graphics.getHeight() / 2
-    local progress = love.graphics.getWidth() * (self.progress / 100)
-
-    love.graphics.setBackgroundColor(Theme.background)
-    local font = love.graphics.getFont()
-    local text = tostring(math.ceil(self.progress)) .. " %"
-    local width = font:getWidth(text)
-    local height = font:getHeight(text)
-    local txtX = (love.graphics.getWidth() - width) / 2
-
     love.graphics.setColor(self.color)
-    love.graphics.print(text, txtX, middle - height)
-
-    love.graphics.setLineWidth(1)
-    love.graphics.line(0, middle , progress, middle)
-    love.graphics.draw(self.loadingIcon, love.graphics.getWidth() / 2, middle + Vars.titleSize, self.iconRotation, 1, 1, Vars.titleSize / 2, Vars.titleSize / 2)
+    love.graphics.print(self.text, self.textX, self.textY)
 end
 
 function GamePrepareState:update(dt)
-    self.iconRotation = self.iconRotation + dt
     State.update(self, dt)
+    if self.coroutine == nil then
+        self.coroutine = coroutine.create(function()
+            local timed = Config.gameMode == 'timed'
+            local sounds = self:createMeasures()
+            local step = 100 / (2 + #sounds + (timed and 1 or 0))
+            coroutine.yield(step)
+            local scoreText = love.graphics.newText(assets.fonts.MarckScript(Vars.score.fontSize),"0")
+            self.score = Score(nil, {
+                x = -scoreText:getWidth(),
+                y = Vars.score.y,
+                points = 0,
+                text =  scoreText,
+                color = Theme.transparent:clone()
+            })
+            coroutine.yield(step)
+            if timed then
+                self.stopWatch = StopWatch(nil, {
+                    x = -Vars.stopWatch.size,
+                    y = Vars.stopWatch.y,
+                    size = Vars.stopWatch.size,
+                    started = false
+                })
+                coroutine.yield(step)
+            end
+            if not assets.sounds.notes then
+                assets.sounds.notes  = {}
+            end
+            for _, v in ipairs(sounds) do
+                if not assets.sounds.notes[v] then
+                    assets.sounds.notes[v] = love.sound.newSoundData('notes/' .. v .. '.ogg')
+                    coroutine.yield(step)
+                end
+            end
+        end)
+    end
     if self.coroutine and coroutine.status(self.coroutine) ~= "dead" then
         local success, coProgress = coroutine.resume(self.coroutine)
-        self.progress = self.progress + (coProgress or 0)
+        if not success then
+            Logger.error(coProgress)
+            -- Show error dialog ?
+            ScreenManager.switch('MenuState')
+        end
     end
     if self.coroutine and coroutine.status(self.coroutine) == "dead" then
-        self.coroutine = nil
+        self.coroutine = false
         self.timer:tween(Vars.transition.tween, self, {color = Theme.background}, 'out-expo', function()
                 -- Transition to playState
                 ScreenManager.switch('PlayState', {

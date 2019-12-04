@@ -11,17 +11,17 @@ local ScreenManager = require('lib.ScreenManager')
 -- Entities
 local Line = require('src.objects.Line')
 
----@class ScoreState : State
-local ScoreState = State:extend()
+---@class ScoreboardState : State
+local ScoreboardState = State:extend()
 
-function ScoreState:dispose()
+function ScoreboardState:dispose()
     self.texts = {}
     self.radioButtons = {}
     self.titles = {}
     State.dispose(self)
 end
 
-function ScoreState:keypressed(key)
+function ScoreboardState:keypressed(key)
     if key == "escape" then
         self:slideOut()
     else
@@ -29,7 +29,7 @@ function ScoreState:keypressed(key)
     end
 end
 
-function ScoreState:updateScores(nwTiming)
+function ScoreboardState:updateScores(nwTiming)
     for _, level in ipairs(Vars.userPreferences.difficulty) do
         for _, key in ipairs(Vars.userPreferences.keySelect) do
             local score = ScoreManager.get(key, level, nwTiming)
@@ -38,7 +38,7 @@ function ScoreState:updateScores(nwTiming)
     end
 end
 
-function ScoreState:slideOut(callback)
+function ScoreboardState:slideOut(callback)
     callback = callback or function() ScreenManager.switch('MenuState') end
     local elements = {
         {
@@ -67,12 +67,12 @@ function ScoreState:slideOut(callback)
     self:transition(elements, callback, Vars.transition.spacing / 10)
 end
 
-function ScoreState:draw()
+function ScoreboardState:draw()
     Graphics.drawMusicBars()
     State.draw(self)
 end
 
-function ScoreState:init()
+function ScoreboardState:init()
     local time = Vars.transition.tween / 3
     local middle = Vars.baseLine + Vars.lineHeight
     local font = assets.fonts.Oswald(2 * Vars.lineHeight / 3)
@@ -81,7 +81,7 @@ function ScoreState:init()
     self.texts = {}
     self.radioButtons = {}
     self.titles = {}
-    local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr("Score"))
+    local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr("scoreboard"))
 
 
     local elements = {
@@ -222,4 +222,4 @@ function ScoreState:init()
     self:transition(elements, nil, Vars.transition.spacing / 3)
 end
 
-return ScoreState
+return ScoreboardState

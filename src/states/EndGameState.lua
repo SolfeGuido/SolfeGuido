@@ -23,8 +23,8 @@ function EndGameState:slideOut()
 end
 
 function EndGameState:init(score, best)
-    local title = best and 'Best Score' or 'Score'
-    local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr(title) .. ' : ' .. tostring(score))
+    local title = best and 'best_score' or 'score'
+    local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr(title, {score = score}))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
     local middle = dialogMiddle - text:getWidth() / 2
     local yStart = 50
@@ -90,7 +90,7 @@ function EndGameState:init(score, best)
                 color = Theme.transparent:clone(),
                 callback = function()
                     -- Transition ?
-                    ScreenManager.switch('ScoreState')
+                    ScreenManager.switch('ScoreboardState')
                 end
             }),
             target = {color = Theme.font}

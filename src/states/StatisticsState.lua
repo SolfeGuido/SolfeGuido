@@ -94,91 +94,91 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Total games',
+                text = 'total_games',
                 fontName = 'Oswald',
-                name =  'fromLeft',
-                x = -100,
+                name =  'fromRight',
+                x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine + 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Total points',
+                text = 'total_points',
                 fontName = 'Oswald',
-                name = 'fromLeft',
-                x = -100,
+                name = 'fromRight',
+                x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight * 2,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine + 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Avg. reaction time',
+                text = 'avg_reaction_time',
                 fontName = 'Oswald',
-                name = 'fromLeft',
-                x = -100,
+                name = 'fromRight',
+                x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight * 3,
                 fontSize =  titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
+            target = {color = Theme.font, x = Vars.limitLine + 5}
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Longest streak',
+                text = 'longest_streak',
                 fontName = 'Oswald',
-                name = 'fromLeft',
-                x = -100,
+                name = 'fromRight',
+                x = love.graphics.getWidth(),
                 y = Vars.baseLine + Vars.lineHeight * 4,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
+            target = {color = Theme.font, x =  Vars.limitLine + 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = tostring(stats.totalCorrectNotes),
                 fontName = 'Oswald',
-                name = 'fromRight',
-                x = love.graphics.getWidth(),
+                name = 'fromLeft',
+                x = -Vars.limitLine,
                 fontSize = titleSizes,
                 y = Vars.baseLine + Vars.lineHeight * 2
             }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = string.format('%02.02f s', stats.avgReacTime),
                 fontName = 'Oswald',
-                name = 'fromRight',
-                x = love.graphics.getWidth(),
+                name = 'fromLeft',
+                x = -Vars.limitLine,
                 fontSize = titleSizes,
                 y = Vars.baseLine + Vars.lineHeight * 3
             }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = tr('days', {days = stats.longestStreak}),
                 fontName = 'Oswald',
-                name = 'fromRight',
-                x = love.graphics.getWidth(),
+                name = 'fromLeft',
+                x = -Vars.limitLine,
                 y = Vars.baseLine + Vars.lineHeight * 4,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         },
         {
             element = UIFactory.createTitle(self, {
                 text = tostring(stats.totalGames),
                 fontName = 'Oswald',
-                name = 'fromRight',
-                x = love.graphics.getWidth(),
+                name = 'fromLeft',
+                x = -Vars.limitLine,
                 y = Vars.baseLine + Vars.lineHeight,
                 fontSize = titleSizes
             }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
+            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
         }
     })
 end

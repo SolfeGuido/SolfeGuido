@@ -172,7 +172,7 @@ function MenuState:init(...)
                 color = Theme.transparent:clone(),
                 callback = function()
                     self:slideOut(function()
-                        ScreenManager.switch('ScoreState')
+                        ScreenManager.switch('ScoreboardState')
                     end)
                 end
             }),

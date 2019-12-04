@@ -31,11 +31,11 @@ local ThemeColors = {
         hovered = {44,50,59},
         clicked = {54,60,69},
         primary = {0,173,181},
-        secondary = {57,62,70},
+        secondary = {70,77,87},
         transparent = {238,238,238, 0},
         wrong = {168,17,0},
         correct = {72, 158, 115},
-        stripe = {57,62,70}
+        stripe = {70,77,87}
     }
 }
 

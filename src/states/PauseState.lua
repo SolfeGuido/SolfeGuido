@@ -27,11 +27,11 @@ function PauseState:init(...)
         {
             element = UIFactory.createTitle(self, {
                 text = text,
-                y = -Vars.titleSize,
+                y = 2,
                 x = middle,
                 color = Theme.transparent:clone()
             }),
-            target = {y = 2, color = Theme.font}
+            target = {color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
@@ -42,14 +42,14 @@ function PauseState:init(...)
                 centerText = true,
                 padding = padding,
                 framed = true,
-                y = -Vars.titleSize,
+                y = yStart,
                 fontSize = Vars.mobileButton.fontSize,
                 color = Theme.transparent:clone(),
                 callback = function()
                     self:slideOut()
                 end
             }),
-            target = {y = yStart, color = Theme.font}
+            target = {color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
@@ -60,14 +60,14 @@ function PauseState:init(...)
                 x = dialogMiddle,
                 centerText = true,
                 framed = true,
-                y = -Vars.titleSize,
+                y = yStart + Vars.mobileButton.fontSize + padding * 4,
                 padding = padding,
                 color = Theme.transparent:clone(),
                 callback = function()
                     ScreenManager.push('CircleCloseState', 'open', 'GamePrepareState')
                 end
             }),
-            target = {y = yStart + Vars.mobileButton.fontSize + padding * 4, color = Theme.font}
+            target = {color = Theme.font}
         },
         {
             element = UIFactory.createTextButton(self, {
@@ -77,7 +77,7 @@ function PauseState:init(...)
                 x = dialogMiddle,
                 centerText = true,
                 framed = true,
-                y = -Vars.titleSize,
+                y = yStart + Vars.mobileButton.fontSize * 2 + padding * 8,
                 fontSize = Vars.mobileButton.fontSize,
                 padding = padding,
                 color = Theme.transparent:clone(),
@@ -86,7 +86,7 @@ function PauseState:init(...)
                     ScreenManager.switch('MenuState')
                 end
             }),
-            target = {y = yStart + Vars.mobileButton.fontSize * 2 + padding * 8, color = Theme.font}
+            target = {color = Theme.font}
         }
     })
     self.height =  yStart + Vars.mobileButton.fontSize * 6 + padding * 6

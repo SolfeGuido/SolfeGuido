@@ -1,5 +1,5 @@
 function love.conf(t)
-    t.identity = "Solfeguido"                    -- The name of the save directory (string)
+    t.identity = "SolfeGuido"                    -- The name of the save directory (string)
     t.appendidentity = false            -- Search files in source directory before save directory (boolean)
     t.version = "11.0"                  -- The LÖVE version this game was made for (string)
     t.console = false                   -- Attach a console (boolean, Windows only)
@@ -9,7 +9,7 @@ function love.conf(t)
  
     t.audio.mixwithsystem = true        -- Keep background music playing when opening LOVE (boolean, iOS and Android only)
  
-    t.window.title = "Solfeguido"         -- The window title (string)
+    t.window.title = "SolfeGuido"         -- The window title (string)
     t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
     t.window.width = 1000                -- The window width (number)
     t.window.height = 600               -- The window height (number)
@@ -48,8 +48,8 @@ function love.conf(t)
     t.modules.window = true             -- Enable the window module (boolean)
 
     t.releases = {
-        title = 'Solfeguido',              -- The project title (string)
-        package = 'solfeguido',            -- The project command and package name (string)
+        title = 'SolfeGuido',              -- The project title (string)
+        package = 'solfeGuido',            -- The project command and package name (string)
         loveVersion = nil,        -- The project LÖVE version
         version = '0.1v',            -- The project version
         author = 'Azarias',             -- Your name (string)

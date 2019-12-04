@@ -2,12 +2,10 @@
 
 Learn to read a music sheet the fun way !
 
-![InGame](examples/play.gif)
-
-Solfeguido was created as a mobile game.
+SolfeGuido was created as a mobile game.
 It works on computer, but is more enjoyable on a phone or tablet.
 
-Currently, is has the following features :
+## Features
 
 - Train to read on three keys :
   - G key
@@ -22,6 +20,10 @@ Currently, is has the following features :
   - Longest play streak
   - Total time played
 
-# License
+## Example
+
+![InGame](examples/play.gif)
+
+## License
 
 MIT

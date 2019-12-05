@@ -26,5 +26,6 @@ return {
     statistics = 'Statistiques',
     best_score = 'Meilleur score : %{score}',
     score = 'Score : %{score}',
-    scoreboard = 'Tableau des scores'
+    scoreboard = 'Tableau des scores',
+    loading = 'chargement'
 }

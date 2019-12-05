@@ -19,8 +19,15 @@ return {
         other = '%{count} jours'
     },
     level = 'niveau %{level}',
-    total_games = 'Parties jouées',
-    total_points = 'Points gagnés',
+    total_games = {
+        zero = 'Partie jouée',
+        one = 'Partie jouée',
+        other = 'Parties jouées'
+    },
+    total_points = {
+        one = 'Point gagné',
+        other = 'Points gagnés'
+    },
     avg_reaction_time = 'Temps moyen de réaction',
     longest_streak = "d'utilisation consécutive max.",
     statistics = 'Statistiques',

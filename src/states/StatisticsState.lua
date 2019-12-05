@@ -94,7 +94,7 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'total_games',
+                text = tr('total_games', {count = stats.totalGames}),
                 fontName = 'Oswald',
                 name =  'fromRight',
                 x = love.graphics.getWidth(),
@@ -105,7 +105,7 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'total_points',
+                text = tr('total_points', {count = stats.totalCorrectNotes}),
                 fontName = 'Oswald',
                 name = 'fromRight',
                 x = love.graphics.getWidth(),

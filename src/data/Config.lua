@@ -17,7 +17,7 @@ end
 
 function Config.parse()
     local conf = Logger.try('Init config', function()
-        return FileUtils.readData(Vars.configSave)
+        return FileUtils.readData(Vars.configSave, {})
     end, {})
 
     -- Find user locale

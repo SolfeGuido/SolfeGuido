@@ -5,11 +5,11 @@ local FilesUtils = {}
 ---@param fileName string
 ---@param compressionType string
 ---@return table|nil table if file was found and correctly read, nil otherwise
-function FilesUtils.readCompressedData(fileName, compressionType)
+function FilesUtils.readCompressedData(fileName, compressionType, default)
     if love.filesystem.getInfo(fileName, 'file') then
         return json.decode(love.data.decompress('string', compressionType, love.filesystem.read(fileName)))
     end
-    return {}
+    return default
 end
 
 ---@param fileName string
@@ -23,11 +23,11 @@ end
 
 ---@param fileName string
 ---@return table|nil read data if any, nil otherwise
-function FilesUtils.readData(fileName)
+function FilesUtils.readData(fileName, default)
     if love.filesystem.getInfo(fileName, 'file') then
         return json.decode(love.filesystem.read(fileName))
     end
-    return {}
+    return default
 end
 
 ---@param fileName string

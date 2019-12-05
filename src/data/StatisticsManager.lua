@@ -71,7 +71,7 @@ function StatisticsManager.init()
         currentStreak = 0
     }
     gameList = Logger.try('Init statistics manager', function()
-        return FileUtils.readCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat)
+        return FileUtils.readCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat, {})
     end, {})
     if #gameList > 0 then
         globalStats = extractGlobals(gameList)

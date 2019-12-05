@@ -7,7 +7,7 @@ local scores = {}
 
 function ScoreManager.init()
     local existing = Logger.try('Init score manager', function()
-        return FileUtils.readCompressedData(Vars.score.fileName, Vars.score.dataFormat)
+        return FileUtils.readCompressedData(Vars.score.fileName, Vars.score.dataFormat, {})
     end, {})
 
     for _, key in ipairs(Vars.userPreferences.keySelect) do

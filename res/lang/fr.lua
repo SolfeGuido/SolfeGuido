@@ -29,7 +29,7 @@ return {
         other = 'Points gagnés'
     },
     avg_reaction_time = 'Temps moyen de réaction',
-    longest_streak = "d'utilisation consécutive max.",
+    longest_streak = "d'utilisation consécutive maximum",
     statistics = 'Statistiques',
     best_score = 'Meilleur score : %{score}',
     score = 'Score : %{score}',

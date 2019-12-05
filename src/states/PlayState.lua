@@ -13,7 +13,7 @@ local Scene = require('src.State')
 -- Entities
 local GameStatistics = require('src.objects.GameStatistics')
 local Note = require('src.objects.Note')
-local Queue = require('src.utils.Queue')
+local Queue = require('lib.queue')
 
 local AnswerGiver = require('src.objects.AnswerGiver')
 

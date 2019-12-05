@@ -38,11 +38,12 @@ local function extractGlobals(games)
         end
         firstDay = v.date
     end
-    if firstDay.day ~= today.day then
+    maxStreak = math.max(currentStreak, maxStreak)
+    if not DateUtils.sameDay(firstDay, today) then
         currentStreak = 1
     end
     avgReac = avgReac / tCorrect
-    local res = {
+    return {
         totalGames = #gameList,
         totalCorrectNotes = tCorrect,
         totalWrongNotes = tWrong,
@@ -50,7 +51,6 @@ local function extractGlobals(games)
         longestStreak = maxStreak,
         currentStreak = currentStreak,
     }
-    return res
 end
 
 function StatisticsManager.init()

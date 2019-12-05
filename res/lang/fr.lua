@@ -16,7 +16,7 @@ return {
     restart = 'Recommencer',
     days = {
         one = '1 jour',
-        other = '%{days} jours'
+        other = '%{count} jours'
     },
     level = 'niveau %{level}',
     total_games = 'Parties jouées',

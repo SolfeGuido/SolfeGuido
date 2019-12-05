@@ -16,7 +16,7 @@ return {
     restart = 'Restart',
     days = {
         one = '1 day',
-        other = '%{days} days'
+        other = '%{count} days'
     },
     level = 'level %{level}',
     total_games = 'Total games',

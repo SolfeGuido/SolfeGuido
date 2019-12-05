@@ -84,7 +84,8 @@ function SplashScreenState:updateCoroutine()
     if coroutine.status(self.coroutine) == "dead" then
         self.coroutine = "done"
         _G['tr'] = function(data, options)
-            return i18n.translate(string.lower(data), lume.merge(options or {default = data},{default = data}))
+            local vals = lume.merge(options or {default = data},{default = data})
+            return i18n.translate(string.lower(data), vals)
         end
         self:displayLines()
     end

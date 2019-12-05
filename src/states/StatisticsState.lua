@@ -160,7 +160,7 @@ function StatisticsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = tr('days', {days = stats.longestStreak}),
+                text = tr('days', {count = stats.longestStreak}),
                 fontName = 'Oswald',
                 name = 'fromLeft',
                 x = -Vars.limitLine,

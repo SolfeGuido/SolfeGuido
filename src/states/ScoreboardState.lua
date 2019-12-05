@@ -133,7 +133,7 @@ function ScoreboardState:init()
     local levels = Vars.userPreferences.difficulty
     space = space / #levels
     for i,v in ipairs(levels) do
-        local text = love.graphics.newText(font, v)
+        local text = love.graphics.newText(font, v == 'all' and tr(v) or tr('level', {level = v}))
         local padding = (space - text:getWidth()) / 2
         elements[#elements+1] = {
             element = UIFactory.createTitle(self, {

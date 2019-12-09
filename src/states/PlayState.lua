@@ -6,6 +6,7 @@ local ScoreManager = require('src.data.ScoreManager')
 local StatisticsManager = require('src.data.StatisticsManager')
 local Theme = require('src.utils.Theme')
 local Mobile = require('src.utils.Mobile')
+local IconButton = require('src.objects.IconButton')
 
 -- Parent
 local Scene = require('src.State')
@@ -50,6 +51,18 @@ function PlayState:init(config)
         self.stopWatch.finishCallback = function() self:finish() end
         elements[#elements + 1] = {element = self.stopWatch, target = {x = Vars.stopWatch.x}}
     end
+
+    self:addHUD(IconButton, {
+        icon = assets.IconName['Pause'],
+        x = love.graphics.getWidth() - Vars.mobileButton.fontSize * 1.5 - 10,
+        y = 0,
+        padding = 5,
+        size = Vars.mobileButton.fontSize * 1.5,
+        callback = function(btn)
+            btn.consumed = false
+            ScreenManager.push('PauseState')
+        end
+    })
 
     self.answerGiver = self:addentity(AnswerGiver, {callback = function(x) self:answerGiven(x) end })
     self.stats = self:addentity(GameStatistics)

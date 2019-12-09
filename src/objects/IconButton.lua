@@ -17,6 +17,7 @@ function IconButton:new(area, config)
     self.color = config.color or Theme.font:clone()
     self._width = (self.image:getWidth() + self.padding * 2)
     self.height = (self.image:getHeight() + self.padding * 2)
+    print(self._width, self.height)
     if self.centered then
         self.x = love.graphics.getWidth() / 2 - self._width / 2
     end

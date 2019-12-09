@@ -5,8 +5,6 @@ local Timer = require('lib.timer')
 local ScreenManager = require('lib.ScreenManager')
 local lume = require('lib.lume')
 local Theme = require('src.utils.Theme')
-local Mobile = require('src.utils.Mobile')
-local UIFactory = require('src.utils.UIFactory')
 
 ---@class State
 ---@field public entities table
@@ -21,6 +19,7 @@ local redirectedevents = {'keypressed', 'mousemoved', 'mousepressed', 'mouserele
 function State:new()
     State.super.new(self)
     self.entities = {}
+    self.HUD = {}
     self.timer = Timer()
     self.active = true
 end
@@ -37,6 +36,12 @@ function State:setActive(acv)
     self.active = acv
 end
 
+function State:addHUD(Type, options, ...)
+    local widget = Type(self, options, ...)
+    self.HUD[#self.HUD+1] = widget
+    return widget
+end
+
 function State:addentity(Type, options, ...)
     local ent = Type(self, options, ...)
     self.entities[#self.entities+1] = ent
@@ -50,16 +55,19 @@ function State:insertEntity(entity)
     return entity
 end
 
+
 function State:draw()
     love.graphics.setBackgroundColor(Theme.background)
-    for _,v in ipairs(self.entities) do
-        v:draw()
-    end
+    for _,v in ipairs(self.entities) do v:draw() end
+    for _,v in ipairs(self.HUD) do v:draw() end
 end
 
 ---@param dt number
 function State:update(dt)
     self.timer:update(dt)
+    for _,v in ipairs(self.HUD) do
+        v:update()
+    end
     for v = #self.entities, 1, -1 do
         local entity = self.entities[v]
         entity:update(dt)
@@ -85,6 +93,12 @@ function State:addElement(data, callback)
 end
 
 function State:callOnEntities(method, ...)
+    for i = #self.HUD, 1, -1 do
+        local entity = self.HUD[i]
+        if entity[method] and entity[method](entity, ...) then
+            return true
+        end
+    end
     for i = #self.entities, 1, -1 do
         local entity = self.entities[i]
         if entity[method] and entity[method](entity, ...) then
@@ -95,6 +109,10 @@ function State:callOnEntities(method, ...)
 end
 
 function State:close()
+    for i = #self.HUD, 1, -1 do
+        self.HUD[i]:dispose()
+        table.remove(self.HUD, i)
+    end
     for i = #self.entities, 1, -1 do
         self.entities[i]:dispose()
         table.remove(self.entities, i)
@@ -102,31 +120,7 @@ function State:close()
     self.timer:destroy()
     self.timer = nil
     self.entities = nil
-end
-
-function State:switchState(statename)
-    self:slideEntitiesOut(function() ScreenManager.switch(statename) end)
-end
-
-local yCompare = lume.lambda "a,b -> a.y > b.y"
-
-local function elemSlide(v)
-    local x = -20
-    if v.width then
-        if type(v.width) == "number" then
-            x = -v.width
-        elseif type(v.width) == "function" then
-            x = -v:width()
-        end
-    end
-    return {element = v, target = {x = x, color = Theme.transparent}}
-end
-
-function State:slideEntitiesOut(callback)
-    lume(self.entities)
-        :sort(yCompare)
-        :map(elemSlide)
-        :apply(function(x) self:transition(x, callback) end)
+    self.HUD = nil
 end
 
 for _, v in ipairs(redirectedevents) do

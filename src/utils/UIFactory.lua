@@ -14,9 +14,7 @@ local Image         = require('src.objects.Image')
 local UIFactory = {}
 
 local function createCallback(area, config)
-    if config.state and not config.callback then
-        config.callback = function() area:switchState(config.state) end
-    elseif config.statePush and not config.callback then
+    if config.statePush and not config.callback then
         config.callback = function(btn)
             btn.consumed = false
             ScreenManager.push(config.statePush, config.statePushArgs)
@@ -45,7 +43,7 @@ function UIFactory.createIconButton(area, config)
         size = size,
         x = config.x or -size,
         y = config.y,
-        height = Vars.titleSize,
+        height = config.height or Vars.titleSize,
         color = config.color or Theme.transparent:clone(),
         callback = config.callback,
         circled = config.circled or false,

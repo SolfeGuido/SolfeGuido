@@ -99,6 +99,7 @@ function StatisticsManager.add(stats)
     globalStats.totalCorrectNotes = tCorrect + obj.correctNotes
     globalStats.totalWrongNotes = globalStats.totalWrongNotes + obj.wrongNotes
     globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) + obj.avgReacTime) / (tCorrect + 1)
+    globalStats.totalGames = globalStats.totalGames + 1
 end
 
 function StatisticsManager.save()

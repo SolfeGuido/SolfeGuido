@@ -100,7 +100,7 @@ function CreditsState:init()
         },
         {
             element = UIFactory.createTitle(self, {
-                text = 'Made with',
+                text = 'made_with',
                 fontName = 'Oswald',
                 name =  'madeWithTitle',
                 x = -100,

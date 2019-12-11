@@ -24,7 +24,7 @@ compile() {
     done
 }
 
-compile
+#compile
 
 rm release.sh
 # Make the releases

@@ -29,6 +29,7 @@ end
 
 function Drawer:applyChanges(btn)
     if btn then btn.consumed = false end
+    self.touchId = nil
     if self.originSelection ~= self.selected then
         self.callback(self)
     end

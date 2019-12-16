@@ -10,6 +10,7 @@ cd $TEMP
 rm -rf examples
 rm -rf spec
 rm -rf .git
+rm -rf .travis.yml
 rm -rf .vscode
 sed -i -e '/--- BEGIN DEBUG/,/--- END DEBUG/d' main.lua
 rm lib/debugGraph.lua

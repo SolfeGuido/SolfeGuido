@@ -30,6 +30,7 @@ local PlayState = Scene:extend()
 
 function PlayState:new()
     PlayState.super.new(self)
+
     self.progress = 0
     self.progressSpeed = Vars.maxProgressSpeed
     self.notes = Queue()
@@ -111,8 +112,11 @@ function PlayState:draw()
 
     if not self.notes:isEmpty() then
         local note = self.notes:peek()
+        love.graphics.setShader(assets.shaders.noteFade)
         love.graphics.setColor(Theme.stripe)
         love.graphics.rectangle('fill', note.x, self:getMeasure().y , note.width, self:getMeasure().height)
+        love.graphics.setShader(assets.shaders.noteFade)
+        love.graphics.setShader()
     end
 
     PlayState.super.draw(self)
@@ -194,7 +198,7 @@ function PlayState:tryPopNote(_)
         self:addNote()
     else
         local last = self.notes:last()
-        if love.graphics.getWidth() - last.x > last.width * 1.1 then
+        if love.graphics.getWidth() - last.x > last.width * 2 then
             self:addNote()
         end
     end

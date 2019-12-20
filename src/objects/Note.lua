@@ -74,6 +74,7 @@ end
 function Note:draw()
     --Color for the (optional) bars
     local r,g,b = unpack(Theme.font.rgb)
+    love.graphics.setShader(assets.shaders.noteFade)
     love.graphics.setColor(r,g,b, self.color.a)
     love.graphics.setLineWidth(1)
     local actualWidth = self.image:getWidth()
@@ -98,6 +99,7 @@ function Note:draw()
         local yPos = self.measureIndex % 2 == 0 and 0 or self.measure.noteHeight / 2
         love.graphics.draw(self.name, self.x - 15, self.y + yPos)
     end
+    love.graphics.setShader()
 end
 
 ---@param dt number

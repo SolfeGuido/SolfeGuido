@@ -173,7 +173,7 @@ function PlayState:doProgress(dt)
     if dist < 1  then
         self.progress = dist
     else
-        self.progressSpeed = math.sqrt(dist) * 10
+        self.progressSpeed = math.sqrt(dist*3) * 10
         self.progress = normalProg
     end
 end

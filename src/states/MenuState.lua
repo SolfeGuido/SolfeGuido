@@ -5,17 +5,41 @@ local UIFactory = require('src.utils.UIFactory')
 local Graphics = require('src.utils.Graphics')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
+local lume = require('lib.lume')
+
+local ParticleSystem = require('src.utils.ParticleSystem')
 
 ---@class MenuState : State
 local MenuState = State:extend()
 
 function MenuState:new()
     MenuState.super.new(self)
+    self.particleSystem = ParticleSystem.noteBurstParticles(Theme.white:clone())
+    self.particleSystem:pause()
+    self.colorOrders = {
+        {0.5, 1, 0.5, 1},
+        {1, 0.5, 1, 1},
+        {1, 0, 1, 1},
+        {1, 0.5, 0.5, 1}
+    }
 end
 
 function MenuState:draw()
     Graphics.drawMusicBars()
     MenuState.super.draw(self)
+    love.graphics.setColor(self.colorOrders[1])
+    love.graphics.draw(self.particleSystem, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.setColor(self.colorOrders[2])
+    love.graphics.draw(self.particleSystem, love.graphics.getWidth(), 0)
+    love.graphics.setColor(self.colorOrders[3])
+    love.graphics.draw(self.particleSystem, 0, 0)
+    love.graphics.setColor(self.colorOrders[4])
+    love.graphics.draw(self.particleSystem, 0, love.graphics.getHeight())
+end
+
+function MenuState:update(dt)
+    State.update(self, dt)
+    self.particleSystem:update(dt)
 end
 
 function MenuState:keypressed(key)
@@ -24,6 +48,11 @@ function MenuState:keypressed(key)
             return love.event.quit()
         elseif key == "menu" then
             return self:openOptions(self.settingsButton)
+        elseif key == "space" then
+            self.colorOrders = lume.shuffle(self.colorOrders)
+            self.particleSystem:start()
+            self.particleSystem:emit(200)
+            self.particleSystem:pause()
         end
     end
     State.keypressed(self, key)

@@ -14,6 +14,14 @@ local function getSimpleLocale()
     return l:sub(1, 2):lower()
 end
 
+local function fixConfig()
+    -- 1.3 keySelect renaming
+    if _configData.keySelect == 'fKey' then
+        _configData.keySelect = 'fClef'
+    elseif _configData.keySelect == 'gKey' then
+        _configData.keySelect = 'gClef'
+    end
+end
 
 function Config.parse()
     local conf = Logger.try('Init config', function()
@@ -34,6 +42,8 @@ function Config.parse()
         _configData[k] = conf[k] or v[1]
     end
 
+    -- Update various things depending on the versions
+    fixConfig()
 
     Config.updateSound()
 end

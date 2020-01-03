@@ -4,6 +4,7 @@ local DialogState = require('src.states.DialogState')
 local ScreenManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
+local ParticleSystem = require('src.utils.ParticleSystem')
 
 ---@class EndGameState : State
 local EndGameState = DialogState:extend()
@@ -12,6 +13,23 @@ local EndGameState = DialogState:extend()
 function EndGameState:new()
     DialogState.new(self)
     self:setWidth(Vars.titleSize * 10)
+    self.particles = ParticleSystem.noteBurstParticles(Theme.white)
+end
+
+function EndGameState:close()
+    self.particles:release()
+    self.particles = nil
+end
+
+function EndGameState:update(dt)
+    DialogState.update(self, dt)
+    self.particles:update(dt)
+end
+
+function EndGameState:draw()
+    love.graphics.setColor(Theme.correct)
+    love.graphics.draw(self.particles, love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5)
+    DialogState.draw(self)
 end
 
 function EndGameState:validate()
@@ -98,6 +116,8 @@ function EndGameState:init(score, best)
     })
     self.height =  yStart + Vars.mobileButton.fontSize * 6 + padding * 6
     DialogState.init(self)
+    self.particles:emit(200)
+    self.particles:pause()
 end
 
 return EndGameState

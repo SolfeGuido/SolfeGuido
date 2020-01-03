@@ -2,8 +2,9 @@
 
 WD=`pwd`
 TEMP=`mktemp -d` # create a temporary directory
+RELEASE=$WD/../solfege-release
 # Do some cleanup
-rm -rf $WD/../solfege-release
+rm -rf $RELEASE
 
 cp -R * $TEMP
 cd $TEMP
@@ -29,6 +30,10 @@ compile() {
 
 rm release.sh
 # Make the releases
-love-release -W32 -W64 -D -M $WD/../solfege-release $TMP
+love-release -W32 -W64 -D -M $RELEASE $TMP
 
 rm -rf $TEMP # cleanup
+
+# Release for android
+rm -rf ${SOLFEGUIDO_ANDROID}/game.love
+cp $RELEASE/SolfeGuido.love ${SOLFEGUIDO_ANDROID}/game.love

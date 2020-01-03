@@ -74,6 +74,15 @@ function GamePrepareState:createMeasures()
         -- Show error dialog ?
         ScreenManager.switch('MenuState')
     end
+
+    local msr = self.measures[1]
+    local noteWidth = msr.noteIcon:getWidth()
+    local width = love.graphics.getWidth()
+    local pWidth = love.graphics.getPixelWidth()
+    local ratio = (pWidth / width)
+    assets.shaders.noteFade:send('leftLimit', msr.limitLine * ratio)
+    assets.shaders.noteFade:send('rightLimit', pWidth - noteWidth * ratio)
+    assets.shaders.noteFade:send('noteWidth', noteWidth * ratio)
     return sounds
 end
 
@@ -81,7 +90,7 @@ function GamePrepareState:draw()
     -- Do not call state draw, to do not draw the prepared entities
     love.graphics.setBackgroundColor(Theme.background)
     love.graphics.setColor(self.color)
-    love.graphics.print(self.text, self.textX, self.textY)
+    love.graphics.print(self.text, math.floor(self.textX), math.floor(self.textY))
 end
 
 function GamePrepareState:update(dt)

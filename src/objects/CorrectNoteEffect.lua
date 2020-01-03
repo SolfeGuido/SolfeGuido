@@ -16,10 +16,12 @@ function CorrectNoteEffect:new(area, options)
 end
 
 function CorrectNoteEffect:draw()
+    love.graphics.setShader(assets.shaders.noteFade)
     love.graphics.setColor(self.color)
     love.graphics.draw(self.image,
         self.target.x + self.xOrigin + self.padding, self.target.y,
         self.rotation, self.scale, self.scale, self.xOrigin, self.yOrigin)
+    love.graphics.setShader()
 end
 
 

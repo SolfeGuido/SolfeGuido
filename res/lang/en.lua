@@ -1,6 +1,6 @@
 return {
-    gClef = 'G Clef',
-    fClef = 'F Clef',
+    gclef = 'G Clef',
+    fclef = 'F Clef',
     both = 'G & F Clefs',
     made_with = 'Made with',
     by = 'By',

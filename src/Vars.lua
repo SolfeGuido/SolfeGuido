@@ -87,7 +87,7 @@ return {
         height = 5,
         yOrigin = 3.5,
         line = 1,
-        icon = 'fClef',
+        icon = 'FClef',
         lowestNote = 'A1',
         difficulties = {
             ['1'] =     {'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'},

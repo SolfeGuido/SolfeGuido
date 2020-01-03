@@ -14,7 +14,7 @@ return {
         vibrations = {'on', 'off'},
         lang = {'en', 'fr'},
         noteStyle = {'englishNotes', 'romanNotes', 'latinNotes'},
-        keySelect = {'gKey', 'fKey', 'both'},
+        keySelect = {'gClef', 'fClef', 'both'},
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'buttons', 'piano', 'pianoWithNotes'},
         time = {'30s', '1mn', '2mn', '5mn'},
@@ -68,10 +68,10 @@ return {
         state = 1,
         spacing = 0.05
     },
-    gKey = {
+    gClef = {
         height = 7,
         yOrigin = 2.6,
-        icon = 'GKey',
+        icon = 'GClef',
         line = 4,
         lowestNote = 'F3',
         firstNote = 12,
@@ -83,11 +83,11 @@ return {
             ['all'] =   {'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'}
         }
     },
-    fKey = {
+    fClef = {
         height = 5,
         yOrigin = 3.5,
         line = 1,
-        icon = 'FKey',
+        icon = 'fClef',
         lowestNote = 'A1',
         difficulties = {
             ['1'] =     {'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'},

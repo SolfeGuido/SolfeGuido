@@ -93,8 +93,8 @@ function PlaySelectState:init()
         target = elements,
         configName = 'keySelect',
         icons = {
-            gKey = 'GKey',
-            fKey = 'FKey',
+            gClef = 'GClef',
+            fClef = 'FClef',
             both = 'BothKeys'
         },
         listName = 'keyButtons',

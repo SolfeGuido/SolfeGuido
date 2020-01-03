@@ -1,7 +1,7 @@
 return {
-    gkey = 'G Key',
-    fkey = 'F Key',
-    both = 'G & F keys',
+    gClef = 'G Clef',
+    fClef = 'F Clef',
+    both = 'G & F Clefs',
     made_with = 'Made with',
     by = 'By',
     icons = 'Icons',

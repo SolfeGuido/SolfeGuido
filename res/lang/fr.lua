@@ -1,7 +1,7 @@
 return {
-    gkey = 'Clé de Sol',
-    fkey = 'Clé de Fa',
-    both = 'Clé de Sol & Fa',
+    gClef = 'Clé de Sol',
+    fClef = 'Clé de Fa',
+    both = 'Clés de Sol & Fa',
     made_with = 'Créé avec',
     by = 'Par',
     icons = 'Icones',

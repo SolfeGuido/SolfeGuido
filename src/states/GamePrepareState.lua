@@ -43,27 +43,27 @@ local spaces = {
 function GamePrepareState:createMeasures()
     local availableSpace = love.graphics.getHeight() - (spaces[Config.answerType] or 0)
     local sounds = nil
-    if Config.keySelect == 'gKey' then
+    if Config.keySelect == 'gClef' then
         self.measures = {Measure(nil,{
-            keyData = Vars.gKey,
+            keyData = Vars.gClef,
             height = availableSpace
         })}
         sounds = self.measures[1]:getRequiredNotes()
-    elseif Config.keySelect == 'fKey' then
+    elseif Config.keySelect == 'fClef' then
         self.measures = {Measure(nil , {
-            keyData = Vars.fKey,
+            keyData = Vars.fClef,
             height = availableSpace
         })}
         sounds = self.measures[1]:getRequiredNotes()
     elseif Config.keySelect == 'both' then
         self.measures = {
             Measure(nil, {
-                keyData = Vars.gKey,
+                keyData = Vars.gClef,
                 height = availableSpace / 2,
                 y = 0
             }),
             Measure(nil, {
-                keyData = Vars.fKey,
+                keyData = Vars.fClef,
                 height = availableSpace  / 2,
                 y = availableSpace / 2
             })

@@ -1,8 +1,8 @@
 return {
     Home            =   'A',
     Eacute          =   'B',
-    FKey            =   'C',
-    GKey            =   'D',
+    FClef           =   'C',
+    GClef           =   'D',
     QuarterNote     =   'E',
     BraceRight      =   'F',
     WholeNote       =   'G',
@@ -66,5 +66,12 @@ return {
     DoubleMedla1    =   '2',
     DoubleMedal2    =   '3',
     CheckeredFlag   =   '4',
-    Pause           =   '5'
+    Pause           =   '5';
+    SharpAccidental =   '6',
+    FlatAccidental  =   '7',
+    GhostNote       =   '8',
+    Natural         =   '9',
+    CClef           =   ':',
+    CClef3          =   ';',
+    CClef4          =   '<'
 }

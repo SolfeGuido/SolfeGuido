@@ -12,7 +12,6 @@ function RadioButton:new(area, options)
     self.isChecked = options.isChecked or false
     self.padding = options.padding or 0
     self.backgroundColor = self.isChecked and Theme.secondary:clone() or Theme.background:clone()
-    self.tween = nil
     if self.image:type() == "Image" then
         self.scale = Vars.titleSize / self.image:getHeight()
     end
@@ -43,8 +42,7 @@ function RadioButton:check()
 end
 
 function RadioButton:toggle()
-    if self.tween then self.timer:cancel(self.tween) end
-    self.timer:tween(Vars.transition.tween, self, {backgroundColor = self.isChecked and Theme.background or Theme.secondary}, 'linear')
+    self:animate(Vars.transition.tween, self, {backgroundColor = self.isChecked and Theme.background or Theme.secondary}, 'linear')
     self.isChecked = not self.isChecked
 end
 

@@ -57,7 +57,6 @@ Color.fromBytes = function(r,g,b,a)
     return Color(love.math.colorFromBytes(r, g, b, a))
 end
 
-
 return setmetatable(Color, {
     __call = function(table, ...)
         local color = setmetatable({}, table)

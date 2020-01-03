@@ -5,10 +5,18 @@ local ScreenManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
 local ParticleSystem = require('src.utils.ParticleSystem')
+local Color = require('lib.Color')
+local lume = require('lib.lume')
 
 ---@class EndGameState : State
 local EndGameState = DialogState:extend()
 
+local colors = {
+    {lume.color('#011627')},
+    {lume.color('#2EC4B6')},
+    {lume.color('#E71D36')},
+    {lume.color('#FF9F1C')}
+}
 
 function EndGameState:new()
     DialogState.new(self)
@@ -29,6 +37,16 @@ end
 function EndGameState:draw()
     love.graphics.setColor(Theme.correct)
     love.graphics.draw(self.particles, love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5)
+    if self.isBestScore then
+        love.graphics.setColor(colors[1])
+        love.graphics.draw(self.particles, 0, 0)
+        love.graphics.setColor(colors[2])
+        love.graphics.draw(self.particles, 0, love.graphics.getHeight())
+        love.graphics.setColor(colors[3])
+        love.graphics.draw(self.particles, love.graphics.getWidth(), 0)
+        love.graphics.setColor(colors[4])
+        love.graphics.draw(self.particles, love.graphics.getWidth(), love.graphics.getHeight())
+    end
     DialogState.draw(self)
 end
 
@@ -41,6 +59,10 @@ function EndGameState:slideOut()
 end
 
 function EndGameState:init(score, best)
+    self.isBestScore = best
+    if self.isBestScore then
+        colors = lume.shuffle(colors)
+    end
     local title = best and 'best_score' or 'score'
     local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr(title, {score = score}))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2

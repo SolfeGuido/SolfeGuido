@@ -5,10 +5,23 @@ local ScoreManager = {}
 
 local scores = {}
 
+local function fixScore(scores)
+    local oldKeys = { fKey = 'fClef', gKey = 'gClef' }
+    for key, value in pairs(scores) do
+        if oldKeys[key] then
+            scores[oldKeys[key]] = value
+            scores[key] = nil
+        end
+    end
+    return scores
+end
+
 function ScoreManager.init()
     local existing = Logger.try('Init score manager', function()
         return FileUtils.readCompressedData(Vars.score.fileName, Vars.score.dataFormat, {})
     end, {})
+
+    existing = fixScore(existing)
 
     for _, key in ipairs(Vars.userPreferences.keySelect) do
         scores[key] = {}

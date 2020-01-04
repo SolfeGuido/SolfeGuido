@@ -80,7 +80,7 @@ function GamePrepareState:createMeasures()
     local width = love.graphics.getWidth()
     local pWidth = love.graphics.getPixelWidth()
     local ratio = (pWidth / width)
-    assets.shaders.noteFade:send('leftLimit', msr.limitLine * ratio)
+    assets.shaders.noteFade:send('leftLimit', (msr.image:getWidth() + noteWidth) * ratio)
     assets.shaders.noteFade:send('rightLimit', pWidth - noteWidth * ratio)
     assets.shaders.noteFade:send('noteWidth', noteWidth * ratio)
     return sounds

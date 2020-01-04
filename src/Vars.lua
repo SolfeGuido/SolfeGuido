@@ -103,7 +103,7 @@ return {
         xOrigin = 0.5,
         image = 'note';
         padding = 0.5,
-        distance = 0.1,
+        distance = 1.3,
         fadeAway = 2,
         wrongRepeat = 1,
         wrongSpace = 0.3

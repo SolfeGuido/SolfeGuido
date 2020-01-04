@@ -45,8 +45,6 @@ function Measure:draw()
 
 
     -- Drawing the key
-    local localScale = self.noteHeight / Vars.lineHeight
-    local imgHeigh = self.image:getHeight()
     love.graphics.draw(self.image, self.x + 5, self.y + self.keyData.yOrigin * self.noteHeight)
 end
 

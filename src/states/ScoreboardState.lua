@@ -75,7 +75,7 @@ end
 
 function ScoreboardState:init()
     local time = Vars.transition.tween / 3
-    local middle = Vars.baseLine - Vars.lineHeight
+    local middle = Vars.baseLine
     local font = assets.fonts.Oswald(2 * Vars.lineHeight / 3)
     local maxSize = 0
 
@@ -113,7 +113,7 @@ function ScoreboardState:init()
     local line = self:addentity(Line, {
         color = Theme.transparent:clone(),
         x = 0,
-        y = Vars.baseLine - Vars.lineHeight,
+        y = Vars.baseLine,
         width = 0,
     })
     elements[#elements+1] = {
@@ -126,7 +126,7 @@ function ScoreboardState:init()
     line = self:addentity(Line, {
         color = Theme.transparent:clone(),
         x = 0,
-        y = Vars.baseLine,
+        y = Vars.baseLine + Vars.lineHeight * 6,
         width = 0,
     })
     elements[#elements+1] = {
@@ -140,12 +140,12 @@ function ScoreboardState:init()
     line = self:addentity(Line, {
         color = Theme.transparent:clone(),
         x = Vars.limitLine,
-        y = Vars.baseLine - Vars.lineHeight,
+        y = Vars.baseLine,
         height = 0,
     })
     elements[#elements+1] = {
         element = line,
-        target = {color = Theme.font, height = Vars.lineHeight * 2},
+        target = {color = Theme.font, height = Vars.lineHeight * 6},
         time = time
     }
     self.titles[#self.titles+1] = line
@@ -181,14 +181,14 @@ function ScoreboardState:init()
                 name = 'titles',
                 text = text,
                 color = Theme.transparent:clone(),
-                y = lume.round(Vars.baseLine - Vars.lineHeight),
+                y = lume.round(Vars.baseLine),
                 x = lume.round(middle + padding)
             }),
             target = {color = Theme.font},
             time = time
         }
         self.texts[v] = {}
-        local yPos = Vars.baseLine
+        local yPos = Vars.baseLine + Vars.lineHeight
         for _, key in ipairs(Vars.userPreferences.keySelect) do
             local score = ScoreManager.get(key, v, Vars.userPreferences.time[1])
             text = love.graphics.newText(font, tostring(score))
@@ -215,7 +215,7 @@ function ScoreboardState:init()
             line = self:addentity(Line, {
                     color = Theme.transparent:clone(),
                     x = middle,
-                    y = Vars.baseLine - Vars.lineHeight,
+                    y = Vars.baseLine,
                     height = Vars.lineHeight * 6,
             })
             elements[#elements+1] = {
@@ -229,7 +229,7 @@ function ScoreboardState:init()
 
     local radioSpace = love.graphics.getWidth() - Vars.limitLine - space
     space = radioSpace / #Vars.userPreferences.time
-    local yPos = Vars.baseLine + Vars.lineHeight * 6
+    local yPos = Vars.baseLine + Vars.lineHeight * 7
     local xPos = Vars.limitLine +  space / 2  - (Vars.titleSize * 0.60)
     for i, v in ipairs(Vars.userPreferences.time) do
         elements[#elements+1] = {

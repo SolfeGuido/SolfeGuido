@@ -133,6 +133,12 @@ function PlayState:keypressed(key)
     end
 end
 
+function PlayState:focus(focus)
+    if not focus then
+        ScreenManager.push('PauseState')
+    end
+end
+
 
 function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end

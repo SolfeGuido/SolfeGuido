@@ -25,7 +25,9 @@ function State:new()
 end
 
 function State:init(...)
+end
 
+function State:focus(_)
 end
 
 function State:isActive()

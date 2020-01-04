@@ -21,7 +21,7 @@ function love.load()
     Mobile.load()
     Config.parse()
     Theme.init(Config.theme)
-    ScreenManager.registerCallbacks({'keypressed', 'touchpressed', 'touchmoved', 'touchreleased'})
+    ScreenManager.registerCallbacks({'keypressed', 'touchpressed', 'touchmoved', 'touchreleased', 'focus'})
     ScreenManager.init({SplashScreenState = require('src.states.SplashScreenState')}, 'SplashScreenState')
 
 --- BEGIN DEBUG

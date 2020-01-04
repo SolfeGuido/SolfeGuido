@@ -1,6 +1,8 @@
 return {
     gclef = 'Clé de Sol',
     fclef = 'Clé de Fa',
+    cclef3 = 'Clé d\'Ut 3',
+    cclef4 = 'Clé d\'Ut 4',
     both = 'Clés de Sol & Fa',
     made_with = 'Créé avec',
     by = 'Par',

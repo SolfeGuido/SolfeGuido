@@ -6,6 +6,7 @@ local Theme = require('src.utils.Theme')
 local Graphics = require('src.utils.Graphics')
 local UIFactory = require('src.utils.UIFactory')
 local ScreenManager = require('lib.ScreenManager')
+local lume = require('lib.lume')
 
 
 -- Entities
@@ -74,7 +75,7 @@ end
 
 function ScoreboardState:init()
     local time = Vars.transition.tween / 3
-    local middle = Vars.baseLine + Vars.lineHeight
+    local middle = Vars.baseLine - Vars.lineHeight
     local font = assets.fonts.Oswald(2 * Vars.lineHeight / 3)
     local maxSize = 0
 
@@ -103,11 +104,51 @@ function ScoreboardState:init()
                 text = title,
                 y = -title:getHeight(),
                 color = Theme.transparent:clone(),
-                x = love.graphics.getWidth() / 2 - title:getWidth() / 2
+                x = lume.round(love.graphics.getWidth() / 2 - title:getWidth() / 2)
             }),
             target = {color = Theme.font, y = 0}
         }
     }
+
+    local line = self:addentity(Line, {
+        color = Theme.transparent:clone(),
+        x = 0,
+        y = Vars.baseLine - Vars.lineHeight,
+        width = 0,
+    })
+    elements[#elements+1] = {
+        element = line,
+        target = {color = Theme.font, width = love.graphics.getWidth()},
+        time = time
+    }
+    self.titles[#self.titles+1] = line
+
+    line = self:addentity(Line, {
+        color = Theme.transparent:clone(),
+        x = 0,
+        y = Vars.baseLine,
+        width = 0,
+    })
+    elements[#elements+1] = {
+        element = line,
+        target = {color = Theme.font, width = love.graphics.getWidth()},
+        time = time,
+    }
+    self.titles[#self.titles+1] = line
+
+
+    line = self:addentity(Line, {
+        color = Theme.transparent:clone(),
+        x = Vars.limitLine,
+        y = Vars.baseLine - Vars.lineHeight,
+        height = 0,
+    })
+    elements[#elements+1] = {
+        element = line,
+        target = {color = Theme.font, height = Vars.lineHeight * 2},
+        time = time
+    }
+    self.titles[#self.titles+1] = line
 
     middle = middle + Vars.lineHeight
 
@@ -120,8 +161,8 @@ function ScoreboardState:init()
             element = UIFactory.createTitle(self, {
                 name = 'titles',
                 text = text,
-                y = middle,
-                x = x
+                y = lume.round(middle),
+                x = lume.round(x)
             }),
             target = {color =  Theme.font},
         }
@@ -140,14 +181,14 @@ function ScoreboardState:init()
                 name = 'titles',
                 text = text,
                 color = Theme.transparent:clone(),
-                y = Vars.baseLine + Vars.lineHeight,
-                x = middle + padding
+                y = lume.round(Vars.baseLine - Vars.lineHeight),
+                x = lume.round(middle + padding)
             }),
             target = {color = Theme.font},
             time = time
         }
         self.texts[v] = {}
-        local yPos = Vars.baseLine + Vars.lineHeight * 2
+        local yPos = Vars.baseLine
         for _, key in ipairs(Vars.userPreferences.keySelect) do
             local score = ScoreManager.get(key, v, Vars.userPreferences.time[1])
             text = love.graphics.newText(font, tostring(score))
@@ -157,8 +198,8 @@ function ScoreboardState:init()
                     name = 'titles',
                     text = text,
                     color = Theme.transparent:clone(),
-                    y = yPos,
-                    x = middle + padding
+                    y = lume.round(yPos),
+                    x = lume.round(middle + padding)
                 }),
                 target = {color = Theme.font},
                 time = time
@@ -171,11 +212,11 @@ function ScoreboardState:init()
 
 
         if i ~= #levels then
-            local line = self:addentity(Line, {
+            line = self:addentity(Line, {
                     color = Theme.transparent:clone(),
                     x = middle,
-                    y = Vars.baseLine + Vars.lineHeight,
-                    height = Vars.lineHeight * 4,
+                    y = Vars.baseLine - Vars.lineHeight,
+                    height = Vars.lineHeight * 6,
             })
             elements[#elements+1] = {
                 element = line,

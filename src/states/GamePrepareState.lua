@@ -69,6 +69,18 @@ function GamePrepareState:createMeasures()
             })
         }
         sounds = lume.concat(self.measures[1]:getRequiredNotes(), self.measures[2]:getRequiredNotes())
+    elseif Config.keySelect == 'cClef3' then
+        self.measures = {Measure(nil,{
+            keyData = Vars.cClef3,
+            height = availableSpace
+        })}
+        sounds = self.measures[1]:getRequiredNotes()
+    elseif Config.keySelect == 'cClef4' then
+        self.measures = {Measure(nil,{
+            keyData = Vars.cClef4,
+            height = availableSpace
+        })}
+        sounds = self.measures[1]:getRequiredNotes()
     else
         Logger.error('Unknown key : ' .. Config.keySelect)
         -- Show error dialog ?

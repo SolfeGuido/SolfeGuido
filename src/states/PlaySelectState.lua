@@ -95,10 +95,12 @@ function PlaySelectState:init()
         icons = {
             gClef = 'GClef',
             fClef = 'FClef',
-            both = 'BothKeys'
+            both = 'BothKeys',
+            cClef3 = 'CClef3',
+            cClef4 = 'CClef4'
         },
         listName = 'keyButtons',
-        width = Vars.titleSize * 2,
+        width = Vars.titleSize,
         padding =  pad,
         size = Vars.titleSize
     })

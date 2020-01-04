@@ -14,7 +14,7 @@ return {
         vibrations = {'on', 'off'},
         lang = {'en', 'fr'},
         noteStyle = {'englishNotes', 'romanNotes', 'latinNotes'},
-        keySelect = {'gClef', 'fClef', 'both'},
+        keySelect = {'gClef', 'fClef', 'both', 'cClef3', 'cClef4'},
         difficulty = {'1', '2', '3', '4', 'all'},
         answerType = {'buttons', 'piano', 'pianoWithNotes'},
         time = {'30s', '1mn', '2mn', '5mn'},
@@ -72,7 +72,6 @@ return {
         height = 7,
         yOrigin = 2.6,
         icon = 'GClef',
-        line = 4,
         lowestNote = 'F3',
         firstNote = 12,
         difficulties = {
@@ -86,7 +85,6 @@ return {
     fClef = {
         height = 5,
         yOrigin = 3.5,
-        line = 1,
         icon = 'FClef',
         lowestNote = 'A1',
         difficulties = {
@@ -95,6 +93,32 @@ return {
             ['3'] =     {'A1', 'B1', 'C2', 'D2', 'E2', 'F2', 'G2'},
             ['4'] =     {'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4'},
             ['all'] =   {'A1', 'B1', 'C2', 'D2', 'E2', 'F2', 'G2', 'A2', 'B2', 'C3', 'D3',  'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4'}
+        }
+    },
+    cClef3 = {
+        height = 4,
+        yOrigin = 4,
+        icon = 'CClef',
+        lowestNote = 'G2',
+        difficulties = {
+            ['1'] =     {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'},
+            ['2'] =     {'G2', 'A2', 'B2', 'C3', 'D3', 'E3', 'F3'},
+            ['3'] =     {'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'},
+            ['4'] =     {'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5'},
+            ['all'] =   {'G2', 'A2', 'B2', 'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5'}
+        }
+    },
+    cClef4 = {
+        height = 4,
+        yOrigin = 3,
+        icon = 'CClef',
+        lowestNote = 'E2',
+        difficulties = {
+            ['1'] =     {'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'},
+            ['2'] =     {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'},
+            ['3'] =     {'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5'},
+            ['4'] =     {'E2', 'F2', 'G2', 'A2', 'B2', 'C3', 'D3'},
+            ['all'] =   {'E2', 'F2', 'G2', 'A2', 'B2', 'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4',  'C5', 'D5'}
         }
     },
     note = {

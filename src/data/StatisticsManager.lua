@@ -47,6 +47,7 @@ local function extractGlobals(games)
         totalGames = #gameList,
         totalCorrectNotes = tCorrect,
         totalWrongNotes = tWrong,
+        totalTimePlayed = tPlayed,
         avgReacTime = avgReac,
         longestStreak = maxStreak,
         currentStreak = currentStreak,
@@ -66,6 +67,7 @@ function StatisticsManager.init()
         totalGames = #gameList,
         totalCorrectNotes = 0,
         totalWrongNotes = 0,
+        totalTimePlayed = 0,
         avgReacTime = 0,
         longestStreak = 0,
         currentStreak = 0
@@ -96,9 +98,10 @@ function StatisticsManager.add(stats)
         end
     end
     local tCorrect = globalStats.totalCorrectNotes
+    globalStats.totalTimePlayed = globalStats.totalTimePlayed + obj.timePlayed
     globalStats.totalCorrectNotes = tCorrect + obj.correctNotes
     globalStats.totalWrongNotes = globalStats.totalWrongNotes + obj.wrongNotes
-    globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) + obj.avgReacTime) / (tCorrect + 1)
+    globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) + (obj.avgReacTime * obj.correctNotes) ) / (tCorrect + obj.correctNotes)
     globalStats.totalGames = globalStats.totalGames + 1
 end
 

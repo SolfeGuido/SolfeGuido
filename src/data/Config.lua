@@ -49,7 +49,9 @@ function Config.parse()
 end
 
 function Config.updateSound()
-    love.audio.setVolume(_configData.sound == 'off' and 0 or 1)
+    if _G['SOUNDTAG'] then
+        SOUNDTAG.volume = _configData.sound == 'off' and 0.0 or 1.0
+    end
 end
 
 ---@param key string the key config to update

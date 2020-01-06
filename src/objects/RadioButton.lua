@@ -55,7 +55,7 @@ function RadioButton:__tostring()
 end
 
 function RadioButton:onclick()
-    TEsound.play(assets.sounds.click)
+    assets.sounds.click:play()
     if self.callback then self.callback(self) end
 end
 

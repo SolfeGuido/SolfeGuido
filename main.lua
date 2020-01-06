@@ -2,7 +2,6 @@ require('src.extensions.run')
 require('src.extensions.errorhandler')
 require('src.extensions.quit')
 
-require("lib.tesound")
 _G['Vars'] = require('src.Vars')
 local ScreenManager = require('lib.ScreenManager')
 local Mobile = require('src.utils.Mobile')
@@ -30,7 +29,6 @@ function love.load()
 --- END DEBUG
 end
 
-
 function love.draw()
     ScreenManager.draw()
 --- BEGIN DEBUG
@@ -42,7 +40,6 @@ function love.draw()
 end
 
 function love.update(dt)
-    TEsound.cleanup()
     ScreenManager.update(dt)
 --- BEGIN DEBUG
     --require('lib.lurker').update()

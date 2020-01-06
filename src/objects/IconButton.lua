@@ -90,7 +90,7 @@ function IconButton:leave()
 end
 
 function IconButton:onclick()
-    TEsound.play(assets.sounds.click)
+    assets.sounds.click:play()
     if self.callback then self.callback(self) end
 end
 

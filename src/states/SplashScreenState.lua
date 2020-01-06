@@ -70,6 +70,7 @@ function SplashScreenState:createCoroutine()
         assets.fonts.MarckScript(Vars.lineHeight)
         assets.fonts.MarckScript(Vars.titleSize)
         coroutine.yield(1)
+        Config.updateSound()
     end)
 end
 

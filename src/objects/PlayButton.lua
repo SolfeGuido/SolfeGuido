@@ -20,7 +20,7 @@ function PlayButton:boundingBox()
 end
 
 function PlayButton:onclick()
-    TEsound.play(assets.sounds.click)
+    assets.sounds.click:play()
     local a = self.y * 2
     local b = love.graphics.getWidth() / 2
     local maxRadius = math.sqrt(a*a + b*b)

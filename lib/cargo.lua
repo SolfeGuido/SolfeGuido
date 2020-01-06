@@ -2,7 +2,8 @@
 -- https://github.com/bjornbytes/cargo
 -- MIT License
 -- Modified and udpated By Azarias
-
+local ripple = require('lib.ripple')
+_G['SOUNDTAG'] = ripple.newTag({volume = 1.0})
 local cargo = {}
 
 local function merge(target, source, ...)
@@ -13,11 +14,6 @@ end
 
 local la, lf, lg = love.audio, love.filesystem, love.graphics
 
-local function makeSound(path)
-  local info = lf.getInfo(path, 'file')
-  return la.newSource(path, (info and info.size and info.size < 5e5) and 'static' or 'stream')
-end
-
 local function makeFont(path)
   -- Using a cache because the font are used all around the app, no need to released them at any moment
   local cache = {}
@@ -27,6 +23,14 @@ local function makeFont(path)
     cache[size] = ft
     return ft
   end
+end
+
+local function makeSound(path)
+  local source = love.audio.newSource(path, 'static')
+  return ripple.newSound(source, {
+    loop = false,
+    tags = {SOUNDTAG}
+  })
 end
 
 local function loadFile(path)
@@ -41,8 +45,8 @@ cargo.loaders = {
   ogv = lg and lg.newVideo,
   glsl = lg and lg.newShader,
   mp3 = la and makeSound,
-  wav = la and love.sound.newSoundData,
-  ogg = la and love.sound.newSoundData,
+  wav = la and makeSound,
+  ogg = la and makeSound,
   txt = lf and lf.read,
   xml = lf and lf.read,
   ttf = lg and makeFont,
@@ -52,7 +56,6 @@ cargo.loaders = {
 
 function cargo.init(path, parts)
   local loaders = cargo.loaders
-
   local total = {}
 
   local start = lf.getDirectoryItems(path, 'directory')

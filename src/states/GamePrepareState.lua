@@ -2,6 +2,7 @@
 --- LIBS
 local State = require('src.State')
 local lume = require('lib.lume')
+local ripple = require('lib.ripple')
 local Config = require('src.data.Config')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
@@ -131,7 +132,7 @@ function GamePrepareState:update(dt)
             end
             for _, v in ipairs(sounds) do
                 if not assets.sounds.notes[v] then
-                    assets.sounds.notes[v] = love.sound.newSoundData('notes/' .. v .. '.ogg')
+                    assets.sounds.notes[v] = ripple.newSound(love.audio.newSource('notes/' .. v .. '.ogg', 'static'), {tags = {SOUNDTAG}})
                     coroutine.yield(step)
                 end
             end

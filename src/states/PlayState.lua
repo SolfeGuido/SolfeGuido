@@ -50,7 +50,7 @@ function PlayState:init(config)
     if config.stopWatch then
         self.stopWatch = self:insertEntity(config.stopWatch)
         self.stopWatch.finishCallback = function() self:finish() end
-        elements[#elements + 1] = {element = self.stopWatch, target = {x = Vars.stopWatch.x}}
+        elements[#elements + 1] = {element = self.stopWatch, target = {color = Theme.secondary}}
     end
 
     self:addHUD(IconButton, {
@@ -97,6 +97,7 @@ function PlayState:finish()
     self.answerGiver:hide()
     self.stats:stop()
     StatisticsManager.add(self.stats)
+    StatisticsManager.save()
     self.finished = true
     while not self.notes:isEmpty() do
         self.notes:shift():fadeAway()
@@ -144,19 +145,14 @@ function PlayState:answerGiven(idx)
     if self.notes:isEmpty() then return end
     local measure = self:getMeasure()
     local currentNote = self.notes:peek()
+    -- Playing same not whatever happens, need to find something else to do when wrong
+    assets.sounds.notes[currentNote.note]:play()
     if measure:isCorrect(currentNote.note, idx) then
-        TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)
         self.stats:correct()
         self.notes:shift():correct()
         self.score:gainPoint()
     else
         self.stats:wrong()
-        self.timer:script(function(wait)
-            for i = 1, Vars.note.wrongRepeat do
-                TEsound.play(assets.sounds.notes[currentNote.note], nil, 1.0, 1)
-                wait(Vars.note.wrongSpace)
-            end
-        end)
         self.notes:shift():wrong()
         Mobile.vibrate(Vars.mobile.vibrationTime)
         if self.stopWatch then

@@ -22,20 +22,13 @@ return {
         gameMode = {'timed', 'zen'}
     },
     configSave = 'config.json',
-    lineSpace = 20,
     lineHeight = lineHeight,
     limitLine = 150,
     maxProgressSpeed = 100,
     romanNotes = {'do', 'ré', 'mi', 'fa', 'sol', 'la', 'si'},
     latinNotes = {'do', 're', 'mi', 'fa', 'sol', 'la', 'si'},
     englishNotes = {'C', 'D', 'E', 'F', 'G', 'A', 'B'},
-    trialTime = 60,
     timeLoss = 2,
-    stopWatch = {
-        x = 15,
-        y = 15,
-        size = 20,
-    },
     mobileButton = {
         fontSize = 20,
         padding = 10

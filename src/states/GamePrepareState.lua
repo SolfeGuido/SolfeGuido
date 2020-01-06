@@ -123,12 +123,7 @@ function GamePrepareState:update(dt)
             })
             coroutine.yield(step)
             if timed then
-                self.stopWatch = StopWatch(nil, {
-                    x = -Vars.stopWatch.size,
-                    y = Vars.stopWatch.y,
-                    size = Vars.stopWatch.size,
-                    started = false
-                })
+                self.stopWatch = StopWatch(nil, { started = false })
                 coroutine.yield(step)
             end
             if not assets.sounds.notes then

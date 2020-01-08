@@ -2,9 +2,9 @@
 --- LIBS
 local Class = require('lib.class')
 local Timer = require('lib.timer')
-local ScreenManager = require('lib.ScreenManager')
-local lume = require('lib.lume')
 local Theme = require('src.utils.Theme')
+
+local UIBuilder = require('src.objects.UIBuilder')
 
 ---@class State
 ---@field public entities table
@@ -28,6 +28,11 @@ function State:init(...)
 end
 
 function State:focus(_)
+end
+
+function State:startUI(options)
+    self.ui = self:addentity(UIBuilder, options)
+    return self.ui
 end
 
 function State:isActive()

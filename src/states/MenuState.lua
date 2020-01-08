@@ -5,41 +5,21 @@ local UIFactory = require('src.utils.UIFactory')
 local Graphics = require('src.utils.Graphics')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
-local lume = require('lib.lume')
-
-local ParticleSystem = require('src.utils.ParticleSystem')
 
 ---@class MenuState : State
 local MenuState = State:extend()
 
 function MenuState:new()
     MenuState.super.new(self)
-    self.particleSystem = ParticleSystem.noteBurstParticles(Theme.white:clone())
-    self.particleSystem:pause()
-    self.colorOrders = {
-        {0.5, 1, 0.5, 1},
-        {1, 0.5, 1, 1},
-        {1, 0, 1, 1},
-        {1, 0.5, 0.5, 1}
-    }
 end
 
 function MenuState:draw()
     Graphics.drawMusicBars()
     MenuState.super.draw(self)
-    love.graphics.setColor(self.colorOrders[1])
-    love.graphics.draw(self.particleSystem, love.graphics.getWidth(), love.graphics.getHeight())
-    love.graphics.setColor(self.colorOrders[2])
-    love.graphics.draw(self.particleSystem, love.graphics.getWidth(), 0)
-    love.graphics.setColor(self.colorOrders[3])
-    love.graphics.draw(self.particleSystem, 0, 0)
-    love.graphics.setColor(self.colorOrders[4])
-    love.graphics.draw(self.particleSystem, 0, love.graphics.getHeight())
 end
 
 function MenuState:update(dt)
     State.update(self, dt)
-    self.particleSystem:update(dt)
 end
 
 function MenuState:keypressed(key)
@@ -48,11 +28,6 @@ function MenuState:keypressed(key)
             return love.event.quit()
         elseif key == "menu" then
             return self:openOptions(self.settingsButton)
-        elseif key == "space" then
-            self.colorOrders = lume.shuffle(self.colorOrders)
-            self.particleSystem:start()
-            self.particleSystem:emit(200)
-            self.particleSystem:pause()
         end
     end
     State.keypressed(self, key)
@@ -64,150 +39,90 @@ function MenuState:openOptions(btn)
 end
 
 function MenuState:slideOut(callback)
-    self:transition({
-        {
-            element = self.title,
-            target = {color = Theme.transparent, y = - Vars.titleSize * 2}
-        },
-        {
-            element = self.powerButton,
-            target = {color = Theme.transparent, y = love.graphics.getHeight()}
-        },
-        {
-            element = self.settingsButton,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.playButton,
-            target = {color = Theme.transparent, y = love.graphics.getHeight()}
-        },
-        {
-            element = self.achievementsButton,
-            target = {color = Theme.transparent, y = love.graphics.getHeight()}
-        },
-        {
-            element = self.scoresButton,
-            target = {color = Theme.transparent, y = love.graphics.getHeight()}
-        },
-        {
-            element = self.creditsButton,
-            target = {color = Theme.transparent, y = -Vars.titleSize}
-        }
-    }, callback)
+    self:transition(self.ui:transitionOut(), callback)
 end
 
 function MenuState:init(...)
     local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), Vars.appName)
 
-    self:transition({
-        {
-            element = UIFactory.createIconButton(self, {
-                name = 'powerButton',
+    local elements = self:startUI({height = Vars.titleSize, color = function() return Theme.transparent:clone() end})
+        :createTransition()
+            :add('IconButton', {
+                from = 'bottom',
+                to = love.graphics.getHeight() - Vars.titleSize - 5,
                 x = 5,
-                color = Theme.transparent:clone(),
-                y = love.graphics.getHeight(),
-                height = Vars.titleSize,
                 icon = 'Off',
                 callback = function() love.event.quit() end
-            }),
-            target = {color = Theme.font, y = love.graphics.getHeight() - Vars.titleSize - 5}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                name = 'creditsButton',
+            })
+            :add('IconButton', {
+                from = 'top',
+                to = 5,
                 x = 5,
-                size = Vars.mobileButton.fontSize,
-                color = Theme.transparent:clone(),
-                y = -Vars.titleSize,
-                height = Vars.titleSize,
                 icon = 'Info',
-                callback = function()
-                    self:slideOut(function()
-                        ScreenManager.switch('CreditsState')
-                    end)
-                end
-            }),
-            target = {color = Theme.font, y = 5}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                name = 'settingsButton',
-                x = love.graphics.getWidth(),
+                size = Vars.mobileButton.fontSize,
+                callback = function() self:slideOut(function() ScreenManager.switch('CreditsState') end) end
+            })
+            :add('IconButton', {
+                from = 'right',
+                to = love.graphics.getWidth() - Vars.titleSize - 5,
                 y = 5,
-                color = Theme.transparent:clone(),
-                height = Vars.titleSize,
                 icon = 'Cog',
-                callback = function(btn)
-                    self:openOptions(btn)
-                end
-            }),
-            target = {color = Theme.font, x = love.graphics.getWidth() - Vars.titleSize - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                name = 'title',
+                callback = function(btn) self:openOptions(btn) end
+            })
+            :add('Title', {
+                from = 'top',
+                fromPosition = -title:getHeight(),
+                to = 0,
+                x = love.graphics.getWidth() / 2 - title:getWidth() / 2,
                 text = title,
-                y = -title:getHeight(),
-                color = Theme.transparent:clone(),
-                x = love.graphics.getWidth() / 2 - title:getWidth() / 2
-            }),
-            target = {color = Theme.font, y = 0}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                name = 'playButton',
-                icon = 'Music',
-                y = -Vars.titleSize - 5,
-                padding = 10,
-                size = Vars.titleSize * 1.5,
+            })
+            :add('IconButton', {
+                from = 'top',
+                fromPosition = -Vars.titleSize - 5,
+                to = love.graphics.getHeight() / 2 - Vars.titleSize - 15,
                 framed = true,
                 centered = true,
-                color = Theme.transparent:clone(),
+                size = Vars.titleSize * 1.5,
+                padding = 10,
+                icon = 'Music',
                 callback = function(btn)
                     btn.consumed = false
                     ScreenManager.push('PlaySelectState')
                 end
-            }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize - 15}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                name = 'achievementsButton',
+            })
+            :add('IconButton', {
+                from = 'top',
+                fromPosition = -Vars.titleSize * 2,
+                to =  love.graphics.getHeight() / 2 - Vars.titleSize + 5,
+                x = love.graphics.getWidth() / 2 - Vars.titleSize * 2,
                 anchor = 0.5,
+                framed = true,
                 padding = 5,
                 icon = 'BarCharts',
-                y = -Vars.titleSize * 2,
-                framed = true,
-                x = love.graphics.getWidth() / 2 - Vars.titleSize * 2,
-                color = Theme.transparent:clone(),
                 callback = function(btn)
                     btn.consumed = false
                     self:slideOut(function()
                         ScreenManager.switch('StatisticsState')
                     end)
                 end
-            }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize +5}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                name = 'scoresButton',
+            })
+            :add('IconButton', {
+                from = 'top',
+                fromPosition = -Vars.titleSize * 2,
+                to = love.graphics.getHeight() / 2 - Vars.titleSize + 5,
+                x =  love.graphics.getWidth() / 2 + Vars.titleSize * 2,
+                framed = true,
                 padding = 5,
                 anchor = 0.5,
                 icon = 'List',
-                y = -Vars.titleSize * 2,
-                framed = true,
-                x = love.graphics.getWidth() / 2 + Vars.titleSize * 2,
-                color = Theme.transparent:clone(),
                 callback = function()
                     self:slideOut(function()
                         ScreenManager.switch('ScoreboardState')
                     end)
                 end
-            }),
-            target = {color = Theme.font, y = love.graphics.getHeight() / 2 - Vars.titleSize + 5}
-        }
-    })
+            })
+        :build()
+    self:transition(elements)
 end
 
 return MenuState

@@ -26,6 +26,7 @@ local HIDING = {
     bottom = {y = love.graphics.getHeight(), color = Theme.transparent}
 }
 
+---@class TransitionBuilder
 local TransitionBuilder = class:extend()
 
 function TransitionBuilder:new(uibuilder)
@@ -50,6 +51,7 @@ function TransitionBuilder:add(name, options)
     return self
 end
 
+---@return TransitionBuilder
 function TransitionBuilder:build()
     local ret = self._elements
     self._elements = nil
@@ -65,12 +67,16 @@ function UIBuilder:new(area, options)
     self._children = {left = {}, right = {}, bottom = {}, top = {}}
 end
 
+---@param key string
+---@return any
 function UIBuilder:getOption(key)
     local val = self._options[key]
     if lume.isCallable(val) then return val() end
     return val
 end
 
+---@param origin string
+---@param child Entity
 function UIBuilder:addChild(origin, child)
     local t = self._children[origin]
     t[#t+1] = child
@@ -85,7 +91,7 @@ function UIBuilder:createTransition()
     return TransitionBuilder(self)
 end
 
-function UIBuilder:transitionOut(callback)
+function UIBuilder:transitionOut()
     local result = {}
     for k, v in pairs(self._children) do
         local target = HIDING[k]

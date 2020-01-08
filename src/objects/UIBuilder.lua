@@ -39,13 +39,17 @@ end
 function TransitionBuilder:add(name, options)
     local optionsName = BLOCKS[name:upper()]
     local widgetOptions, key = ORIGINS[options.from](options)
-    local widgetTarget = {[key] = options.to, color = Theme.font}
     for _, v in ipairs(optionsName) do
         if not widgetOptions[v] then
             widgetOptions[v] = options[v] or self.uibuilder:getOption(v)
         end
     end
     local element = UIFactory['create' .. name](self.uibuilder.area, widgetOptions)
+    local targetPosition = options.to
+    if lume.isCallable(targetPosition) then
+        targetPosition = targetPosition(element)
+    end
+    local widgetTarget = {[key] = targetPosition, color = options.toColor or Theme.font}
     self._elements[#self._elements+1] = {element = element, target = widgetTarget}
     self.uibuilder:addChild(options.from, element)
     return self

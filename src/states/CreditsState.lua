@@ -23,180 +23,94 @@ end
 
 function CreditsState:slideOut(callback)
     callback = callback or function() ScreenManager.switch('MenuState') end
-    self:transition({
-        {
-            element = self.title,
-            target = {color = Theme.transparent, y = -Vars.titleSize}
-        },
-        {
-            element = self.homeButton,
-            target = {color = Theme.transparent, y = love.graphics.getHeight()}
-        },
-        {
-            element = self.madeWithTitle,
-            target = {color = Theme.transparent, x = -self.madeWithTitle:width() - 5}
-        },
-        {
-            element = self.soundsTitle,
-            target = {color = Theme.transparent, x = -self.soundsTitle:width() - 5}
-        },
-        {
-            element = self.iconsTitle,
-            target = {color = Theme.transparent, x = -self.iconsTitle:width() - 5}
-        },
-        {
-            element = self.byTitle,
-            target = {color = Theme.transparent, x = -self.byTitle:width() - 5}
-        },
-        {
-            element = self.loveImage,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.loveTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.azariasTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.iowaTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        },
-        {
-            element = self.iconMoonTitle,
-            target = {color = Theme.transparent, x = love.graphics.getWidth()}
-        }
-    }, callback)
+    self:transition(self.ui:transitionOut(), callback)
 end
 
 function CreditsState:init()
-    local fontSize = 2 * Vars.lineHeight / 3
-    self:transition({
-        {
-            element = UIFactory.createTitle(self, {
-                centered = true,
-                name = 'title',
-                text = 'Credits',
+    local elements = self:startUI({
+        fontSize = 2 * Vars.lineHeight / 3,
+        fontName = 'Oswald',
+        color = function() return Theme.transparent:clone() end
+    })
+        :createTransition()
+            :add('Title', {
+                from = 'top',
+                to = 5,
                 x = 0,
-                y = -Vars.titleSize,
-                color = Theme.transparent:clone()
-            }),
-            target = {color = Theme.font, y = 5}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = 'Home',
-                name = 'homeButton',
+                centered = true,
+                text = 'Credits',
+                fontName = 'MarckScript',
+                fontSize = Vars.titleSize
+            })
+            :add('IconButton', {
+                from = 'bottom',
+                to = love.graphics.getHeight() -Vars.titleSize - 5,
                 x = 5,
-                y = love.graphics.getHeight(),
-                color = Theme.transparent:clone(),
-                callback = function()
-                    self:slideOut()
-                end
-            }),
-            target = {color = Theme.font, y = love.graphics.getHeight() -Vars.titleSize - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'made_with',
-                fontName = 'Oswald',
-                name =  'madeWithTitle',
-                x = -100,
+                icon = 'Home',
+                callback = function() self:slideOut() end
+            })
+            :add('Title', {
+                from = 'left',
+                fromPosition = -100,
+                to = function(elem) return Vars.limitLine - elem:width() - 5 end,
                 y = Vars.baseLine + Vars.lineHeight,
-                fontSize = fontSize
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.madeWithTitle:width() - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'By',
-                fontName = 'Oswald',
-                name = 'byTitle',
-                x = -100,
+                text = 'made_with'
+            })
+            :add('Title',{
+                from = 'left',
+                fromPosition = -100,
+                to = function(elem) return Vars.limitLine - elem:width() - 5 end,
                 y = Vars.baseLine + Vars.lineHeight * 2,
-                fontSize = fontSize
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.byTitle:width() - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'Icons',
-                fontName = 'Oswald',
-                name = 'iconsTitle',
-                x = -100,
+                text = 'By'
+            })
+            :add('Title', {
+                from = 'left',
+                fromPosition = -100,
+                to = function(elem) return Vars.limitLine - elem:width() - 5 end,
                 y = Vars.baseLine + Vars.lineHeight * 3,
-                fontSize = fontSize
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.iconsTitle:width() - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
+                text = 'Icons'
+            })
+            :add('Title', {
+                from = 'left',
+                fromPosition = -100,
+                to = function(elem) return Vars.limitLine - elem:width() - 5 end,
+                y = Vars.baseLine + Vars.lineHeight * 4,
                 text = 'Sounds',
-                fontName = 'Oswald',
-                name = 'soundsTitle',
-                x = -100,
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + 5,
+                y =  Vars.baseLine + Vars.lineHeight * 2,
+                text = 'Azarias'
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + 5,
+                y = Vars.baseLine + Vars.lineHeight * 3,
+                text = 'IconMoonApp'
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + 5,
                 y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = fontSize
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.soundsTitle:width() - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'Azarias',
-                fontName = 'Oswald',
-                name = 'azariasTitle',
-                x = love.graphics.getWidth(),
-                fontSize = fontSize,
-                y = Vars.baseLine + Vars.lineHeight * 2
-            }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'IconMoonApp',
-                fontName = 'Oswald',
-                name = 'iconMoonTitle',
-                x = love.graphics.getWidth(),
-                fontSize = fontSize,
-                y = Vars.baseLine + Vars.lineHeight * 3
-            }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'University of Iowa',
-                fontName = 'Oswald',
-                name = 'iowaTitle',
-                x = love.graphics.getWidth(),
-                y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = fontSize
-            }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
-        },
-        {
-            element = UIFactory.createImage(self, {
-                image = assets.images.loveIcon,
-                name = 'loveImage',
-                x = love.graphics.getWidth() + Vars.lineHeight,
+                text = 'University of Iowa'
+            })
+            :add('Image', {
+                from = 'right',
+                to = Vars.limitLine + Vars.lineHeight / 2,
                 y = Vars.baseLine + Vars.lineHeight * 1.5,
                 size = Vars.lineHeight - 5,
-            }),
-            target = {color = Theme.white, x = Vars.limitLine + Vars.lineHeight / 2}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'Löve2d',
-                fontName = 'Oswald',
-                name = 'loveTitle',
-                x = love.graphics.getWidth(),
+                image = assets.images.loveIcon,
+                toColor = Theme.white
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + Vars.lineHeight,
                 y = Vars.baseLine + Vars.lineHeight,
-                fontSize = fontSize
-            }),
-            target = {color = Theme.font, x = Vars.limitLine + Vars.lineHeight}
-        }
-    })
+                text = 'Löve2D'
+            })
+        :build()
+    self:transition(elements)
 end
 
 

@@ -11,7 +11,15 @@ local Note = Entity:extend()
 
 
 function Note:new(area, options)
-    Note.super.new(self, area, options)
+    Note.super.new(self, area)
+    self:reset(options.note, options.x, options.measure)
+end
+
+function Note:reset(note, x, measure)
+    self.isDead =  false
+    self.note = note
+    self.x = x
+    self.measure = measure
     self.image = self.measure.noteIcon
     self.color = Theme.font:clone()
     self.name = nil
@@ -22,7 +30,6 @@ function Note:new(area, options)
     self.yOrigin = Vars.note.yOrigin * self.measure.noteHeight
     self.xOrigin = Vars.note.xOrigin * self.image:getWidth()
 end
-
 
 function Note:dispose()
     self.image = nil

@@ -14,7 +14,7 @@ local Scene = require('src.State')
 -- Entities
 local GameStatistics = require('src.objects.GameStatistics')
 local Note = require('src.objects.Note')
-local Queue = require('lib.queue')
+local CircularQueue = require('src.utils.CircularQueue')
 
 local AnswerGiver = require('src.objects.AnswerGiver')
 
@@ -33,7 +33,6 @@ function PlayState:new()
 
     self.progress = 0
     self.progressSpeed = Vars.maxProgressSpeed
-    self.notes = Queue()
     self.currentMeasure = 1
     self.nextMeasureGeneration = 1
 end
@@ -42,6 +41,15 @@ end
 function PlayState:init(config)
     self.score = self:insertEntity(config.score)
     self.measures = config.measures
+    self.notes = CircularQueue(function()
+        local note = self:addentity(Note, {
+            measure = self.measures[1],
+            note = 'C4',
+            x = math.huge
+        })
+        note.isDead = true
+        return note
+    end, 25)
 
     for _,v in ipairs(self.measures) do self:insertEntity(v) end
 
@@ -182,12 +190,9 @@ end
 
 function PlayState:addNote()
     local note = self.measures[self.nextMeasureGeneration]:getRandomNote()
-    local ent = Scene.addentity(self, Note, {
-        note = note,
-        x = love.graphics.getWidth(),
-        measure = self.measures[self.nextMeasureGeneration]
-    })
-    self.notes:push(ent)
+    self:insertEntity(self.notes:push(function(ent)
+        return ent:reset(note, love.graphics.getWidth(), self.measures[self.nextMeasureGeneration])
+    end))
     if #self.measures == 2 then
         self.nextMeasureGeneration = 3 - self.nextMeasureGeneration
     end

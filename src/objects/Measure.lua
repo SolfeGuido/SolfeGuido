@@ -20,6 +20,7 @@ function Measure:new(area, options)
     self.lowestNote = lume.find(assets.NoteName, self.keyData.lowestNote)
     font = assets.fonts.Icons(self.noteHeight * Vars.note.height)
     self.noteIcon =  love.graphics.newText(font, assets.IconName.QuarterNote)
+    self.wrongNoteIcon = love.graphics.newText(font, assets.IconName.GhostNote)
     self.noteChoice = 1
 end
 

@@ -66,6 +66,7 @@ function Note:wrong()
     self.color = Theme.wrong:clone()
     self:fadeAway()
     local font = love.graphics.newFont(self.measure.noteHeight)
+    self.image = self.measure.wrongNoteIcon
     self.name = love.graphics.newText(font, self.measure:getNoteName(self.note))
 end
 
@@ -104,7 +105,7 @@ function Note:draw()
         r,g,b = unpack(Theme.font.rgb)
         love.graphics.setColor(r,g,b, self.color.a)
         local yPos = self.measureIndex % 2 == 0 and 0 or self.measure.noteHeight / 2
-        love.graphics.draw(self.name, self.x + 35, self.y + yPos)
+        love.graphics.draw(self.name, self.x + 65, self.y + yPos)
     end
     love.graphics.setShader()
 end

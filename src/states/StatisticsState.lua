@@ -32,155 +32,84 @@ end
 
 function StatisticsState:slideOut(callback)
     callback = callback or function() ScreenManager.switch('MenuState') end
-    local elements = {
-        {
-            element = self.title,
-            target = {color = Theme.transparent, y = -Vars.titleSize}
-        },
-        {
-            element = self.homeButton,
-            target = {color = Theme.transparent, y = love.graphics.getHeight()}
-        },
-    }
-
-    for _,v in ipairs(self.fromLeft) do
-        elements[#elements+1] = {
-            element = v,
-            target = { color = Theme.transparent, x = -v:width() }
-        }
-    end
-
-    for _,v in ipairs(self.fromRight) do
-        elements[#elements+1] = {
-            element = v,
-            target = { color = Theme.transparent, x = love.graphics.getWidth() + 5}
-        }
-    end
-
-    self:transition(elements, callback)
+    self:transition(self.ui:transitionOut(), callback)
 end
 
 function StatisticsState:init()
-    local titleSizes = 2 * Vars.lineHeight / 3
     local stats = StatisticsManager.getGlobals()
-    self.fromLeft = {}
-    self.fromRight = {}
-    self:transition({
-        {
-            element = UIFactory.createTitle(self, {
-                centered = true,
-                name = 'title',
-                text = 'Statistics',
-                x = 0,
-                y = -Vars.titleSize,
-                color = Theme.transparent:clone()
-            }),
-            target = {color = Theme.font, y = 5}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = 'Home',
-                name = 'homeButton',
-                x = 5,
-                y = love.graphics.getHeight(),
-                color = Theme.transparent:clone(),
-                callback = function()
-                    self:slideOut(function()
-                        ScreenManager.switch('MenuState')
-                    end)
-                end
-            }),
-            target = {color = Theme.font, y = love.graphics.getHeight() -Vars.titleSize - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = tr('total_games', {count = stats.totalGames}),
-                fontName = 'Oswald',
-                name =  'fromRight',
-                x = love.graphics.getWidth(),
-                y = Vars.baseLine + Vars.lineHeight,
-                fontSize = titleSizes
-            }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = tr('total_points', {count = stats.totalCorrectNotes}),
-                fontName = 'Oswald',
-                name = 'fromRight',
-                x = love.graphics.getWidth(),
-                y = Vars.baseLine + Vars.lineHeight * 2,
-                fontSize = titleSizes
-            }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'avg_reaction_time',
-                fontName = 'Oswald',
-                name = 'fromRight',
-                x = love.graphics.getWidth(),
-                y = Vars.baseLine + Vars.lineHeight * 3,
-                fontSize =  titleSizes
-            }),
-            target = {color = Theme.font, x = Vars.limitLine + 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = 'longest_streak',
-                fontName = 'Oswald',
-                name = 'fromRight',
-                x = love.graphics.getWidth(),
-                y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = titleSizes
-            }),
-            target = {color = Theme.font, x =  Vars.limitLine + 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = tostring(stats.totalCorrectNotes),
-                fontName = 'Oswald',
-                name = 'fromLeft',
-                x = -Vars.limitLine,
-                fontSize = titleSizes,
-                y = Vars.baseLine + Vars.lineHeight * 2
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = string.format('%02.02f s', stats.avgReacTime),
-                fontName = 'Oswald',
-                name = 'fromLeft',
-                x = -Vars.limitLine,
-                fontSize = titleSizes,
-                y = Vars.baseLine + Vars.lineHeight * 3
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = tr('days', {count = stats.longestStreak}),
-                fontName = 'Oswald',
-                name = 'fromLeft',
-                x = -Vars.limitLine,
-                y = Vars.baseLine + Vars.lineHeight * 4,
-                fontSize = titleSizes
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
-        },
-        {
-            element = UIFactory.createTitle(self, {
-                text = tostring(stats.totalGames),
-                fontName = 'Oswald',
-                name = 'fromLeft',
-                x = -Vars.limitLine,
-                y = Vars.baseLine + Vars.lineHeight,
-                fontSize = titleSizes
-            }),
-            target = {color = Theme.font, x = Vars.limitLine - self.fromLeft[#self.fromLeft]:width() - 5}
-        }
+    local leftFunction = function(e) return Vars.limitLine - e:width() - 5 end
+    local elements = self:startUI({
+        fontSize = 2 * Vars.lineHeight / 3,
+        fontName = 'Oswald',
+        color = function() return Theme.transparent:clone() end
     })
+        :createTransition()
+            :add('Title', {
+                from = 'top',
+                to = 5,
+                text = 'Statistics',
+                fontName = 'MarckScript',
+                x = 0,
+                centered = true,
+                fontSize = Vars.titleSize
+            })
+            :add('IconButton', {
+                from = 'bottom',
+                to = love.graphics.getHeight() -Vars.titleSize - 5,
+                icon = 'Home',
+                x = 5,
+                callback = function() self:slideOut() end
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + 5,
+                y = Vars.baseLine + Vars.lineHeight,
+                text =  tr('total_games', {count = stats.totalGames})
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + 5,
+                y = Vars.baseLine + Vars.lineHeight * 2,
+                text = tr('total_points', {count = stats.totalCorrectNotes})
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + 5,
+                y = Vars.baseLine + Vars.lineHeight * 3,
+                text = 'avg_reaction_time',
+            })
+            :add('Title', {
+                from = 'right',
+                to = Vars.limitLine + 5,
+                y = Vars.baseLine + Vars.lineHeight * 4,
+                text = 'longest_streak'
+            })
+            :add('Title', {
+                from = 'left',
+                to = leftFunction,
+                y = Vars.baseLine + Vars.lineHeight * 2,
+                text = tostring(stats.totalCorrectNotes)
+            })
+            :add('Title', {
+                from = 'left',
+                to = leftFunction,
+                y = Vars.baseLine + Vars.lineHeight * 3,
+                text = string.format('%02.02f s', stats.avgReacTime)
+            })
+            :add('Title', {
+                from = 'left',
+                to = leftFunction,
+                y = Vars.baseLine + Vars.lineHeight * 4,
+                text = tr('days', {count = stats.longestStreak})
+            })
+            :add('Title', {
+                from = 'left',
+                to = leftFunction,
+                y = Vars.baseLine + Vars.lineHeight,
+                text = tostring(stats.totalGames)
+            })
+        :build()
+    self:transition(elements)
 end
 
 

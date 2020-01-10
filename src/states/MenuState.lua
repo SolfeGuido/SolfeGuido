@@ -79,10 +79,10 @@ function MenuState:init(...)
             :add('IconButton', {
                 from = 'top',
                 fromPosition = -Vars.titleSize - 5,
-                to = love.graphics.getHeight() / 2 - Vars.titleSize - 15,
+                to = Vars.baseLine + (Vars.lineHeight - 5) * 1.95,
                 framed = true,
                 centered = true,
-                size = Vars.titleSize * 1.5,
+                size = Vars.lineHeight * 2.1,
                 padding = 10,
                 icon = 'Music',
                 callback = function(btn)
@@ -93,11 +93,12 @@ function MenuState:init(...)
             :add('IconButton', {
                 from = 'top',
                 fromPosition = -Vars.titleSize * 2,
-                to =  love.graphics.getHeight() / 2 - Vars.titleSize + 5,
+                to =  Vars.baseLine + Vars.lineHeight * 2.2,
                 x = love.graphics.getWidth() / 2 - Vars.titleSize * 2,
                 anchor = 0.5,
                 framed = true,
                 padding = 5,
+                height = Vars.lineHeight * 1.8,
                 icon = 'BarCharts',
                 callback = function(btn)
                     btn.consumed = false
@@ -109,11 +110,12 @@ function MenuState:init(...)
             :add('IconButton', {
                 from = 'top',
                 fromPosition = -Vars.titleSize * 2,
-                to = love.graphics.getHeight() / 2 - Vars.titleSize + 5,
+                to = Vars.baseLine + Vars.lineHeight * 2.2,
                 x =  love.graphics.getWidth() / 2 + Vars.titleSize * 2,
                 framed = true,
                 padding = 5,
                 anchor = 0.5,
+                height = Vars.lineHeight * 1.8,
                 icon = 'List',
                 callback = function()
                     self:slideOut(function()

@@ -105,7 +105,11 @@ function IconButton:draw()
         love.graphics.rectangle('line', self.x, self.y, self._width, self._width)
     end
 
-    love.graphics.draw(self.image, self.x + self.xOrigin + self.padding, self.y + self.yOrigin + self.padding, self.rotation, nil, nil, self.xOrigin, self.yOrigin)
+    love.graphics.draw(self.image, 
+        lume.round(self.x + self.xOrigin + self.padding), lume.round(self.y + self.yOrigin + self.padding),
+        self.rotation,
+        nil, nil,
+        lume.round(self.xOrigin), lume.round(self.yOrigin))
 end
 
 return IconButton

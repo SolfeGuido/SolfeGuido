@@ -1,6 +1,7 @@
 
 local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
+local lume = require('lib.lume')
 
 local Title = Entity:extend()
 
@@ -38,7 +39,7 @@ function Title:draw()
         love.graphics.rectangle('line', self.x - 5, self.y - 5, self:width() + 10, self:height() + 5)
     end
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.text, self.x, self.y)
+    love.graphics.draw(self.text, lume.round(self.x), lume.round(self.y))
 end
 
 function Title:width()

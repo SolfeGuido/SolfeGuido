@@ -3,7 +3,6 @@ local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
 local lume = require('lib.lume')
-local Rectangle = require('src.utils.Rectangle')
 
 ---@class Drawer : Entity
 local Drawer = Entity:extend()
@@ -17,7 +16,8 @@ function Drawer:new(area, options)
 end
 
 function Drawer:contains(x, y)
-    return Rectangle(self.x, self.y, self.width, self.height):contains(x, y)
+    return self.x <= x and (self.x + self.width) >= x and
+            self.y <= y and (self.y + self.height) >= y
 end
 
 function Drawer:keypressed(key)

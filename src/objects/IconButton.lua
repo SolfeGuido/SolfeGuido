@@ -1,6 +1,5 @@
 -- LIBS
 local Theme = require('src.utils.Theme')
-local Rectangle = require('src.utils.Rectangle')
 local lume = require('lib.lume')
 
 -- Entities
@@ -69,8 +68,9 @@ function IconButton:__tostring()
     return "IconButton(" .. tostring(self.image) .. ")"
 end
 
-function IconButton:boundingBox()
-    return Rectangle(self.x, self.y, self._width, self.height)
+function IconButton:contains(x, y)
+    return self.x <= x and (self.x + self._width) >= x and
+            self.y <= y and (self.y + self.height) >= y
 end
 
 function IconButton:hovered()

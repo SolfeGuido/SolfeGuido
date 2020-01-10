@@ -1,8 +1,5 @@
-
-
 -- LIBS
 local Theme = require('src.utils.Theme')
-local Rectangle = require('src.utils.Rectangle')
 
 -- Entities
 local AbstractButton = require('src.objects.AbstractButton')

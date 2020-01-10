@@ -1,6 +1,5 @@
 local AbstractButton = require('src.objects.AbstractButton')
 local Theme = require('src.utils.Theme')
-local Rectangle = require('src.utils.Rectangle')
 
 ---@class PianoKey : Entity
 local PianoKey = AbstractButton:extend()
@@ -10,10 +9,6 @@ function PianoKey:new(area, options)
     self.backgroundColor = options.backgroundColor or Theme.background:clone()
     self._bgColor = self.backgroundColor:clone()
     self.color = options.color or Theme.font:clone()
-end
-
-function PianoKey:boundingBox()
-    return Rectangle(self.x, self.y, self.width, self.height)
 end
 
 function PianoKey:pressed()

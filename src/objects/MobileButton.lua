@@ -1,7 +1,6 @@
 
 
 local AbstractButton = require('src.objects.AbstractButton')
-local Rectangle = require('src.utils.Rectangle')
 local Theme = require('src.utils.Theme')
 
 ---@class MobileButton : AbstractButton
@@ -12,9 +11,10 @@ function MobileButton:new(area, options)
     self.color = options.color or Theme.font:clone()
 end
 
-function MobileButton:boundingBox()
+function MobileButton:contains(x, y)
     local padding = Vars.mobileButton.padding
-    return Rectangle(self.x, self.y, self.width or (self.text:getWidth() + padding * 2), self.text:getHeight() + padding * 2)
+    return self.x <= x and (self.x + (self.width or (self.text:getWidth() + padding * 2))) >= x and
+            self.y <= y and (self.y + (self.text:getHeight() + padding * 2)) >= y
 end
 
 function MobileButton:hovered()

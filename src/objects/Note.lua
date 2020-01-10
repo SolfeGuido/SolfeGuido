@@ -112,7 +112,7 @@ end
 
 ---@param dt number
 function Note:update(dt)
-    Note.super.update(self, dt)
+    Entity.update(self, dt)
     self.x = self.x - self.area:getMove()
     if self.x < 0 then
         self.isDead = true

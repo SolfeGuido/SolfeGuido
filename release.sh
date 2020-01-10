@@ -8,14 +8,14 @@ rm -rf $RELEASE
 
 cp -R * $TEMP
 cd $TEMP
-rm -rf examples
-rm -rf spec
-rm -rf .git
-rm -rf .travis.yml
-rm -rf .vscode
+TRASH=(examples spec .git .travis.yml .vscode lib/debugGraph.lua lib/lurker.lua lib/profile.lua)
+for t in ${TRASH[*]}
+do
+    printf "Removing %s\n" $t
+    rm -rf $t
+done
 sed -i -e '/--- BEGIN DEBUG/,/--- END DEBUG/d' main.lua
-rm lib/debugGraph.lua
-rm lib/lurker.lua
+
 
 compile() {
     cd $TEMP # move to temp

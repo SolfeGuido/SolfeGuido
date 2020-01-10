@@ -1,6 +1,5 @@
 
 local Entity = require('src.Entity')
-local Rectangle = require('src.utils.Rectangle')
 
 ---@class AbstractButton : Entity
 local AbstractButton = Entity:extend()
@@ -45,12 +44,9 @@ function AbstractButton:handleClick()
     return false
 end
 
-function AbstractButton:boundingBox()
-    return Rectangle(self.x, self.y, self.width, self.height)
-end
-
 function AbstractButton:contains(x, y)
-    return self:boundingBox():contains(x, y)
+    return self.x <= x and (self.x + self.width) >= x and
+            self.y <= y and (self.y + self.height) >= y
 end
 
 function AbstractButton:touchpressed(id, x, y)

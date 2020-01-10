@@ -1,6 +1,6 @@
 
 local AbstractButton = require('src.objects.AbstractButton')
-local Rectangle = require('src.utils.Rectangle')
+local lume = require('lib.lume')
 local Theme = require('src.utils.Theme')
 
 ---@class PlayButton : Entity
@@ -15,8 +15,8 @@ function  PlayButton:new(area, options)
     self.yOrigin = self.image:getHeight() / 2
 end
 
-function PlayButton:boundingBox()
-    return Rectangle(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+function PlayButton:contains(x, y)
+    return lume.distance(x, y, self.x, self.y, true) < self.radius * self.radius
 end
 
 function PlayButton:onclick()

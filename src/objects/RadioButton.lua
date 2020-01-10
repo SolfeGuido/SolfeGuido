@@ -1,7 +1,6 @@
 
 local AbstractButton = require('src.objects.AbstractButton')
 local Theme = require('src.utils.Theme')
-local Rectangle = require('src.utils.Rectangle')
 local lume = require('lib.lume')
 
 ---@class RadioButton : Entity
@@ -46,8 +45,9 @@ function RadioButton:toggle()
     self.isChecked = not self.isChecked
 end
 
-function RadioButton:boundingBox()
-    return Rectangle(self.x, self.y, self._width, self.height)
+function RadioButton:contains(x, y)
+    return self.x <= x and (self.x + self._width) >= x and
+            self.y <= y and (self.y + self.height) >= y
 end
 
 function RadioButton:__tostring()

@@ -63,6 +63,7 @@ function MenuState:init(...)
             })
             :add('IconButton', {
                 from = 'right',
+                name = 'settingsButton',
                 to = love.graphics.getWidth() - Vars.titleSize - 5,
                 y = 5,
                 icon = 'Cog',

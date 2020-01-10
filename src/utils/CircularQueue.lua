@@ -1,5 +1,6 @@
 local class = require('lib.class')
 
+---@class CircularQueue
 local CircularQueue = class:extend()
 
 

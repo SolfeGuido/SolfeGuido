@@ -23,7 +23,7 @@ local AnswerGiver = require('src.objects.AnswerGiver')
 ---@field public entities table
 ---@field public timer Timer
 ---@field public noteImage any
----@field private notes Queue
+---@field private notes CircularQueue
 ---@field private stopWatch StopWatch
 ---@field private points number
 local PlayState = Scene:extend()

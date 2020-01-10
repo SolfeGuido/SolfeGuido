@@ -24,17 +24,10 @@ function OptionsState:slideOut()
     self.slidingOut = true
     for _, drawer in ipairs(self.drawers) do drawer:hide() end
     self.drawers = nil
-    local elements = {}
-    for _,v in ipairs(self.entities) do
-        elements[#elements+1] = {
-            element = v,
-            target = {color = Theme.transparent, x = love.graphics.getWidth() + 10}
-        }
-    end
     local settings = ScreenManager.first().settingsButton
     if settings then settings.consumed = false end
 
-    self:transition(elements, function()
+    self:transition(self.ui:transitionOut(), function()
         ScreenManager.removeSelf(self)
     end, 0)
     self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() + 5}, 'out-expo')
@@ -109,101 +102,84 @@ function OptionsState:init(...)
     local remainingSpace = (love.graphics.getHeight() - Vars.titleSize * optionIcons)
     local padding = remainingSpace / (optionIcons + 1)
 
-    local hiddenX = love.graphics.getWidth()
     local xPos = love.graphics.getWidth() - Vars.titleSize * 1.25
     local baseY = Vars.titleSize  + padding
-    local targets = {x = xPos, color = Theme.font}
-    self:transition({
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = 'Times',
-                x = hiddenX,
+    local elements = self:startUI()
+        :createTransition()
+            :add('IconButton', {
+                from = 'right',
+                to = xPos - Vars.titleSize * 1.25,
                 y = 10,
                 circled = true,
                 size = Vars.titleSize / 1.5,
-                callback = function()
-                    self:slideOut()
-                end
-            }),
-            target = {x = xPos - Vars.titleSize * 1.25, color = Theme.font}
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = Config.sound == 'on' and 'VolumeOn' or 'VolumeOff',
-                x = hiddenX,
+                callback = function() self:slideOut() end,
+                icon = 'Times'
+            })
+            :add('IconButton', {
+                from = 'right',
+                to = xPos,
                 y = padding,
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('sound', Config.sound == 'on' and 'off' or 'on')
                     btn:setIcon(Config.sound == 'on' and assets.IconName.VolumeOn or assets.IconName.VolumeOff)
-                end
-            }),
-            target = targets
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
-                x = hiddenX,
+                end,
+                icon = Config.sound == 'on' and 'VolumeOn' or 'VolumeOff',
+            })
+            :add('IconButton', {
+                from = 'right',
+                to = xPos,
                 y = baseY + padding,
+                icon = Config.vibrations == 'on' and 'MobileVibrate' or 'Mobile',
                 callback = function(btn)
                     btn.consumed = false
                     Config.update('vibrations', Config.vibrations == 'on' and 'off' or 'on')
                     if Config.vibrations == 'on' then btn:shake() end
                     btn:setIcon(Config.vibrations == 'on' and assets.IconName.MobileVibrate or assets.IconName.Mobile)
                 end
-            }),
-            target = targets
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = 'Tag',
-                x = hiddenX,
-                y = baseY  * 2 + padding,
+            })
+            :add('IconButton', {
+                from = 'right',
+                to = xPos,
+                y = baseY * 2 + padding,
                 callback = function(btn)
                     btn.consumed = false
                     self.noteStyleDrawer:show()
-                end
-            }),
-            target = targets
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = 'Pointer',
-                x = hiddenX,
+                end,
+                icon = 'Tag'
+            })
+            :add('IconButton', {
+                from = 'right',
+                to = xPos,
                 y = baseY * 3 + padding,
                 callback = function(btn)
                     btn.consumed = false
                     self.answerTypeDrawer:show()
-                end
-            }),
-            target = targets
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                icon = 'Sphere',
-                x = hiddenX,
+                end,
+                icon = 'Pointer',
+            })
+            :add('IconButton', {
+                from = 'right',
+                to = xPos,
                 y = baseY * 4 + padding,
                 callback = function(btn)
                     btn.consumed = false
                     self.langDrawer:show()
-                end
-            }),
-            target = targets
-        },
-        {
-            element = UIFactory.createIconButton(self, {
-                type = 'IconButton',
-                icon = 'Droplet',
-                x = hiddenX,
+                end,
+                icon = 'Sphere'
+            })
+            :add('IconButton', {
+                from = 'right',
+                to = xPos,
                 y = baseY * 5 + padding,
                 callback = function(btn)
                     btn.consumed = false
                     self.themeDrawer:show()
-                end
-            }),
-            target = targets
-        }
-    })
+                end,
+                icon = 'Droplet',
+            })
+        :build()
+    self:transition(elements)
     self:createDrawers({
         {
             icons = {

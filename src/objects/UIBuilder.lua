@@ -21,7 +21,7 @@ local ORIGINS = {
 
 local HIDING = {
     left = {x = -Vars.titleSize * 2, color = Theme.transparent},
-    right = {x = love.graphics.getWidth(), color = Theme.transparent},
+    right = {x = love.graphics.getWidth() + 10, color = Theme.transparent},
     top = {y = -Vars.titleSize * 2, color = Theme.transparent},
     bottom = {y = love.graphics.getHeight(), color = Theme.transparent}
 }
@@ -67,7 +67,7 @@ local UIBuilder = Entity:extend()
 
 function UIBuilder:new(area, options)
     Entity.new(self, area)
-    self._options = options
+    self._options = options or {}
     self._children = {left = {}, right = {}, bottom = {}, top = {}}
 end
 

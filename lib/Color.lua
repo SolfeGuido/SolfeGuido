@@ -24,6 +24,10 @@ function Color:clone()
     return Color(unpack(self))
 end
 
+function Color:alpha(a)
+    return Color(self.r, self.g, self.b, a)
+end
+
 function Color:__newindex(k, v)
     if order[k] then
         rawset(self, order[k], v)
@@ -34,8 +38,9 @@ end
 
 ---@param k string
 ---@return number
+local regexMatch = '^[rgba][rgba]?[rgba]?[rgba]?$'
 function Color:__index(k)
-    if type(k) == "string" and k:match('^[rgba][rgba]?[rgba]?[rgba]?$') then
+    if type(k) == "string" and k:match(regexMatch) then
         local values = {}
         for i = 1, #k do
             local name = k:sub(i,i)

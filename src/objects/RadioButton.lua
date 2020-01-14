@@ -60,9 +60,7 @@ function RadioButton:onclick()
 end
 
 function RadioButton:draw()
-    local bgColor = self.backgroundColor.rgb
-    bgColor[#bgColor+1] = self.color.a
-    love.graphics.setColor(bgColor)
+    love.graphics.setColor(self.backgroundColor:alpha(self.color.a))
     love.graphics.rectangle('fill', self.x, self.y, self._width, self.height)
     if self.framed then
         love.graphics.setColor(self.color)

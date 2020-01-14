@@ -74,8 +74,7 @@ function Note:wrong()
 end
 
 function Note:fadeAway()
-    local r,g,b = unpack(self.color.rgb)
-    self:fadeTo({r, g, b, 0})
+    self:fadeTo(self.color:alpha(0))
 end
 
 function Note:fadeTo(color)
@@ -84,9 +83,8 @@ end
 
 function Note:draw()
     --Color for the (optional) bars
-    local r,g,b = unpack(Theme.font.rgb)
     love.graphics.setShader(assets.shaders.noteFade)
-    love.graphics.setColor(r,g,b, self.color.a)
+    love.graphics.setColor(Theme.font:alpha(self.color.a))
     love.graphics.setLineWidth(1)
     local actualWidth = self.image:getWidth()
     local padding = Vars.note.padding * actualWidth
@@ -105,7 +103,6 @@ function Note:draw()
     love.graphics.draw(self.image, self.x + padding + self.xOrigin, self.y, self.rotation, nil, nil,  self.xOrigin, self.yOrigin)
 
     if self.name then
-        r,g,b = unpack(Theme.font.rgb)
         self.nameColor[4] = self.color.a
         love.graphics.setColor(self.nameColor)
         love.graphics.draw(self.name, self.x + self.nameXIncr, self.nameYPos)

@@ -87,8 +87,7 @@ function lume.clamp(x, min, max)
 end
 
 
-function lume.round(x, increment)
-  if increment then return lume.round(x / increment) * increment end
+function lume.round(x)
   return x >= 0 and math_floor(x + .5) or math_ceil(x - .5)
 end
 

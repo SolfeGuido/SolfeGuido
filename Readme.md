@@ -12,9 +12,11 @@ It works on computer, but is more enjoyable on a phone or tablet.
 ## Features
 
 - Train to read on three keys :
-  - G key
-  - F key
-  - F & G keys
+  - G clef
+  - F clef
+  - F & G clef
+  - Ut 3 clef
+  - Ut 4 clef
 
 * Many stats are available (and more to come) :
   - Number of games played

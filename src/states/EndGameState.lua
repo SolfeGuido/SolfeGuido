@@ -5,7 +5,7 @@ local ScreenManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
 local ParticleSystem = require('src.utils.ParticleSystem')
-local Color = require('lib.Color')
+local JinglePlayer = require('src.utils.JinglePlayer')
 local lume = require('lib.lume')
 
 ---@class EndGameState : State
@@ -62,6 +62,9 @@ function EndGameState:init(score, best)
     self.isBestScore = best
     if self.isBestScore then
         colors = lume.shuffle(colors)
+        JinglePlayer.play(assets.jingles.winner, self.timer)
+    else
+        JinglePlayer.play(assets.jingles.endgame, self.timer)
     end
     local title = best and 'best_score' or 'score'
     local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr(title, {score = score}))

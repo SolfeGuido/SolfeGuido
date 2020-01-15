@@ -8,6 +8,7 @@ local ScreeManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 local Logger = require('lib.logger')
 local lume = require('lib.lume')
+local JinglePlayer = require('src.utils.JinglePlayer')
 
 
 local Line = require('src.objects.Line')
@@ -84,6 +85,7 @@ function SplashScreenState:updateCoroutine()
     end
     if coroutine.status(self.coroutine) == "dead" then
         self.coroutine = "done"
+        JinglePlayer.play(assets.jingles.startup, self.timer)
         _G['tr'] = function(data, options)
             local vals = lume.merge(options or {default = data},{default = data})
             return i18n.translate(string.lower(data), vals)

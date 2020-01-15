@@ -43,19 +43,16 @@ local spaces = {
 
 function GamePrepareState:createMeasures()
     local availableSpace = love.graphics.getHeight() - (spaces[Config.answerType] or 0)
-    local sounds = nil
     if Config.keySelect == 'gClef' then
         self.measures = {Measure(nil,{
             keyData = Vars.gClef,
             height = availableSpace
         })}
-        sounds = self.measures[1]:getRequiredNotes()
     elseif Config.keySelect == 'fClef' then
         self.measures = {Measure(nil , {
             keyData = Vars.fClef,
             height = availableSpace
         })}
-        sounds = self.measures[1]:getRequiredNotes()
     elseif Config.keySelect == 'both' then
         self.measures = {
             Measure(nil, {
@@ -69,19 +66,16 @@ function GamePrepareState:createMeasures()
                 y = availableSpace / 2
             })
         }
-        sounds = lume.concat(self.measures[1]:getRequiredNotes(), self.measures[2]:getRequiredNotes())
     elseif Config.keySelect == 'cClef3' then
         self.measures = {Measure(nil,{
             keyData = Vars.cClef3,
             height = availableSpace
         })}
-        sounds = self.measures[1]:getRequiredNotes()
     elseif Config.keySelect == 'cClef4' then
         self.measures = {Measure(nil,{
             keyData = Vars.cClef4,
             height = availableSpace
         })}
-        sounds = self.measures[1]:getRequiredNotes()
     else
         Logger.error('Unknown key : ' .. Config.keySelect)
         -- Show error dialog ?
@@ -96,7 +90,6 @@ function GamePrepareState:createMeasures()
     assets.shaders.noteFade:send('leftLimit', (msr.image:getWidth() + noteWidth) * ratio)
     assets.shaders.noteFade:send('rightLimit', pWidth - noteWidth * ratio)
     assets.shaders.noteFade:send('noteWidth', noteWidth * ratio)
-    return sounds
 end
 
 function GamePrepareState:draw()
@@ -111,8 +104,8 @@ function GamePrepareState:update(dt)
     if self.coroutine == nil then
         self.coroutine = coroutine.create(function()
             local timed = Config.gameMode == 'timed'
-            local sounds = self:createMeasures()
-            local step = 100 / (2 + #sounds + (timed and 1 or 0))
+            self:createMeasures()
+            local step = 100 / (2 +(timed and 1 or 0))
             coroutine.yield(step)
             local scoreText = love.graphics.newText(assets.fonts.MarckScript(Vars.score.fontSize),"0")
             self.score = Score(nil, {
@@ -126,15 +119,6 @@ function GamePrepareState:update(dt)
             if timed then
                 self.stopWatch = StopWatch(nil, { started = false })
                 coroutine.yield(step)
-            end
-            if not assets.sounds.notes then
-                assets.sounds.notes  = {}
-            end
-            for _, v in ipairs(sounds) do
-                if not assets.sounds.notes[v] then
-                    assets.sounds.notes[v] = ripple.newSound(love.audio.newSource('notes/' .. v .. '.ogg', 'static'), {tags = {SOUNDTAG}})
-                    coroutine.yield(step)
-                end
             end
         end)
     end

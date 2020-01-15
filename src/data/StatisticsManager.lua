@@ -8,8 +8,7 @@ local StatisticsManager = {}
 local gameList = nil
 local globalStats = nil
 
-
-local function extractGlobals(games)
+local function fixStatistics(games)
     local today = DateUtils.now()
     table.sort(games, function(a,b) return os.difftime(os.time(a.date), os.time(b.date)) < 0 end)
     local tPlayed = 0
@@ -43,41 +42,33 @@ local function extractGlobals(games)
         currentStreak = 1
     end
     avgReac = avgReac / tCorrect
+    while #games > Vars.statistics.maxGames do
+        table.remove(games, 1)
+    end
     return {
-        totalGames = #gameList,
-        totalCorrectNotes = tCorrect,
-        totalWrongNotes = tWrong,
-        totalTimePlayed = tPlayed,
-        avgReacTime = avgReac,
-        longestStreak = maxStreak,
-        currentStreak = currentStreak,
+        globals = {
+            totalGames = #games,
+            totalCorrectNotes = tCorrect,
+            totalWrongNotes = tWrong,
+            totalTimePlayed = tPlayed,
+            avgReacTime = avgReac,
+            longestStreak = maxStreak,
+            currentStreak = currentStreak
+        },
+        games = games
     }
 end
 
 function StatisticsManager.init()
-
-    --[[To ensure correctness of the time
-        We could connect to a remote server and get the 'real' time from there
-        But since we want the game to work offline, and that the streak system
-        is just for the user...
-        If the user cheats, he just cheats on himself
-    ]]--
-    gameList = {}
-    globalStats = {
-        totalGames = #gameList,
-        totalCorrectNotes = 0,
-        totalWrongNotes = 0,
-        totalTimePlayed = 0,
-        avgReacTime = 0,
-        longestStreak = 0,
-        currentStreak = 0
-    }
-    gameList = Logger.try('Init statistics manager', function()
+    local data = Logger.try('Init statistics manager', function()
         return FileUtils.readCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat, {})
     end, {})
-    if #gameList > 0 then
-        globalStats = extractGlobals(gameList)
+    -- 1.3 fix from 1.2 (saving globals too)
+    if not data.globals then
+        data = fixStatistics(data)
     end
+    gameList = data.games
+    globalStats = data.globals
 end
 
 ---@param stats GameStatistics
@@ -103,11 +94,19 @@ function StatisticsManager.add(stats)
     globalStats.totalWrongNotes = globalStats.totalWrongNotes + obj.wrongNotes
     globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) + (obj.avgReacTime * obj.correctNotes) ) / (tCorrect + obj.correctNotes)
     globalStats.totalGames = globalStats.totalGames + 1
+    if #gameList > Vars.statistics.maxGames then
+        table.remove(gameList, 1)
+    end
 end
 
 function StatisticsManager.save()
+    local data = {
+        games = gameList,
+        globals = globalStats,
+        gameVersion = Vars.appVersion
+    }
     Logger.try('Saving statistics', function()
-        return FileUtils.writeCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat, gameList)
+        return FileUtils.writeCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat, data)
     end)
 end
 

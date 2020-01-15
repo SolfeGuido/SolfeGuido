@@ -7,6 +7,7 @@ local titleSize = 40
 
 return {
     appName = 'SolfeGuido',
+    appVersion = '1.3',
     titleSize = titleSize,
     baseLine = middle - (lineHeight * 3),
     userPreferences = {
@@ -49,7 +50,8 @@ return {
     statistics = {
         dataFormat = 'zlib',
         containerType = 'data',
-        fileName = 'statistics.bin'
+        fileName = 'statistics.bin',
+        maxGames = 100
     },
     achievements = {
         dataFormat = 'zlib',

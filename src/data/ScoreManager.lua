@@ -5,15 +5,15 @@ local ScoreManager = {}
 
 local scores = {}
 
-local function fixScore(scores)
+local function fixScore(oldScores)
     local oldKeys = { fKey = 'fClef', gKey = 'gClef' }
-    for key, value in pairs(scores) do
+    for key, value in pairs(oldScores) do
         if oldKeys[key] then
-            scores[oldKeys[key]] = value
-            scores[key] = nil
+            oldScores[oldKeys[key]] = value
+            oldScores[key] = nil
         end
     end
-    return scores
+    return oldScores
 end
 
 function ScoreManager.init()

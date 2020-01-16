@@ -1,21 +1,12 @@
 
 local State = require('src.State')
 local Graphics = require('src.utils.Graphics')
-local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 local StatisticsManager = require('src.data.StatisticsManager')
 
 ---@class StatisticsState : State
 local StatisticsState = State:extend()
-
-function StatisticsState:keypressed(key)
-    if key == "escape" then
-
-    else
-        State.keypressed(self, key)
-    end
-end
 
 function StatisticsState:draw()
     Graphics.drawMusicBars()

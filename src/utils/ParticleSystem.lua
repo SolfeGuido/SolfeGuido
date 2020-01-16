@@ -1,5 +1,3 @@
-local lume = require('lib.lume')
-
 local ParticleSystem = {}
 
 function ParticleSystem.noteBurstParticles(originalColor)

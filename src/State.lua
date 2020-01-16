@@ -14,7 +14,11 @@ local State = Class:extend()
 local function stateCall(methodName)
     return function(tbl, ...) return tbl:callOnEntities(methodName, ...) end
 end
-local redirectedevents = {'keypressed', 'mousemoved', 'mousepressed', 'mousereleased', 'touchpressed', 'touchmoved', 'touchreleased'}
+local redirectedevents = {
+    'keypressed',
+    'mousemoved', 'mousepressed', 'mousereleased',
+    'touchpressed', 'touchmoved', 'touchreleased'
+}
 
 function State:new()
     State.super.new(self)
@@ -24,7 +28,7 @@ function State:new()
     self.active = true
 end
 
-function State:init(...)
+function State:init()
 end
 
 function State:focus(_)

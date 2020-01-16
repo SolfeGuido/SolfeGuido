@@ -38,7 +38,7 @@ function Measure:draw()
     local yPos = yStart
     local width = love.graphics.getWidth()
     love.graphics.setLineWidth(1)
-    for i = 1, 5 do
+    for _ = 1, 5 do
         love.graphics.line(0 , yPos, width, yPos)
         yPos = yPos + self.noteHeight
     end

@@ -17,7 +17,7 @@ function PauseState:validate()
     self:slideOut()
 end
 
-function PauseState:init(...)
+function PauseState:init()
     local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr('Paused'))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2
     local middle = dialogMiddle - text:getWidth() / 2

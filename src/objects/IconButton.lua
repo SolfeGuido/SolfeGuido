@@ -97,7 +97,8 @@ end
 function IconButton:draw()
     love.graphics.setColor(self.color)
     if self.circled then
-        love.graphics.circle('line', self.x + self.xOrigin, self.y + self.yOrigin, self._width * 0.8 + self.padding, 100)
+        love.graphics.circle('line', self.x + self.xOrigin, self.y + self.yOrigin,
+                                self._width * 0.8 + self.padding, 100)
     elseif self.framed then
         love.graphics.setColor(Theme.background)
         love.graphics.rectangle('fill', self.x, self.y, self._width, self._width)
@@ -105,7 +106,7 @@ function IconButton:draw()
         love.graphics.rectangle('line', self.x, self.y, self._width, self._width)
     end
 
-    love.graphics.draw(self.image, 
+    love.graphics.draw(self.image,
         lume.round(self.x + self.xOrigin + self.padding), lume.round(self.y + self.yOrigin + self.padding),
         self.rotation,
         nil, nil,

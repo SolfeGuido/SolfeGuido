@@ -92,7 +92,9 @@ function StatisticsManager.add(stats)
     globalStats.totalTimePlayed = globalStats.totalTimePlayed + obj.timePlayed
     globalStats.totalCorrectNotes = tCorrect + obj.correctNotes
     globalStats.totalWrongNotes = globalStats.totalWrongNotes + obj.wrongNotes
-    globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) + (obj.avgReacTime * obj.correctNotes) ) / (tCorrect + obj.correctNotes)
+    globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) +
+                                (obj.avgReacTime * obj.correctNotes) ) /
+                                (tCorrect + obj.correctNotes)
     globalStats.totalGames = globalStats.totalGames + 1
     if #gameList > Vars.statistics.maxGames then
         table.remove(gameList, 1)

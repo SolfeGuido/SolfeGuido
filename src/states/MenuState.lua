@@ -41,7 +41,7 @@ function MenuState:slideOut(callback)
     self:transition(self.ui:transitionOut(), callback)
 end
 
-function MenuState:init(...)
+function MenuState:init()
     local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), Vars.appName)
 
     local elements = self:startUI({height = Vars.titleSize, color = function() return Theme.transparent:clone() end})

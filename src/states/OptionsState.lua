@@ -4,7 +4,6 @@ local State = require('src.State')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.data.Config')
-local UIFactory = require('src.utils.UIFactory')
 local Drawer = require('src.objects.Drawer')
 local EventTransmitter = require('src.utils.EventTransmitter')
 
@@ -66,7 +65,7 @@ function OptionsState:createDrawers(config, height)
             }
         end
 
-        local callback = nil
+        local callback
         if v.config == "lang" or v.config == "theme" then
             callback = function(drawer)
                 if Config.update(v.config, drawer.selected) then
@@ -95,7 +94,7 @@ function OptionsState:createDrawers(config, height)
     end
 end
 
-function OptionsState:init(...)
+function OptionsState:init()
     self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() - Vars.titleSize * 1.5}, 'out-expo')
 
     local optionIcons = 6

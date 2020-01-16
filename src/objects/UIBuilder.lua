@@ -5,8 +5,10 @@ local lume = require('lib.lume')
 local Theme = require('src.utils.Theme')
 
 local BLOCKS = {
-    ICONBUTTON = {'icon', 'size', 'x', 'y', 'height', 'color', 'callback', 'circled', 'framed', 'centered', 'anchor', 'padding', 'name'},
-    RADIOBUTTON = {'icon', 'image', 'text', 'x', 'y', 'value', 'isChecked', 'color', 'callback', 'framed', 'padding', 'width', 'minWidth', 'centerImage'},
+    ICONBUTTON = {'icon', 'size', 'x', 'y', 'height', 'color', 'callback', 'circled',
+        'framed', 'centered', 'anchor', 'padding', 'name'},
+    RADIOBUTTON = {'icon', 'image', 'text', 'x', 'y', 'value', 'isChecked', 'color',
+        'callback', 'framed', 'padding', 'width', 'minWidth', 'centerImage'},
     TITLE = {'x', 'y', 'color', 'text', 'centered', 'framed', 'fontName', 'fontSize', 'font'},
     TEXTBUTTON = {'font', 'fontSize', 'icon', 'text', 'x', 'y', 'padding', 'color', 'callback', 'framed', 'centerText'},
     IMAGE = {'image', 'size', 'x', 'y', 'color'}

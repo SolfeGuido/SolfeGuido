@@ -15,7 +15,7 @@ function love.errorhandler(msg)
 		return
 	end
 
-	if not love.graphics.isCreated() or not love.window.isOpen() then
+	if not love.window.isOpen() then
 		local success, status = pcall(love.window.setMode, 800, 600)
 		if not success or not status then
 			return
@@ -88,7 +88,7 @@ function love.errorhandler(msg)
 	return function()
 		love.event.pump()
 
-		for e, a, b, c in love.event.poll() do
+		for e, a, _, _ in love.event.poll() do
 			if e == "quit" then
 				return 1
 			elseif e == "keypressed" and a == "escape" then

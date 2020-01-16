@@ -1,7 +1,6 @@
 
 local State = require('src.State')
 local Graphics = require('src.utils.Graphics')
-local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 

@@ -24,7 +24,13 @@ function PlayButton:onclick()
     local a = self.y * 2
     local b = love.graphics.getWidth() / 2
     local maxRadius = math.sqrt(a*a + b*b)
-    self.timer:tween(Vars.transition.state, self, {radius = maxRadius, color = Theme.background}, 'in-out-expo', self.callback)
+    self.timer:tween(
+        Vars.transition.state,
+        self,
+        {radius = maxRadius, color = Theme.background},
+        'in-out-expo',
+        self.callback
+    )
 end
 
 function  PlayButton:draw()

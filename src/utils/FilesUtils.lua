@@ -17,7 +17,13 @@ end
 ---@param data table
 ---@return boolean,string success and error message if necessary
 function FilesUtils.writeCompressedData(fileName, compressionType, data)
-    local success, message = love.filesystem.write(fileName, love.data.compress('data', compressionType, json.encode(data)))
+    local success, message = love.filesystem.write(
+        fileName, love.data.compress(
+                    'data',
+                    compressionType,
+                    json.encode(data)
+                )
+    )
     if not success then error(message) end
 end
 

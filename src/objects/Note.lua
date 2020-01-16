@@ -100,7 +100,8 @@ function Note:draw()
         end
     end
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, self.x + padding + self.xOrigin, self.y, self.rotation, nil, nil,  self.xOrigin, self.yOrigin)
+    love.graphics.draw(self.image, self.x + padding + self.xOrigin, self.y,
+                        self.rotation, nil, nil,  self.xOrigin, self.yOrigin)
 
     if self.name then
         self.nameColor[4] = self.color.a

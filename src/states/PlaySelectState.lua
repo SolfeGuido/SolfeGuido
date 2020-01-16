@@ -142,7 +142,6 @@ function PlaySelectState:init()
             }),
             target = {color = Theme.font}
         }
-    
     })
 end
 

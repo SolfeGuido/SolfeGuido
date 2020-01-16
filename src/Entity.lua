@@ -27,11 +27,8 @@ function Entity:dispose()
     self.area = nil
 end
 
-function Entity:update(dt)
-end
-
-function Entity:draw()
-end
+function Entity:update() end
+function Entity:draw() end
 
 
 return Entity

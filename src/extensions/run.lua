@@ -3,12 +3,12 @@ function love.run()
     love.math.setRandomSeed(os.time())
 	-- We don't want the first frame's dt to include time taken by love.load.
 	love.timer.step()
- 
+
     local dt = 0
     local fixed_dt = 1/60
     local accumulator = 0
 
- 
+
 	-- Main loop time.
 	return function()
 		-- Process events.
@@ -19,7 +19,7 @@ function love.run()
             end
             love.handlers[name](a,b,c,d,e,f)
         end
- 
+
 		-- Update dt, as we'll be passing it to update
         dt = love.timer.step()
         accumulator = accumulator + dt

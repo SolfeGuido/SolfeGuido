@@ -41,7 +41,12 @@ function RadioButton:check()
 end
 
 function RadioButton:toggle()
-    self:animate(Vars.transition.tween, self, {backgroundColor = self.isChecked and Theme.background or Theme.secondary}, 'linear')
+    self:animate(
+        Vars.transition.tween,
+        self,
+        {backgroundColor = self.isChecked and Theme.background or Theme.secondary},
+        'linear'
+    )
     self.isChecked = not self.isChecked
 end
 
@@ -75,7 +80,8 @@ function RadioButton:draw()
         local x = lume.round(self.x + self._width / 2 - self.image:getWidth() / 2)
         love.graphics.draw(self.image, x, lume.round(self.y + self.padding))
     else
-        love.graphics.draw(self.image, lume.round(self.x + self.padding), lume.round(self.y + self.padding), 0, self.scale, self.scale)
+        love.graphics.draw(self.image, lume.round(self.x + self.padding), lume.round(self.y + self.padding),
+                            0, self.scale, self.scale)
     end
 end
 

@@ -60,7 +60,7 @@ function AnswerGiver:addPianoKeys(showNote)
         19 * whiteKeyWidth / 4,
         23 * whiteKeyWidth / 4
     }
-    for i,v in ipairs(blackKeys) do
+    for _,v in ipairs(blackKeys) do
         self.buttons[#self.buttons+1] =  self.area:addentity(PianoKey, {
             x = v,
             y = yPos,

@@ -31,6 +31,7 @@ It works on computer, but is more enjoyable on a phone or tablet.
 ## Example
 
 ![InGame](examples/play.gif)
+![Options](examples/options.gif)
 
 ## License
 

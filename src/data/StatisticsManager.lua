@@ -60,11 +60,23 @@ local function fixStatistics(games)
 end
 
 function StatisticsManager.init()
+    local default = {
+        globals = {
+            totalGames = 0,
+            totalCorrectNotes = 0,
+            totalWrongNotes = 0,
+            totalTimePlayed = 0,
+            avgReacTime = 0,
+            longestStreak = 0,
+            currentStreak = 0
+        },
+        games = {}
+    }
     local data = Logger.try('Init statistics manager', function()
-        return FileUtils.readCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat, {})
-    end, {})
+        return FileUtils.readCompressedData(Vars.statistics.fileName, Vars.statistics.dataFormat, default)
+    end, default)
     -- 1.3 fix from 1.2 (saving globals too)
-    if not data.globals then
+    if #data > 0 and not data.globals then
         data = fixStatistics(data)
     end
     gameList = data.games

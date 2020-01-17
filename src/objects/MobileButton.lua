@@ -17,6 +17,14 @@ function MobileButton:contains(x, y)
             self.y <= y and (self.y + (self.text:getHeight() + padding * 2)) >= y
 end
 
+function MobileButton:getWidth()
+    return (self.width or self.text:getWidth())
+end
+
+function MobileButton:getHeight()
+    return self.text:getHeight() + (Vars.mobileButton.padding * 2)
+end
+
 function MobileButton:hovered()
     self:animate(Vars.transition.tween, self, {color = Theme.hovered}, 'out-expo')
 end
@@ -41,12 +49,11 @@ end
 function MobileButton:draw()
     love.graphics.push()
     love.graphics.translate(self.x, self.y)
-    local box = self:boundingBox()
     love.graphics.setColor(Theme.background)
-    love.graphics.rectangle('fill', 0, 0, box.width, box.height)
+    love.graphics.rectangle('fill', 0, 0, self:getWidth(), self:getHeight())
     love.graphics.setColor(self.color)
-    love.graphics.rectangle('line', 0, 0, box.width, box.height)
-    local txtX = (box.width - self.text:getWidth()) / 2
+    love.graphics.rectangle('line', 0, 0, self:getWidth(), self:getHeight())
+    local txtX = (self:getWidth() - self.text:getWidth()) / 2
     love.graphics.draw(self.text, txtX, Vars.mobileButton.padding)
 
     love.graphics.pop()

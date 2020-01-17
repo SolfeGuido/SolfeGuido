@@ -23,6 +23,10 @@ function PlaySelectState:validate()
     ScreenManager.switch('GamePrepareState')
 end
 
+function PlaySelectState:contains(x, y)
+    return x >= self.margin and x <= self.margin + self.width and
+            y >= self.yBottom and y <= self.yBottom + (self.height + Vars.mobileButton.fontSize)
+end
 
 function PlaySelectState:addRadioButtons(config)
     local list = Vars.userPreferences[config.configName]

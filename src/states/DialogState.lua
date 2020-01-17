@@ -13,8 +13,6 @@ local DialogState = State:extend()
 function DialogState:new()
     State.new(self)
     self.yBottom = 0
-    self:redirectMouse('mousemoved', 'mousepressed', 'mousereleased')
-    self:redirectTouch('touchmoved', 'touchpressed', 'touchreleased')
     self.slidingOut = false
     self:setWidth(Vars.limitLine / 2)
 end
@@ -24,20 +22,51 @@ function DialogState:setWidth(width)
     self.margin = (love.graphics.getWidth() - self.width) / 2
 end
 
-function DialogState:redirectMouse(...)
-    for _, evName in ipairs({...}) do
-        DialogState[evName] = function(obj, x, y, ...)
-            State[evName](obj, x - self.margin, y - self.yBottom, ...)
-        end
+function DialogState:contains(x, y)
+    return x >= self.margin and x <= self.margin + self.width and
+            y >= self.yBottom and y <= self.yBottom + self.height
+end
+
+function DialogState:mousepressed(x, y, button)
+    if self:contains(x, y) then
+        State.mousepressed(self, x - self.margin, y - self.yBottom, button)
+    else
+        self.outsideButton = button
     end
 end
 
-function DialogState:redirectTouch(...)
-    for _,evName in ipairs({...}) do
-        DialogState[evName] = function(obj, id, x, y, ...)
-            State[evName](obj, id, x - self.margin, y - self.yBottom, ...)
-        end
+function DialogState:mousereleased(x, y, button)
+    if self:contains(x, y) then
+        State.mousereleased(self, x - self.margin, y - self.yBottom, button)
+    elseif self.outsideButton == button then
+        self:slideOut()
     end
+    self.outsideButton = nil
+end
+
+function DialogState:touchpressed(id, x, y)
+    if self:contains(x, y) then
+        State.touchpressed(self, id, x - self.margin, y - self.yBottom)
+    else
+        self.outsideTouch = id
+    end
+end
+
+function DialogState:touchreleased(id, x ,y)
+    if self:contains(x, y) then
+        State.touchreleased(self, id, x - self.margin, y - self.yBottom)
+    elseif self.outsideTouch == id then
+        self:slideOut()
+    end
+    self.outsideTouch = nil
+end
+
+function DialogState:mousemoved(x, y)
+    State.mousemoved(self, x - self.margin, y - self.yBottom)
+end
+
+function DialogState:touchmoved(id, x, y)
+    State.touchmoved(self, id, x - self.margin, y - self.yBottom)
 end
 
 function DialogState:keypressed(key)

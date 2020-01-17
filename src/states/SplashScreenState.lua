@@ -44,7 +44,7 @@ function SplashScreenState:draw()
 
     love.graphics.setBackgroundColor(Theme.background)
     local font = love.graphics.getFont()
-    local text = tostring(math.ceil(self.totalLoading)) .. " %"
+    local text = tostring(math.floor(self.totalLoading)) .. " %"
     local width = font:getWidth(text)
     local height = font:getHeight(text)
     local txtX = (love.graphics.getWidth() - width) / 2

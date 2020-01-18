@@ -1,5 +1,6 @@
 -- LIBS
 local Theme = require('src.utils.Theme')
+local lume = require('lib.lume')
 
 -- Entities
 local AbstractButton = require('src.objects.AbstractButton')
@@ -53,12 +54,12 @@ function TextButton:draw()
     love.graphics.setColor(self.color)
     local x = self.x + self.padding
     if self.icon then
-        local iconY = self.y + self.height / 2 - self.icon:getHeight() / 2
-        love.graphics.draw(self.icon, x, iconY)
+        local iconY = lume.round(self.y + self.height / 2 - self.icon:getHeight() / 2)
+        love.graphics.draw(self.icon, lume.round(x), iconY)
         x = x + self.icon:getWidth() + self.padding
     end
 
-    love.graphics.draw(self.text, x, self.y + self.padding)
+    love.graphics.draw(self.text, lume.round(x), lume.round(self.y + self.padding))
 end
 
 

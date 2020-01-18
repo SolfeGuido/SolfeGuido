@@ -1,7 +1,7 @@
 function love.conf(t)
     t.identity = "SolfeGuido"                    -- The name of the save directory (string)
     t.appendidentity = false            -- Search files in source directory before save directory (boolean)
-    t.version = "11.0"                  -- The LÖVE version this game was made for (string)
+    t.version = "11.3"                  -- The LÖVE version this game was made for (string)
     t.console = false                   -- Attach a console (boolean, Windows only)
     t.accelerometerjoystick = false      -- Enable the accelerometer on iOS and Android by exposing it as a Joystick (boolean)
     t.externalstorage = false           -- True to save files (and read from the save directory) in external storage on Android (boolean) 
@@ -50,7 +50,7 @@ function love.conf(t)
     t.releases = {
         title = 'SolfeGuido',              -- The project title (string)
         package = 'solfeGuido',            -- The project command and package name (string)
-        loveVersion = nil,        -- The project LÖVE version
+        loveVersion = '11.3',        -- The project LÖVE version
         version = '1.3',            -- The project version
         author = 'Azarias',             -- Your name (string)
         email = 'azarias.boutin@mines-ales.org',              -- Your email (string)

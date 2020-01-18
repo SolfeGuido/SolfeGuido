@@ -121,7 +121,7 @@ function EndGameState:init(score, best)
         },
         {
             element = UIFactory.createTextButton(self, {
-                text = 'Scores',
+                text = 'Scoreboard',
                 icon = 'List',
                 fontName = 'Oswald',
                 x = dialogMiddle,

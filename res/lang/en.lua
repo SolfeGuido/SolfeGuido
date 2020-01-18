@@ -12,7 +12,7 @@ return {
     all = 'all',
     menu = 'Menu',
     back = 'Back',
-    pause = 'Pause',
+    paused = 'Paused',
     resume = 'Resume',
     finished = 'Finished',
     restart = 'Restart',

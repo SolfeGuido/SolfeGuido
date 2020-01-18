@@ -97,13 +97,13 @@ function Drawer:init(options)
     for i, v in ipairs(options.choices) do
         self.childs[#self.childs+1] = UIFactory.createRadioButton(self.area, {
             x = self.x + i * Vars.titleSize,
-            y = self.y + 1,
+            y = self.y,
             color = Theme.font:clone(),
             isChecked = options.selected == v.configValue,
             value = v.configValue,
             icon = v.icon,
             image = v.image,
-            padding = math.floor(self.padding) -1,
+            padding = self.padding - 0.5,
             callback = function(btn)
                 btn.consumed = false
                 if not btn.isChecked then
@@ -162,7 +162,7 @@ function Drawer:draw()
     love.graphics.rectangle('fill', self.x, self.y, self.width + 10, self.height)
 
     love.graphics.setColor(self.color)
-    love.graphics.rectangle('line', self.x, self.y, self.width + 10, self.height)
+    love.graphics.rectangle('line', self.x, self.y - 0.5, self.width + 10, self.height + 0.5)
 end
 
 function Drawer:update(_)

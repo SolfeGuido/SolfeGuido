@@ -201,7 +201,8 @@ function OptionsState:init()
         {
             icons = {
                 {'fr', assets.images.flags.fr},
-                {'en', assets.images.flags.en}
+                {'en', assets.images.flags.en},
+                {'sv', assets.images.flags.sv}
             },
             config = 'lang',
             y = baseY * 4 + padding / 2

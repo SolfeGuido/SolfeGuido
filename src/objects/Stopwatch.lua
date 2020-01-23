@@ -18,8 +18,8 @@ local equivalences = {
 }
 
 
-function StopWatch:new(area, config)
-    Entity.new(self, area, config)
+function StopWatch:new(container, config)
+    Entity.new(self, container, config)
     self.color = Theme.secondary:clone()
     self.totalTime = equivalences[Config.time] or 60
     self.currentTime = self.totalTime

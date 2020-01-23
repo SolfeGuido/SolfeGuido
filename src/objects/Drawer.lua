@@ -7,8 +7,8 @@ local lume = require('lib.lume')
 ---@class Drawer : Entity
 local Drawer = Entity:extend()
 
-function Drawer:new(area, options)
-    Entity.new(self, area, options)
+function Drawer:new(container, options)
+    Entity.new(self, container, options)
     self.color = Theme.font:clone()
     self.isShown = false
     self.animation = nil
@@ -71,7 +71,7 @@ function Drawer:init(options)
     self.callback = options.callback or function() end
     self.padding = (self.height - Vars.titleSize) / 2
     self.childs = {
-        UIFactory.createIconButton(self.area, {
+        UIFactory.createIconButton(self.container, {
             x = self.x,
             y = self.y + self.padding - 2,
             padding = 2,
@@ -95,7 +95,7 @@ function Drawer:init(options)
     self.originSelection = options.selected
     self.selected = options.selected
     for i, v in ipairs(options.choices) do
-        self.childs[#self.childs+1] = UIFactory.createRadioButton(self.area, {
+        self.childs[#self.childs+1] = UIFactory.createRadioButton(self.container, {
             x = self.x + i * Vars.titleSize,
             y = self.y,
             color = Theme.font:clone(),
@@ -120,7 +120,7 @@ function Drawer:init(options)
         })
     end
 
-    self.childs[#self.childs+1] = UIFactory.createIconButton(self.area, {
+    self.childs[#self.childs+1] = UIFactory.createIconButton(self.container, {
         y = self.y + self.padding - 2,
         icon = 'Check',
         padding = 2,

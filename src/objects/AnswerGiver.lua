@@ -9,8 +9,8 @@ local MobileButton = require('src.objects.MobileButton')
 ---@class AnswerGiver : Entity
 local AnswerGiver = Entity:extend()
 
-function AnswerGiver:new(area, options)
-    Entity.new(self, area, options)
+function AnswerGiver:new(container, options)
+    Entity.new(self, container, options)
     self.buttons = {}
     self:addFunction(Config.answerType)
 end
@@ -41,7 +41,7 @@ function AnswerGiver:addPianoKeys(showNote)
 
     local font = assets.fonts.Oswald(Vars.mobileButton.fontSize)
     for i = 1, 7 do
-        self.buttons[#self.buttons+1] =  self.area:addentity(PianoKey, {
+        self.buttons[#self.buttons+1] =  self.container:addEntity(PianoKey, {
             x = (i-1) * whiteKeyWidth,
             y = yPos,
             height = height,
@@ -61,7 +61,7 @@ function AnswerGiver:addPianoKeys(showNote)
         23 * whiteKeyWidth / 4
     }
     for _,v in ipairs(blackKeys) do
-        self.buttons[#self.buttons+1] =  self.area:addentity(PianoKey, {
+        self.buttons[#self.buttons+1] =  self.container:addEntity(PianoKey, {
             x = v,
             y = yPos,
             height = 3 * height / 4,
@@ -84,7 +84,7 @@ function AnswerGiver:addButtons()
         local text = love.graphics.newText(font, v)
         totalSize = totalSize + text:getWidth() + padding * 3
         local y = love.graphics.getHeight() - text:getHeight() - padding * 3
-        self.buttons[#self.buttons+1] = self.area:addentity(MobileButton, {
+        self.buttons[#self.buttons+1] = self.container:addEntity(MobileButton, {
             x = 5 + (widths + padding) * (i-1),
             y = y,
             width = widths,

@@ -42,7 +42,7 @@ function PlayState:init(config)
     self.score = self:insertEntity(config.score)
     self.measures = config.measures
     self.notes = CircularQueue(function()
-        local note = self:addentity(Note, {
+        local note = self:addEntity(Note, {
             measure = self.measures[1],
             note = 'C4',
             x = math.huge
@@ -73,8 +73,8 @@ function PlayState:init(config)
         end
     })
 
-    self.answerGiver = self:addentity(AnswerGiver, {callback = function(x) self:answerGiven(x) end })
-    self.stats = self:addentity(GameStatistics)
+    self.answerGiver = self:addEntity(AnswerGiver, {callback = function(x) self:answerGiven(x) end })
+    self.stats = self:addEntity(GameStatistics)
 
     self.finished = false
     self:transition(elements, function()

@@ -5,13 +5,13 @@ local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
 
 ---@class Note : Entity
----@field public area PlayState
+---@field public container PlayState
 ---@field public measure Measure
 local Note = Entity:extend()
 
 
-function Note:new(area, options)
-    Note.super.new(self, area)
+function Note:new(container, options)
+    Note.super.new(self, container)
     self:reset(options.note, options.x, options.measure)
 end
 
@@ -49,7 +49,7 @@ end
 
 function Note:correct()
     self.color = Theme.correct:clone()
-    self.area:addentity(Effect, {
+    self.container:addEntity(Effect, {
         image = self.image,
         color = Theme.correct:clone(),
         scale = 1,
@@ -114,7 +114,7 @@ end
 ---@param dt number
 function Note:update(dt)
     Entity.update(self, dt)
-    self.x = self.x - self.area:getMove()
+    self.x = self.x - self.container:getMove()
     if self.x < 0 then
         self.isDead = true
     end

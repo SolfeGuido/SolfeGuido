@@ -46,7 +46,7 @@ function TransitionBuilder:add(name, options)
             widgetOptions[v] = options[v] or self.uibuilder:getOption(v)
         end
     end
-    local element = UIFactory['create' .. name](self.uibuilder.area, widgetOptions)
+    local element = UIFactory['create' .. name](self.uibuilder.container, widgetOptions)
     local targetPosition = options.to
     if lume.isCallable(targetPosition) then
         targetPosition = targetPosition(element)
@@ -67,8 +67,8 @@ end
 ---@class UIBuilder : Entity
 local UIBuilder = Entity:extend()
 
-function UIBuilder:new(area, options)
-    Entity.new(self, area)
+function UIBuilder:new(container, options)
+    Entity.new(self, container)
     self._options = options or {}
     self._children = {left = {}, right = {}, bottom = {}, top = {}}
 end

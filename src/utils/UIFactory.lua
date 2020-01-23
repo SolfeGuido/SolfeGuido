@@ -25,20 +25,20 @@ end
 local function addToState(config, element)
     local name = config.name
     if not name then return element end
-    local area = element.area
-    local obj = area[name]
+    local container = element.container
+    local obj = container[name]
     if not obj then
-        area[name] = element
+        container[name] = element
     elseif type(obj) == "table" then
         obj[#obj+1] = element
     end
     return element
 end
 
-function UIFactory.createIconButton(area, config)
+function UIFactory.createIconButton(container, config)
     createCallback(config)
     local size = config.size or Vars.titleSize
-    return addToState(config, area:addentity(IconButton, {
+    return addToState(config, container:addEntity(IconButton, {
         icon = assets.IconName[config.icon],
         size = size,
         x = config.x or -size,
@@ -54,7 +54,7 @@ function UIFactory.createIconButton(area, config)
     }))
 end
 
-function UIFactory.createTextButton(area, config)
+function UIFactory.createTextButton(container, config)
     createCallback(config)
     if not config.font then
         local font = config.fontName or 'MarckScript'
@@ -68,7 +68,7 @@ function UIFactory.createTextButton(area, config)
         )
     end
 
-    return addToState(config, area:addentity(TextButton, {
+    return addToState(config, container:addEntity(TextButton, {
         text = btnText,
         icon = config.icon,
         x = config.x,
@@ -81,8 +81,8 @@ function UIFactory.createTextButton(area, config)
     }))
 end
 
-function UIFactory.createImage(area, config)
-    return addToState(config, area:addentity(Image, {
+function UIFactory.createImage(container, config)
+    return addToState(config, container:addEntity(Image, {
         image = config.image,
         size = config.size,
         x = config.x,
@@ -91,7 +91,7 @@ function UIFactory.createImage(area, config)
     }))
 end
 
-function UIFactory.createTitle(area, config)
+function UIFactory.createTitle(container, config)
     if type(config.text) == "string" then
         if not config.fontSize and not config.font then
             config.fontSize = Vars.titleSize
@@ -105,7 +105,7 @@ function UIFactory.createTitle(area, config)
     end
 
     --local half = love.graphics.getWidth() / 2 - config.text:getWidth() / 2
-    return addToState(config, area:addentity(Title, {
+    return addToState(config, container:addEntity(Title, {
         x = config.x or -config.text:getWidth(),
         y = config.y,
         color = config.color or Theme.transparent:clone(),
@@ -115,7 +115,7 @@ function UIFactory.createTitle(area, config)
     }))
 end
 
-function UIFactory.createRadioButton(area, config)
+function UIFactory.createRadioButton(container, config)
     if config.icon and not config.image then
         config.image = love.graphics.newText(
                 assets.fonts.Icons(config.size or Vars.titleSize),
@@ -125,7 +125,7 @@ function UIFactory.createRadioButton(area, config)
         local font = config.font or 'MarckScript'
         config.image = love.graphics.newText(assets.fonts[font](config.size or Vars.titleSize), tr(config.text))
     end
-    return addToState(config, area:addentity(RadioButton, {
+    return addToState(config, container:addEntity(RadioButton, {
         x = config.x,
         y = config.y,
         value = config.value,

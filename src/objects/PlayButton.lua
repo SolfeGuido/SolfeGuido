@@ -6,8 +6,8 @@ local Theme = require('src.utils.Theme')
 ---@class PlayButton : Entity
 local PlayButton = AbstractButton:extend()
 
-function  PlayButton:new(area, options)
-    AbstractButton.new(self, area, options)
+function  PlayButton:new(container, options)
+    AbstractButton.new(self, container, options)
     self.image = love.graphics.newText(assets.fonts.Icons(Vars.mobileButton.fontSize),assets.IconName.Play)
     self.radius = self.image:getWidth() * 1.5
     self.color = options.color or Theme.font:clone()

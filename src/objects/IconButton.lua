@@ -8,8 +8,8 @@ local AbstractButton = require('src.objects.AbstractButton')
 ---@class IconButton : AbstractButton
 local IconButton = AbstractButton:extend()
 
-function IconButton:new(area, config)
-    AbstractButton.new(self, area, config)
+function IconButton:new(container, config)
+    AbstractButton.new(self, container, config)
     local defaultFont = assets.fonts.Icons(config.size or Vars.titleSize)
     self.image = love.graphics.newText(defaultFont,  config.icon)
     self.padding = config.padding or 0

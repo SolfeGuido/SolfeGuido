@@ -8,8 +8,8 @@ local AbstractButton = require('src.objects.AbstractButton')
 ---@class TextButton : AbstractButton
 local TextButton = AbstractButton:extend()
 
-function TextButton:new(area, config)
-    AbstractButton.new(self, area, config)
+function TextButton:new(container, config)
+    AbstractButton.new(self, container, config)
     self.color = config.color or Theme.font:clone()
     self.padding = config.padding or 0
     self.width = self.text:getWidth() + self.padding * 2

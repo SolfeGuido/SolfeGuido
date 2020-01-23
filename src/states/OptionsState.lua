@@ -80,7 +80,7 @@ function OptionsState:createDrawers(config, height)
                 drawer:hide()
             end
         end
-        local drawer = self:addentity(Drawer, {
+        local drawer = self:addEntity(Drawer, {
             x = love.graphics.getWidth() + 5,
             y = lume.round(v.y),
             height = height

@@ -136,7 +136,7 @@ function PlaySelectState:init()
 
     self:transition({
         {
-            element = self:addentity(PlayButton, {
+            element = self:addEntity(PlayButton, {
                 color = Theme.transparent:clone(),
                 x = dialogMiddle,
                 y = self.height,

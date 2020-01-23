@@ -110,7 +110,7 @@ function ScoreboardState:init()
         }
     }
 
-    local line = self:addentity(Line, {
+    local line = self:addEntity(Line, {
         color = Theme.transparent:clone(),
         x = 0,
         y = Vars.baseLine,
@@ -123,7 +123,7 @@ function ScoreboardState:init()
     }
     self.titles[#self.titles+1] = line
 
-    line = self:addentity(Line, {
+    line = self:addEntity(Line, {
         color = Theme.transparent:clone(),
         x = 0,
         y = Vars.baseLine + Vars.lineHeight * 6,
@@ -137,7 +137,7 @@ function ScoreboardState:init()
     self.titles[#self.titles+1] = line
 
 
-    line = self:addentity(Line, {
+    line = self:addEntity(Line, {
         color = Theme.transparent:clone(),
         x = Vars.limitLine,
         y = Vars.baseLine,
@@ -212,7 +212,7 @@ function ScoreboardState:init()
 
 
         if i ~= #levels then
-            line = self:addentity(Line, {
+            line = self:addEntity(Line, {
                     color = Theme.transparent:clone(),
                     x = middle,
                     y = Vars.baseLine,

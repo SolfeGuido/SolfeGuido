@@ -6,8 +6,8 @@ local lume = require('lib.lume')
 ---@class Measure : Entity
 local Measure = Entity:extend()
 
-function Measure:new(area, options)
-    Entity.new(self, area, options)
+function Measure:new(container, options)
+    Entity.new(self, container, options)
     self.height = options.height or love.graphics.getHeight()
     self.noteHeight = self.height / 12
     self.y = options.y or 0

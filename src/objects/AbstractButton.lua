@@ -4,8 +4,8 @@ local Entity = require('src.Entity')
 ---@class AbstractButton : Entity
 local AbstractButton = Entity:extend()
 
-function AbstractButton:new(area, options)
-    Entity.new(self, area, options)
+function AbstractButton:new(container, options)
+    Entity.new(self, container, options)
     self.state = "neutral"
     self.consumed = false
     self.animation = nil

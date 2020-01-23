@@ -6,8 +6,8 @@ local lume = require('lib.lume')
 local Title = Entity:extend()
 
 
-function Title:new(area, options)
-    Entity.new(self, area, options)
+function Title:new(container, options)
+    Entity.new(self, container, options)
     if options.centered then self:center() end
 end
 

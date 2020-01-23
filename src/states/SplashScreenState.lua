@@ -109,7 +109,7 @@ function SplashScreenState:displayLines()
     local middle = Vars.baseLine
     for i = 1,5 do
         local ypos = middle + Vars.lineHeight * i
-        local line = self:addentity(Line, {
+        local line = self:addEntity(Line, {
             x = 0,
             y = ypos,
             width = 0,
@@ -117,7 +117,7 @@ function SplashScreenState:displayLines()
         self.timer:tween(time, line, {width = love.graphics.getWidth()}, 'out-sine')
     end
 
-    local line = self:addentity(Line, {
+    local line = self:addEntity(Line, {
         x = Vars.limitLine,
         y = middle + Vars.lineHeight,
         height = 0,

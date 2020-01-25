@@ -1,14 +1,13 @@
 
-local Entity = require('src.Entity')
+local EntityContainer = require('src.objects.EntityContainer')
 local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
-local lume = require('lib.lume')
 
 ---@class Drawer : Entity
-local Drawer = Entity:extend()
+local Drawer = EntityContainer:extend()
 
 function Drawer:new(container, options)
-    Entity.new(self, container, options)
+    EntityContainer.new(self, container, options)
     self.color = Theme.font:clone()
     self.isShown = false
     self.animation = nil
@@ -24,7 +23,7 @@ function Drawer:keypressed(key)
     if self.isShown and key == "escape" then
         return self:applyChanges()
     end
-    return false
+    return EntityContainer.keypressed(self, key)
 end
 
 function Drawer:applyChanges(btn)
@@ -42,14 +41,14 @@ function Drawer:mousepressed(x, y, button)
         self.touchId = button
         return true
     end
-    return false
+    return EntityContainer.mousepressed(self, x - self.x, y - self.y, button)
 end
 
 function Drawer:mousereleased(x, y, button)
     if self.isShown and not self:contains(x, y) and button == 1 and self.touchId then
         return self:applyChanges()
     end
-    return false
+    return EntityContainer.mousereleased(self, x - self.x, y - self.y, button)
 end
 
 function Drawer:touchpressed(id, x, y)
@@ -57,23 +56,22 @@ function Drawer:touchpressed(id, x, y)
         self.touchId = id
         return true
     end
-    return false
+    return EntityContainer.mousereleased(self, id, x - self.x, y - self.y)
 end
 
 function Drawer:touchreleased(id, x, y)
     if self.isShown and self.touchId == id and not self:contains(x, y) then
         return self:applyChanges()
     end
-    return false
+    return EntityContainer.touchreleased(self, id, x - self.x, y - self.y)
 end
 
 function Drawer:init(options)
     self.callback = options.callback or function() end
     self.padding = (self.height - Vars.titleSize) / 2
-    self.childs = {
-        UIFactory.createIconButton(self.container, {
-            x = self.x,
-            y = self.y + self.padding - 2,
+    local xPos = UIFactory.createIconButton(self, {
+            x = self.padding / 2,
+            y = self.padding - 2,
             padding = 2,
             icon = 'Times',
             framed = true,
@@ -81,7 +79,7 @@ function Drawer:init(options)
             callback = function(btn)
                 btn.consumed = false
                 self.selected = options.selected
-                for _, child in ipairs(self.childs) do
+                for _, child in ipairs(self._entities) do
                     if child.value == options.selected then
                         child:check()
                     elseif child.uncheck then
@@ -90,14 +88,13 @@ function Drawer:init(options)
                 end
                 self:hide()
             end
-        })
-    }
+    }):width() + self.padding
     self.originSelection = options.selected
     self.selected = options.selected
-    for i, v in ipairs(options.choices) do
-        self.childs[#self.childs+1] = UIFactory.createRadioButton(self.container, {
-            x = self.x + i * Vars.titleSize,
-            y = self.y,
+    for _, v in ipairs(options.choices) do
+        xPos = xPos + UIFactory.createRadioButton(self, {
+            x = xPos,
+            y = 0,
             color = Theme.font:clone(),
             isChecked = options.selected == v.configValue,
             value = v.configValue,
@@ -107,7 +104,7 @@ function Drawer:init(options)
             callback = function(btn)
                 btn.consumed = false
                 if not btn.isChecked then
-                    for _, child in ipairs(self.childs) do
+                    for _, child in ipairs(self._entities) do
                         if child == btn then
                             child:check()
                         elseif child.uncheck then
@@ -117,22 +114,18 @@ function Drawer:init(options)
                     self.selected = v.configValue
                 end
             end
-        })
+        }):width()
     end
 
-    self.childs[#self.childs+1] = UIFactory.createIconButton(self.container, {
-        y = self.y + self.padding - 2,
+    self.width = xPos + UIFactory.createIconButton(self, {
+        y = self.padding - 2,
+        x = xPos + self.padding / 2,
         icon = 'Check',
         padding = 2,
         framed = true,
         color = Theme.font:clone(),
-        x = self.x + (Vars.titleSize + self.padding * 2) * (#options.choices + 1),
         callback = function(btn) self:applyChanges(btn) end
-    })
-
-    self.width = self.padding * 2 + lume.reduce(self.childs, function(acc, b)
-            return acc + b:width()
-    end, 0)
+    }):width() + self.padding
 end
 
 function Drawer:changeXPosition(nwX, callback)
@@ -158,19 +151,18 @@ end
 
 function Drawer:draw()
     if not self.isShown then return end
+    love.graphics.push()
+
+    love.graphics.translate(self.x, self.y)
     love.graphics.setColor(Theme.background)
-    love.graphics.rectangle('fill', self.x, self.y, self.width + 10, self.height)
+    love.graphics.rectangle('fill', 0, 0, self.width + 10, self.height)
+
+    EntityContainer.draw(self)
 
     love.graphics.setColor(self.color)
-    love.graphics.rectangle('line', self.x, self.y - 0.5, self.width + 10, self.height + 0.5)
-end
+    love.graphics.rectangle('line', 0, -0.5, self.width + 10, self.height + 0.5)
 
-function Drawer:update(_)
-    local x = self.x + self.padding - 2
-    for _, v in ipairs(self.childs) do
-        v.x = x
-        x = x + v:width() + 2
-    end
+    love.graphics.pop()
 end
 
 return Drawer

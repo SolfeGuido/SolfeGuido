@@ -13,8 +13,6 @@ local Scene = require('src.State')
 
 -- Entities
 local GameStatistics = require('src.objects.GameStatistics')
-local Note = require('src.objects.Note')
-local CircularQueue = require('src.utils.CircularQueue')
 
 local AnswerGiver = require('src.objects.AnswerGiver')
 

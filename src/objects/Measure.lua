@@ -1,13 +1,15 @@
-local Entity = require('src.Entity')
+local EntityContainer = require('src.objects.EntityContainer')
 local Config = require('src.data.Config')
 local Theme = require('src.utils.Theme')
+local Note = require('src.objects.Note')
+local CircularQueue = require('src.utils.CircularQueue')
 local lume = require('lib.lume')
 
 ---@class Measure : Entity
-local Measure = Entity:extend()
+local Measure = EntityContainer:extend()
 
 function Measure:new(container, options)
-    Entity.new(self, container, options)
+    EntityContainer.new(self, container, options)
     self.height = options.height or love.graphics.getHeight()
     self.noteHeight = self.height / 12
     self.y = options.y or 0
@@ -22,6 +24,52 @@ function Measure:new(container, options)
     self.noteIcon =  love.graphics.newText(font, assets.IconName.QuarterNote)
     self.wrongNoteIcon = love.graphics.newText(font, assets.IconName.GhostNote)
     self.noteChoice = 1
+    self.notes = CircularQueue(function()
+        local note = Note(self, {
+            note = 'C4',
+            x = math.huge
+        })
+        note.isDead = true
+        return note
+    end, 20)
+end
+
+function Measure:removeNextNote()
+    return self.notes:shift()
+end
+
+---@param answer string
+---@return boolean
+function Measure:isAnswerCorrect(answer)
+    local currentNote = self:currentNote()
+    if not currentNote then return false end
+    return currentNote.note:sub(1, 1) == answer:sub(1, 1)
+end
+
+function Measure:fadeAwayNotes()
+    while not self.notes:isEmpty() do
+        self.notes:shift():fadeAway()
+    end
+end
+
+function Measure:generateRandomNote()
+    return self:insertEntity(self.notes:push(function(ent)
+       return ent:reset(self:getRandomNote(), love.graphics.getWidth())
+    end))
+end
+
+function Measure:getRandomNote()
+    --self.noteChoice = (self.noteChoice % #self.keyData.difficulties[Config.difficulty]) + 1
+    --return self.keyData.difficulties[Config.difficulty][self.noteChoice]
+    return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
+end
+
+function Measure:currentNote()
+    return self.notes:peek()
+end
+
+function Measure:getMove()
+    return self.container:getMove()
 end
 
 function Measure:indexOf(note)
@@ -47,13 +95,10 @@ function Measure:draw()
 
     -- Drawing the key
     love.graphics.draw(self.image, self.x + 5, self.y + self.keyData.yOrigin * self.noteHeight)
-end
 
----@param expected string
----@param actual string
----@return boolean
-function Measure:isCorrect(expected, actual)
-    return expected:sub(1, 1) == actual:sub(1, 1)
+    love.graphics.setShader(assets.shaders.noteFade)
+    EntityContainer.draw(self)
+    love.graphics.setShader()
 end
 
 ---@param noteName string
@@ -77,11 +122,9 @@ function Measure:getRequiredNotes()
     return self.keyData.difficulties[Config.difficulty]
 end
 
-function Measure:getRandomNote()
-    --self.noteChoice = (self.noteChoice % #self.keyData.difficulties[Config.difficulty]) + 1
-    --return self.keyData.difficulties[Config.difficulty][self.noteChoice]
-    return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
-
+function Measure:dispose()
+    self.notes = nil
+    EntityContainer.dispose(self)
 end
 
 return Measure

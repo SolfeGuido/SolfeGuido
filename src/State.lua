@@ -2,6 +2,7 @@
 --- LIBS
 local EntityContainer = require('src.objects.EntityContainer')
 local Theme = require('src.utils.Theme')
+local Timer = require('lib.timer')
 
 local UIBuilder = require('src.objects.UIBuilder')
 
@@ -11,8 +12,8 @@ local UIBuilder = require('src.objects.UIBuilder')
 local State = EntityContainer:extend()
 
 function State:new()
-    State.super.new(self)
-    self.HUD = EntityContainer()
+    State.super.new(self, {timer = Timer()})
+    self.HUD = EntityContainer(self)
     self.active = true
 end
 
@@ -45,6 +46,7 @@ end
 
 ---@param dt number
 function State:update(dt)
+    self.timer:update(dt)
     EntityContainer.update(self, dt)
     self.HUD:update(dt)
 end
@@ -67,6 +69,7 @@ end
 function State:close()
     self.HUD:dispose()
     self.ui = nil
+    self.timer:destroy()
     EntityContainer.dispose(self)
 end
 

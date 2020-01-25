@@ -1,5 +1,4 @@
 local Entity = require('src.Entity')
-local Timer = require('lib.timer')
 
 ---@class EntityContainer : Entity
 local EntityContainer = Entity:extend()
@@ -18,7 +17,9 @@ EntityContainer.entitiesEvents = {
 function EntityContainer:new(container, options)
     Entity.new(self, container, options)
     self._entities = {}
-    if not self.timer then self.timer = Timer() end
+    if not self.timer then
+        self.timer = container.timer
+    end
 end
 
 function EntityContainer:draw()
@@ -26,7 +27,6 @@ function EntityContainer:draw()
 end
 
 function EntityContainer:update(dt)
-    self.timer:update(dt)
     for v = #self._entities, 1, -1 do
         local entity = self._entities[v]
         entity:update(dt)
@@ -42,7 +42,6 @@ function EntityContainer:dispose()
         e:dispose()
     end
     self._entities = nil
-    self.timer:destroy()
     self.timer = nil
     Entity.dispose(self)
 end

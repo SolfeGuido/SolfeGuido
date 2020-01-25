@@ -70,5 +70,11 @@ function State:close()
     EntityContainer.dispose(self)
 end
 
+for _, v in ipairs(EntityContainer.entitiesEvents) do
+    State[v] = function (tbl, ...)
+        return tbl.HUD[v](tbl.HUD, ...) or
+                EntityContainer[v](tbl, ...)
+    end
+end
 
 return State

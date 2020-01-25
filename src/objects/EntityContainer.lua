@@ -7,7 +7,8 @@ local EntityContainer = Entity:extend()
 local function containerCall(methodName)
     return function(tbl, ...) return tbl:callOnEntities(methodName, ...) end
 end
-local redirectedevents = {
+
+EntityContainer.entitiesEvents = {
     'keypressed',
     'mousemoved', 'mousepressed', 'mousereleased',
     'touchpressed', 'touchmoved', 'touchreleased'
@@ -70,7 +71,7 @@ function EntityContainer:callOnEntities(method, ...)
 end
 
 
-for _, v in ipairs(redirectedevents) do
+for _, v in ipairs(EntityContainer.entitiesEvents) do
     EntityContainer[v] = containerCall(v)
 end
 

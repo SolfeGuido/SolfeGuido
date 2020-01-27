@@ -36,5 +36,11 @@ return {
     best_score = 'Best score : %{score}',
     score = 'Score : %{score}',
     scoreboard = 'Scoreboard',
-    loading = 'loading'
+    loading = 'loading',
+    --Added in 1.14, to update every version to have the last features
+    new_version = 'New version : %{version}',
+    new1 = 'Added the Swedish language',
+    new2 = 'Added the version number',
+    new3 = 'Added configuration at first start',
+    nice = 'Nice !'
 }

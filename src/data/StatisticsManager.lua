@@ -3,7 +3,9 @@ local Logger = require('lib.logger')
 local DateUtils = require('src.utils.DateUtils')
 local FileUtils = require('src.utils.FilesUtils')
 
-local StatisticsManager = {}
+local StatisticsManager = {
+    news = {'new1', 'new2', 'new3'}
+}
 
 local gameList = nil
 local globalStats = nil
@@ -79,6 +81,7 @@ function StatisticsManager.init()
     if #data > 0 and not data.globals then
         data = fixStatistics(data)
     end
+    StatisticsManager.newVersionAvailable = data.gameVersion ~= Vars.appVersion
     gameList = data.games
     globalStats = data.globals
 end

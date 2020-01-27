@@ -34,5 +34,11 @@ return {
     best_score = 'Bästa poäng : %{score}',
     score = 'Poäng : %{score}',
     scoreboard = 'Poängtavla',
-    loading = 'laddar'
+    loading = 'laddar',
+    --Added in 1.14, to update every version to have the last features
+    new_version = 'Ny version : %{version}',
+    new1 = 'Tillägg av svenska',
+    new2 = 'Lagt till versionnummer',
+    new3 = 'Konfiguration vid första användningen',
+    nice = 'Jätterbra !'
 }

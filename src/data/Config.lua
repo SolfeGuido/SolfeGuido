@@ -8,6 +8,7 @@ local Theme = require('src.utils.Theme')
 local Config = {}
 
 local _configData = {}
+local _needsUserHelp = false
 
 local function getSimpleLocale()
     local l = os.setlocale()
@@ -24,6 +25,7 @@ local function fixConfig()
 end
 
 function Config.parse()
+    _needsUserHelp = love.filesystem.getInfo(Vars.configSave)
     local conf = Logger.try('Init config', function()
         return FileUtils.readData(Vars.configSave, {})
     end, {})
@@ -67,8 +69,11 @@ function Config.update(key, value)
     return true
 end
 
+function Config.needsUserHelp()
+    return _needsUserHelp
+end
+
 function Config.save()
-    Logger.info('Saving config')
     Logger.try('Saving config', function() FileUtils.writeData(Vars.configSave, _configData) end)
 end
 

@@ -27,7 +27,8 @@ local allStates = {
     PlaySelectState = require('src.states.PlaySelectState'),
     GamePrepareState = require('src.states.GamePrepareState'),
     CircleCloseState = require('src.states.CircleCloseState'),
-    StatisticsState = require('src.states.StatisticsState')
+    StatisticsState = require('src.states.StatisticsState'),
+    NewVersionState = require('src.states.NewVersionState')
 }
 
 function SplashScreenState:new()
@@ -126,6 +127,11 @@ function SplashScreenState:displayLines()
     self.timer:tween(time, line, {height = hTarget}, 'out-sine', function()
         -- Load all states this time
         ScreeManager.init(allStates, 'MenuState')
+        if StatisticsManager.newVersionAvailable then
+            ScreeManager.push('NewVersionState')
+            -- Save the new version to avoid showing the pop-up another time
+            StatisticsManager.save()
+        end
     end)
 end
 

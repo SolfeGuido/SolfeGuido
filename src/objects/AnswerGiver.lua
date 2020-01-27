@@ -1,5 +1,5 @@
 
-local Entity = require('src.Entity')
+local EntityContainer = require('src.objects.EntityContainer')
 local Config = require('src.data.Config')
 local PianoKey = require('src.objects.PianoKey')
 local Theme = require('src.utils.Theme')
@@ -7,19 +7,16 @@ local Theme = require('src.utils.Theme')
 local MobileButton = require('src.objects.MobileButton')
 
 ---@class AnswerGiver : Entity
-local AnswerGiver = Entity:extend()
+local AnswerGiver = EntityContainer:extend()
 
 function AnswerGiver:new(container, options)
-    Entity.new(self, container, options)
-    self.buttons = {}
+    EntityContainer.new(self, container, options)
     self:addFunction(Config.answerType)
 end
 
 function AnswerGiver:hide()
-    if self.buttons then
-        for _, button in ipairs(self.buttons) do
-            self.timer:tween(Vars.transition.tween, button, {y = love.graphics.getHeight() + 20}, 'out-expo')
-        end
+    for _, button in ipairs(self._entities) do
+        self.timer:tween(Vars.transition.tween, button, {y = love.graphics.getHeight() + 20}, 'out-expo')
     end
 end
 
@@ -41,7 +38,7 @@ function AnswerGiver:addPianoKeys(showNote)
 
     local font = assets.fonts.Oswald(Vars.mobileButton.fontSize)
     for i = 1, 7 do
-        self.buttons[#self.buttons+1] =  self.container:addEntity(PianoKey, {
+        self:addEntity(PianoKey, {
             x = (i-1) * whiteKeyWidth,
             y = yPos,
             height = height,
@@ -61,7 +58,7 @@ function AnswerGiver:addPianoKeys(showNote)
         23 * whiteKeyWidth / 4
     }
     for _,v in ipairs(blackKeys) do
-        self.buttons[#self.buttons+1] =  self.container:addEntity(PianoKey, {
+        self:addEntity(PianoKey, {
             x = v,
             y = yPos,
             height = 3 * height / 4,
@@ -72,7 +69,6 @@ function AnswerGiver:addPianoKeys(showNote)
 end
 
 function AnswerGiver:addButtons()
-    self.buttons = {}
     local size = Vars.mobileButton.fontSize
     local font = assets.fonts.Oswald(size)
     local letters = Vars[Config.noteStyle]
@@ -84,7 +80,7 @@ function AnswerGiver:addButtons()
         local text = love.graphics.newText(font, v)
         totalSize = totalSize + text:getWidth() + padding * 3
         local y = love.graphics.getHeight() - text:getHeight() - padding * 3
-        self.buttons[#self.buttons+1] = self.container:addEntity(MobileButton, {
+        self:addEntity(MobileButton, {
             x = 5 + (widths + padding) * (i-1),
             y = y,
             width = widths,

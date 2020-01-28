@@ -40,5 +40,28 @@ return {
     new1 = 'Tillägg av svenska',
     new2 = 'Lagt till versionnummer',
     new3 = 'Konfiguration vid första användningen',
-    nice = 'Jätterbra !'
+    nice = 'Jätterbra !',
+        --- All the configuration
+    --- All the configuration
+    language = 'Språk',
+    note_style = 'Notation type',
+    note_style_subtitle = 'Naming convention to use for the notes',
+    english_note = 'English convention (C,D,E,...)',
+    roman_notes = 'Roman convention (Do, Ré, Mi, ...)',
+    latin_notes = 'Latin convention (Do, Re, Mi, ...)',
+    answer_type = 'Answer type',
+    answer_type_subtitle = 'Input type to use to give an answer',
+    answer_button = 'Button',
+    answer_button_subtitle = 'Simple buttons with note name on it',
+    answer_piano = 'Piano keys',
+    answer_piano_subtitle = 'A basic piano keyboard',
+    answer_pianowithnotes = 'Piano keys',
+    answer_pianowithnotes_subtitle = 'Piano keys with notes',
+    theme = 'Tema',
+    theme_subtitle = 'Overall feeling of the app',
+    light_theme = 'Lätt',
+    dark_theme = 'Mörkt',
+    previous = 'Tidigare',
+    next = 'Nästa',
+    done = 'Färdiga'
 }

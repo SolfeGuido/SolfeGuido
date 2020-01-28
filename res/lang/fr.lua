@@ -42,5 +42,27 @@ return {
     new1 = 'Ajout du Suédois <3',
     new2 = 'Ajout du numéro de version',
     new3 = 'Configuration lors du premier lancement',
-    nice = 'Nickel !'
+    nice = 'Nickel !',
+    --- All the configuration
+    language = 'Langue',
+    note_style = 'Nom des notes',
+    note_style_subtitle = 'Convetions de nommage des notes',
+    english_note = 'Convention anglaise (C,D,E,...)',
+    roman_notes = 'Convention Romane (Do, Ré, Mi, ...)',
+    latin_notes = 'Convention Latine (Do, Re, Mi, ...)',
+    answer_type = 'Type de réponses',
+    answer_type_subtitle = 'Boutons à utiliser pour donner une réponse',
+    answer_button = 'Bouton',
+    answer_button_subtitle = 'Bouton avec le nom de note',
+    answer_piano = 'Touches de piano',
+    answer_piano_subtitle = 'En clavier de piano basique',
+    answer_pianowithnotes = 'Touches de piano',
+    answer_pianowithnotes_subtitle = 'Clavier de piano annoté',
+    theme = 'Thème',
+    theme_subtitle = 'Style d\'interface Graphique',
+    light_theme = 'Clair',
+    dark_theme = 'Sombre',
+    previous = 'Précédent',
+    next = 'Suivant',
+    done = 'Terminé'
 }

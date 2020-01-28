@@ -25,7 +25,7 @@ local function fixConfig()
 end
 
 function Config.parse()
-    _needsUserHelp = love.filesystem.getInfo(Vars.configSave)
+    _needsUserHelp = love.filesystem.getInfo(Vars.configSave) == nil
     local conf = Logger.try('Init config', function()
         return FileUtils.readData(Vars.configSave, {})
     end, {})

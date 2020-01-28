@@ -15,15 +15,23 @@ function TextButton:new(container, config)
     self.width = self.text:getWidth() + self.padding * 2
     self.height = self.text:getHeight() + self.padding * 2
 
+
     if self.icon then
-        self.width = self.width + self.icon:getWidth() + self.padding
+        self.width = self.width + self.icon:getWidth() + (self.padding * 2)
     end
 
     if self.centerText then
         self.x = self.x - (self.width / 2)
     end
+
+    self.xOrigin = (config.xOrigin or 0) * self.width
+    self.yOrigin = (config.yOrigin or 0) * self.height
 end
 
+function TextButton:contains(x,y)
+    return x >= (self.x - self.xOrigin) and x <= (self.x - self.xOrigin + self.width) and
+            y >= (self.y - self.yOrigin) and y <= (self.y - self.yOrigin + self.height)
+end
 
 function TextButton:dispose()
     TextButton.super.dispose(self)
@@ -44,22 +52,25 @@ function TextButton:onclick()
 end
 
 function TextButton:draw()
+    love.graphics.push()
+    love.graphics.translate(self.x - self.xOrigin, self.y - self.yOrigin)
 
     if self.framed then
         love.graphics.setColor(Theme.background)
-        love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
+        love.graphics.rectangle('fill', 0, 0, self.width, self.height)
         love.graphics.setColor(self.color)
-        love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
+        love.graphics.rectangle('line', 0, 0, self.width, self.height)
     end
     love.graphics.setColor(self.color)
-    local x = self.x + self.padding
+    local x = self.padding
     if self.icon then
-        local iconY = lume.round(self.y + self.height / 2 - self.icon:getHeight() / 2)
+        local iconY = lume.round(self.height / 2 - self.icon:getHeight() / 2)
         love.graphics.draw(self.icon, lume.round(x), iconY)
         x = x + self.icon:getWidth() + self.padding
     end
 
-    love.graphics.draw(self.text, lume.round(x), lume.round(self.y + self.padding))
+    love.graphics.draw(self.text, lume.round(x), lume.round(self.padding))
+    love.graphics.pop()
 end
 
 

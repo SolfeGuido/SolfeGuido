@@ -3,12 +3,12 @@
 --- LIBS
 local ScreenManager = require('lib.ScreenManager')
 local Theme         = require('src.utils.Theme')
+local RadioButtonGroup = require('src.objects.RadioButtonGroup')
 
 --- ENTITIES
 local IconButton    = require('src.objects.IconButton')
 local TextButton    = require('src.objects.TextButton')
 local Title         = require('src.objects.Title')
-local RadioButton   = require('src.objects.RadioButton')
 local Image         = require('src.objects.Image')
 
 local UIFactory = {}
@@ -77,7 +77,9 @@ function UIFactory.createTextButton(container, config)
         color = config.color,
         callback = config.callback,
         framed = config.framed or false,
-        centerText = config.centerText or false
+        centerText = config.centerText or false,
+        xOrigin = config.xOrigin or 0,
+        yOrigin = config.yOrigin or 0
     }))
 end
 
@@ -116,6 +118,9 @@ function UIFactory.createTitle(container, config)
 end
 
 function UIFactory.createRadioButton(container, config)
+    if not container:is(RadioButtonGroup) then
+        error('Can only add radio button to radio button groups')
+    end
     if config.icon and not config.image then
         config.image = love.graphics.newText(
                 assets.fonts.Icons(config.size or Vars.titleSize),
@@ -125,7 +130,7 @@ function UIFactory.createRadioButton(container, config)
         local font = config.font or 'MarckScript'
         config.image = love.graphics.newText(assets.fonts[font](config.size or Vars.titleSize), tr(config.text))
     end
-    return addToState(config, container:addEntity(RadioButton, {
+    return addToState(config, container:addRadioButton({
         x = config.x,
         y = config.y,
         value = config.value,

@@ -10,7 +10,7 @@ local Logger = require('lib.logger')
 local lume = require('lib.lume')
 local JinglePlayer = require('src.utils.JinglePlayer')
 
-
+local StartupConfigState = require('src.states.StartupConfigState')
 local Line = require('src.objects.Line')
 
 ---@class SplashScreenState : State
@@ -28,7 +28,8 @@ local allStates = {
     GamePrepareState = require('src.states.GamePrepareState'),
     CircleCloseState = require('src.states.CircleCloseState'),
     StatisticsState = require('src.states.StatisticsState'),
-    NewVersionState = require('src.states.NewVersionState')
+    NewVersionState = require('src.states.NewVersionState'),
+    StartupConfigState = StartupConfigState
 }
 
 function SplashScreenState:new()
@@ -127,11 +128,17 @@ function SplashScreenState:displayLines()
     self.timer:tween(time, line, {height = hTarget}, 'out-sine', function()
         -- Load all states this time
         ScreeManager.init(allStates, 'MenuState')
-        if StatisticsManager.newVersionAvailable then
-            ScreeManager.push('NewVersionState')
+        --if Config.needsUserHelp() then
+            local options = StartupConfigState.createOptions()
+            for i = #options, 1, -1 do
+                ScreeManager.push('StartupConfigState', i, options[i])
+            end
+        --end
+        --if StatisticsManager.newVersionAvailable then
+          --  ScreeManager.push('NewVersionState')
             -- Save the new version to avoid showing the pop-up another time
-            StatisticsManager.save()
-        end
+            --StatisticsManager.save()
+        --end
     end)
 end
 

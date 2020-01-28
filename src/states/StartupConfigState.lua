@@ -8,11 +8,20 @@ local RadiButtonGroup = require('src.objects.RadioButtonGroup')
 ---@class StartupConfigState : State
 local StartupConfigState = State:extend()
 
+function StartupConfigState.reload(index)
+    ScreenManager.switch('MenuState')
+    for i = #StartupConfigState.options, index, -1 do
+        ScreenManager.push('StartupConfigState', i, false)
+    end
+end
+
 function StartupConfigState.createOptions()
+    if StartupConfigState.options ~= nil then
+        return StartupConfigState.options
+    end
     StartupConfigState.options = {
         {
             title = 'language',
-            subtitle = 'language_configure',
             icon = 'Sphere',
             configName = 'lang',
             options = {
@@ -32,8 +41,8 @@ function StartupConfigState.createOptions()
                     title = 'Svenska'
                 }
             },
-            changeCallback = function(nwValue)
-                -- Reload all states ?
+            changeCallback = function(index)
+                StartupConfigState.reload(index)
             end
         },
         {
@@ -102,8 +111,8 @@ function StartupConfigState.createOptions()
                     title = 'dark_theme'
                 },
             },
-            changeCallback = function(nwValue)
-                --  Reload all
+            changeCallback = function(index)
+                StartupConfigState.reload(index)
             end
         }
     }
@@ -111,13 +120,33 @@ function StartupConfigState.createOptions()
 end
 
 function StartupConfigState:draw()
+    love.graphics.push()
+    love.graphics.translate(self.x, 0)
     love.graphics.setColor(Theme.background)
     love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.setColor(Theme.font)
+    love.graphics.rectangle('line', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     State.draw(self)
+    love.graphics.pop()
 end
 
-function StartupConfigState:init(index, config)
-    print(index, config.title)
+function StartupConfigState:slideOut()
+    self.timer:tween(Vars.transition.tween, self, {x = -love.graphics.getWidth()}, 'out-cubic', function()
+        ScreenManager.pop()
+    end)
+end
+
+function StartupConfigState:init(index, slideFrom)
+    if slideFrom == 'left' then
+        self.x = -love.graphics.getWidth()
+    elseif slideFrom == 'right' then
+        self.x = love.graphics.getWidth()
+    else
+        self.x = 0
+    end
+    self.timer:tween(Vars.transition.tween, self, {x = 0}, 'out-cubic')
+
+    local config = StartupConfigState.options[index]
     UIFactory.createTitle(self, {
         text = tr(config.title),
         centered = true,
@@ -137,13 +166,13 @@ function StartupConfigState:init(index, config)
         UIFactory.createTitle(self, {
             text = tr(config.subtitle),
             fontSize = Vars.mobileButton.fontSize,
+            fontName = 'Oswald',
             centered = true,
             y = Vars.titleSize + 10,
             color = Theme.font:clone()
         })
     end
 
-    local optionsSize = #config.options
     self.selectedTitle = UIFactory.createTitle(self, {
         text = 'title',
         centered = true,
@@ -161,14 +190,17 @@ function StartupConfigState:init(index, config)
         color = Theme.font:clone()
     })
 
+    local optionsSize = #config.options
+    local btnWidth = 110
+    local availableSpace = (love.graphics.getWidth() - (optionsSize * (btnWidth + 10))) / 2
     self.choices = self:addEntity(RadiButtonGroup, {})
     local configValue = Config[config.configName]
     for i, v in pairs(config.options) do
-        UIFactory.createRadioButton(self.choices, {
+        local btn = UIFactory.createRadioButton(self.choices, {
             callback = function(btn)
                 Config.update(config.configName, btn.value)
                 if config.changeCallback then
-                    config.changeCallback(btn)
+                    config.changeCallback(index)
                 end
                 self.selectedTitle:setCenteredText(tr(v.title))
                 if v.subtitle then
@@ -180,11 +212,12 @@ function StartupConfigState:init(index, config)
             image = v.image,
             icon = v.icon,
             size = Vars.titleSize,
-            padding = 5,
+            padding = 15,
             width = Vars.titleSize * 2,
-            x = (i * 3) * Vars.titleSize,
+            x = availableSpace + (i-1) * (btnWidth + 10),
             y = Vars.titleSize * 4 + 40,
-            value = v.optionName
+            value = v.optionName,
+            centerImage = true,
         })
         if v.optionName == configValue then
             self.selectedTitle:setCenteredText(tr(v.title))
@@ -196,7 +229,6 @@ function StartupConfigState:init(index, config)
             end
         end
     end
-    print(config.configName, Config[config.configName])
     self.choices:setSelectedValue(Config[config.configName])
 
     if index > 1 then
@@ -207,7 +239,11 @@ function StartupConfigState:init(index, config)
             yOrigin = 1,
             padding = 5,
             framed = true,
-            color = Theme.font:clone()
+            color = Theme.font:clone(),
+            callback = function(btn)
+                btn.consumed = false
+                ScreenManager.push('StartupConfigState', index - 1, 'left')
+            end
         })
     end
 
@@ -221,7 +257,7 @@ function StartupConfigState:init(index, config)
             yOrigin = 1,
             framed = true,
             callback = function()
-                ScreenManager.pop()
+                self:slideOut()
             end,
             color = Theme.font:clone()
         })
@@ -235,7 +271,7 @@ function StartupConfigState:init(index, config)
             xOrigin = 1,
             yOrigin = 1,
             framed = true,
-            callback = function() ScreenManager.pop() end,
+            callback = function() self:slideOut() end,
             color = Theme.font:clone()
         })
     end

@@ -131,7 +131,7 @@ function SplashScreenState:displayLines()
         --if Config.needsUserHelp() then
             local options = StartupConfigState.createOptions()
             for i = #options, 1, -1 do
-                ScreeManager.push('StartupConfigState', i, options[i])
+                ScreeManager.push('StartupConfigState', i)
             end
         --end
         --if StatisticsManager.newVersionAvailable then

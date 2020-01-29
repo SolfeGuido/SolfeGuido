@@ -54,4 +54,26 @@ describe("Color testing", function()
         a,b,g,r = unpack(color.abgr)
         assert.are.same({0.5, 0.3, 0.2, 1}, {a,b,g,r})
     end)
+
+    it("Can be accessed directly", function()
+        local color = Color(1,0.2,0.3,0.5)
+
+        assert.are.equal(1, color[1])
+        assert.are.equal(0.2, color[2])
+        assert.are.equal(0.3, color[3])
+        assert.are.equal(0.5, color[4])
+    end)
+
+    it("Can be set directly", function()
+        local color = Color()
+        color[1] = 1
+        color[2] = 0.5
+        color[3] = 1
+        color[4] = 0
+
+        assert.are.equal(1, color[1])
+        assert.are.equal(0.5, color[2])
+        assert.are.equal(1, color[3])
+        assert.are.equal(0, color[4])
+    end)
   end)

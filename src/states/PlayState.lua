@@ -33,6 +33,7 @@ function PlayState:new()
     self.progressSpeed = Vars.maxProgressSpeed
     self.currentMeasure = 1
     self.nextMeasureGeneration = 1
+    self.barColor = Theme.stripe:clone()
 end
 
 
@@ -102,8 +103,9 @@ function PlayState:draw()
 
     if self.currentNote then
         local note = self.currentNote
+        self.barColor[4] = note.color[4] * Theme.stripe[4]
         love.graphics.setShader(assets.shaders.noteFade)
-        love.graphics.setColor(Theme.stripe)
+        love.graphics.setColor(self.barColor)
         love.graphics.rectangle('fill', note.x, self:getMeasure().y , note.width, self:getMeasure().height)
         love.graphics.setShader()
     end
@@ -123,7 +125,7 @@ function PlayState:keypressed(key)
 end
 
 function PlayState:focus(focus)
-    if not focus then
+    if self.active and not focus then
         ScreenManager.push('PauseState')
     end
 end
@@ -134,6 +136,7 @@ function PlayState:answerGiven(idx)
     local measure = self:getMeasure()
     -- Playing same note whatever happens, need to find something else to do when wrong
     assets.sounds.notes[self.currentNote.note]:play()
+    local timeLost = 0
     if measure:isAnswerCorrect(idx) then
         self.stats:correct()
         self.currentNote:correct()
@@ -142,13 +145,15 @@ function PlayState:answerGiven(idx)
         self.stats:wrong()
         self.currentNote:wrong()
         Mobile.vibrate(Vars.mobile.vibrationTime)
-        if self.stopWatch then
-            self.stopWatch:looseTime(Vars.timeLoss)
-        end
+        timeLost = Vars.timeLoss
     end
     measure:removeNextNote()
     self:switchMeasure()
     self.currentNote = self:getMeasure():currentNote()
+    -- Loose time later, so that the callback (if called), the playstate is in a correct state
+    if timeLost > 0 and self.stopWatch then
+        self.stopWatch:looseTime(timeLost)
+    end
 end
 
 function PlayState:getMove()
@@ -198,7 +203,12 @@ function PlayState:update(dt)
     Scene.update(self, dt)
     self:tryPopNote(dt)
     if self.currentNote then
-        self:doProgress(dt)
+        if self.currentNote.isDead then
+            -- happens at the end of a game
+            self.currentNote = nil
+        else
+            self:doProgress(dt)
+        end
     end
 end
 

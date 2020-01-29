@@ -48,8 +48,8 @@ return {
     note_style = 'Nom des notes',
     note_style_subtitle = 'Convetions de nommage des notes',
     english_note = 'Convention anglaise (C,D,E,...)',
-    roman_notes = 'Convention Romane (Do, Ré, Mi, ...)',
-    latin_notes = 'Convention Latine (Do, Re, Mi, ...)',
+    roman_notes = 'Convention romane (Do, Ré, Mi, ...)',
+    latin_notes = 'Convention latine (Do, Re, Mi, ...)',
     answer_type = 'Type de réponses',
     answer_type_subtitle = 'Boutons à utiliser pour donner une réponse',
     answer_button = 'Bouton',
@@ -62,7 +62,4 @@ return {
     theme_subtitle = 'Style d\'interface Graphique',
     light_theme = 'Clair',
     dark_theme = 'Sombre',
-    previous = 'Précédent',
-    next = 'Suivant',
-    done = 'Terminé'
 }

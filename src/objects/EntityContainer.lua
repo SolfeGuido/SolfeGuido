@@ -13,7 +13,7 @@ EntityContainer.entitiesEvents = {
     'touchpressed', 'touchmoved', 'touchreleased'
 }
 
-
+-- Might add an iterator to directly iterate through entities
 function EntityContainer:new(container, options)
     Entity.new(self, container, options)
     self._entities = {}

@@ -54,6 +54,7 @@ end
 
 function Measure:generateRandomNote()
     return self:insertEntity(self.notes:push(function(ent)
+        ent.container = self
        return ent:reset(self:getRandomNote(), love.graphics.getWidth())
     end))
 end

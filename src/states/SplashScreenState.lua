@@ -128,17 +128,16 @@ function SplashScreenState:displayLines()
     self.timer:tween(time, line, {height = hTarget}, 'out-sine', function()
         -- Load all states this time
         ScreeManager.init(allStates, 'MenuState')
-        --if Config.needsUserHelp() then
+        if Config.needsUserHelp() then
             local options = StartupConfigState.createOptions()
             for i = #options, 1, -1 do
                 ScreeManager.push('StartupConfigState', i, 'right')
             end
-        --end
-        --if StatisticsManager.newVersionAvailable then
-          --  ScreeManager.push('NewVersionState')
+        elseif StatisticsManager.newVersionAvailable then
+            ScreeManager.push('NewVersionState')
             -- Save the new version to avoid showing the pop-up another time
-            --StatisticsManager.save()
-        --end
+            StatisticsManager.save()
+        end
     end)
 end
 

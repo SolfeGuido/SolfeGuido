@@ -2,6 +2,7 @@
 local EntityContainer = require('src.objects.EntityContainer')
 local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
+local RadioButtonGroup = require('src.objects.RadioButtonGroup')
 
 ---@class Drawer : Entity
 local Drawer = EntityContainer:extend()
@@ -56,7 +57,7 @@ function Drawer:touchpressed(id, x, y)
         self.touchId = id
         return true
     end
-    return EntityContainer.mousereleased(self, id, x - self.x, y - self.y)
+    return EntityContainer.touchpressed(self, id, x - self.x, y - self.y)
 end
 
 function Drawer:touchreleased(id, x, y)
@@ -91,8 +92,9 @@ function Drawer:init(options)
     }):width() + self.padding
     self.originSelection = options.selected
     self.selected = options.selected
+    local group = self:addEntity(RadioButtonGroup, {})
     for _, v in ipairs(options.choices) do
-        xPos = xPos + UIFactory.createRadioButton(self, {
+        xPos = xPos + UIFactory.createRadioButton(group, {
             x = xPos,
             y = 0,
             color = Theme.font:clone(),
@@ -101,19 +103,7 @@ function Drawer:init(options)
             icon = v.icon,
             image = v.image,
             padding = self.padding - 0.5,
-            callback = function(btn)
-                btn.consumed = false
-                if not btn.isChecked then
-                    for _, child in ipairs(self._entities) do
-                        if child == btn then
-                            child:check()
-                        elseif child.uncheck then
-                            child:uncheck()
-                        end
-                    end
-                    self.selected = v.configValue
-                end
-            end
+            callback = function() self.selected = v.configValue end
         }):width()
     end
 

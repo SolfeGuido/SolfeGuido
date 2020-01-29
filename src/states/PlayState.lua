@@ -105,7 +105,6 @@ function PlayState:draw()
         love.graphics.setShader(assets.shaders.noteFade)
         love.graphics.setColor(Theme.stripe)
         love.graphics.rectangle('fill', note.x, self:getMeasure().y , note.width, self:getMeasure().height)
-        love.graphics.setShader(assets.shaders.noteFade)
         love.graphics.setShader()
     end
 

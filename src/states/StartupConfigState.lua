@@ -191,12 +191,12 @@ function StartupConfigState:init(index, slideFrom)
     })
 
     local optionsSize = #config.options
-    local btnWidth = 110
+    local btnWidth = 100
     local availableSpace = (love.graphics.getWidth() - (optionsSize * (btnWidth + 10))) / 2
     self.choices = self:addEntity(RadiButtonGroup, {})
     local configValue = Config[config.configName]
     for i, v in pairs(config.options) do
-        local btn = UIFactory.createRadioButton(self.choices, {
+        UIFactory.createRadioButton(self.choices, {
             callback = function(btn)
                 Config.update(config.configName, btn.value)
                 if config.changeCallback then
@@ -212,7 +212,7 @@ function StartupConfigState:init(index, slideFrom)
             image = v.image,
             icon = v.icon,
             size = Vars.titleSize,
-            padding = 15,
+            padding = 10,
             width = Vars.titleSize * 2,
             x = availableSpace + (i-1) * (btnWidth + 10),
             y = Vars.titleSize * 4 + 40,
@@ -233,7 +233,7 @@ function StartupConfigState:init(index, slideFrom)
 
     if index > 1 then
         UIFactory.createTextButton(self, {
-            text = tr('previous'),
+            text = ' < ',
             x = 10,
             y = love.graphics.getHeight() - 10,
             yOrigin = 1,
@@ -249,7 +249,7 @@ function StartupConfigState:init(index, slideFrom)
 
     if index < #StartupConfigState.options then
         UIFactory.createTextButton(self, {
-            text = tr('next'),
+            text = ' > ',
             y = love.graphics.getHeight() - 10,
             x = love.graphics.getWidth() - 10,
             padding = 5,
@@ -263,11 +263,11 @@ function StartupConfigState:init(index, slideFrom)
         })
     else
         UIFactory.createTextButton(self, {
-            text = tr('done'),
-            icon = 'Check',
+            text = assets.IconName.Check,
+            fontName = 'Icons',
             y = love.graphics.getHeight() - 10,
             x = love.graphics.getWidth() - 10,
-            padding = 5,
+            padding = 10,
             xOrigin = 1,
             yOrigin = 1,
             framed = true,

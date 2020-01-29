@@ -6,6 +6,7 @@ local Theme = require('src.utils.Theme')
 local Graphics = require('src.utils.Graphics')
 local UIFactory = require('src.utils.UIFactory')
 local ScreenManager = require('lib.ScreenManager')
+local RadioButtonGroup = require('src.objects.RadioButtonGroup')
 local lume = require('lib.lume')
 
 
@@ -51,7 +52,7 @@ function ScoreboardState:slideOut(callback)
             target = {y = love.graphics.getHeight(), color = Theme.transparent}
         }
     }
-    for _,v in ipairs(self.radioButtons) do
+    for _,v in ipairs(self.radioButtons._entities) do
         elements[#elements+1] = {
             element = v,
             target = {y = love.graphics.getHeight() + 20, color = Theme.transparent}
@@ -80,7 +81,6 @@ function ScoreboardState:init()
     local maxSize = 0
 
     self.texts = {}
-    self.radioButtons = {}
     self.titles = {}
     local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr("scoreboard"))
 
@@ -231,29 +231,19 @@ function ScoreboardState:init()
     space = radioSpace / #Vars.userPreferences.time
     local yPos = Vars.baseLine + Vars.lineHeight * 7
     local xPos = Vars.limitLine +  space / 2  - (Vars.titleSize * 0.60)
+    self.radioButtons = self:addEntity(RadioButtonGroup, {})
     for i, v in ipairs(Vars.userPreferences.time) do
         elements[#elements+1] = {
-            element = UIFactory.createRadioButton(self, {
+            element = UIFactory.createRadioButton(self.radioButtons, {
                 x = xPos,
                 value = v,
-                name = 'radioButtons',
                 padding = 10,
                 width = space / 2,
                 centerImage = true,
                 isChecked = i == 1,
                 y = love.graphics.getHeight()  + 20,
                 framed = true,
-                callback = function(btn)
-                    btn.consumed = false
-                    for _, radio in ipairs(self.radioButtons) do
-                        if radio == btn then
-                            self:updateScores(v)
-                            radio:check()
-                        else
-                            radio:uncheck()
-                        end
-                    end
-                end,
+                callback = function() self:updateScores(v) end,
                 image = love.graphics.newText(font, v)
             }),
             target = {color = Theme.font, y = yPos}

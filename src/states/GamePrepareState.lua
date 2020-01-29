@@ -42,35 +42,35 @@ local spaces = {
 function GamePrepareState:createMeasures()
     local availableSpace = love.graphics.getHeight() - (spaces[Config.answerType] or 0)
     if Config.keySelect == 'gClef' then
-        self.measures = {Measure(nil,{
+        self.measures = {Measure(self,{
             keyData = Vars.gClef,
             height = availableSpace
         })}
     elseif Config.keySelect == 'fClef' then
-        self.measures = {Measure(nil , {
+        self.measures = {Measure(self , {
             keyData = Vars.fClef,
             height = availableSpace
         })}
     elseif Config.keySelect == 'both' then
         self.measures = {
-            Measure(nil, {
+            Measure(self, {
                 keyData = Vars.gClef,
                 height = availableSpace / 2,
                 y = 0
             }),
-            Measure(nil, {
+            Measure(self, {
                 keyData = Vars.fClef,
                 height = availableSpace  / 2,
                 y = availableSpace / 2
             })
         }
     elseif Config.keySelect == 'cClef3' then
-        self.measures = {Measure(nil,{
+        self.measures = {Measure(self,{
             keyData = Vars.cClef3,
             height = availableSpace
         })}
     elseif Config.keySelect == 'cClef4' then
-        self.measures = {Measure(nil,{
+        self.measures = {Measure(self,{
             keyData = Vars.cClef4,
             height = availableSpace
         })}

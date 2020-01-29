@@ -5,6 +5,7 @@ local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local Config = require('src.data.Config')
 local PlayButton = require('src.objects.PlayButton')
+local RadioButtonGroup = require('src.objects.RadioButtonGroup')
 
 ---@class PlaySelectState : State
 local PlaySelectState = DialogSate:extend()
@@ -42,9 +43,10 @@ function PlaySelectState:addRadioButtons(config)
         return tr('level', {level = lvl})
     end
 
+    local group = self:addEntity(RadioButtonGroup, {})
     for i, v in ipairs(list) do
         config.target[#config.target+1] = {
-            element = UIFactory.createRadioButton(self, {
+            element = UIFactory.createRadioButton(group, {
                 text = config.icon and nil or levelName(v),
                 font = 'Oswald',
                 icon = config.icons and config.icons[v] or nil,
@@ -57,17 +59,7 @@ function PlaySelectState:addRadioButtons(config)
                 centerImage = true,
                 name = config.listName,
                 framed = true,
-                callback = function(btn)
-                    Config.update(config.configName, v)
-                    btn.consumed = false
-                    for _,radio in ipairs(self[config.listName]) do
-                        if radio == btn then
-                            radio:check()
-                        else
-                            radio:uncheck()
-                        end
-                    end
-                end
+                callback = function() Config.update(config.configName, v) end
             }),
             target = {color = Theme.font}
         }
@@ -136,7 +128,7 @@ function PlaySelectState:init()
 
     self:transition({
         {
-            element = self:addentity(PlayButton, {
+            element = self:addEntity(PlayButton, {
                 color = Theme.transparent:clone(),
                 x = dialogMiddle,
                 y = self.height,

@@ -10,8 +10,8 @@ local DateUtils = require('src.utils.DateUtils')
 ---@field avgReacTime number
 local GameStatistics = Entity:extend()
 
-function GameStatistics:new(area, options)
-    Entity.new(self, area, options)
+function GameStatistics:new(container, options)
+    Entity.new(self, container, options)
     self.timePlayed = 0
     self.correctNotes = 0
     self.wrongNotes = 0

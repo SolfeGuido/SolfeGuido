@@ -6,8 +6,8 @@ local Theme = require('src.utils.Theme')
 ---@class MobileButton : AbstractButton
 local MobileButton = AbstractButton:extend()
 
-function MobileButton:new(area, options)
-    AbstractButton.new(self, area, options)
+function MobileButton:new(container, options)
+    AbstractButton.new(self, container, options)
     self.color = options.color or Theme.font:clone()
 end
 

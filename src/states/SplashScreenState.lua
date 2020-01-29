@@ -10,7 +10,7 @@ local Logger = require('lib.logger')
 local lume = require('lib.lume')
 local JinglePlayer = require('src.utils.JinglePlayer')
 
-
+local StartupConfigState = require('src.states.StartupConfigState')
 local Line = require('src.objects.Line')
 
 ---@class SplashScreenState : State
@@ -27,7 +27,9 @@ local allStates = {
     PlaySelectState = require('src.states.PlaySelectState'),
     GamePrepareState = require('src.states.GamePrepareState'),
     CircleCloseState = require('src.states.CircleCloseState'),
-    StatisticsState = require('src.states.StatisticsState')
+    StatisticsState = require('src.states.StatisticsState'),
+    NewVersionState = require('src.states.NewVersionState'),
+    StartupConfigState = StartupConfigState
 }
 
 function SplashScreenState:new()
@@ -109,7 +111,7 @@ function SplashScreenState:displayLines()
     local middle = Vars.baseLine
     for i = 1,5 do
         local ypos = middle + Vars.lineHeight * i
-        local line = self:addentity(Line, {
+        local line = self:addEntity(Line, {
             x = 0,
             y = ypos,
             width = 0,
@@ -117,7 +119,7 @@ function SplashScreenState:displayLines()
         self.timer:tween(time, line, {width = love.graphics.getWidth()}, 'out-sine')
     end
 
-    local line = self:addentity(Line, {
+    local line = self:addEntity(Line, {
         x = Vars.limitLine,
         y = middle + Vars.lineHeight,
         height = 0,
@@ -126,6 +128,16 @@ function SplashScreenState:displayLines()
     self.timer:tween(time, line, {height = hTarget}, 'out-sine', function()
         -- Load all states this time
         ScreeManager.init(allStates, 'MenuState')
+        if Config.needsUserHelp() then
+            local options = StartupConfigState.createOptions()
+            for i = #options, 1, -1 do
+                ScreeManager.push('StartupConfigState', i, 'right')
+            end
+        elseif StatisticsManager.newVersionAvailable then
+            ScreeManager.push('NewVersionState')
+            -- Save the new version to avoid showing the pop-up another time
+            StatisticsManager.save()
+        end
     end)
 end
 

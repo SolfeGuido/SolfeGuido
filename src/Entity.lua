@@ -3,16 +3,16 @@
 local Class = require('lib.class')
 
 ---@class Entity
----@field public area State
+---@field public container State
 ---@field public id string
 ---@field public x number
 ---@field public y number
 local Entity = Class:extend()
 
-function Entity:new(state, options)
+function Entity:new(container, options)
     Entity.super.new(self)
-    self.area = state
-    self.timer = state and state.timer or nil
+    self.container = container
+    self.timer = container and container.timer or nil
     self.isDead = false
     if options then
         for k,v in pairs(options) do
@@ -21,10 +21,10 @@ function Entity:new(state, options)
     end
 end
 
---- Deletes the entity from the area
+--- Deletes the entity from the container
 function Entity:dispose()
     self.timer = nil
-    self.area = nil
+    self.container = nil
 end
 
 function Entity:update() end

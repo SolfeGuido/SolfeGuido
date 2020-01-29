@@ -7,7 +7,7 @@ local titleSize = 40
 
 return {
     appName = 'SolfeGuido',
-    appVersion = '1.3',
+    appVersion = '1.4',
     titleSize = titleSize,
     baseLine = middle - (lineHeight * 3),
     userPreferences = {

@@ -4,8 +4,8 @@ local Theme = require('src.utils.Theme')
 ---@class Line : Entity
 local Line = Entity:extend()
 
-function Line:new(area, options)
-    Entity.new(self, area, options)
+function Line:new(container, options)
+    Entity.new(self, container, options)
     self.color = options.color or Theme.font:clone()
 end
 

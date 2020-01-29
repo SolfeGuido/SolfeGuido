@@ -76,6 +76,19 @@ function MenuState:init()
                 x = love.graphics.getWidth() / 2 - title:getWidth() / 2,
                 text = title,
             })
+            :add('TextButton', {
+                from = 'top',
+                fromPosition = -Vars.mobileButton.fontSize,
+                to = Vars.titleSize + 5,
+                fontSize = Vars.mobileButton.fontSize,
+                x = love.graphics.getWidth() / 2,
+                centerText = true,
+                text = Vars.appVersion,
+                callback = function (btn)
+                    ScreenManager.push('NewVersionState')
+                    btn.consumed = false
+                end
+            })
             :add('IconButton', {
                 from = 'top',
                 fromPosition = -Vars.titleSize - 5,

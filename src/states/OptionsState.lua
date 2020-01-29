@@ -6,6 +6,7 @@ local ScreenManager = require('lib.ScreenManager')
 local Config = require('src.data.Config')
 local Drawer = require('src.objects.Drawer')
 local EventTransmitter = require('src.utils.EventTransmitter')
+local lume = require('lib.lume')
 
 ---@class OptionsState : State
 local OptionsState = State:extend()
@@ -36,11 +37,12 @@ function OptionsState:slideOut()
 end
 
 function OptionsState:keypressed(key)
+    if State.keypressed(self, key) then return true end
     if key == "escape" then
         self:slideOut()
         return true
     end
-    return State.keypressed(self, key)
+    return false
 end
 
 function OptionsState:draw()
@@ -78,9 +80,9 @@ function OptionsState:createDrawers(config, height)
                 drawer:hide()
             end
         end
-        local drawer = self:addentity(Drawer, {
+        local drawer = self:addEntity(Drawer, {
             x = love.graphics.getWidth() + 5,
-            y = v.y,
+            y = lume.round(v.y),
             height = height
         })
         self.drawers[#self.drawers+1] = drawer
@@ -201,7 +203,8 @@ function OptionsState:init()
         {
             icons = {
                 {'fr', assets.images.flags.fr},
-                {'en', assets.images.flags.en}
+                {'en', assets.images.flags.en},
+                {'sv', assets.images.flags.sv}
             },
             config = 'lang',
             y = baseY * 4 + padding / 2

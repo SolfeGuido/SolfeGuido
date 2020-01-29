@@ -3,8 +3,8 @@ local Entity = require('src.Entity')
 ---@class Image : Entity
 local Image = Entity:extend()
 
-function Image:new(area, options)
-    Entity.new(self, area, options)
+function Image:new(container, options)
+    Entity.new(self, container, options)
     if not self.scale and self.size then
         local max = math.max(self.image:getWidth(), self.image:getHeight())
         self.scale = self.size / max

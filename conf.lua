@@ -11,8 +11,8 @@ function love.conf(t)
 
     t.window.title = "SolfeGuido"         -- The window title (string)
     t.window.icon = 'res/images/appIcon.png'                 -- Filepath to an image to use as the window's icon (string)
-    t.window.width = 1000                -- The window width (number)
-    t.window.height = 600               -- The window height (number)
+    t.window.width = 1280                -- The window width (number)
+    t.window.height = 720               -- The window height (number)
     t.window.borderless = false         -- Remove all border visuals from the window (boolean)
     t.window.resizable = false          -- Let the window be user-resizable (boolean)
     t.window.minwidth = 1               -- Minimum window width if the window is resizable (number)
@@ -51,7 +51,7 @@ function love.conf(t)
         title = 'SolfeGuido',              -- The project title (string)
         package = 'solfeGuido',            -- The project command and package name (string)
         loveVersion = '11.3',        -- The project LÖVE version
-        version = '1.3',            -- The project version
+        version = '1.4',            -- The project version
         author = 'Azarias',             -- Your name (string)
         email = 'azarias.boutin@mines-ales.org',              -- Your email (string)
         description = 'Learn to read music sheet the fun way',        -- The project description (string)

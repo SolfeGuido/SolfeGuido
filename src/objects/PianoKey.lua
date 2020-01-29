@@ -4,8 +4,8 @@ local Theme = require('src.utils.Theme')
 ---@class PianoKey : Entity
 local PianoKey = AbstractButton:extend()
 
-function PianoKey:new(area, options)
-    AbstractButton.new(self, area, options)
+function PianoKey:new(container, options)
+    AbstractButton.new(self, container, options)
     self.backgroundColor = options.backgroundColor or Theme.background:clone()
     self._bgColor = self.backgroundColor:clone()
     self.color = options.color or Theme.font:clone()

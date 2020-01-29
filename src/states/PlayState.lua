@@ -13,8 +13,6 @@ local Scene = require('src.State')
 
 -- Entities
 local GameStatistics = require('src.objects.GameStatistics')
-local Note = require('src.objects.Note')
-local CircularQueue = require('src.utils.CircularQueue')
 
 local AnswerGiver = require('src.objects.AnswerGiver')
 
@@ -35,21 +33,13 @@ function PlayState:new()
     self.progressSpeed = Vars.maxProgressSpeed
     self.currentMeasure = 1
     self.nextMeasureGeneration = 1
+    self.barColor = Theme.stripe:clone()
 end
 
 
 function PlayState:init(config)
     self.score = self:insertEntity(config.score)
     self.measures = config.measures
-    self.notes = CircularQueue(function()
-        local note = self:addentity(Note, {
-            measure = self.measures[1],
-            note = 'C4',
-            x = math.huge
-        })
-        note.isDead = true
-        return note
-    end, 25)
 
     for _,v in ipairs(self.measures) do self:insertEntity(v) end
 
@@ -73,8 +63,8 @@ function PlayState:init(config)
         end
     })
 
-    self.answerGiver = self:addentity(AnswerGiver, {callback = function(x) self:answerGiven(x) end })
-    self.stats = self:addentity(GameStatistics)
+    self.answerGiver = self:addEntity(AnswerGiver, {callback = function(x) self:answerGiven(x) end })
+    self.stats = self:addEntity(GameStatistics)
 
     self.finished = false
     self:transition(elements, function()
@@ -92,14 +82,6 @@ function PlayState:switchMeasure()
     self.currentMeasure = 3 - self.currentMeasure
 end
 
-function PlayState:close()
-    self.notes = nil
-    self.measures = nil
-    self.stopWatch = nil
-    self.answerGiver = nil
-    Scene.close(self)
-end
-
 
 function PlayState:finish()
     self.answerGiver:hide()
@@ -107,8 +89,8 @@ function PlayState:finish()
     StatisticsManager.add(self.stats)
     StatisticsManager.save()
     self.finished = true
-    while not self.notes:isEmpty() do
-        self.notes:shift():fadeAway()
+    for _,v in ipairs(self.measures) do
+        v:fadeAwayNotes()
     end
     self.timer:after(Vars.note.fadeAway, function()
         local bestScore = ScoreManager.update(Config.keySelect, Config.difficulty, Config.time, self.score.points)
@@ -119,12 +101,12 @@ end
 function PlayState:draw()
     love.graphics.push()
 
-    if not self.notes:isEmpty() then
-        local note = self.notes:peek()
+    if self.currentNote then
+        local note = self.currentNote
+        self.barColor[4] = note.color[4] * Theme.stripe[4]
         love.graphics.setShader(assets.shaders.noteFade)
-        love.graphics.setColor(Theme.stripe)
+        love.graphics.setColor(self.barColor)
         love.graphics.rectangle('fill', note.x, self:getMeasure().y , note.width, self:getMeasure().height)
-        love.graphics.setShader(assets.shaders.noteFade)
         love.graphics.setShader()
     end
 
@@ -143,31 +125,35 @@ function PlayState:keypressed(key)
 end
 
 function PlayState:focus(focus)
-    if not focus then
+    if self.active and not focus then
         ScreenManager.push('PauseState')
     end
 end
 
 
 function PlayState:answerGiven(idx)
-    if self.notes:isEmpty() then return end
+    if not self.currentNote then return end
     local measure = self:getMeasure()
-    local currentNote = self.notes:peek()
-    -- Playing same not whatever happens, need to find something else to do when wrong
-    assets.sounds.notes[currentNote.note]:play()
-    if measure:isCorrect(currentNote.note, idx) then
+    -- Playing same note whatever happens, need to find something else to do when wrong
+    assets.sounds.notes[self.currentNote.note]:play()
+    local timeLost = 0
+    if measure:isAnswerCorrect(idx) then
         self.stats:correct()
-        self.notes:shift():correct()
+        self.currentNote:correct()
         self.score:gainPoint()
     else
         self.stats:wrong()
-        self.notes:shift():wrong()
+        self.currentNote:wrong()
         Mobile.vibrate(Vars.mobile.vibrationTime)
-        if self.stopWatch then
-            self.stopWatch:looseTime(Vars.timeLoss)
-        end
+        timeLost = Vars.timeLoss
     end
+    measure:removeNextNote()
     self:switchMeasure()
+    self.currentNote = self:getMeasure():currentNote()
+    -- Loose time later, so that the callback (if called), the playstate is in a correct state
+    if timeLost > 0 and self.stopWatch then
+        self.stopWatch:looseTime(timeLost)
+    end
 end
 
 function PlayState:getMove()
@@ -177,7 +163,7 @@ end
 ---Calculate the notes progression
 ---@param dt number
 function PlayState:doProgress(dt)
-    local first = self.notes:peek().x
+    local first = self.currentNote.x
     local normalProg = (dt * self.progressSpeed)
     local dist = first - self:getMeasure().limitLine
     if dist < 1  then
@@ -189,24 +175,23 @@ function PlayState:doProgress(dt)
 end
 
 function PlayState:addNote()
-    local note = self.measures[self.nextMeasureGeneration]:getRandomNote()
-    self:insertEntity(self.notes:push(function(ent)
-        return ent:reset(note, love.graphics.getWidth(), self.measures[self.nextMeasureGeneration])
-    end))
+    local note = self.measures[self.nextMeasureGeneration]:generateRandomNote()
     if #self.measures == 2 then
         self.nextMeasureGeneration = 3 - self.nextMeasureGeneration
     end
+    return note
 end
 
 --- Pops a note if needed
 function PlayState:tryPopNote(_)
     if self.finished then return end
-    if self.notes:isEmpty() then
-        self:addNote()
+    if not self.currentNote then
+        self.currentNote = self:addNote()
+        self.lastNote = self.currentNote
     else
-        local last = self.notes:last()
-        if love.graphics.getWidth() - last.x > last.width * Vars.note.distance then
-            self:addNote()
+        local last = self.lastNote
+        if not last or love.graphics.getWidth() - last.x > last.width * Vars.note.distance then
+            self.lastNote = self:addNote()
         end
     end
 end
@@ -217,8 +202,23 @@ function PlayState:update(dt)
     if not self.active then return end
     Scene.update(self, dt)
     self:tryPopNote(dt)
-    if self.notes:isEmpty() then return end
-    self:doProgress(dt)
+    if self.currentNote then
+        if self.currentNote.isDead then
+            -- happens at the end of a game
+            self.currentNote = nil
+        else
+            self:doProgress(dt)
+        end
+    end
+end
+
+function PlayState:close()
+    self.currentNote = nil
+    self.lastNote = nil
+    self.measures = nil
+    self.stopWatch = nil
+    self.answerGiver = nil
+    Scene.close(self)
 end
 
 return PlayState

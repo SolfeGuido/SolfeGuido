@@ -6,8 +6,8 @@ local lume = require('lib.lume')
 ---@class RadioButton : Entity
 local RadioButton = AbstractButton:extend()
 
-function RadioButton:new(area, options)
-    AbstractButton.new(self, area, options)
+function RadioButton:new(container, options)
+    AbstractButton.new(self, container, options)
     self.isChecked = options.isChecked or false
     self.padding = options.padding or 0
     self.backgroundColor = self.isChecked and Theme.secondary:clone() or Theme.background:clone()

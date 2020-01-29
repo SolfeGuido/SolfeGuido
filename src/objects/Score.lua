@@ -3,8 +3,8 @@ local Entity = require('src.Entity')
 ---@class Score : Entity
 local Score = Entity:extend()
 
-function Score:new(area, options)
-    Entity.new(self, area, options)
+function Score:new(container, options)
+    Entity.new(self, container, options)
 end
 
 function Score:dispose()

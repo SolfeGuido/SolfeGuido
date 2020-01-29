@@ -5,29 +5,28 @@ local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
 
 ---@class Note : Entity
----@field public area PlayState
+---@field public container PlayState
 ---@field public measure Measure
 local Note = Entity:extend()
 
 
-function Note:new(area, options)
-    Note.super.new(self, area)
-    self:reset(options.note, options.x, options.measure)
+function Note:new(container, options)
+    Note.super.new(self, container)
+    self:reset(options.note, options.x)
 end
 
-function Note:reset(note, x, measure)
+function Note:reset(note, x)
     self.isDead =  false
     self.note = note
     self.x = x
-    self.measure = measure
-    self.image = self.measure.noteIcon
+    self.image = self.container.noteIcon
     self.color = Theme.font:clone()
     self.name = nil
-    self.measureIndex = self.measure:indexOf(self.note)
+    self.measureIndex = self.container:indexOf(self.note)
     self.y = self:noteToPosition(self.measureIndex)
     self.width = self.image:getWidth() + (Vars.note.padding * self.image:getWidth() * 2)
     self.rotation = self.measureIndex >= 10 and math.pi or 0
-    self.yOrigin = Vars.note.yOrigin * self.measure.noteHeight
+    self.yOrigin = Vars.note.yOrigin * self.container.noteHeight
     self.xOrigin = Vars.note.xOrigin * self.image:getWidth()
 end
 
@@ -44,12 +43,12 @@ end
 ---@param note number
 ---@return number
 function Note:noteToPosition(note)
-    return self.measure:getNotePosition(note)
+    return self.container:getNotePosition(note)
 end
 
 function Note:correct()
     self.color = Theme.correct:clone()
-    self.area:addentity(Effect, {
+    self.container:addEntity(Effect, {
         image = self.image,
         color = Theme.correct:clone(),
         scale = 1,
@@ -65,12 +64,12 @@ end
 function Note:wrong()
     self.color = Theme.wrong:clone()
     self:fadeAway()
-    local font = love.graphics.newFont(self.measure.noteHeight)
-    self.image = self.measure.wrongNoteIcon
-    self.name = love.graphics.newText(font, self.measure:getNoteName(self.note))
+    local font = love.graphics.newFont(self.container.noteHeight)
+    self.image = self.container.wrongNoteIcon
+    self.name = love.graphics.newText(font, self.container:getNoteName(self.note))
     self.nameColor = Theme.font:clone()
-    self.nameYPos = self.y +  (self.measureIndex % 2 == 0 and 0 or -self.measure.noteHeight / 2)
-    self.nameXIncr = self.measure.noteHeight * 2
+    self.nameYPos = self.y +  (self.measureIndex % 2 == 0 and 0 or -self.container.noteHeight / 2)
+    self.nameXIncr = self.container.noteHeight * 2
 end
 
 function Note:fadeAway()
@@ -114,7 +113,7 @@ end
 ---@param dt number
 function Note:update(dt)
     Entity.update(self, dt)
-    self.x = self.x - self.area:getMove()
+    self.x = self.x - self.container:getMove()
     if self.x < 0 then
         self.isDead = true
     end

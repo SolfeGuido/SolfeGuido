@@ -43,7 +43,12 @@ local function fixStatistics(games)
     if not DateUtils.sameDay(firstDay, today) then
         currentStreak = 1
     end
-    avgReac = avgReac / tCorrect
+
+    if tCorrect > 0 then
+        avgReac = avgReac / tCorrect
+    else
+        avgReac = 0
+    end
     while #games > Vars.statistics.maxGames do
         table.remove(games, 1)
     end
@@ -107,9 +112,11 @@ function StatisticsManager.add(stats)
     globalStats.totalTimePlayed = globalStats.totalTimePlayed + obj.timePlayed
     globalStats.totalCorrectNotes = tCorrect + obj.correctNotes
     globalStats.totalWrongNotes = globalStats.totalWrongNotes + obj.wrongNotes
-    globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) +
-                                (obj.avgReacTime * obj.correctNotes) ) /
-                                (tCorrect + obj.correctNotes)
+    if obj.correctNotes > 0 then
+        globalStats.avgReacTime = ((globalStats.avgReacTime * tCorrect) +
+        (obj.avgReacTime * obj.correctNotes) ) /
+        (tCorrect + obj.correctNotes)
+    end
     globalStats.totalGames = globalStats.totalGames + 1
     if #gameList > Vars.statistics.maxGames then
         table.remove(gameList, 1)

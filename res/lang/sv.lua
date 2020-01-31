@@ -41,7 +41,6 @@ return {
     new2 = 'Lagt till versionnummer',
     new3 = 'Konfiguration vid första användningen',
     nice = 'Jätterbra !',
-        --- All the configuration
     --- All the configuration
     language = 'Språk',
     note_style = 'Notation type',

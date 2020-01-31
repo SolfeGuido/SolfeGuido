@@ -62,4 +62,5 @@ return {
     theme_subtitle = 'Style d\'interface Graphique',
     light_theme = 'Clair',
     dark_theme = 'Sombre',
+    contributors = 'Contributeurs'
 }

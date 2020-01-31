@@ -62,4 +62,5 @@ return {
     theme_subtitle = 'Overall feeling of the app',
     light_theme = 'Light',
     dark_theme = 'Dark',
+    contributors = 'Contributors'
 }

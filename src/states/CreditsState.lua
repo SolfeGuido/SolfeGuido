@@ -80,7 +80,7 @@ function CreditsState:init()
                 from = 'right',
                 to = Vars.limitLine + 5,
                 y =  Vars.baseLine + Vars.lineHeight * 2,
-                text = 'Azarias'
+                text = 'Azarias & ' .. tr('contributors')
             })
             :add('Title', {
                 from = 'right',

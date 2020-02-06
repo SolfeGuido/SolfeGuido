@@ -4,6 +4,9 @@ local Entity = require('src.Entity')
 ---@class AbstractButton : Entity
 local AbstractButton = Entity:extend()
 
+AbstractButton.defaultCursor = love.mouse.getSystemCursor('arrow')
+AbstractButton.hoveredCursor = love.mouse.getSystemCursor('hand')
+
 function AbstractButton:new(container, options)
     Entity.new(self, container, options)
     self.state = "neutral"
@@ -73,14 +76,23 @@ function AbstractButton:touchreleased(id, x, y)
 end
 
 function AbstractButton:mousemoved(x, y)
-    if love.mouse.isDown(1) then return end
-    if self:contains(x, y) and self.state == "neutral" then
-        self.state = "hovered"
-        self:hovered()
-    elseif self.state == "hovered" and not self:contains(x, y) then
+    if love.mouse.isDown(1) then
+        return false
+    end
+    local isInButton = self:contains(x, y)
+    if isInButton then
+        love.mouse.setCursor(AbstractButton.hoveredCursor)
+        if self.state == "neutral" then
+            self.state = "hovered"
+            self:hovered()
+        end
+        return true
+    elseif self.state == "hovered" and not isInButton then
         self.state = "neutral"
+        love.mouse.setCursor(AbstractButton.defaultCursor)
         self:leave()
     end
+    return false
 end
 
 function AbstractButton:mousepressed(x, y, button)

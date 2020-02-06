@@ -37,6 +37,10 @@ function Drawer:applyChanges(btn)
     return true
 end
 
+function Drawer:mousemoved(x ,y)
+    return EntityContainer.mousemoved(self, x - self.x, y - self.y)
+end
+
 function Drawer:mousepressed(x, y, button)
     if self.isShown and not self:contains(x, y) and button == 1 then
         self.touchId = button

@@ -10,11 +10,14 @@ local Config = {}
 local _configData = {}
 local _needsUserHelp = false
 
+---@return The computer's locale
+--- doesn't work really well on mobile though :/
 local function getSimpleLocale()
     local l = os.setlocale()
     return l:sub(1, 2):lower()
 end
 
+--- Renaming things because that's how they're called
 local function fixConfig()
     -- 1.3 keySelect renaming
     if _configData.keySelect == 'fKey' then
@@ -24,6 +27,9 @@ local function fixConfig()
     end
 end
 
+--- Reads the user's config file
+--- Updates the save file if needed
+--- And keep in memory the configuration
 function Config.parse()
     _needsUserHelp = love.filesystem.getInfo(Vars.configSave) == nil
     local conf = Logger.try('Init config', function()
@@ -50,6 +56,8 @@ function Config.parse()
     Config.updateSound()
 end
 
+--- When the sound config is changed, changes the
+--- games sound
 function Config.updateSound()
     if _G['SOUNDTAG'] then
         SOUNDTAG.volume = _configData.sound == 'off' and 0.0 or 1.0
@@ -73,6 +81,7 @@ function Config.needsUserHelp()
     return _needsUserHelp
 end
 
+--- Saves the configuration into the config file
 function Config.save()
     Logger.try('Saving config', function() FileUtils.writeData(Vars.configSave, _configData) end)
 end

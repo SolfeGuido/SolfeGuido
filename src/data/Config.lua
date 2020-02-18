@@ -5,12 +5,19 @@ local Logger = require('lib.logger')
 local FileUtils = require('src.utils.FilesUtils')
 local Theme = require('src.utils.Theme')
 
+---@class Config
+--- Singleton class, used to save all the user preferences
+--- the theme, language, sound, ..., whenever the user
+--- updates one of the preferences, some internal functions can
+--- be called to update the necessary stuff (mute the sound for example)
+--- The config is store as a plain text, since it's not something at risk
+--- if the user changes directly changes it
 local Config = {}
 
 local _configData = {}
 local _needsUserHelp = false
 
----@return The computer's locale
+---@return string The computer's locale
 --- doesn't work really well on mobile though :/
 local function getSimpleLocale()
     local l = os.setlocale()

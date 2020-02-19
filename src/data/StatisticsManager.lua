@@ -3,6 +3,8 @@ local Logger = require('lib.logger')
 local DateUtils = require('src.utils.DateUtils')
 local FileUtils = require('src.utils.FilesUtils')
 
+---@class StatsitcsManager
+---@field news string[] the news of the current version
 local StatisticsManager = {
     news = {'new1', 'new2', 'new3'}
 }
@@ -10,6 +12,11 @@ local StatisticsManager = {
 local gameList = nil
 local globalStats = nil
 
+--- When changing from version 1.3 to version 1.2,
+--- some internal stats were changed, this function is here
+--- to help with that
+---@param games table the old statistics
+---@return table the fixed statistics
 local function fixStatistics(games)
     local today = DateUtils.now()
     table.sort(games, function(a,b) return os.difftime(os.time(a.date), os.time(b.date)) < 0 end)
@@ -66,6 +73,9 @@ local function fixStatistics(games)
     }
 end
 
+--- Reads the saved statistics, and keep them in memory
+--- if the version changed since the last launch, it will
+--- fix the old save
 function StatisticsManager.init()
     local default = {
         globals = {
@@ -91,6 +101,9 @@ function StatisticsManager.init()
     globalStats = data.globals
 end
 
+--- Adds the given gameStatistics to the list
+--- of all statistics, and updates the global
+--- statistics
 ---@param stats GameStatistics
 function StatisticsManager.add(stats)
     local obj = stats:finalize()
@@ -123,6 +136,10 @@ function StatisticsManager.add(stats)
     end
 end
 
+--- Saves the current stats, the global and
+--- every game's statistics
+--- also saves the app version to fix the data
+--- when updating to a new version
 function StatisticsManager.save()
     local data = {
         games = gameList,
@@ -135,11 +152,14 @@ function StatisticsManager.save()
 end
 
 
-
+--- Accessor to the list of all games
+---@return table
 function StatisticsManager.getAll()
     return gameList
 end
 
+--- Accessor to the global statistics
+---@return table
 function StatisticsManager.getGlobals()
     return globalStats
 end

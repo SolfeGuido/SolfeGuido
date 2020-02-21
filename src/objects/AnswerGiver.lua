@@ -6,20 +6,36 @@ local Theme = require('src.utils.Theme')
 
 local MobileButton = require('src.objects.MobileButton')
 
----@class AnswerGiver : Entity
+---@class AnswerGiver : EntityContainer
+--- class used by the game, to create the correct buttons
+--- depending on the user's configuration
+--- can create piano keys (with or without notes name)
+--- or simple buttons with the note name on it
+--- And depending on the user's configuration, note name
+--- can be 'a,b,c' or 'do,ré,mi', ...
+--- The answer giver only needs a callback function
+--- to call whenever one button is pressed,
+--- indicating that an answer has been given
 local AnswerGiver = EntityContainer:extend()
 
+---constructor
 function AnswerGiver:new(container, options)
     EntityContainer.new(self, container, options)
     self:addFunction(Config.answerType)
 end
 
+--- Hides all the buttons contained by
+--- this answergiver
 function AnswerGiver:hide()
     for _, button in ipairs(self._entities) do
         self.timer:tween(Vars.transition.tween, button, {y = love.graphics.getHeight() + 20}, 'out-expo')
     end
 end
 
+--- Adds the right buttons
+--- based on the given configuration
+--- can be one of "piano", "pianoWithNotes" or "buttons"
+---@param config string
 function AnswerGiver:addFunction(config)
     if config == "piano" then
         self:addPianoKeys(false)
@@ -30,6 +46,10 @@ function AnswerGiver:addFunction(config)
     end
 end
 
+
+--- Creates the piano keys, also add the black keys, but these
+--- are not used for now
+---@param showNote boolean if the piano should have note name on it
 function AnswerGiver:addPianoKeys(showNote)
     local totalWidth = love.graphics.getWidth()
     local whiteKeyWidth = totalWidth / 7
@@ -68,6 +88,7 @@ function AnswerGiver:addPianoKeys(showNote)
     end
 end
 
+--- Adds the simple buttons
 function AnswerGiver:addButtons()
     local size = Vars.mobileButton.fontSize
     local font = assets.fonts.Oswald(size)

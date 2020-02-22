@@ -82,7 +82,6 @@ end
 
 function Note:draw()
     --Color for the (optional) bars
-    love.graphics.setShader(assets.shaders.noteFade)
     love.graphics.setColor(Theme.font:alpha(self.color.a))
     love.graphics.setLineWidth(1)
     local actualWidth = self.image:getWidth()
@@ -107,7 +106,6 @@ function Note:draw()
         love.graphics.setColor(self.nameColor)
         love.graphics.draw(self.name, self.x + self.nameXIncr, self.nameYPos)
     end
-    love.graphics.setShader()
 end
 
 ---@param dt number

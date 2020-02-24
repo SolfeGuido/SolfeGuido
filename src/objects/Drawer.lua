@@ -4,7 +4,12 @@ local Theme = require('src.utils.Theme')
 local UIFactory = require('src.utils.UIFactory')
 local RadioButtonGroup = require('src.objects.RadioButtonGroup')
 
----@class Drawer : Entity
+---@class Drawer : EntityContainer
+--- Container used for the options sidebar, can be hidden
+--- or shown, contains a set or radio buttons from which to choose
+--- and a 'confirm', and a 'cancel' button
+--- when clicking outside the drawer when it's open, it will
+--- save the current choice, and close the drawer
 local Drawer = EntityContainer:extend()
 
 function Drawer:new(container, options)
@@ -15,11 +20,19 @@ function Drawer:new(container, options)
     self.touchId = nil
 end
 
+
+---@param x number
+---@param y number
+---@return boolean wether the given coordinates are contained in the drawer
 function Drawer:contains(x, y)
     return self.x <= x and (self.x + self.width) >= x and
             self.y <= y and (self.y + self.height) >= y
 end
 
+--- when pressing the escape key
+--- the changes are saved and the drawer is closed
+---@param key string
+---@return boolean
 function Drawer:keypressed(key)
     if self.isShown and key == "escape" then
         return self:applyChanges()
@@ -27,6 +40,10 @@ function Drawer:keypressed(key)
     return EntityContainer.keypressed(self, key)
 end
 
+--- Saves the choice made by the user
+--- and hides the drawer
+---@param btn AbstractButton
+---@return boolean
 function Drawer:applyChanges(btn)
     if btn then btn.consumed = false end
     self.touchId = nil
@@ -37,10 +54,22 @@ function Drawer:applyChanges(btn)
     return true
 end
 
+--- Inherited function, calls the method of the container
+--- relative to the position of the drawer
+---@param x number
+---@param y number
+---@return boolean
 function Drawer:mousemoved(x ,y)
     return EntityContainer.mousemoved(self, x - self.x, y - self.y)
 end
 
+--- Inherited functio, only interesed when the left button is clicked
+--- calls the method of the container, relative to the position of
+--- the drawer
+---@param x number
+---@param y number
+---@param button number
+---@return boolean
 function Drawer:mousepressed(x, y, button)
     if self.isShown and not self:contains(x, y) and button == 1 then
         self.touchId = button
@@ -49,6 +78,14 @@ function Drawer:mousepressed(x, y, button)
     return EntityContainer.mousepressed(self, x - self.x, y - self.y, button)
 end
 
+--- Checks for when the user clisk outside the drawer
+--- if it's the case,just apply the changes
+--- otherwise, calls the method of the container, relative
+--- to the position of the drawer
+---@param x number
+---@param y number
+---@param button number
+---@return boolean
 function Drawer:mousereleased(x, y, button)
     if self.isShown and not self:contains(x, y) and button == 1 and self.touchId then
         return self:applyChanges()
@@ -56,6 +93,14 @@ function Drawer:mousereleased(x, y, button)
     return EntityContainer.mousereleased(self, x - self.x, y - self.y, button)
 end
 
+--- First step when pressing the screen, saves the id of the
+--- finger that pressed the screen
+--- and calls the method of the container relative to the
+--- position of the drawer
+---@param id number
+---@param x number
+---@param y number
+---@return boolean
 function Drawer:touchpressed(id, x, y)
     if self.isShown and not self.touchId and not self:contains(x, y) then
         self.touchId = id
@@ -64,6 +109,13 @@ function Drawer:touchpressed(id, x, y)
     return EntityContainer.touchpressed(self, id, x - self.x, y - self.y)
 end
 
+--- Inherited function, if the touch is outside the screen
+--- apply the changes, otherwise, calls the method of the container
+-- relative to the position of the drawer
+---@param id number
+---@param x number
+---@param y number
+---@return boolean
 function Drawer:touchreleased(id, x, y)
     if self.isShown and self.touchId == id and not self:contains(x, y) then
         return self:applyChanges()
@@ -71,6 +123,9 @@ function Drawer:touchreleased(id, x, y)
     return EntityContainer.touchreleased(self, id, x - self.x, y - self.y)
 end
 
+--- Initiliazes the buttons of the drawer
+--- and hides it
+---@param options table
 function Drawer:init(options)
     self.callback = options.callback or function() end
     self.padding = (self.height - Vars.titleSize) / 2
@@ -122,6 +177,10 @@ function Drawer:init(options)
     }):width() + self.padding
 end
 
+--- Triggers an animation to hide or show
+--- the drawer, the calls the given callback
+---@param nwX number
+---@param callback function?
 function Drawer:changeXPosition(nwX, callback)
     if self.animation then
         self.timer:cancel(self.animation)
@@ -132,17 +191,20 @@ function Drawer:changeXPosition(nwX, callback)
     end)
 end
 
+--- Triggers the animation to show the drawer
 function Drawer:show()
     self.isShown = true
     self:changeXPosition(love.graphics.getWidth() - self.width)
 end
 
+--- Triggers the animation to hide the drawer
 function Drawer:hide()
     self:changeXPosition(love.graphics.getWidth() + 5, function()
         self.isShown = false
     end)
 end
 
+--- Inherited function
 function Drawer:draw()
     if not self.isShown then return end
     love.graphics.push()

@@ -3,11 +3,16 @@ local Config = require('src.data.Config')
 local Entity = require('src.Entity')
 local DateUtils = require('src.utils.DateUtils')
 
+--- Object used to store the statistics of a
+--- game, must be updated while running the game
+--- to keep track of the time-based stats
 ---@class GameStatistics : Entity
 ---@field timePlayed number
 ---@field correctNotes number
 ---@field wrongNotes number
 ---@field avgReacTime number
+---@field currentReacTime number
+---@field started boolean
 local GameStatistics = Entity:extend()
 
 function GameStatistics:new(container, options)
@@ -20,26 +25,33 @@ function GameStatistics:new(container, options)
     self.started = false
 end
 
+--- Start to keep track of the stats
 function GameStatistics:start()
     self.started = true
     self.currentReacTime = 0
 end
 
+--- Stops to keep track of the stats every update
 function GameStatistics:stop()
     self.started = false
 end
 
+--- When the answer given by the user was wrong
 function GameStatistics:wrong()
     self.currentReacTime = 0
     self.wrongNotes = self.wrongNotes + 1
 end
 
+--- When the answer given by the user was correct
 function GameStatistics:correct()
     self.avgReacTime = ((self.avgReacTime * self.correctNotes) + self.currentReacTime) / (self.correctNotes + 1)
     self.correctNotes = self.correctNotes + 1
     self.currentReacTime = 0
 end
 
+--- Updates the time based stats 
+--- (average reaction time and time played)
+---@param dt number
 function GameStatistics:update(dt)
     if not self.started then return end
     self.currentReacTime = self.currentReacTime + dt
@@ -47,6 +59,10 @@ function GameStatistics:update(dt)
 end
 
 
+--- Called by the statistics manager to
+--- create a savable object, with the date
+--- and the game configuration
+---@return table
 function GameStatistics:finalize()
     local date = DateUtils.now()
     return {

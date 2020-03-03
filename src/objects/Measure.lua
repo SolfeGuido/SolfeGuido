@@ -5,7 +5,17 @@ local Note = require('src.objects.Note')
 local CircularQueue = require('src.utils.CircularQueue')
 local lume = require('lib.lume')
 
----@class Measure : Entity
+--- One of the core entity of the game, represents a simple measure, can show several
+--- notes and a single key at the begining of it, is also contains an image for when
+--- the note is wrong (and for the note in itself) to share amongst the notes
+---@class Measure : EntityContainer
+---@field limitLine number
+---@field noteIcon Image
+---@field lowestNote string
+---@field wrongNoteIcon Image
+---@field notes CircularQueue
+---@field baseLine number
+---@field noteHeight number
 local Measure = EntityContainer:extend()
 
 function Measure:new(container, options)
@@ -34,10 +44,15 @@ function Measure:new(container, options)
     end, 20)
 end
 
+--- Removes the first note of the
+--- list
+---@return Note
 function Measure:removeNextNote()
     return self.notes:shift()
 end
 
+--- Checks if the given answer is the same
+--- as the note currently selected by the measure
 ---@param answer string
 ---@return boolean
 function Measure:isAnswerCorrect(answer)
@@ -46,12 +61,17 @@ function Measure:isAnswerCorrect(answer)
     return currentNote.note:sub(1, 1) == answer:sub(1, 1)
 end
 
+--- Fade all the notes
+--- to use when the game is finished
 function Measure:fadeAwayNotes()
     while not self.notes:isEmpty() do
         self.notes:shift():fadeAway()
     end
 end
 
+--- Creates a random note object, and adds 
+--- it at the end of the notes list
+---@return Note
 function Measure:generateRandomNote()
     return self:insertEntity(self.notes:push(function(ent)
         ent.container = self
@@ -59,26 +79,38 @@ function Measure:generateRandomNote()
     end))
 end
 
+--- Generates a random note from the possible choices
+---@return string
 function Measure:getRandomNote()
     --self.noteChoice = (self.noteChoice % #self.keyData.difficulties[Config.difficulty]) + 1
     --return self.keyData.difficulties[Config.difficulty][self.noteChoice]
     return lume.randomchoice(self.keyData.difficulties[Config.difficulty])
 end
 
+--- Access to the next note to choose from
+---@return Note
 function Measure:currentNote()
     return self.notes:peek()
 end
 
+--- Get the distance the notes must move from right
+--- to left after an update
+---@return number
 function Measure:getMove()
     return self.container:getMove()
 end
 
+--- Gets the index of the note relative to the
+--- measures lowest note
+---@param note string
+---@return number
 function Measure:indexOf(note)
     local index = lume.find(assets.NoteName, note)
     if index < self.lowestNote then return 0 end
     return index - self.lowestNote
 end
 
+--- Inherited method
 function Measure:draw()
     love.graphics.setColor(self.color)
 
@@ -102,6 +134,8 @@ function Measure:draw()
     love.graphics.setShader()
 end
 
+--- Get full note name, to show when
+--- the note is incorrect
 ---@param noteName string
 ---@return string
 function Measure:getNoteName(noteName)
@@ -112,6 +146,8 @@ function Measure:getNoteName(noteName)
     return Vars[Config.noteStyle][idx]
 end
 
+--- Gets the positions of the note relative to this
+--- measure, in order for it to draw to the correct position
 ---@param measureIndex number
 ---@return number y position
 function Measure:getNotePosition(measureIndex)
@@ -119,10 +155,7 @@ function Measure:getNotePosition(measureIndex)
     return base - (measureIndex) * (self.noteHeight / 2)
 end
 
-function Measure:getRequiredNotes()
-    return self.keyData.difficulties[Config.difficulty]
-end
-
+--- Inherited method
 function Measure:dispose()
     self.notes = nil
     EntityContainer.dispose(self)

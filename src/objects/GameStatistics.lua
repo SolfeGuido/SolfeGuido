@@ -49,7 +49,7 @@ function GameStatistics:correct()
     self.currentReacTime = 0
 end
 
---- Updates the time based stats 
+--- Updates the time based stats
 --- (average reaction time and time played)
 ---@param dt number
 function GameStatistics:update(dt)

@@ -69,7 +69,7 @@ function Measure:fadeAwayNotes()
     end
 end
 
---- Creates a random note object, and adds 
+--- Creates a random note object, and adds
 --- it at the end of the notes list
 ---@return Note
 function Measure:generateRandomNote()

@@ -4,17 +4,36 @@ local Effect = require('src.objects.CorrectNoteEffect')
 local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
 
+--- Another core entity of the game, is used to repressent
+--- a single note, it takes care of drawing itself in the
+--- right orientation, and draws the extra lines if needed
+--- When wrong, it draws it's name next to it, when
+--- right, it spawns a particle to show it was right
+--- must be contained inside a Measure to have access
+--- to the right function, and be drawn correctly
 ---@class Note : Entity
 ---@field public container PlayState
 ---@field public measure Measure
+---@field public rotation number
+---@field public xOrigin number
+---@field public yOrigin number
 local Note = Entity:extend()
 
-
+--- Constructor
+---@param container EntityContainer
+---@param options table
 function Note:new(container, options)
     Note.super.new(self, container)
     self:reset(options.note, options.x)
 end
 
+--- Resets the note name, x position
+--- and puts it at the end of the current
+--- measure, this function is used by the circular
+--- queue, in order to avoid garbage collection,
+--- by using an object pool
+---@param note string
+---@param x number
 function Note:reset(note, x)
     self.isDead =  false
     self.note = note
@@ -30,6 +49,7 @@ function Note:reset(note, x)
     self.xOrigin = Vars.note.xOrigin * self.image:getWidth()
 end
 
+--- Inherited method
 function Note:dispose()
     self.image = nil
     if self.name then
@@ -40,12 +60,18 @@ function Note:dispose()
     Note.super.dispose(self)
 end
 
+--- Quick acesss to the container
+--- method
 ---@param note number
 ---@return number
 function Note:noteToPosition(note)
     return self.container:getNotePosition(note)
 end
 
+--- Called whenever the answer given by the user
+--- is the correct one, fades the note away
+--- and spawns a Effect particle (could be optimized
+--- with an object pool)
 function Note:correct()
     self.color = Theme.correct:clone()
     self.container:addEntity(Effect, {
@@ -61,6 +87,11 @@ function Note:correct()
     self:fadeAway()
 end
 
+--- Called whenever the user's answer
+--- is wrong, shows the actual note name,
+--- changes the note icon to a ghost note,
+--- changes the color to red
+--- and starts fading away
 function Note:wrong()
     self.color = Theme.wrong:clone()
     self:fadeAway()
@@ -72,14 +103,19 @@ function Note:wrong()
     self.nameXIncr = self.container.noteHeight * 2
 end
 
+--- Changes opcatiy to 0
+--- over time
 function Note:fadeAway()
     self:fadeTo(self.color:alpha(0))
 end
 
+---- Tweening to change the color
+--- over time
 function Note:fadeTo(color)
     self.timer:tween(Vars.note.fadeAway, self, {color = color}, 'linear', function() self.isDead = true end)
 end
 
+--- Inherited method
 function Note:draw()
     --Color for the (optional) bars
     love.graphics.setColor(Theme.font:alpha(self.color.a))
@@ -108,6 +144,9 @@ function Note:draw()
     end
 end
 
+--- Inherited method, moves the
+--- note to the left by the amount
+--- given by its container
 ---@param dt number
 function Note:update(dt)
     Entity.update(self, dt)

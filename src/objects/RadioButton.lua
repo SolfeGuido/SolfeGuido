@@ -3,9 +3,19 @@ local AbstractButton = require('src.objects.AbstractButton')
 local Theme = require('src.utils.Theme')
 local lume = require('lib.lume')
 
+
+--- Used with a radiobuttongroup, can be checked and
+--- unchecked
 ---@class RadioButton : Entity
+---@field private padding number
+---@field private backgroundColor Color
+---@field private _width number
+---@field private height number
 local RadioButton = AbstractButton:extend()
 
+--- Constructor
+---@param container EntityContainer
+---@param options table
 function RadioButton:new(container, options)
     AbstractButton.new(self, container, options)
     self.isChecked = options.isChecked or false
@@ -26,20 +36,26 @@ function RadioButton:new(container, options)
     self.height = (self.image:getHeight() * (self.scale or 1)) + (self.padding * 2)
 end
 
+--- Width accessor
+---@return number
 function RadioButton:width()
     return self._width
 end
 
+--- Uncheck the radio button and triggers the animation
 function RadioButton:uncheck()
     if not self.isChecked then return end
     self:toggle()
 end
 
+--- Checks the radio button, and triggers the animation
 function RadioButton:check()
     if self.isChecked then return end
     self:toggle()
 end
 
+--- Changes the check state, and begins
+--- an animation to change the background color
 function RadioButton:toggle()
     self:animate(
         Vars.transition.tween,
@@ -50,20 +66,22 @@ function RadioButton:toggle()
     self.isChecked = not self.isChecked
 end
 
+--- Wether the button contains the given point
+---@return boolean
+---@param x number
+---@param y number
 function RadioButton:contains(x, y)
     return self.x <= x and (self.x + self._width) >= x and
             self.y <= y and (self.y + self.height) >= y
 end
 
-function RadioButton:__tostring()
-    return "RadioButton(" .. tostring(self.value) .. ")"
-end
-
+--- Click callback
 function RadioButton:onclick()
     assets.sounds.click:play()
     if self.callback then self.callback(self) end
 end
 
+--- Inherited method
 function RadioButton:draw()
     love.graphics.setColor(self.backgroundColor:alpha(self.color.a))
     love.graphics.rectangle('fill', self.x, self.y, self._width, self.height)

@@ -1,5 +1,10 @@
+--- All particles related functions
 local ParticleSystem = {}
 
+
+--- Create a particle system for the endgame effect
+--- of the notes bursting everywhere
+---@param originalColor Color
 function ParticleSystem.noteBurstParticles(originalColor)
     local canvas = love.graphics.newCanvas(30, 50)
     canvas:renderTo(function()

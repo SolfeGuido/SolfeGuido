@@ -1,8 +1,13 @@
 
 local Theme = require('src.utils.Theme')
 
+--- All the graphics related functions
 local Graphics = {}
 
+--- Draws the default music bars
+--- used by the menus, must not be used by the measures
+--- as the height and position of the music bars is hard coded
+--- which is not suitable for the measures
 function Graphics.drawMusicBars()
 
     local middle = Vars.baseLine

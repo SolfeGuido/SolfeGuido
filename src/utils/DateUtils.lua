@@ -1,4 +1,3 @@
--- Could be move in the libs folder
 local DateUtils = {}
 
 local oneDayDuration = 24 * 60 * 60

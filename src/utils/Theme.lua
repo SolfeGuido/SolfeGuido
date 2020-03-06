@@ -41,13 +41,20 @@ local ThemeColors = {
 
 local currentTheme = nil
 
+
+--- White is white
 Theme.white = Color(1, 1, 1, 1)
 
+--- Theme to use
+---@param theme string
 function Theme.init(theme)
     Theme.updateTheme(theme or 'light')
 end
 
-
+--- Updates the theme, and thus all the colors
+--- of the theme, the theme name must exist
+--- in order to be changed, otherwise, nothing will happen
+---@param nwTheme string
 function Theme.updateTheme(nwTheme)
     if nwTheme == currentTheme or not ThemeColors[nwTheme] then return end
     for k,v in pairs(ThemeColors[nwTheme]) do
@@ -56,6 +63,7 @@ function Theme.updateTheme(nwTheme)
     currentTheme = nwTheme
 end
 
+--- Default theme
 Theme.updateTheme('light')
 
 return Theme

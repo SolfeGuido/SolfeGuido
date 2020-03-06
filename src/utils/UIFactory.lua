@@ -11,8 +11,15 @@ local TextButton    = require('src.objects.TextButton')
 local Title         = require('src.objects.Title')
 local Image         = require('src.objects.Image')
 
+--- Used to easily create widgets,
+--- and initiliaze their members with the right values
+--- or with default values
 local UIFactory = {}
 
+--- Creates a callback to change
+--- of current state, and adds it to the
+--- given table
+---@param config table
 local function createCallback(config)
     if config.statePush and not config.callback then
         config.callback = function(btn)
@@ -22,6 +29,13 @@ local function createCallback(config)
     end
 end
 
+--- When an element is created, it can have a name
+--- this name is how the state can have access to
+--- the created element, this function adds the given
+--- element as an attribute to its state
+---@param config table
+---@param element Entity
+---@return Entity
 local function addToState(config, element)
     local name = config.name
     if not name then return element end
@@ -35,6 +49,10 @@ local function addToState(config, element)
     return element
 end
 
+--- Creates an icon button with the given options
+---@param container EntityContainer
+---@param config table
+---@return IconButton
 function UIFactory.createIconButton(container, config)
     createCallback(config)
     local size = config.size or Vars.titleSize
@@ -54,6 +72,10 @@ function UIFactory.createIconButton(container, config)
     }))
 end
 
+--- Creates a TextButton with the given configuration
+---@param container EntityContainer
+---@param config table
+---@return TextButton
 function UIFactory.createTextButton(container, config)
     createCallback(config)
     if not config.font then
@@ -83,6 +105,10 @@ function UIFactory.createTextButton(container, config)
     }))
 end
 
+--- Creates an image with the given configuration
+---@param container EntityContainer
+---@param config table
+---@return Image
 function UIFactory.createImage(container, config)
     return addToState(config, container:addEntity(Image, {
         image = config.image,
@@ -93,6 +119,10 @@ function UIFactory.createImage(container, config)
     }))
 end
 
+--- Creates a title with the given configuration
+---@param container EntityContainer
+---@param config table
+---@return Title
 function UIFactory.createTitle(container, config)
     if type(config.text) == "string" then
         if not config.fontSize and not config.font then
@@ -117,6 +147,10 @@ function UIFactory.createTitle(container, config)
     }))
 end
 
+--- Creates a radioButton with the given configuration
+---@param container RadioButtonGroup
+---@param config table
+---@return RadioButton
 function UIFactory.createRadioButton(container, config)
     if not container:is(RadioButtonGroup) then
         error('Can only add radio button to radio button groups')

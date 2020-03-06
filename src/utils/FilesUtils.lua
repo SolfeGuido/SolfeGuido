@@ -1,5 +1,6 @@
 local json = require('lib.json')
 
+--- All the files related functions
 local FilesUtils = {}
 
 ---@param fileName string

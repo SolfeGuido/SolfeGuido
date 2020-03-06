@@ -4,7 +4,12 @@ local lineHeight = 30
 
 local titleSize = 40
 
-
+--[[
+All the varialbes of the project,
+the position of the different keys,
+the level data, the not translations,
+the user preferences, ...
+]]--
 return {
     appName = 'SolfeGuido',
     appVersion = '1.4',

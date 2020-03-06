@@ -4,6 +4,9 @@ local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
 local Config = require('src.data.Config')
 
+--- Entity used when playing a game against the clock
+--- is show on top of the screen, showing how much time
+--- is left before the end of the game
 ---@class StopWatch : Entity
 ---@field private color Color
 ---@field private currentTime number
@@ -17,7 +20,9 @@ local equivalences = {
     ['5mn'] = 300
 }
 
-
+--- Constructor
+---@param container EntityContainer
+---@param config table
 function StopWatch:new(container, config)
     Entity.new(self, container, config)
     self.color = Theme.secondary:clone()
@@ -27,10 +32,15 @@ function StopWatch:new(container, config)
     self.tween = nil
 end
 
+--- Enable the stopwatch,
+--- will now diminish it's time every update call
 function StopWatch:start()
     self.started = true
 end
 
+--- Diminish  the remaining time when activated
+--- Also calls the finished callback when the timer
+--- reaches 0
 ---@param dt number
 function StopWatch:update(dt)
     if not self.started then return end
@@ -44,6 +54,10 @@ function StopWatch:update(dt)
     end
 end
 
+--- When the user gives a wrong answer,
+--- triggers an animation, and diminshes
+--- the time by the given dt
+---@param dt number
 function StopWatch:looseTime(dt)
     local time = 1
     if self.tween then self.timer:cancel(self.tween) end
@@ -53,6 +67,8 @@ function StopWatch:looseTime(dt)
     self:update(dt)
 end
 
+
+--- Inherited method
 function StopWatch:draw()
     love.graphics.setLineWidth(3)
 

@@ -3,23 +3,29 @@ local Entity = require('src.Entity')
 local Theme = require('src.utils.Theme')
 local lume = require('lib.lume')
 
+--- Simple title, that contains a text
+--- and can have border
+---@class Title: Entity
+---@field private framed boolean
+---@field private centered boolean
 local Title = Entity:extend()
 
-
+--- Constructor
+---@param container EntityContainer
+---@param options table
 function Title:new(container, options)
     Entity.new(self, container, options)
     if options.centered then self:center() end
 end
 
+--- Inherited method
 function Title:dispose()
     self.text:release()
     Title.super.dispose(self)
 end
 
-function Title:setText(text)
-    self.text:set(text)
-end
-
+--- Changes the text, and centers the title
+---@param text string
 function Title:setCenteredText(text)
     local oldWidth = self.text:getWidth()
     self.text:set(text)
@@ -27,10 +33,12 @@ function Title:setCenteredText(text)
     self.x = self.x + (oldWidth - nwWidth) / 2
 end
 
+--- Centers the title in the middle of the screen
 function Title:center()
     self.x = love.graphics.getWidth() / 2 - self.text:getWidth()  / 2
 end
 
+--- Inherited method
 function Title:draw()
     if self.framed then
         love.graphics.setColor(Theme.background)
@@ -42,10 +50,14 @@ function Title:draw()
     love.graphics.draw(self.text, lume.round(self.x), lume.round(self.y))
 end
 
+--- Width accessor
+---@return number
 function Title:width()
     return self.text:getWidth()
 end
 
+--- Height accessor
+---@return number
 function Title:height()
     return self.text:getHeight()
 end

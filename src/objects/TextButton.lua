@@ -5,7 +5,14 @@ local lume = require('lib.lume')
 -- Entities
 local AbstractButton = require('src.objects.AbstractButton')
 
+--- A simple button, with text inside
+--- can also have an icon before the text
 ---@class TextButton : AbstractButton
+---@field private padding number
+---@field private width number
+---@field private height number
+---@field private xOrigin number
+---@field private yOrigin number
 local TextButton = AbstractButton:extend()
 
 function TextButton:new(container, config)
@@ -28,29 +35,33 @@ function TextButton:new(container, config)
     self.yOrigin = (config.yOrigin or 0) * self.height
 end
 
+--- Checks if the given point is inside the button
+---@return boolean
+---@param x number
+---@param y number
 function TextButton:contains(x,y)
     return x >= (self.x - self.xOrigin) and x <= (self.x - self.xOrigin + self.width) and
             y >= (self.y - self.yOrigin) and y <= (self.y - self.yOrigin + self.height)
 end
 
-function TextButton:dispose()
-    TextButton.super.dispose(self)
-end
-
+--- Animates the button when presed
 function TextButton:pressed()
     self:animate(Vars.transition.tween, self, {color = Theme.clicked}, 'out-expo')
 end
 
+--- Animates the button when released
 function TextButton:released()
     self:animate(Vars.transition.tween, self, {color = Theme.font}, 'out-expo')
 end
 
-
+--- Calls the callback (if any)
 function TextButton:onclick()
     assets.sounds.click:play()
     if self.callback then self.callback(self) end
 end
 
+
+--- Inherited method
 function TextButton:draw()
     love.graphics.push()
     love.graphics.translate(self.x - self.xOrigin, self.y - self.yOrigin)

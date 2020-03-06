@@ -28,7 +28,10 @@ local HIDING = {
     bottom = {y = love.graphics.getHeight(), color = Theme.transparent}
 }
 
+--- Used to create an object to describe
+--- an transition
 ---@class TransitionBuilder
+---@field private _elements table
 local TransitionBuilder = class:extend()
 
 function TransitionBuilder:new(uibuilder)
@@ -57,6 +60,8 @@ function TransitionBuilder:add(name, options)
     return self
 end
 
+--- Creates the object describing the
+--- transition and returns it
 ---@return TransitionBuilder
 function TransitionBuilder:build()
     local ret = self._elements
@@ -65,14 +70,22 @@ function TransitionBuilder:build()
 end
 
 ---@class UIBuilder : Entity
+---@field private _options table
+---@field private _children table
 local UIBuilder = Entity:extend()
 
+--- Constructor
+---@param container EntityContainer
+---@param options table
 function UIBuilder:new(container, options)
     Entity.new(self, container)
     self._options = options or {}
     self._children = {left = {}, right = {}, bottom = {}, top = {}}
 end
 
+--- Accessor to the given option
+---if the option is a function, calls
+--- the function and returns its return value
 ---@param key string
 ---@return any
 function UIBuilder:getOption(key)
@@ -81,6 +94,8 @@ function UIBuilder:getOption(key)
     return val
 end
 
+--- Adds a child to the list of children of
+--- the UIBuilder
 ---@param origin string
 ---@param child Entity
 function UIBuilder:addChild(origin, child)
@@ -89,14 +104,21 @@ function UIBuilder:addChild(origin, child)
     return child
 end
 
+--- Disposing of everything
 function UIBuilder:dispose()
     self._children = nil
 end
 
+--- Starts to build an object
+--- to represent a transition
+---@return TransitionBuilder
 function UIBuilder:createTransition()
     return TransitionBuilder(self)
 end
 
+--- Generates the object to transition
+--- out all the widgets of the scene
+---@return table
 function UIBuilder:transitionOut()
     local result = {}
     for k, v in pairs(self._children) do

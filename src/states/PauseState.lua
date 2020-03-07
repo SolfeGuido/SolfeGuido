@@ -4,19 +4,22 @@ local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 
----@class PauseState : State
+--- State shown when the user pauses the game
+---@class PauseState : DialogState
 local PauseState = DialogState:extend()
 
-
+--- Constructor
 function PauseState:new()
     DialogState.new(self)
     self:setWidth(Vars.titleSize * 6)
 end
 
+--- When the user clicks play
 function PauseState:validate()
     self:slideOut()
 end
 
+--- Creates all the widgets
 function PauseState:init()
     local text = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), tr('Paused'))
     local dialogMiddle = (love.graphics.getWidth() - self.margin * 2) / 2

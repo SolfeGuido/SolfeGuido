@@ -3,15 +3,15 @@ local UIFactory = require('src.utils.UIFactory')
 local Theme = require('src.utils.Theme')
 local StatisticsManager = require('src.data.StatisticsManager')
 
----@class NewVersionState : State
+--- Dialog shown where there is a new version,
+--- shows the news brought by the new version
+--- it can be shown when the app is updated
+--- or when the user clicks the version on the main menu
+---@class NewVersionState : DialogState
 local NewVersionState = DialogState:extend()
 
 
-function NewVersionState:new()
-    DialogState.new(self)
-end
-
-
+--- Creates the news lines
 function NewVersionState:init()
     local news = StatisticsManager.news
     local text = love.graphics.newText(

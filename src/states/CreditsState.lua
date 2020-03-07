@@ -4,9 +4,14 @@ local Graphics = require('src.utils.Graphics')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 
+--- State to show the different tools used to create the
+--- game, to give credit..
 ---@class CreditsState : State
 local CreditsState = State:extend()
 
+--- Capturing escape key to go back
+--- to the menu
+---@param key string
 function CreditsState:keypressed(key)
     if key == "escape" then
         self:slideOut()
@@ -15,16 +20,20 @@ function CreditsState:keypressed(key)
     end
 end
 
+--- Drawing the music bars first
 function CreditsState:draw()
     Graphics.drawMusicBars()
     State.draw(self)
 end
 
+--- Slides back out to the menu state
+---@param callback function
 function CreditsState:slideOut(callback)
     callback = callback or function() ScreenManager.switch('MenuState') end
     self:transition(self.ui:transitionOut(), callback)
 end
 
+--- Create the UI
 function CreditsState:init()
     local elements = self:startUI({
         fontSize = 2 * Vars.lineHeight / 3,

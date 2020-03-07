@@ -5,22 +5,24 @@ local Graphics = require('src.utils.Graphics')
 local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 
+--- Main menu state
 ---@class MenuState : State
 local MenuState = State:extend()
 
+--- Constructor
 function MenuState:new()
     MenuState.super.new(self)
 end
 
+--- Inherited method, draws the music bars
 function MenuState:draw()
     Graphics.drawMusicBars()
     MenuState.super.draw(self)
 end
 
-function MenuState:update(dt)
-    State.update(self, dt)
-end
-
+--- Capture the escape event to quit the game
+--- Capture the menu event to show the options
+---@param key string
 function MenuState:keypressed(key)
     if self:isActive() then
         if key == "escape" then
@@ -32,15 +34,20 @@ function MenuState:keypressed(key)
     State.keypressed(self, key)
 end
 
+--- Open the options and rotates the given button
+---@param btn AbstractButton
 function MenuState:openOptions(btn)
     self.timer:tween(Vars.transition.tween, btn, {rotation = btn.rotation - math.pi}, 'linear')
     ScreenManager.push('OptionsState')
 end
 
+--- Slides out all the widgets, then calls the given callback
+---@param callback function
 function MenuState:slideOut(callback)
     self:transition(self.ui:transitionOut(), callback)
 end
 
+--- Creates the menu, all the widgets, and setups the animations
 function MenuState:init()
     local title = love.graphics.newText(assets.fonts.MarckScript(Vars.titleSize), Vars.appName)
 

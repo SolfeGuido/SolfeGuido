@@ -8,9 +8,15 @@ local ParticleSystem = require('src.utils.ParticleSystem')
 local JinglePlayer = require('src.utils.JinglePlayer')
 local lume = require('lib.lume')
 
+
+--- State shown at the end of a game,
+--- shows some particle effects because the user finished !
+--- if it's the users best score, then, the effect is even better
 ---@class EndGameState : State
+---@field private particles any(love particles)
 local EndGameState = DialogState:extend()
 
+--- The four colors when it's the best score
 local colors = {
     {lume.color('#011627')},
     {lume.color('#2EC4B6')},
@@ -18,22 +24,28 @@ local colors = {
     {lume.color('#FF9F1C')}
 }
 
+--- Constructor
 function EndGameState:new()
     DialogState.new(self)
     self:setWidth(Vars.titleSize * 10)
     self.particles = ParticleSystem.noteBurstParticles(Theme.white)
 end
 
+--- Disposes of all the objects
 function EndGameState:close()
     self.particles:release()
     self.particles = nil
+    DialogState.close(self)
 end
 
+--- Updates the particles
+---@param dt number
 function EndGameState:update(dt)
     DialogState.update(self, dt)
     self.particles:update(dt)
 end
 
+--- Inherited method
 function EndGameState:draw()
     love.graphics.setColor(Theme.correct)
     love.graphics.draw(self.particles, love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5)
@@ -50,14 +62,20 @@ function EndGameState:draw()
     DialogState.draw(self)
 end
 
+--- When clicked on validate, replay
 function EndGameState:validate()
     ScreenManager.switch('PlayState')
 end
 
+--- When clicked on menu, go to the menu
 function EndGameState:slideOut()
     ScreenManager.switch('MenuState')
 end
 
+--- Init the dialog, and creates the particles
+--- based on the user's score
+---@param score number
+---@param best boolean
 function EndGameState:init(score, best)
     self.isBestScore = best
     if self.isBestScore then

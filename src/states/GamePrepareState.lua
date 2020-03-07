@@ -11,10 +11,23 @@ local Score = require('src.objects.Score')
 local Measure = require('src.objects.Measure')
 local StopWatch = require('src.objects.Stopwatch')
 
+--- Class used to load all the entities used by the
+--- gameState, instead of loading them while playing
+--- and making the game lag, all the objects possible
+--- are created ahead of time, while showing a loading
+--- screen
 ---@class GamePrepareState : State
+---@field private notesQueue CircularQueue
+---@field private coroutine number
+---@field private measures Measure[]
+---@field private scoreText Score
+---@field private stopWatch StopWatch
+---@field private text string
+---@field private textX number
+---@field private textY number
 local GamePrepareState = State:extend()
 
-
+--- Constructor
 function GamePrepareState:new()
     State.new(self)
     self.color = Theme.font:clone()
@@ -33,12 +46,15 @@ function GamePrepareState:new()
     self.textY = middle - (height / 2)
 end
 
+--- Depending on the configuration, the space available for the measures
+--- is not always the same
 local spaces = {
     buttons = Vars.mobileButton.fontSize + Vars.mobileButton.padding * 2 + 20,
     piano = Vars.pianoHeight,
     pianoWithNotes = Vars.pianoHeight
 }
 
+--- Create the game's measures, based on the user's configuration
 function GamePrepareState:createMeasures()
     local availableSpace = love.graphics.getHeight() - (spaces[Config.answerType] or 0)
     if Config.keySelect == 'gClef' then
@@ -90,13 +106,19 @@ function GamePrepareState:createMeasures()
     assets.shaders.noteFade:send('noteWidth', noteWidth * ratio)
 end
 
+--- Inherited method
+--- Do not call state draw, to do not draw the prepared entities
 function GamePrepareState:draw()
-    -- Do not call state draw, to do not draw the prepared entities
     love.graphics.setBackgroundColor(Theme.background)
     love.graphics.setColor(self.color)
     love.graphics.print(self.text, math.floor(self.textX), math.floor(self.textY))
 end
 
+--- Updates the coroutine
+--- When the coroutine is over,
+--- switches to the gameState, and passes
+--- all the prepared objects
+---@param dt number
 function GamePrepareState:update(dt)
     State.update(self, dt)
     if self.coroutine == nil then

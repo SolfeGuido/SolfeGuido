@@ -7,10 +7,16 @@ local Config = require('src.data.Config')
 local PlayButton = require('src.objects.PlayButton')
 local RadioButtonGroup = require('src.objects.RadioButtonGroup')
 
----@class PlaySelectState : State
+--- Dialog shown when the user wants to play
+--- shows the existing game modes and their options
+---@class PlaySelectState : DialogState
+---@field private keyButtons table
+---@field private timeButtons table
+---@field private difficultyButtons table
+---@field private gameModeButtons table
 local PlaySelectState = DialogSate:extend()
 
-
+--- Constructor
 function PlaySelectState:new()
     DialogSate.new(self)
     self.keyButtons = {}
@@ -20,15 +26,24 @@ function PlaySelectState:new()
     self:setWidth(Vars.titleSize * 10)
 end
 
+--- When the user decided he wants to play !
 function PlaySelectState:validate()
     ScreenManager.switch('GamePrepareState')
 end
 
+--- Checks if the given posotion is contained by
+--- the state
+---@param x number
+---@param y number
+---@return boolean
 function PlaySelectState:contains(x, y)
     return x >= self.margin and x <= self.margin + self.width and
             y >= self.yBottom and y <= self.yBottom + (self.height + Vars.mobileButton.fontSize)
 end
 
+--- Creates a row of radio buttons based
+--- on the given configuration
+---@param config table
 function PlaySelectState:addRadioButtons(config)
     local list = Vars.userPreferences[config.configName]
     local padding = config.padding or 0
@@ -66,6 +81,7 @@ function PlaySelectState:addRadioButtons(config)
     end
 end
 
+--- Creates all the buttons
 function PlaySelectState:init()
     local elements = {}
     local yStart = 5

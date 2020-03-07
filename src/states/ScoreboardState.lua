@@ -13,16 +13,24 @@ local lume = require('lib.lume')
 -- Entities
 local Line = require('src.objects.Line')
 
+--- State used to show the score acheived
+--- in the different gamemodes and levels
 ---@class ScoreboardState : State
+---@field private texts table
+---@field private radioButtons table
+---@field private title table
 local ScoreboardState = State:extend()
 
+--- resets everything
 function ScoreboardState:dispose()
-    self.texts = {}
-    self.radioButtons = {}
-    self.titles = {}
+    self.texts = nil
+    self.radioButtons = nil
+    self.titles = nil
     State.dispose(self)
 end
 
+--- Capture the escape key to go back to the menu
+---@param key string
 function ScoreboardState:keypressed(key)
     if key == "escape" then
         self:slideOut()
@@ -31,6 +39,9 @@ function ScoreboardState:keypressed(key)
     end
 end
 
+--- Changes all the texts to show the score
+--- corresponding to the given timing
+---@param nwTiming string
 function ScoreboardState:updateScores(nwTiming)
     for _, level in ipairs(Vars.userPreferences.difficulty) do
         for _, key in ipairs(Vars.userPreferences.keySelect) do
@@ -40,6 +51,8 @@ function ScoreboardState:updateScores(nwTiming)
     end
 end
 
+--- slides out back to the menu
+---@param callback function
 function ScoreboardState:slideOut(callback)
     callback = callback or function() ScreenManager.switch('MenuState') end
     local elements = {
@@ -69,11 +82,13 @@ function ScoreboardState:slideOut(callback)
     self:transition(elements, callback, Vars.transition.spacing / 10)
 end
 
+--- Inherited method
 function ScoreboardState:draw()
     Graphics.drawMusicBars()
     State.draw(self)
 end
 
+--- Creates all the lines and the widgets
 function ScoreboardState:init()
     local time = Vars.transition.tween / 3
     local middle = Vars.baseLine

@@ -16,7 +16,10 @@ local GameStatistics = require('src.objects.GameStatistics')
 
 local AnswerGiver = require('src.objects.AnswerGiver')
 
-
+--- Main class of the project, when the user plays
+--- he's on this state, the user can pause the game
+--- at any moment, or give the answers to the current
+--- hightlited note
 ---@class PlayState : State
 ---@field public entities table
 ---@field public timer Timer
@@ -26,6 +29,7 @@ local AnswerGiver = require('src.objects.AnswerGiver')
 ---@field private points number
 local PlayState = Scene:extend()
 
+--- Constructor
 function PlayState:new()
     PlayState.super.new(self)
 
@@ -36,7 +40,11 @@ function PlayState:new()
     self.barColor = Theme.stripe:clone()
 end
 
-
+--- Creates the widgets, or configures them if already created
+--- the majority of the widgets used by the state should have
+--- been created by the GamePrepareState, so that nothing has
+--- to be constructed in this state
+---@param config table
 function PlayState:init(config)
     self.score = self:insertEntity(config.score)
     self.measures = config.measures
@@ -73,16 +81,22 @@ function PlayState:init(config)
     end)
 end
 
+--- Access to the measure where the
+--- current note is highlited
+---@return Measure
 function PlayState:getMeasure()
     return self.measures[self.currentMeasure]
 end
 
+--- When several measure play at the same time
+--- changes the current selected measure
 function PlayState:switchMeasure()
     if #self.measures == 1 then return end
     self.currentMeasure = 3 - self.currentMeasure
 end
 
-
+--- When the time ran out, fade aways
+--- all the notes, and shows the EndGameState
 function PlayState:finish()
     self.answerGiver:hide()
     self.stats:stop()
@@ -98,6 +112,7 @@ function PlayState:finish()
     end)
 end
 
+--- Inherited method
 function PlayState:draw()
     love.graphics.push()
 
@@ -115,6 +130,7 @@ function PlayState:draw()
 
 end
 
+--- Capture the escape event to pause the game
 ---@param key string
 function PlayState:keypressed(key)
     Scene.keypressed(self, key)
@@ -124,13 +140,18 @@ function PlayState:keypressed(key)
     end
 end
 
+--- Pause the game when the window looses focus
+---@param focus boolean
 function PlayState:focus(focus)
     if self.active and not focus then
         ScreenManager.push('PauseState')
     end
 end
 
-
+--- Checks that the answer given is correct
+--- If it is, shows the positive animation, win a point and so on
+--- otherwise, show the note name, and loose time
+---@param idx string
 function PlayState:answerGiven(idx)
     if not self.currentNote then return end
     local measure = self:getMeasure()
@@ -156,11 +177,13 @@ function PlayState:answerGiven(idx)
     end
 end
 
+--- Access to the note progression
+---@return number
 function PlayState:getMove()
     return self.progress
 end
 
----Calculate the notes progression
+---Calculates the notes progression
 ---@param dt number
 function PlayState:doProgress(dt)
     local first = self.currentNote.x
@@ -174,6 +197,9 @@ function PlayState:doProgress(dt)
     end
 end
 
+--- Adds a note to the next measure
+--- and returns it
+---@return Note
 function PlayState:addNote()
     local note = self.measures[self.nextMeasureGeneration]:generateRandomNote()
     if #self.measures == 2 then
@@ -212,6 +238,7 @@ function PlayState:update(dt)
     end
 end
 
+--- Goodbye playstate
 function PlayState:close()
     self.currentNote = nil
     self.lastNote = nil

@@ -5,9 +5,18 @@ local ScreenManager = require('lib.ScreenManager')
 local Theme = require('src.utils.Theme')
 local RadiButtonGroup = require('src.objects.RadioButtonGroup')
 
+--- State shown only once, when the user
+--- starts the app right after having
+--- installed it, this allows the user too
+--- setup the app configuration
 ---@class StartupConfigState : State
 local StartupConfigState = State:extend()
 
+--- Reload all the states, and set the current
+--- state to the given index, is used
+--- when a configuration is changed and requires
+--- a full reload (language, theme)
+---@param index number
 function StartupConfigState.reload(index)
     ScreenManager.switch('MenuState')
     for i = #StartupConfigState.options, index, -1 do
@@ -15,6 +24,7 @@ function StartupConfigState.reload(index)
     end
 end
 
+--- Creates all the option to choose from
 function StartupConfigState.createOptions()
     if StartupConfigState.options ~= nil then
         return StartupConfigState.options
@@ -119,6 +129,7 @@ function StartupConfigState.createOptions()
     return StartupConfigState.options
 end
 
+--- Inherited method
 function StartupConfigState:draw()
     love.graphics.push()
     love.graphics.translate(self.x, 0)
@@ -130,12 +141,18 @@ function StartupConfigState:draw()
     love.graphics.pop()
 end
 
+--- Slides out the entire state, to show the main menu
 function StartupConfigState:slideOut()
     self.timer:tween(Vars.transition.tween, self, {x = -love.graphics.getWidth()}, 'out-cubic', function()
         ScreenManager.pop()
     end)
 end
 
+--- Intializes a single slide,
+--- the slide will go get the configuration
+--- options to show, and create the necessary widgets
+---@param index number
+---@param slideFrom string
 function StartupConfigState:init(index, slideFrom)
     if slideFrom == 'left' then
         self.x = -love.graphics.getWidth()

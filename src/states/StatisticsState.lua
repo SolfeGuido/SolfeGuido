@@ -5,14 +5,18 @@ local Theme = require('src.utils.Theme')
 local ScreenManager = require('lib.ScreenManager')
 local StatisticsManager = require('src.data.StatisticsManager')
 
+--- State used to show the user's global statistics
 ---@class StatisticsState : State
 local StatisticsState = State:extend()
 
+--- Inherited method
 function StatisticsState:draw()
     Graphics.drawMusicBars()
     State.draw(self)
 end
 
+--- Captures the escape event to go back to the menu
+---@param key string
 function StatisticsState:keypressed(key)
     if key == "escape" then
         self:slideOut()
@@ -21,11 +25,14 @@ function StatisticsState:keypressed(key)
     end
 end
 
+--- Slides back to the menu
+---@param callback function?
 function StatisticsState:slideOut(callback)
     callback = callback or function() ScreenManager.switch('MenuState') end
     self:transition(self.ui:transitionOut(), callback)
 end
 
+--- Creates all the necessary widgets
 function StatisticsState:init()
     local stats = StatisticsManager.getGlobals()
     local leftFunction = function(e) return Vars.limitLine - e:width() - 5 end

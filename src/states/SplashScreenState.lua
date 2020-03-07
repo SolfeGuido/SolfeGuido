@@ -13,7 +13,13 @@ local JinglePlayer = require('src.utils.JinglePlayer')
 local StartupConfigState = require('src.states.StartupConfigState')
 local Line = require('src.objects.Line')
 
+--- Screen shown when first launching the app
+--- loads all the assets in memory, then switches
+--- to the menu
 ---@class SplashScreenState : State
+---@field private coroutine number
+---@field private totalLoading number
+---@field private color Color
 local SplashScreenState = State:extend()
 
 local allStates = {
@@ -32,6 +38,7 @@ local allStates = {
     StartupConfigState = StartupConfigState
 }
 
+--- Constructor
 function SplashScreenState:new()
     State.new(self)
     self.coroutine = nil
@@ -39,6 +46,7 @@ function SplashScreenState:new()
     self.color = Theme.font:clone()
 end
 
+--- Inherited method
 function SplashScreenState:draw()
     State.draw(self)
     local middle = Vars.baseLine + Vars.lineHeight * 3
@@ -59,6 +67,10 @@ function SplashScreenState:draw()
     love.graphics.line(0, middle , progress, middle)
 end
 
+--- Create the coroutine that will load all the assets
+--- the coroutine allows to load sequentially the assets
+--- and avoid a freeze of the app
+---@return number
 function SplashScreenState:createCoroutine()
     return coroutine.create(function()
         math.randomseed(os.time())
@@ -77,6 +89,11 @@ function SplashScreenState:createCoroutine()
     end)
 end
 
+--- Updates the current coroutine, if any
+--- when the coroutine is finished, will trigger
+--- the animation to enter the menu state,
+--- this part can be quite critical as any problem
+--- occuring will crash the app and is not solvable
 function SplashScreenState:updateCoroutine()
     local success, progress = coroutine.resume(self.coroutine)
     if success then
@@ -96,6 +113,8 @@ function SplashScreenState:updateCoroutine()
     end
 end
 
+--- Updates the coroutine, or create it for the first time
+---@param dt number
 function SplashScreenState:update(dt)
     State.update(self, dt)
     if not self.coroutine then
@@ -105,6 +124,8 @@ function SplashScreenState:update(dt)
     end
 end
 
+--- Starts the animation to show the lines
+--- before going to the menu
 function SplashScreenState:displayLines()
     local time = Vars.transition.tween * 4
     self.timer:tween(time, self, {color = Theme.transparent}, 'linear')

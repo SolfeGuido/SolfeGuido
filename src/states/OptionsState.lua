@@ -8,9 +8,16 @@ local Drawer = require('src.objects.Drawer')
 local EventTransmitter = require('src.utils.EventTransmitter')
 local lume = require('lib.lume')
 
+--- Special state where the user can changes
+--- his preferences, it's a sidebar, that contains
+--- buttons, when the buttons are pressed, a
+--- drawer appears showing the available options to choose from
 ---@class OptionsState : State
+---@field private drawers table
+---@field private slidingOut boolean
 local OptionsState = State:extend()
 
+--- Constructor
 function OptionsState:new()
     State.new(self)
     EventTransmitter.transmitEvents(self)
@@ -19,6 +26,7 @@ function OptionsState:new()
     self.slidingOut = false
 end
 
+--- Slides out, closes open drawers if any
 function OptionsState:slideOut()
     if self.slidingOut then return end
     self.slidingOut = true
@@ -36,6 +44,8 @@ function OptionsState:slideOut()
     end
 end
 
+--- Capture the escape key to close the option
+---@param key string
 function OptionsState:keypressed(key)
     if State.keypressed(self, key) then return true end
     if key == "escape" then
@@ -45,6 +55,7 @@ function OptionsState:keypressed(key)
     return false
 end
 
+--- Inherited method
 function OptionsState:draw()
     local height = love.graphics.getHeight()
     local width = Vars.titleSize * 2
@@ -56,6 +67,11 @@ function OptionsState:draw()
     State.draw(self)
 end
 
+--- Create the drawers based on the data
+--- in the given table, and adds it to the list
+--- of drawers
+---@param config table
+---@param height number
 function OptionsState:createDrawers(config, height)
     for _, v in ipairs(config) do
         local choices = {}
@@ -96,6 +112,7 @@ function OptionsState:createDrawers(config, height)
     end
 end
 
+--- Creates all the widgets
 function OptionsState:init()
     self.timer:tween(Vars.transition.tween, self, {xPos = love.graphics.getWidth() - Vars.titleSize * 1.5}, 'out-expo')
 

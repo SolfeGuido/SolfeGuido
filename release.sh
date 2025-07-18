@@ -1,14 +1,14 @@
 #!/bin/bash
 
-WD=`pwd`
-TEMP=`mktemp -d` # create a temporary directory
-RELEASE=$WD/../solfege-release
-# Do some cleanup
-rm -rf $RELEASE
+set -euo pipefail
 
-cp -R * $TEMP
-cd $TEMP
-TRASH=(examples spec .git .travis.yml .vscode lib/debugGraph.lua lib/lurker.lua lib/profile.lua)
+WD=$(pwd)
+
+TEMP=$(mktemp -d)
+
+cp -R * "$TEMP"
+pushd $TEMP
+TRASH=(Solfeguido.love examples spec .git .vscode lib/debugGraph.lua lib/lurker.lua lib/profile.lua)
 for t in ${TRASH[*]}
 do
     printf "Removing %s\n" $t
@@ -18,22 +18,24 @@ sed -i -e '/--- BEGIN DEBUG/,/--- END DEBUG/d' main.lua
 
 
 compile() {
-    cd $TEMP # move to temp
-    for file in $(find . -iname "*.lua") ; do # for each lua file recursively
+    cd $TEMP
+    for file in $(find . -iname "*.lua") ; do
         if [ "$file" != "./conf.lua" ]; then
             luajit -b ${file} ${file} # compile the code with luajit onto itself
         fi
     done
 }
 
-#compile
+compile
 
 rm release.sh
+
 # Make the releases
-love-release -W32 -W64 -D -M $RELEASE $TMP
+zip -9 -r "$WD/Solfeguido.love" .
+
+popd
 
 rm -rf $TEMP # cleanup
 
 # Release for android
-rm -rf ${SOLFEGUIDO_ANDROID}/game.love
-cp $RELEASE/SolfeGuido.love ${SOLFEGUIDO_ANDROID}/game.love
+cp "$WD/SolfeGuido.love" "${SOLFEGUIDO_ANDROID}/game.love"

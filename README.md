@@ -4,7 +4,7 @@
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=io.github.solfeguido)
 
-![Travis (.org)](https://img.shields.io/travis/SolfeGuido/SolfeGuido)
+![build status](https://github.com/SolfeGuido/SolfeGuido/actions/workflows/test.yml/badge.svg)
 
 Learn to read a music sheet the fun way !
 

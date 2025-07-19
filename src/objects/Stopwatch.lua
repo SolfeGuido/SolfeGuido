@@ -1,6 +1,7 @@
 local Entity = require("src.Entity")
 local Theme = require("src.utils.Theme")
 local Config = require("src.data.Config")
+local ParticleSystem = require("src.utils.ParticleSystem")
 
 --- Entity used when playing a game against the clock
 --- is show on top of the screen, showing how much time
@@ -32,6 +33,7 @@ function StopWatch:new(container, config)
 	self.xStart = safeX + Vars.mobileButton.padding
 	self.xEnd = safeW - Vars.mobileButton.padding
 	self.y = 3
+	self.particles = ParticleSystem.timeParticles(self.color)
 end
 
 function StopWatch:hide()
@@ -41,6 +43,13 @@ end
 --- will now diminish it's time every update call
 function StopWatch:start()
 	self.started = true
+	self.particles:start()
+end
+
+function StopWatch:dispose()
+	self.particles:release()
+	self.particles = nil
+	Entity.dispose(self)
 end
 
 --- Diminish  the remaining time when activated
@@ -57,8 +66,10 @@ function StopWatch:update(dt)
 	end
 	if self.currentTime == 0 and self.finishCallback then
 		self.finishCallback()
+		self.particles:stop()
 		self.finishCallback = nil
 	end
+	self.particles:update(dt)
 end
 
 --- When the user gives a wrong answer,
@@ -92,6 +103,7 @@ function StopWatch:draw()
 	love.graphics.setColor(self.color)
 
 	width = (self.currentTime / self.totalTime) * (self.xEnd - self.xStart)
+	love.graphics.draw(self.particles, width + self.xStart, self.y)
 	love.graphics.line(self.xStart, self.y, width + self.xStart, self.y)
 
 	love.graphics.setLineWidth(0.5)

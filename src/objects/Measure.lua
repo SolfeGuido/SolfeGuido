@@ -42,7 +42,7 @@ function Measure:new(container, options)
 		note.isDead = true
 		return note
 	end, 20)
-	local safeX, safeY, safeW, safeH = love.window.getSafeArea()
+	local safeX, _, _, _ = love.window.getSafeArea()
 	self.keyPadding = 5 + safeX
 end
 

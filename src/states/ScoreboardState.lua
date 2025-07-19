@@ -94,7 +94,7 @@ function ScoreboardState:init()
 	local middle = Vars.baseLine
 	local font = assets.fonts.Oswald(2 * Vars.lineHeight / 3)
 	local maxSize = 0
-	local safeX, safeY, safeW, safeH = love.window.getSafeArea()
+	local safeX, _, _, _ = love.window.getSafeArea()
 
 	self.texts = {}
 	self.titles = {}

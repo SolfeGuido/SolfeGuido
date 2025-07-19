@@ -36,7 +36,7 @@ end
 
 --- Create the UI
 function CreditsState:init()
-	local safeX, safeY, safeW, safeH = love.window.getSafeArea()
+	local safeX, _, _, _ = love.window.getSafeArea()
 	local elements = self:startUI({
 		fontSize = 2 * Vars.lineHeight / 3,
 		fontName = "Oswald",

@@ -49,7 +49,7 @@ end
 --- Creates the menu, all the widgets, and setups the animations
 function MenuState:init()
 	local title = love.graphics.newTextBatch(assets.fonts.MarckScript(Vars.titleSize), Vars.appName)
-	local safeX, safeY, safeW, safeH = love.window.getSafeArea()
+	local safeX, _, safeW, _ = love.window.getSafeArea()
 
 	local elements = self:startUI({
 		height = Vars.titleSize,

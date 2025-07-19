@@ -100,7 +100,7 @@ function GamePrepareState:createMeasures()
 	local width = love.graphics.getWidth()
 	local pWidth = love.graphics.getPixelWidth()
 	local ratio = (pWidth / width)
-	local safeX, safeY, safeW, safeH = love.window.getSafeArea()
+	local safeX, _, _, _ = love.window.getSafeArea()
 
 	assets.shaders.noteFade:send("leftLimit", (msr.image:getWidth() + noteWidth + safeX) * ratio)
 	assets.shaders.noteFade:send("rightLimit", pWidth - noteWidth * ratio)

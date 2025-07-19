@@ -28,7 +28,7 @@ function StopWatch:new(container, config)
 	self.currentTime = self.totalTime
 	self.subTime = self.totalTime
 	self.tween = nil
-	local safeX, safeY, safeW, safeH = love.window.getSafeArea()
+	local safeX, _, safeW, _ = love.window.getSafeArea()
 	self.xStart = safeX + Vars.mobileButton.padding
 	self.xEnd = safeW - Vars.mobileButton.padding
 	self.y = 3

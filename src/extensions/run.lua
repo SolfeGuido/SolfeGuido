@@ -4,10 +4,6 @@ function love.run()
 	-- We don't want the first frame's dt to include time taken by love.load.
 	love.timer.step()
 
-	local dt = 0
-	local fixed_dt = 1 / 60
-	local accumulator = 0
-
 	-- Main loop time.
 	return function()
 		-- Process events.
@@ -19,9 +15,7 @@ function love.run()
 			love.handlers[name](a, b, c, d, e, f)
 		end
 
-		-- Update dt, as we'll be passing it to update
-		dt = love.timer.step()
-		love.update(fixed_dt)
+		love.update(love.timer.step())
 
 		if love.graphics.isActive() then
 			love.graphics.origin()

@@ -36,7 +36,7 @@ end
 --- Creates all the necessary widgets
 function StatisticsState:init()
 	local stats = StatisticsManager.getGlobals()
-	local safeX, safeY, safeW, safeH = love.window.getSafeArea()
+	local safeX, _, _, _ = love.window.getSafeArea()
 	local leftFunction = function(e)
 		return Vars.limitLine - e:width() - 5
 	end

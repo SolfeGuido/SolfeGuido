@@ -37,5 +37,5 @@ popd
 
 rm -rf $TEMP # cleanup
 
-# Release for android
-cp "$WD/SolfeGuido.love" "${SOLFEGUIDO_ANDROID}/game.love"
+
+cp "$WD/Solfeguido.love" ../AndroidApp/app/src/embed/assets/game.love

@@ -16,3 +16,7 @@ jobs:
       run: luacheck .
     - name: Run unit tests
       run: busted -m=./?/init.lua
+    - name: Install stylua
+      run: cargo install stylua
+    - name: Check style
+      run: stylua -c src/**/*.lua

@@ -67,7 +67,7 @@ function AnswerGiver:addPianoKeys(showNote)
 					self.callback(Vars.englishNotes[i])
 				end
 			end,
-			text = showNote and love.graphics.newText(font, Vars[Config.noteStyle][i]) or nil,
+			text = showNote and love.graphics.newTextBatch(font, Vars[Config.noteStyle][i]) or nil,
 		})
 	end
 	local blackKeys = {
@@ -99,7 +99,7 @@ function AnswerGiver:addButtons()
 	local widths = math.floor((love.graphics.getWidth() / #letters) - padding)
 	local totalSize = 0
 	for i, v in ipairs(letters) do
-		local text = love.graphics.newText(font, v)
+		local text = love.graphics.newTextBatch(font, v)
 		totalSize = totalSize + text:getWidth() + padding * 3
 		local y = love.graphics.getHeight() - text:getHeight() - padding * 3
 		self:addEntity(MobileButton, {
@@ -117,4 +117,3 @@ function AnswerGiver:addButtons()
 end
 
 return AnswerGiver
-

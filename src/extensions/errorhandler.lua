@@ -1,10 +1,9 @@
 local utf8 = require("utf8")
-local Logger = require('lib.logger')
+local Logger = require("lib.logger")
 
 local function error_printer(msg, layer)
-	print((debug.traceback("Error: " .. tostring(msg), 1+(layer or 1)):gsub("\n[^\n]+$", "")))
+	print((debug.traceback("Error: " .. tostring(msg), 1 + (layer or 1)):gsub("\n[^\n]+$", "")))
 end
-
 
 function love.errorhandler(msg)
 	msg = tostring(msg)
@@ -48,8 +47,7 @@ function love.errorhandler(msg)
 	end
 	sanitizedmsg = table.concat(sanitizedmsg)
 
-	local err = {"Error\n", sanitizedmsg}
-
+	local err = { "Error\n", sanitizedmsg }
 
 	if #sanitizedmsg ~= #msg then
 		table.insert(err, "Invalid UTF-8 string in error message.")
@@ -67,21 +65,21 @@ function love.errorhandler(msg)
 	local p = table.concat(err, "\n")
 
 	p = p:gsub("\t", "")
-	p = p:gsub("%[string \"(.-)\"%]", "%1")
+	p = p:gsub('%[string "(.-)"%]', "%1")
 
-    Logger.fatal(p)
+	Logger.fatal(p)
 
-    local messages = {
-        'Whoops, looks like there was an error\n',
-        'Try to restart the app\n',
-        'If it still does not work',
-        'Please tell the dev he\'s done a bad job :('
-    }
+	local messages = {
+		"Whoops, looks like there was an error\n",
+		"Try to restart the app\n",
+		"If it still does not work",
+		"Please tell the dev he's done a bad job :(",
+	}
 	local function draw()
 		local pos = 70
-        love.graphics.clear(245/255, 245/255, 245/255)
-        love.graphics.setColor(68/255, 68 / 255, 68 / 255)
-		love.graphics.printf(table.concat(messages,'\n'), pos, pos, love.graphics.getWidth() - pos)
+		love.graphics.clear(245 / 255, 245 / 255, 245 / 255)
+		love.graphics.setColor(68 / 255, 68 / 255, 68 / 255)
+		love.graphics.printf(table.concat(messages, "\n"), pos, pos, love.graphics.getWidth() - pos)
 		love.graphics.present()
 	end
 
@@ -95,12 +93,14 @@ function love.errorhandler(msg)
 				return 1
 			elseif e == "touchpressed" then
 				local name = love.window.getTitle()
-				if #name == 0 or name == "Untitled" then name = "Game" end
-				local buttons = {"OK", "Cancel"}
+				if #name == 0 or name == "Untitled" then
+					name = "Game"
+				end
+				local buttons = { "OK", "Cancel" }
 				if love.system then
 					buttons[3] = "Copy to clipboard"
 				end
-				local pressed = love.window.showMessageBox("Quit "..name.."?", "", buttons)
+				local pressed = love.window.showMessageBox("Quit " .. name .. "?", "", buttons)
 				if pressed == 1 then
 					return 1
 				end
@@ -113,5 +113,4 @@ function love.errorhandler(msg)
 			love.timer.sleep(0.1)
 		end
 	end
-
 end

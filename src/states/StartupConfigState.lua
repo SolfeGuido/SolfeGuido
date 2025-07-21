@@ -174,6 +174,7 @@ function StartupConfigState:init(index, slideFrom)
 	self.timer:tween(Vars.transition.tween, self, { x = 0 }, "out-cubic")
 
 	local config = StartupConfigState.options[index]
+	local safeX, _, safeW, _ = love.window.getSafeArea()
 	UIFactory.createTitle(self, {
 		text = tr(config.title),
 		centered = true,
@@ -185,7 +186,7 @@ function StartupConfigState:init(index, slideFrom)
 		text = assets.IconName[config.icon],
 		fontName = "Icons",
 		y = 15,
-		x = 15,
+		x = 10 + safeX,
 		color = Theme.font:clone(),
 	})
 
@@ -261,7 +262,7 @@ function StartupConfigState:init(index, slideFrom)
 	if index > 1 then
 		UIFactory.createTextButton(self, {
 			text = " < ",
-			x = 10,
+			x = 10 + safeX,
 			y = love.graphics.getHeight() - 10,
 			yOrigin = 1,
 			padding = 5,
@@ -278,13 +279,15 @@ function StartupConfigState:init(index, slideFrom)
 		UIFactory.createTextButton(self, {
 			text = " > ",
 			y = love.graphics.getHeight() - 10,
-			x = love.graphics.getWidth() - 10,
+			x = safeW - 10,
 			padding = 5,
 			xOrigin = 1,
 			yOrigin = 1,
 			framed = true,
 			callback = function()
 				self:slideOut()
+				-- The user configured the app, we can now save the config
+				Config.userHelped()
 			end,
 			color = Theme.font:clone(),
 		})
@@ -293,7 +296,7 @@ function StartupConfigState:init(index, slideFrom)
 			text = assets.IconName.Check,
 			fontName = "Icons",
 			y = love.graphics.getHeight() - 10,
-			x = love.graphics.getWidth() - 10,
+			x = safeW - 10,
 			padding = 10,
 			xOrigin = 1,
 			yOrigin = 1,

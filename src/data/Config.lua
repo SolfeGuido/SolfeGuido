@@ -91,15 +91,25 @@ function Config.update(key, value)
 	return true
 end
 
+--- To know if the app still need to show the inital configuration stage to let the user set his preferences
 function Config.needsUserHelp()
 	return _needsUserHelp
 end
 
+--- Call when the user has passed the initial configuration stage and that the configuration can be saved in consequence
+function Config.userHelped()
+	_needsUserHelp = false
+end
+
 --- Saves the configuration into the config file
 function Config.save()
-	Logger.try("Saving config", function()
-		FileUtils.writeData(Vars.configSave, _configData)
-	end)
+	if _needsUserHelp then
+		Logger.log("INFO", "Skipping config save as the app was not configured by user yet")
+	else
+		Logger.try("Saving config", function()
+			FileUtils.writeData(Vars.configSave, _configData)
+		end)
+	end
 end
 
 return setmetatable(Config, {

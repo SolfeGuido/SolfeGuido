@@ -24,7 +24,7 @@ local equivalences = {
 ---@param config table
 function StopWatch:new(container, config)
 	Entity.new(self, container, config)
-	self.color = Theme.secondary:clone()
+	self.color = Theme.correct:clone()
 	self.totalTime = equivalences[Config.time] or 60
 	self.currentTime = self.totalTime
 	self.subTime = self.totalTime
@@ -33,7 +33,7 @@ function StopWatch:new(container, config)
 	self.xStart = safeX + Vars.mobileButton.padding
 	self.xEnd = safeW - Vars.mobileButton.padding
 	self.y = 3
-	self.particles = ParticleSystem.timeParticles(self.color)
+	self.particles = ParticleSystem.timeParticles(Theme.white)
 end
 
 function StopWatch:hide()
@@ -96,16 +96,19 @@ function StopWatch:draw()
 	love.graphics.line(0, self.y, self.xStart, self.y)
 	love.graphics.line(self.xEnd, self.y, love.graphics.getWidth(), self.y)
 
+	--- Draw the wrong effect, always overriden by the actual time, unless a mistake was made
 	love.graphics.setColor(Theme.wrong)
 	local width = (math.max(self.currentTime, self.subTime) / self.totalTime) * (self.xEnd - self.xStart)
 	love.graphics.line(self.xStart, self.y, width + self.xStart, self.y)
 
+	-- Draw the timer itself
 	love.graphics.setColor(self.color)
 
 	width = (self.currentTime / self.totalTime) * (self.xEnd - self.xStart)
 	love.graphics.draw(self.particles, width + self.xStart, self.y)
 	love.graphics.line(self.xStart, self.y, width + self.xStart, self.y)
 
+	--- Drwaw the top and bottom bars
 	love.graphics.setLineWidth(0.5)
 	love.graphics.setColor(Theme.font)
 	love.graphics.line(0, self.y + 3.5, love.graphics.getWidth(), self.y + 3.5)

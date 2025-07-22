@@ -168,6 +168,9 @@ function Drawer:init(options)
 			}):width()
 	end
 
+	local _, _, safeW, _ = love.window.getSafeArea()
+	local safeDistance = love.graphics.getWidth() - safeW
+
 	self.width = xPos
 		+ UIFactory.createIconButton(self, {
 			y = self.padding - 2,
@@ -181,6 +184,7 @@ function Drawer:init(options)
 			end,
 		}):width()
 		+ self.padding
+		+ safeDistance
 end
 
 --- Triggers an animation to hide or show

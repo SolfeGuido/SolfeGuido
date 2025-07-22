@@ -146,7 +146,6 @@ function GamePrepareState:update(dt)
 	if self.coroutine and coroutine.status(self.coroutine) ~= "dead" then
 		local success, coProgress = coroutine.resume(self.coroutine)
 		if not success then
-			print(coProgress)
 			Logger.error(coProgress)
 			-- Show error dialog ?
 			ScreenManager.switch("MenuState")

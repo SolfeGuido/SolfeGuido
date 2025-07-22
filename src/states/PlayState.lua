@@ -59,7 +59,7 @@ function PlayState:init(config)
 		self.stopWatch.finishCallback = function()
 			self:finish()
 		end
-		elements[#elements + 1] = { element = self.stopWatch, target = { color = Theme.secondary } }
+		elements[#elements + 1] = { element = self.stopWatch, target = { color = self.stopWatch.color } }
 	end
 
 	self:addHUD(IconButton, {

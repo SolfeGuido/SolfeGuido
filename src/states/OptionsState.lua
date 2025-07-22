@@ -65,7 +65,7 @@ end
 --- Inherited method
 function OptionsState:draw()
 	local height = love.graphics.getHeight()
-	local width = Vars.titleSize * 2
+	local width = Vars.titleSize * 1.5
 	love.graphics.setColor(Theme.background)
 	love.graphics.rectangle("fill", self.xPos, -5, width, height + 10)
 
@@ -120,18 +120,14 @@ end
 
 --- Creates all the widgets
 function OptionsState:init()
-	self.timer:tween(
-		Vars.transition.tween,
-		self,
-		{ xPos = love.graphics.getWidth() - Vars.titleSize * 1.5 },
-		"out-expo"
-	)
+	local _, _, safeW, _ = love.window.getSafeArea()
+	self.timer:tween(Vars.transition.tween, self, { xPos = safeW - Vars.titleSize * 1.5 }, "out-expo")
 
 	local optionIcons = 6
 	local remainingSpace = (love.graphics.getHeight() - Vars.titleSize * optionIcons)
 	local padding = remainingSpace / (optionIcons + 1)
 
-	local xPos = love.graphics.getWidth() - Vars.titleSize * 1.25
+	local xPos = safeW - Vars.titleSize * 1.25
 	local baseY = Vars.titleSize + padding
 	local elements = self:startUI()
 		:createTransition()

@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Install dependencies
       run: sudo apt-get update && sudo apt-get install -y luajit lua-check lua-busted
     - name: Run luacheck
